@@ -31,6 +31,9 @@
 		113F06B61E7966A900E7D74F /* UIImage+AlamofireImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F06AB1E7966A900E7D74F /* UIImage+AlamofireImage.swift */; };
 		113F06B71E7966A900E7D74F /* UIImageView+AlamofireImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F06AC1E7966A900E7D74F /* UIImageView+AlamofireImage.swift */; };
 		113F927A1E70019D005CC419 /* SignUpRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F92791E70019D005CC419 /* SignUpRequestModel.swift */; };
+		115A30C81EAE25AF003A9104 /* CouponTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115A30C61EAE25AF003A9104 /* CouponTableViewCell.swift */; };
+		115A30C91EAE25AF003A9104 /* CouponTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 115A30C71EAE25AF003A9104 /* CouponTableViewCell.xib */; };
+		115A30CB1EAE2801003A9104 /* MyCouponViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115A30CA1EAE2801003A9104 /* MyCouponViewController.swift */; };
 		1179DDB31E767ED400BE7DED /* Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1179DDAC1E767ED400BE7DED /* Decoder.swift */; };
 		1179DDB41E767ED400BE7DED /* Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1179DDAD1E767ED400BE7DED /* Encoder.swift */; };
 		1179DDB51E767ED400BE7DED /* ExtensionArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1179DDAE1E767ED400BE7DED /* ExtensionArray.swift */; };
@@ -266,6 +269,9 @@
 		113F06AB1E7966A900E7D74F /* UIImage+AlamofireImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+AlamofireImage.swift"; sourceTree = "<group>"; };
 		113F06AC1E7966A900E7D74F /* UIImageView+AlamofireImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+AlamofireImage.swift"; sourceTree = "<group>"; };
 		113F92791E70019D005CC419 /* SignUpRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpRequestModel.swift; sourceTree = "<group>"; };
+		115A30C61EAE25AF003A9104 /* CouponTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponTableViewCell.swift; sourceTree = "<group>"; };
+		115A30C71EAE25AF003A9104 /* CouponTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CouponTableViewCell.xib; sourceTree = "<group>"; };
+		115A30CA1EAE2801003A9104 /* MyCouponViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCouponViewController.swift; sourceTree = "<group>"; };
 		1179DDAC1E767ED400BE7DED /* Decoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Decoder.swift; sourceTree = "<group>"; };
 		1179DDAD1E767ED400BE7DED /* Encoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Encoder.swift; sourceTree = "<group>"; };
 		1179DDAE1E767ED400BE7DED /* ExtensionArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionArray.swift; sourceTree = "<group>"; };
@@ -746,6 +752,7 @@
 				112A6C1F1E92698200043C0A /* CategoryPageViewController.swift */,
 				11187B541E98F215009110E2 /* DetailViewController.swift */,
 				110EB5381E9A404F00431534 /* TabBarController.swift */,
+				115A30CA1EAE2801003A9104 /* MyCouponViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -757,6 +764,8 @@
 				11D427AE1E66B2D1009F3763 /* CategoryTableViewCell2.swift */,
 				11D427AF1E66B2D1009F3763 /* CustomerHomeTableCell.swift */,
 				11D427B01E66B2D1009F3763 /* IndexHomeTableViewCell.swift */,
+				115A30C61EAE25AF003A9104 /* CouponTableViewCell.swift */,
+				115A30C71EAE25AF003A9104 /* CouponTableViewCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1179,6 +1188,7 @@
 				11D4276C1E66AEC3009F3763 /* Assets.xcassets in Resources */,
 				113F06B31E7966A900E7D74F /* Info.plist in Resources */,
 				11D4289E1E66BFA2009F3763 /* Info.plist in Resources */,
+				115A30C91EAE25AF003A9104 /* CouponTableViewCell.xib in Resources */,
 				11D428B81E66BFA2009F3763 /* IRANSANSWEB_BOLD.TTF in Resources */,
 				11A90B5C1E7542CB0076EAD7 /* Info.plist in Resources */,
 				1179DDDB1E7687D200BE7DED /* Info-tvOS.plist in Resources */,
@@ -1276,6 +1286,7 @@
 				11D4287D1E66BFA2009F3763 /* HMAC+Foundation.swift in Sources */,
 				11FDEBB31EAC92C1002E999E /* Reachability.swift in Sources */,
 				1179DDE11E7687D200BE7DED /* Request.swift in Sources */,
+				115A30C81EAE25AF003A9104 /* CouponTableViewCell.swift in Sources */,
 				1179DDB41E767ED400BE7DED /* Encoder.swift in Sources */,
 				11D428601E66BFA2009F3763 /* Array+Extension.swift in Sources */,
 				11D428891E66BFA2009F3763 /* Padding.swift in Sources */,
@@ -1360,6 +1371,7 @@
 				110EB5391E9A404F00431534 /* TabBarController.swift in Sources */,
 				11D428BF1E66BFA3009F3763 /* CAMediaTimingFunction+AdditionalEquations.m in Sources */,
 				11D428A51E66BFA2009F3763 /* DCMandatoryEmailTextField.swift in Sources */,
+				115A30CB1EAE2801003A9104 /* MyCouponViewController.swift in Sources */,
 				11D428D01E66BFA3009F3763 /* LoadingView.swift in Sources */,
 				11D427AA1E66B100009F3763 /* SignInPageTwoViewController.swift in Sources */,
 				11D428A11E66BFA2009F3763 /* DCRoundedButton.swift in Sources */,

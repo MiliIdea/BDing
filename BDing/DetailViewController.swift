@@ -61,6 +61,8 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     
     var offsetOfsemiCircular: CGFloat = 0.0
     
+    var offsetOfBottomView: CGFloat = 0.0
+    
     var customerHomeTableCellsOfCategoryPage = [CustomerHomeTableCell]()
     
     var cache: NSCache<AnyObject, AnyObject> = NSCache()
@@ -159,6 +161,8 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
         offsetOfsemiCircular = semicircularView.frame.origin.y
         
+        offsetOfBottomView = bottomView.frame.origin.y
+        
         self.cache = NSCache()
 
         self.scrollViewDidScroll(self.scrollView)
@@ -210,7 +214,16 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
             
         }
         
+        print(self.scrollView.contentOffset.y)
         
+        if(self.scrollView.contentOffset.y < 0){
+            
+            self.backgroundPicView.frame.size.height = offsetOfBottomView - self.scrollView.contentOffset.y
+            
+        }else{
+            
+            self.backgroundPicView.frame.size.height = offsetOfBottomView
+        }
         
         navigationBar.alpha = 1 - myPercentage
         
