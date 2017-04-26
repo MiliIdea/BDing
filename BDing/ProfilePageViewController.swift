@@ -64,13 +64,13 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
     
     @IBOutlet weak var reportLabel: UILabel!
     
-    @IBOutlet weak var sekeButton: DCBorderedButton!
+    @IBOutlet weak var payWithTolls: DCBorderedButton!
     
-    @IBOutlet weak var coupon: DCBorderedButton!
+    @IBOutlet weak var takeCoupon: DCBorderedButton!
     
-    @IBOutlet weak var pardakhtButton: DCBorderedButton!
+    @IBOutlet weak var payHistory: DCBorderedButton!
     
-    @IBOutlet weak var myCoupon: DCBorderedButton!
+    @IBOutlet weak var myCoupons: DCBorderedButton!
     
     @IBOutlet weak var inputBoarderView: DCBorderedView!
     
@@ -78,6 +78,7 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
     
     @IBOutlet weak var aboutUsButton: DCBorderedButton!
     
+    @IBOutlet var container: UIView!
     
     
     
@@ -99,10 +100,10 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
         MyFont().setMediumFont(view: name, mySize: 14)
         MyFont().setMediumFont(view: coinValue, mySize: 13)
         MyFont().setMediumFont(view: reportLabel, mySize: 10)
-        MyFont().setMediumFont(view: sekeButton, mySize: 13)
-        MyFont().setMediumFont(view: coupon, mySize: 13)
-        MyFont().setMediumFont(view: pardakhtButton, mySize: 13)
-        MyFont().setMediumFont(view: myCoupon, mySize: 13)
+        MyFont().setMediumFont(view: payWithTolls, mySize: 13)
+        MyFont().setMediumFont(view: takeCoupon, mySize: 13)
+        MyFont().setMediumFont(view: payHistory, mySize: 13)
+        MyFont().setMediumFont(view: myCoupons, mySize: 13)
         MyFont().setMediumFont(view: porseshhaButton, mySize: 13)
         MyFont().setMediumFont(view: aboutUsButton, mySize: 13)
         
@@ -203,14 +204,25 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
         
         var YpercentageScroll = scrollViewProfile.contentOffset.y / profilePicOffsetY
         
-        if(YpercentageScroll < 0){
+        print(YpercentageScroll)
+        
+        var isNegative : Bool = false
+        
+        var howMuch: CGFloat = 0.000
+        
+        if(YpercentageScroll < 0.000){
+            
+            isNegative = true
+            
+            howMuch = -scrollViewProfile.contentOffset.y
             
             view.frame.origin.y = startXY.y - scrollViewProfile.contentOffset.y
             
+            YpercentageScroll = 0
+        }
+
             
-        }else {
-            
-            if(YpercentageScroll > 1){
+            if(YpercentageScroll > 1.000){
                 
                 YpercentageScroll = 1
                 
@@ -219,6 +231,12 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
             view.frame.origin.x = startXY.x + (goalXY.x - startXY.x) * YpercentageScroll
             
             view.frame.origin.y = startXY.y + (goalXY.y - startXY.y) * YpercentageScroll
+        
+        if(isNegative){
+            
+            view.frame.origin.y += howMuch
+            
+        }
             
             view.frame.size.width = startWH.x + (goalWH.x - startWH.x) * YpercentageScroll
             
@@ -234,7 +252,7 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
                 
             }
 
-        }
+//        }
     }
     
     
@@ -332,7 +350,6 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
         
         var myPercentage = 1 - k * ( scrollViewProfile.contentOffset.y / (semicircularView.frame.origin.y + semicircularView.frame.height) )
         
-        print(myPercentage)
         
         if(myPercentage < 0){
             
@@ -358,6 +375,158 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
     
 
 
+    @IBAction func changeView(_ sender: DCBorderedButton) {
+        
+        if(sender.tag == 0){
+            
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                let vc = (self.storyboard?.instantiateViewController(withIdentifier: "TakeCouponViewController"))! as! TakeCouponViewController
+                
+                self.addChildViewController(vc)
+                
+                vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+                
+                self.container.addSubview(vc.view)
+                
+                vc.didMove(toParentViewController: self)
+                
+                self.navigationBar.alpha = 0
+                
+                self.profilePicButton.alpha = 0
+                
+            }, completion: nil)
+            
+        }else if(sender.tag == 1){
+            
+            self.requestForMyCoupon()
+            
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                let vc = (self.storyboard?.instantiateViewController(withIdentifier: "MyCouponViewController"))! as! MyCouponViewController
+                
+                self.addChildViewController(vc)
+                
+                vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+                
+                self.container.addSubview(vc.view)
+                
+                vc.didMove(toParentViewController: self)
+                
+                self.navigationBar.alpha = 0
+                
+                self.profilePicButton.alpha = 0
+                
+            }, completion: nil)
+
+            
+        }else if(sender.tag == 2){
+            
+            self.requestForPayHistory()
+            
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                let vc = (self.storyboard?.instantiateViewController(withIdentifier: "PayHistoryViewController"))! as! PayHistoryViewController
+                
+                self.addChildViewController(vc)
+                
+                vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+                
+                self.container.addSubview(vc.view)
+                
+                vc.didMove(toParentViewController: self)
+                
+                self.navigationBar.alpha = 0
+                
+                self.profilePicButton.alpha = 0
+                
+            }, completion: nil)
+        }
+        
+    }
+    
+    func requestForMyCoupon(){
+        
+        request(URLs.getMyCoupon , method: .post , parameters: MyCouponRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------MY COUPON----------->>>> ")
+                //create my coupon response model
+                
+                print(JSON)
+                
+            }
+            
+        }
+        
+        
+    }
+    
+    func requestForBuyCoupon(){
+        
+        request(URLs.buyCoupon , method: .post , parameters: BuyCouponRequestModel.init(CODE: "").getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------MY BUY COUPON----------->>>> ")
+                //create my coupon response model
+                
+                print(JSON)
+                
+            }
+            
+        }
+        
+        
+    }
+
+    func requestForPayHistory(){
+        
+        request(URLs.paylist , method: .post , parameters: PayListRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------MY HISTORY----------->>>> ")
+                //create my coupon response model
+                
+                print(JSON)
+                
+            }
+            
+        }
+        
+        
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    func deletSubView(){
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "ProfilePageViewController"))! as! ProfilePageViewController
+            
+            self.addChildViewController(vc)
+            
+            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+            
+            self.container.addSubview(vc.view)
+            
+            
+            
+            vc.didMove(toParentViewController: self)
+        }, completion: nil)
+        
+    }
 
     
     

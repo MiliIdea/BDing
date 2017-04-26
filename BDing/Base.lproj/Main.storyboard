@@ -2278,7 +2278,7 @@
         <!--Profile Page View Controller-->
         <scene sceneID="X5A-pH-WKD">
             <objects>
-                <viewController id="WPM-gG-B9a" customClass="ProfilePageViewController" customModule="BDing" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProfilePageViewController" id="WPM-gG-B9a" customClass="ProfilePageViewController" customModule="BDing" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="E5S-cy-NLN"/>
                         <viewControllerLayoutGuide type="bottom" id="qKX-tp-EIm"/>
@@ -2496,8 +2496,11 @@
                                                                 <color key="value" red="0.79051975388601026" green="0.79051975388601026" blue="0.79051975388601026" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="changeView:" destination="WPM-gG-B9a" eventType="touchUpInside" id="Ogf-CI-RGh"/>
+                                                        </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UwQ-Bq-O1F" customClass="DCBorderedButton" customModule="BDing" customModuleProvider="target">
+                                                    <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UwQ-Bq-O1F" customClass="DCBorderedButton" customModule="BDing" customModuleProvider="target">
                                                         <rect key="frame" x="9" y="96" width="144" height="40"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2514,10 +2517,10 @@
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
-                                                            <segue destination="0JP-E6-tQN" kind="show" id="UeV-zk-ofv"/>
+                                                            <action selector="changeView:" destination="WPM-gG-B9a" eventType="touchUpInside" id="3pZ-bB-PMO"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bdo-P3-1BI" customClass="DCBorderedButton" customModule="BDing" customModuleProvider="target">
+                                                    <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bdo-P3-1BI" customClass="DCBorderedButton" customModule="BDing" customModuleProvider="target">
                                                         <rect key="frame" x="167" y="96" width="146" height="40"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2533,6 +2536,9 @@
                                                                 <color key="value" red="0.79051975388601026" green="0.79051975388601026" blue="0.79051975388601026" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="changeView:" destination="WPM-gG-B9a" eventType="touchUpInside" id="NZ5-QW-te9"/>
+                                                        </connections>
                                                     </button>
                                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dLl-tU-a1x" customClass="DCBorderedView" customModule="BDing" customModuleProvider="target">
                                                         <rect key="frame" x="9" y="144" width="303" height="240"/>
@@ -2760,31 +2766,118 @@
                         <outlet property="appSettingsIcon" destination="hdy-Wt-0o8" id="yIV-no-Hcp"/>
                         <outlet property="coinIcon" destination="Wxg-gy-CGH" id="AeK-Wy-jtJ"/>
                         <outlet property="coinValue" destination="i62-UZ-n1a" id="KXm-YZ-h1o"/>
-                        <outlet property="coupon" destination="GkH-kl-yBz" id="gSN-Ug-cTc"/>
+                        <outlet property="container" destination="qwt-ub-o4E" id="wEC-Ov-rCj"/>
                         <outlet property="inputBoarderView" destination="dLl-tU-a1x" id="H91-8j-rgo"/>
-                        <outlet property="myCoupon" destination="UwQ-Bq-O1F" id="3Bl-mq-Mt8"/>
+                        <outlet property="myCoupons" destination="UwQ-Bq-O1F" id="sog-c0-BvZ"/>
                         <outlet property="name" destination="yms-Wt-F6Z" id="8kW-RL-f2n"/>
                         <outlet property="navigationBar" destination="hCc-6c-qrz" id="v9M-2t-g4h"/>
-                        <outlet property="pardakhtButton" destination="bdo-P3-1BI" id="Wde-o8-2op"/>
                         <outlet property="patternView" destination="WHf-yU-PNe" id="g7y-qt-5UD"/>
+                        <outlet property="payHistory" destination="bdo-P3-1BI" id="NNY-o4-Bme"/>
+                        <outlet property="payWithTolls" destination="oxs-Cf-UhC" id="4Qf-kF-9fE"/>
                         <outlet property="porseshhaButton" destination="cEk-u8-VIZ" id="XMG-AU-llq"/>
                         <outlet property="profilePicButton" destination="LGF-2Y-kHi" id="U8i-vS-OkL"/>
                         <outlet property="reportLabel" destination="bE7-Ig-KN6" id="79g-nG-j60"/>
                         <outlet property="scrollViewProfile" destination="c5c-LM-VgN" id="tBU-dR-ITp"/>
-                        <outlet property="sekeButton" destination="oxs-Cf-UhC" id="xwG-Ia-2bh"/>
                         <outlet property="semicircularView" destination="Ag9-oD-PaQ" id="NHI-Ab-XdK"/>
+                        <outlet property="takeCoupon" destination="GkH-kl-yBz" id="7dL-oz-MMv"/>
                         <outlet property="topView" destination="iaX-XE-N9v" id="pvF-Xz-4ue"/>
                         <outlet property="viewInScrollView" destination="uge-Ye-unV" id="Z4d-6I-jBi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UL8-ea-0We" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5483" y="-1093"/>
+            <point key="canvasLocation" x="5483" y="-1554"/>
+        </scene>
+        <!--Take Coupon View Controller-->
+        <scene sceneID="pUO-VA-Iee">
+            <objects>
+                <viewController storyboardIdentifier="TakeCouponViewController" id="YEy-GB-4hz" customClass="TakeCouponViewController" customModule="BDing" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Hc3-rY-nzy"/>
+                        <viewControllerLayoutGuide type="bottom" id="m20-NX-IAy"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="uTY-DR-qVm">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dBo-xT-l50">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t1t-aJ-I1K">
+                                <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Title" id="kg9-YD-t3v"/>
+                                </items>
+                            </navigationBar>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Gk-pR-ySg">
+                                <rect key="frame" x="16" y="32" width="43" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="ic_keyboard_arrow_left_36pt"/>
+                                <connections>
+                                    <action selector="backButton:" destination="YEy-GB-4hz" eventType="touchUpInside" id="p0K-MX-hNk"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="table" destination="dBo-xT-l50" id="SZV-Tq-qDh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="N9i-Zb-gqc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6542" y="-1553"/>
+        </scene>
+        <!--Pay History View Controller-->
+        <scene sceneID="JoL-g5-the">
+            <objects>
+                <viewController storyboardIdentifier="PayHistoryViewController" id="Yle-lU-3zk" customClass="PayHistoryViewController" customModule="BDing" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="g1S-3r-tA4"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ngz-46-psa"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0wa-bU-kM9">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GXT-RY-b7d">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="URV-Rw-E9g">
+                                <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Title" id="O29-ii-l21"/>
+                                </items>
+                            </navigationBar>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vHZ-OB-Bnw">
+                                <rect key="frame" x="16" y="32" width="43" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="ic_keyboard_arrow_left_36pt"/>
+                                <connections>
+                                    <action selector="backButton:" destination="Yle-lU-3zk" eventType="touchUpInside" id="WoJ-Fi-Zog"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="table" destination="GXT-RY-b7d" id="e11-5D-MvG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="khh-dp-M0n" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6539" y="-903"/>
         </scene>
         <!--My Coupon View Controller-->
         <scene sceneID="Zld-Ho-bhn">
             <objects>
-                <viewController id="0JP-E6-tQN" customClass="MyCouponViewController" customModule="BDing" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MyCouponViewController" id="0JP-E6-tQN" customClass="MyCouponViewController" customModule="BDing" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="TrR-yB-Rff"/>
                         <viewControllerLayoutGuide type="bottom" id="qqZ-XK-oBy"/>
@@ -2794,17 +2887,25 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="E60-kz-4wI">
-                                <rect key="frame" x="0.0" y="44" width="320" height="524"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8zE-q0-q9I">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="Title" id="0aQ-XK-b43"/>
                                 </items>
                             </navigationBar>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H8l-oi-tBH">
+                                <rect key="frame" x="16" y="32" width="43" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="ic_keyboard_arrow_left_36pt"/>
+                                <connections>
+                                    <action selector="backButton:" destination="0JP-E6-tQN" eventType="touchUpInside" id="4U6-IT-8eV"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -2814,7 +2915,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cj1-R1-ReH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6601.875" y="-1620.4225352112676"/>
+            <point key="canvasLocation" x="6542" y="-2220"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="xCj-kW-Qcu">

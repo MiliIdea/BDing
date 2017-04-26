@@ -24,5 +24,19 @@ class URLs {
     
     static let getBeacon = server + "beacon/getbeacon"
     
+    //***REMAIN***//
+    
+    static let getCoupons = server + "user/getcoupon"
+    
+    static let getMyCoupon = server + "coupon"
+    
+    static let setCoin = server + "user/setcoin"
+    
+    static let buyCoupon = server + "user/buycoupon"
+    
+    static let pay = server + "user/pay"
+    
+    static let paylist = server + "user/paylist"
+    
 }
 
