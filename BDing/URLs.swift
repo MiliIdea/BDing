@@ -26,17 +26,17 @@ class URLs {
     
     //***REMAIN***//
     
-    static let getCoupons = server + "user/getcoupon"
+    static let getMyCoupon = server + "user/getcoupon" // coupon haye man
     
-    static let getMyCoupon = server + "coupon"
+    static let getCoupons = server + "coupon" // liste couponhaye mojud
     
     static let setCoin = server + "user/setcoin"
     
-    static let buyCoupon = server + "user/buycoupon"
+    static let buyCoupon = server + "user/buycoupon" // kharide coupon
     
-    static let pay = server + "user/pay"
+    static let payWithToll = server + "user/pay" // pardakht ba seke
     
-    static let paylist = server + "user/paylist"
+    static let paylistHistory = server + "user/paylist" //tarikhche pardakhtha
     
 }
 

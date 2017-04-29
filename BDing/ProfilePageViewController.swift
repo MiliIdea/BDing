@@ -379,6 +379,8 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
         
         if(sender.tag == 0){
             
+            self.requestForGetCoupon()
+            
             UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                 let vc = (self.storyboard?.instantiateViewController(withIdentifier: "TakeCouponViewController"))! as! TakeCouponViewController
                 
@@ -448,7 +450,7 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
             print()
             
             if let JSON = response.result.value {
-                
+
                 print("JSON ----------MY COUPON----------->>>> ")
                 //create my coupon response model
                 
@@ -461,14 +463,17 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
         
     }
     
-    func requestForBuyCoupon(){
+    
+    func requestForGetCoupon(){
         
-        request(URLs.buyCoupon , method: .post , parameters: BuyCouponRequestModel.init(CODE: "").getParams(), encoding: JSONEncoding.default).responseJSON { response in
+        request(URLs.getCoupons , method: .post , parameters: GetCouponRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
             
             if let JSON = response.result.value {
                 
-                print("JSON ----------MY BUY COUPON----------->>>> ")
+                print(GetCouponRequestModel.init().getParams())
+                
+                print("JSON ----------GET COUPON----------->>>> ")
                 //create my coupon response model
                 
                 print(JSON)
@@ -479,10 +484,29 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
         
         
     }
+    
+//    func requestForBuyCoupon(){
+//        
+//        request(URLs.buyCoupon , method: .post , parameters: BuyCouponRequestModel.init(CODE: "").getParams(), encoding: JSONEncoding.default).responseJSON { response in
+//            print()
+//            
+//            if let JSON = response.result.value {
+//                
+//                print("JSON ----------MY BUY COUPON----------->>>> ")
+//                //create my coupon response model
+//                
+//                print(JSON)
+//                
+//            }
+//            
+//        }
+//        
+//        
+//    }
 
     func requestForPayHistory(){
         
-        request(URLs.paylist , method: .post , parameters: PayListRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+        request(URLs.paylistHistory , method: .post , parameters: PayListRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
             
             if let JSON = response.result.value {

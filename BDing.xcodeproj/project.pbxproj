@@ -14,7 +14,7 @@
 		111BB1701EB0831B00AD202D /* PayHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111BB16F1EB0831B00AD202D /* PayHistoryViewController.swift */; };
 		111BB1731EB087DC00AD202D /* PayHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111BB1711EB087DC00AD202D /* PayHistoryTableViewCell.swift */; };
 		111BB1741EB087DC00AD202D /* PayHistoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 111BB1721EB087DC00AD202D /* PayHistoryTableViewCell.xib */; };
-		111BB1761EB0AD0400AD202D /* MyCouponRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111BB1751EB0AD0400AD202D /* MyCouponRequestModel.swift */; };
+		111BB1761EB0AD0400AD202D /* GetCouponRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111BB1751EB0AD0400AD202D /* GetCouponRequestModel.swift */; };
 		111BB1781EB0AD2200AD202D /* SetCoinRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111BB1771EB0AD2200AD202D /* SetCoinRequestModel.swift */; };
 		111BB17A1EB0AD3800AD202D /* BuyCouponRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111BB1791EB0AD3800AD202D /* BuyCouponRequestModel.swift */; };
 		112A6C181E920F4F00043C0A /* CategoryRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112A6C171E920F4F00043C0A /* CategoryRequestModel.swift */; };
@@ -42,6 +42,7 @@
 		115A30C91EAE25AF003A9104 /* CouponTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 115A30C71EAE25AF003A9104 /* CouponTableViewCell.xib */; };
 		115A30CB1EAE2801003A9104 /* MyCouponViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115A30CA1EAE2801003A9104 /* MyCouponViewController.swift */; };
 		117671DE1EB0B98B00F8D41F /* PayListRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117671DD1EB0B98B00F8D41F /* PayListRequestModel.swift */; };
+		117671E01EB457EF00F8D41F /* MyCouponRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117671DF1EB457EF00F8D41F /* MyCouponRequestModel.swift */; };
 		1179DDB31E767ED400BE7DED /* Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1179DDAC1E767ED400BE7DED /* Decoder.swift */; };
 		1179DDB41E767ED400BE7DED /* Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1179DDAD1E767ED400BE7DED /* Encoder.swift */; };
 		1179DDB51E767ED400BE7DED /* ExtensionArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1179DDAE1E767ED400BE7DED /* ExtensionArray.swift */; };
@@ -259,7 +260,7 @@
 		111BB16F1EB0831B00AD202D /* PayHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayHistoryViewController.swift; sourceTree = "<group>"; };
 		111BB1711EB087DC00AD202D /* PayHistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayHistoryTableViewCell.swift; sourceTree = "<group>"; };
 		111BB1721EB087DC00AD202D /* PayHistoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PayHistoryTableViewCell.xib; sourceTree = "<group>"; };
-		111BB1751EB0AD0400AD202D /* MyCouponRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCouponRequestModel.swift; sourceTree = "<group>"; };
+		111BB1751EB0AD0400AD202D /* GetCouponRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetCouponRequestModel.swift; sourceTree = "<group>"; };
 		111BB1771EB0AD2200AD202D /* SetCoinRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetCoinRequestModel.swift; sourceTree = "<group>"; };
 		111BB1791EB0AD3800AD202D /* BuyCouponRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyCouponRequestModel.swift; sourceTree = "<group>"; };
 		112A6C171E920F4F00043C0A /* CategoryRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryRequestModel.swift; sourceTree = "<group>"; };
@@ -288,6 +289,7 @@
 		115A30C71EAE25AF003A9104 /* CouponTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CouponTableViewCell.xib; sourceTree = "<group>"; };
 		115A30CA1EAE2801003A9104 /* MyCouponViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCouponViewController.swift; sourceTree = "<group>"; };
 		117671DD1EB0B98B00F8D41F /* PayListRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayListRequestModel.swift; sourceTree = "<group>"; };
+		117671DF1EB457EF00F8D41F /* MyCouponRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCouponRequestModel.swift; sourceTree = "<group>"; };
 		1179DDAC1E767ED400BE7DED /* Decoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Decoder.swift; sourceTree = "<group>"; };
 		1179DDAD1E767ED400BE7DED /* Encoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Encoder.swift; sourceTree = "<group>"; };
 		1179DDAE1E767ED400BE7DED /* ExtensionArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionArray.swift; sourceTree = "<group>"; };
@@ -618,10 +620,11 @@
 				113F069E1E793DFA00E7D74F /* BeaconPicRequestModel.swift */,
 				112A6C171E920F4F00043C0A /* CategoryRequestModel.swift */,
 				11FDEBB41EACB625002E999E /* GetBeaconRequestModel.swift */,
-				111BB1751EB0AD0400AD202D /* MyCouponRequestModel.swift */,
 				111BB1771EB0AD2200AD202D /* SetCoinRequestModel.swift */,
 				111BB1791EB0AD3800AD202D /* BuyCouponRequestModel.swift */,
 				117671DD1EB0B98B00F8D41F /* PayListRequestModel.swift */,
+				111BB1751EB0AD0400AD202D /* GetCouponRequestModel.swift */,
+				117671DF1EB457EF00F8D41F /* MyCouponRequestModel.swift */,
 			);
 			name = RquestModels;
 			sourceTree = "<group>";
@@ -1269,7 +1272,7 @@
 				11D427A61E66B100009F3763 /* CategoryViewController.swift in Sources */,
 				11D427B21E66B2D1009F3763 /* CategoryTableViewCell2.swift in Sources */,
 				1179DDE31E7687D200BE7DED /* ResponseSerialization.swift in Sources */,
-				111BB1761EB0AD0400AD202D /* MyCouponRequestModel.swift in Sources */,
+				111BB1761EB0AD0400AD202D /* GetCouponRequestModel.swift in Sources */,
 				11D4289D1E66BFA2009F3763 /* ZeroPadding.swift in Sources */,
 				11D428DC1E66BFA3009F3763 /* TransitionManager.swift in Sources */,
 				11E747171E77EA16002AEEFD /* ProfileData.swift in Sources */,
@@ -1391,6 +1394,7 @@
 				1179DDDA1E7687D200BE7DED /* DispatchQueue+Alamofire.swift in Sources */,
 				11D428DD1E66BFA3009F3763 /* TransitionZoom.swift in Sources */,
 				11D428D41E66BFA3009F3763 /* Spring.swift in Sources */,
+				117671E01EB457EF00F8D41F /* MyCouponRequestModel.swift in Sources */,
 				111BB1731EB087DC00AD202D /* PayHistoryTableViewCell.swift in Sources */,
 				11D427B31E66B2D1009F3763 /* CustomerHomeTableCell.swift in Sources */,
 				1179DDB61E767ED400BE7DED /* ExtensionDecodable.swift in Sources */,
