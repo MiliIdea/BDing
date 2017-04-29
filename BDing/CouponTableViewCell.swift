@@ -12,6 +12,14 @@ class CouponTableViewCell: UITableViewCell {
 
     @IBOutlet weak var couponImage: UIImageView!
     
+    @IBOutlet weak var discountLabel: UILabel!
+    
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    
+    @IBOutlet weak var detailLabel: UILabel!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -381,44 +381,9 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
             
             self.requestForGetCoupon()
             
-            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                let vc = (self.storyboard?.instantiateViewController(withIdentifier: "TakeCouponViewController"))! as! TakeCouponViewController
-                
-                self.addChildViewController(vc)
-                
-                vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-                
-                self.container.addSubview(vc.view)
-                
-                vc.didMove(toParentViewController: self)
-                
-                self.navigationBar.alpha = 0
-                
-                self.profilePicButton.alpha = 0
-                
-            }, completion: nil)
-            
         }else if(sender.tag == 1){
             
             self.requestForMyCoupon()
-            
-            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                let vc = (self.storyboard?.instantiateViewController(withIdentifier: "MyCouponViewController"))! as! MyCouponViewController
-                
-                self.addChildViewController(vc)
-                
-                vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-                
-                self.container.addSubview(vc.view)
-                
-                vc.didMove(toParentViewController: self)
-                
-                self.navigationBar.alpha = 0
-                
-                self.profilePicButton.alpha = 0
-                
-            }, completion: nil)
-
             
         }else if(sender.tag == 2){
             
@@ -453,6 +418,31 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
 
                 print("JSON ----------MY COUPON----------->>>> ")
                 //create my coupon response model
+               
+                if( MyCouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                    
+                    UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                        let vc = (self.storyboard?.instantiateViewController(withIdentifier: "MyCouponViewController"))! as! MyCouponViewController
+                        
+                        self.addChildViewController(vc)
+                        
+                        vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+                        
+                        self.container.addSubview(vc.view)
+                        
+                        vc.didMove(toParentViewController: self)
+                        
+                        self.navigationBar.alpha = 0
+                        
+                        self.profilePicButton.alpha = 0
+                        
+                        vc.coupons = MyCouponListResponseModel.init(json: JSON as! JSON)?.data
+                        
+                    }, completion: nil)
+
+                    
+                }
+               
                 
                 print(JSON)
                 
@@ -475,6 +465,29 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
                 
                 print("JSON ----------GET COUPON----------->>>> ")
                 //create my coupon response model
+                
+                if(CouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                    
+                    UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                        let vc = (self.storyboard?.instantiateViewController(withIdentifier: "TakeCouponViewController"))! as! TakeCouponViewController
+                        
+                        self.addChildViewController(vc)
+                        
+                        vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+                        
+                        self.container.addSubview(vc.view)
+                        
+                        vc.didMove(toParentViewController: self)
+                        
+                        self.navigationBar.alpha = 0
+                        
+                        self.profilePicButton.alpha = 0
+                        
+                        vc.coupons = CouponListResponseModel.init(json: JSON as! JSON)?.data
+                        
+                    }, completion: nil)
+                    
+                }
                 
                 print(JSON)
                 

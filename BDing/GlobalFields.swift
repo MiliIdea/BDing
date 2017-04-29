@@ -14,4 +14,6 @@ class GlobalFields {
     
     static var CATEGORIES_LIST_DATAS: [CategoryListData]? = nil
     
+    static var PAY_UUIDS: [String]? = nil
+    
 }

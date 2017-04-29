@@ -12,6 +12,8 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
 
     @IBOutlet weak var table: UITableView!
     
+    var coupons: [CouponListData]? = [CouponListData]()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,20 +41,29 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 15
+        if(coupons == nil){
+            
+            return 0
+            
+        }
+        return (coupons?.count)!
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "couponCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "couponCell", for: indexPath) as! CouponTableViewCell
         
+        cell.titleLabel.text = coupons?[indexPath.row].title
         
+        cell.detailLabel.text = coupons?[indexPath.row].coin
+        
+        cell.discountLabel.text = coupons?[indexPath.row].discount
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return 70
     }
     
     @IBAction func backButton(_ sender: Any) {
