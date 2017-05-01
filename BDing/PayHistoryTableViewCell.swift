@@ -10,6 +10,17 @@ import UIKit
 
 class PayHistoryTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var imageCell: UIImageView!
+    
+    @IBOutlet weak var title: UILabel!
+    
+    @IBOutlet weak var detail: UILabel!
+    
+    @IBOutlet weak var price: UILabel!
+    
+    @IBOutlet weak var toman: UILabel!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

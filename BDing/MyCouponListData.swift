@@ -49,7 +49,6 @@ class MyCouponListData : Decodable{
         
         self.coupon_code = "coupon_code" <~~ json
         
-        
     }
     
 }

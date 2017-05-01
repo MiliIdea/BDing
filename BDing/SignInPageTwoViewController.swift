@@ -183,6 +183,8 @@ class SignInPageTwoViewController: UIViewController {
                 if ( obj?.code == "200" ){
                     
                     GlobalFields.CATEGORIES_LIST_DATAS = obj?.data
+                    print("%%%%%%%%%%%%%%")
+                    print(JSON)
                     
                 }
                 

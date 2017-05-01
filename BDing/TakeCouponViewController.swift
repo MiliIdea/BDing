@@ -73,6 +73,25 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
         vc.deletSubView()
         
     }
+    
+    //    func requestForBuyCoupon(){
+    //
+    //        request(URLs.buyCoupon , method: .post , parameters: BuyCouponRequestModel.init(CODE: "").getParams(), encoding: JSONEncoding.default).responseJSON { response in
+    //            print()
+    //
+    //            if let JSON = response.result.value {
+    //
+    //                print("JSON ----------MY BUY COUPON----------->>>> ")
+    //                //create my coupon response model
+    //
+    //                print(JSON)
+    //
+    //            }
+    //
+    //        }
+    //        
+    //        
+    //    }
 
 
 }

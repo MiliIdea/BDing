@@ -11,6 +11,8 @@ import UIKit
 class PayHistoryViewController: UIViewController ,UITableViewDelegate ,UITableViewDataSource {
     
     @IBOutlet weak var table: UITableView!
+    
+    var payHistory: [PayListData] = [PayListData]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,15 +41,19 @@ class PayHistoryViewController: UIViewController ,UITableViewDelegate ,UITableVi
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 15
+        return payHistory.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "historyCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "historyCell", for: indexPath) as! PayHistoryTableViewCell
         
+        cell.title.text = payHistory[indexPath.row].title_pay
         
+        cell.detail.text = payHistory[indexPath.row].date
         
+        cell.price.text = payHistory[indexPath.row].price
+ 
         return cell
     }
     

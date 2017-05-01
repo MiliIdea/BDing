@@ -42,6 +42,10 @@
 		114F5D6E1EB46DA100FAEB6B /* CouponListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114F5D6D1EB46DA100FAEB6B /* CouponListData.swift */; };
 		114F5D701EB4785D00FAEB6B /* MyCouponListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114F5D6F1EB4785D00FAEB6B /* MyCouponListResponseModel.swift */; };
 		114F5D721EB4787400FAEB6B /* MyCouponListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114F5D711EB4787400FAEB6B /* MyCouponListData.swift */; };
+		114F5D741EB4B3AF00FAEB6B /* PayListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114F5D731EB4B3AF00FAEB6B /* PayListResponseModel.swift */; };
+		114F5D761EB4B3C200FAEB6B /* PayListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114F5D751EB4B3C200FAEB6B /* PayListData.swift */; };
+		114F5D791EB5D23800FAEB6B /* FilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114F5D771EB5D23800FAEB6B /* FilterCollectionViewCell.swift */; };
+		114F5D7A1EB5D23800FAEB6B /* FilterCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 114F5D781EB5D23800FAEB6B /* FilterCollectionViewCell.xib */; };
 		115A30C81EAE25AF003A9104 /* CouponTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115A30C61EAE25AF003A9104 /* CouponTableViewCell.swift */; };
 		115A30C91EAE25AF003A9104 /* CouponTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 115A30C71EAE25AF003A9104 /* CouponTableViewCell.xib */; };
 		115A30CB1EAE2801003A9104 /* MyCouponViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115A30CA1EAE2801003A9104 /* MyCouponViewController.swift */; };
@@ -293,6 +297,10 @@
 		114F5D6D1EB46DA100FAEB6B /* CouponListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponListData.swift; sourceTree = "<group>"; };
 		114F5D6F1EB4785D00FAEB6B /* MyCouponListResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCouponListResponseModel.swift; sourceTree = "<group>"; };
 		114F5D711EB4787400FAEB6B /* MyCouponListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCouponListData.swift; sourceTree = "<group>"; };
+		114F5D731EB4B3AF00FAEB6B /* PayListResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayListResponseModel.swift; sourceTree = "<group>"; };
+		114F5D751EB4B3C200FAEB6B /* PayListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayListData.swift; sourceTree = "<group>"; };
+		114F5D771EB5D23800FAEB6B /* FilterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterCollectionViewCell.swift; sourceTree = "<group>"; };
+		114F5D781EB5D23800FAEB6B /* FilterCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterCollectionViewCell.xib; sourceTree = "<group>"; };
 		115A30C61EAE25AF003A9104 /* CouponTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponTableViewCell.swift; sourceTree = "<group>"; };
 		115A30C71EAE25AF003A9104 /* CouponTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CouponTableViewCell.xib; sourceTree = "<group>"; };
 		115A30CA1EAE2801003A9104 /* MyCouponViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCouponViewController.swift; sourceTree = "<group>"; };
@@ -655,6 +663,8 @@
 				114F5D6D1EB46DA100FAEB6B /* CouponListData.swift */,
 				114F5D6F1EB4785D00FAEB6B /* MyCouponListResponseModel.swift */,
 				114F5D711EB4787400FAEB6B /* MyCouponListData.swift */,
+				114F5D731EB4B3AF00FAEB6B /* PayListResponseModel.swift */,
+				114F5D751EB4B3C200FAEB6B /* PayListData.swift */,
 			);
 			name = ResponseModels;
 			sourceTree = "<group>";
@@ -805,6 +815,8 @@
 				115A30C71EAE25AF003A9104 /* CouponTableViewCell.xib */,
 				111BB1711EB087DC00AD202D /* PayHistoryTableViewCell.swift */,
 				111BB1721EB087DC00AD202D /* PayHistoryTableViewCell.xib */,
+				114F5D771EB5D23800FAEB6B /* FilterCollectionViewCell.swift */,
+				114F5D781EB5D23800FAEB6B /* FilterCollectionViewCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1222,6 +1234,7 @@
 				1179DDBB1E767EEE00BE7DED /* Info.plist in Resources */,
 				1179DDDC1E7687D200BE7DED /* Info.plist in Resources */,
 				11D428831E66BFA2009F3763 /* Info.plist in Resources */,
+				114F5D7A1EB5D23800FAEB6B /* FilterCollectionViewCell.xib in Resources */,
 				11D4276F1E66AEC3009F3763 /* LaunchScreen.storyboard in Resources */,
 				11A90B5D1E7542CB0076EAD7 /* DropDownCell.xib in Resources */,
 				113F069D1E79342C00E7D74F /* Main.storyboard in Resources */,
@@ -1266,6 +1279,7 @@
 				11D4286E1E66BFA2009F3763 /* Blowfish.swift in Sources */,
 				11D428631E66BFA2009F3763 /* BlockCipher.swift in Sources */,
 				11D428A71E66BFA2009F3763 /* DCMandatoryTextField.swift in Sources */,
+				114F5D761EB4B3C200FAEB6B /* PayListData.swift in Sources */,
 				11A90B5E1E7542CB0076EAD7 /* DropDown+Appearance.swift in Sources */,
 				11D428CC1E66BFA3009F3763 /* DesignableView.swift in Sources */,
 				11A90B5A1E7542CB0076EAD7 /* DPDKeyboardListener.swift in Sources */,
@@ -1304,6 +1318,7 @@
 				11D4286D1E66BFA2009F3763 /* RandomAccessBlockModeWorker.swift in Sources */,
 				11D428671E66BFA2009F3763 /* CBC.swift in Sources */,
 				11D4289A1E66BFA2009F3763 /* UInt8+Extension.swift in Sources */,
+				114F5D741EB4B3AF00FAEB6B /* PayListResponseModel.swift in Sources */,
 				11D4285F1E66BFA2009F3763 /* AES.swift in Sources */,
 				11D428A41E66BFA2009F3763 /* DCBorderedTextField.swift in Sources */,
 				11D428921E66BFA2009F3763 /* SecureBytes.swift in Sources */,
@@ -1419,6 +1434,7 @@
 				11D428781E66BFA2009F3763 /* AES+Foundation.swift in Sources */,
 				11D428961E66BFA2009F3763 /* String+Extension.swift in Sources */,
 				110EB5391E9A404F00431534 /* TabBarController.swift in Sources */,
+				114F5D791EB5D23800FAEB6B /* FilterCollectionViewCell.swift in Sources */,
 				11D428BF1E66BFA3009F3763 /* CAMediaTimingFunction+AdditionalEquations.m in Sources */,
 				11D428A51E66BFA2009F3763 /* DCMandatoryEmailTextField.swift in Sources */,
 				115A30CB1EAE2801003A9104 /* MyCouponViewController.swift in Sources */,

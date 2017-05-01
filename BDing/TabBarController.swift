@@ -133,10 +133,6 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        print("LOCATION")
-        print(locations)
-        print()
-        
         locationManager.startRangingBeacons(in: region)
         
         
@@ -170,11 +166,7 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
         
         var isInDB = false
         
-        print("**********")
-        
         for row in beacon2_db {
-            
-            print(row.value(forKey: "uuid"))
             
             if(String(describing: row.value(forKey: "id")).contains(s)){
                 
@@ -232,11 +224,11 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
 
             }
             
-            print(row.value(forKey: "uuid") ?? "nil")
+//            print(row.value(forKey: "uuid") ?? "nil")
             
         }
         
-        print("**********************")
+//        print("**********************")
         
         if(!isInDB){
             //insert into DB

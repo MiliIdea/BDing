@@ -389,22 +389,6 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
             
             self.requestForPayHistory()
             
-            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                let vc = (self.storyboard?.instantiateViewController(withIdentifier: "PayHistoryViewController"))! as! PayHistoryViewController
-                
-                self.addChildViewController(vc)
-                
-                vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-                
-                self.container.addSubview(vc.view)
-                
-                vc.didMove(toParentViewController: self)
-                
-                self.navigationBar.alpha = 0
-                
-                self.profilePicButton.alpha = 0
-                
-            }, completion: nil)
         }
         
     }
@@ -498,24 +482,6 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
         
     }
     
-//    func requestForBuyCoupon(){
-//        
-//        request(URLs.buyCoupon , method: .post , parameters: BuyCouponRequestModel.init(CODE: "").getParams(), encoding: JSONEncoding.default).responseJSON { response in
-//            print()
-//            
-//            if let JSON = response.result.value {
-//                
-//                print("JSON ----------MY BUY COUPON----------->>>> ")
-//                //create my coupon response model
-//                
-//                print(JSON)
-//                
-//            }
-//            
-//        }
-//        
-//        
-//    }
 
     func requestForPayHistory(){
         
@@ -526,6 +492,35 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
                 
                 print("JSON ----------MY HISTORY----------->>>> ")
                 //create my coupon response model
+                if(PayListResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                    
+                    UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                        let vc = (self.storyboard?.instantiateViewController(withIdentifier: "PayHistoryViewController"))! as! PayHistoryViewController
+                        
+                        self.addChildViewController(vc)
+                        
+                        vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+                        
+                        self.container.addSubview(vc.view)
+                        
+                        vc.didMove(toParentViewController: self)
+                        
+                        self.navigationBar.alpha = 0
+                        
+                        self.profilePicButton.alpha = 0
+                        
+                        if(PayListResponseModel.init(json: JSON as! JSON)?.data == nil){
+                            
+                            // data nadarim
+                            
+                        }else{
+                            vc.payHistory = (PayListResponseModel.init(json: JSON as! JSON)?.data)!
+                        }
+                        
+                    }, completion: nil)
+                    
+                }
+                
                 
                 print(JSON)
                 

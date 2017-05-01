@@ -59,6 +59,13 @@
                     </label>
                 </subviews>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="detail" destination="sk4-hl-Rv7" id="R7C-fW-m1U"/>
+                <outlet property="imageCell" destination="1wK-mw-0mr" id="FUO-d7-FGJ"/>
+                <outlet property="price" destination="ALe-nq-PTP" id="WMa-aV-6BF"/>
+                <outlet property="title" destination="YmP-49-LEF" id="OGC-kB-EWc"/>
+                <outlet property="toman" destination="gv5-gF-XIe" id="OFm-ZC-x2y"/>
+            </connections>
         </tableViewCell>
     </objects>
     <resources>
