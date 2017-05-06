@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import MapKit
 
 class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDataSource , UICollectionViewDataSource, UICollectionViewDelegate{
     
@@ -32,6 +33,9 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     @IBOutlet weak var searchTextField: UITextField!
     
     @IBOutlet weak var navigationBar: UINavigationBar!
+    
+    @IBOutlet weak var clearButton: UIButton!
+    
     
     ///////////////////////////////
     
@@ -72,6 +76,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         self.collectionView.alpha = 0
         self.doSearchButton.alpha = 0
         self.searchTextField.alpha = 0
+        self.clearButton.alpha = 0
         self.blurView.alpha = 0
         
         searchOrigin = self.doSearchButton.frame.origin.y
@@ -134,337 +139,27 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         // Do any additional setup after loading the view.
     }
     
-    @IBAction func doingSearch(_ sender: Any) {
-        
-        var lat: String
-        
-        var long: String
-        
-        let locManager = CLLocationManager()
-        
-        locManager.requestWhenInUseAuthorization()
-        
-        var currentLocation = CLLocation()
-        
-        if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
-            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorized){
-            
-            currentLocation = locManager.location!
-            
-        }
-        
-        //        long = String(currentLocation.coordinate.longitude)
-        //
-        //        lat = String(currentLocation.coordinate.latitude)
-        
-        long = String(51.4212297)
-        
-        lat = String(35.6329044)
-        
-        var categoryList:[String] = [String]()
-        
-        for j in 0...(self.isSearched.count - 1) {
-            
-            if(self.lastSearch?.isSelected[j] == true){
-                
-                categoryList.append((GlobalFields.CATEGORIES_LIST_DATAS?[j].category_code)!)
-                
-            }
-            
-        }
-        
-        print(categoryList)
-        print(String(describing: categoryList))
-        
-        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: nil, SEARCH: nil, CATEGORY: String(describing: categoryList), SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
-            print()
-            
-            if let JSON = response.result.value {
-                
-                print("JSON ----------BEACON----------->>>> ")
-                
-                let obj = BeaconListResponseModel.init(json: JSON as! JSON)
-                
-                if ( obj?.code == "200" ){
-                    
-                    GlobalFields.BEACON_LIST_DATAS = obj?.data
-                    
-                    for i in 0...(self.isSearched.count - 1) {
-                        
-                        self.lastSearch?.isSelected[i] = self.isSearched[i]
-                        
-                    }
-                    
-                    self.loadHomeTable()
-                    
-                    self.rightTable.reloadData()
-                    
-                    self.leftTable.reloadData()
-                    
-                }
-                
-            }
-            
-        }
-
-        
-    }
-    
-    
-    // tell the collection view how many cells to make
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return (GlobalFields.CATEGORIES_LIST_DATAS?.count)!
-    }
-    
-    // make a cell for each cell index path
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        // get a reference to our storyboard cell
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath as IndexPath) as! FilterCollectionViewCell
-        
-        // Use the outlet in our custom class to get a reference to the UILabel in the cell
-        print(indexPath.item)
-        
-        let data = GlobalFields.CATEGORIES_LIST_DATAS?[indexPath.item]
-        
-        var c1 : CGColor = UIColor(hex: "f5f7f8").cgColor
-        var c2 : CGColor = UIColor(hex: "7c1f72").cgColor
-        
-        let colorsString = data?.color_code?.characters.split(separator: "-").map(String.init)
-        
-        if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
-         
-            c1 = UIColor(hex: (colorsString?[0])!).cgColor
-            
-            c2 = UIColor(hex: (colorsString?[1])!).cgColor
-            
-        }
-        
-        //////// set data in cell
-        
-        cell.title.text = data?.title
-        
-        // set image
-        
-        
-        if(lastSearch?.prePic?[indexPath.item] == nil){
-            
-            if(data?.url_icon?.url != nil){
-                
-                var im: UIImage? = loadImage(picModel: (data?.url_icon!)!)
-                
-                if(im != nil){
-                    
-                    im = im?.imageWithColor(tintColor: UIColor.white)
-                    
-                    lastSearch?.prePic?[indexPath.item] = im
-                    
-                    cell.image.image = im
-                    
-                }else{
-                    
-                    request("http://"+(data!.url_icon?.url)! ,method: .post ,parameters: BeaconPicRequestModel(CODE: data!.url_icon?.code, FILE_TYPE: data?.url_icon?.file_type).getParams(), encoding : JSONEncoding.default).responseJSON { response in
-                        
-                        if let image = response.result.value {
-                            
-                            let obj = PicDataModel.init(json: image as! JSON)
-                            
-                            let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
-                            
-                            var coding: String = (data!.url_icon?.url)!
-                            
-                            coding.append((data?.url_icon?.code)!)
-                            
-                            SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
-                            
-                            self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                            
-                            let pic = UIImage(data: imageData as! Data)
-
-                            self.lastSearch?.prePic?.insert(pic, at: indexPath.item)
-                            
-                            cell.image.image = pic
-                            
-                            cell.image.contentMode = UIViewContentMode.scaleAspectFit
-                            
-                        }
-                    }
-                    
-                }
-                
-            }
-            
-        }else{
-            
-            cell.image.image = lastSearch?.prePic?[indexPath.item]
-            
-            cell.image.contentMode = UIViewContentMode.scaleAspectFit
-            
-        }
-        
-        
-        
-        
-        
-        //end seting image
-        
-        if(lastSearch?.isSelected[indexPath.item] == false){
-            // not selected
-
-            cell.circleView.layer.insertSublayer(setGradientLayer(myView: cell.circleView, color1: UIColor.white.cgColor, color2: UIColor.white.cgColor), below: cell.circleView.layer.sublayers?.last)
-            
-            cell.image.image = setTintGradient(image: cell.image.image!, c: [c1,c2])
-            
-        }else{
-            //selected
-            
-            cell.circleView.layer.insertSublayer(setGradientLayer(myView: cell.circleView, color1: c1, color2: c2), below: cell.circleView.layer.sublayers?.last)
-            
-            cell.image.image = setTintGradient(image: cell.image.image!, c: [UIColor.white.cgColor ,UIColor.white.cgColor])
-            
-        }
-
-        return cell
-    }
-    
-    // MARK: - UICollectionViewDelegate protocol
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-        let data = GlobalFields.CATEGORIES_LIST_DATAS?[indexPath.item]
-        
-        var c1 : CGColor = UIColor(hex: "f5f7f8").cgColor
-        var c2 : CGColor = UIColor(hex: "7c1f72").cgColor
-        
-        let colorsString = data?.color_code?.characters.split(separator: "-").map(String.init)
-        
-        if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
-            
-            c1 = UIColor(hex: (colorsString?[0])!).cgColor
-            
-            c2 = UIColor(hex: (colorsString?[1])!).cgColor
-            
-        }
-
-        var cell = collectionView.cellForItem(at: indexPath) as! FilterCollectionViewCell
-        
-        if(lastSearch?.isSelected[indexPath.item] == false){
-            
-            // selected
-            
-            lastSearch?.isSelected[indexPath.item] = true
-            
-            cell.circleView.layer.insertSublayer(setGradientLayer(myView: cell.circleView, color1: c1, color2: c2), below: cell.circleView.layer.sublayers?.last)
-            
-            cell.image.image = setTintGradient(image: cell.image.image!, c: [UIColor.white.cgColor ,UIColor.white.cgColor])
-
-        }else{
-            
-            //deselected
-            
-            lastSearch?.isSelected[indexPath.item] = false
-            
-            cell.circleView.layer.insertSublayer(setGradientLayer(myView: cell.circleView, color1: UIColor.white.cgColor, color2: UIColor.white.cgColor), below: cell.circleView.layer.sublayers?.last)
-            
-            cell.image.image = setTintGradient(image: cell.image.image!, c: [c1,c2])
-
-        }
-        
-        
-        //if lastSearch.isSelected != lastSearched
-        // set doSearchButton green and enable it
-        //else disable doSearchButton
-        
-        if(isNewSeach(ls: lastSearch?.isSelected) == true){
-            
-            doSearchButton.normalBackgroundColor = UIColor(hex: "4bb272")
-            
-            doSearchButton.normalTextColor = UIColor.white
-            
-            doSearchButton.isEnabled = true
-            
-        }else{
-            
-            doSearchButton.normalBackgroundColor = UIColor.white
-            
-            doSearchButton.normalTextColor = UIColor.black
-            
-            doSearchButton.isEnabled = false
-            
-            
-        }
-        
-        
-        
-        print("You selected cell #\(indexPath.item)!")
-    }
-    
-    
-    func isNewSeach(ls:[Bool]?) -> Bool{
-        
-        for i in 0...(ls?.count)!-1 {
-            
-            if(ls?[i] != isSearched[i]){
-                
-                return true
-                
-            }
-            
-        }
-        
-        return false
-        
-    }
-
-    
-    func setTintGradient(image: UIImage , c : [CGColor] ) -> UIImage{
-        
-        UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale);
-        let context = UIGraphicsGetCurrentContext()
-        context!.translateBy(x: 0, y: image.size.height)
-        context!.scaleBy(x: 1.0, y: -1.0)
-        
-        context!.setBlendMode(CGBlendMode.normal)
-        
-        let rect = CGRect(x: 0, y: 0, width : image.size.width, height : image.size.height)
-        
-        // Create gradient
-        
-        let colors = c as CFArray
-        let space = CGColorSpaceCreateDeviceRGB()
-        let gradient = CGGradient(colorsSpace: space, colors: colors, locations: nil)
-        
-        // Apply gradient
-        
-        context!.clip(to: rect, mask: image.cgImage!)
-        context!.drawLinearGradient(gradient!, start: CGPoint(x:0, y:0), end: CGPoint(x:0,y: image.size.height), options: CGGradientDrawingOptions(rawValue: 0))
-        let gradientImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return gradientImage!
-        
-    }
-    
-    
-    
-    func setGradientLayer(myView: UIView , color1: CGColor , color2: CGColor) -> CALayer {
-        
-        let gradientLayer = CAGradientLayer()
-        
-        gradientLayer.frame = myView.bounds
-        
-        gradientLayer.colors = [color1, color2]
-        
-        gradientLayer.startPoint = CGPoint(x: 0,y: 0.5)
-        
-        gradientLayer.endPoint = CGPoint(x: 1,y: 0.5)
-        
-        return gradientLayer
-        
-    }
     
     
 
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    
+    
     @IBAction func playResizeTables(_ sender: Any) {
         
         AlarmViewController.mode = !AlarmViewController.mode
@@ -898,6 +593,25 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     }
     
     
+    
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    
+    
     @IBAction func search(_ sender: Any) {
         
         self.searchIsPressed = !self.searchIsPressed
@@ -912,6 +626,9 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 self.doSearchButton.alpha = 0
                 self.doSearchButton.frame.size.height = 0
                 self.doSearchButton.frame.origin.y -= 180
+                self.clearButton.alpha = 0
+                self.clearButton.frame.size.height = 0
+                self.clearButton.frame.origin.y -= 180
                 self.searchTextField.alpha = 0
                 self.blurView.alpha = 0
                 
@@ -923,6 +640,9 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 self.doSearchButton.alpha = 1
                 self.doSearchButton.frame.size.height = 30
                 self.doSearchButton.frame.origin.y = self.searchOrigin
+                self.clearButton.alpha = 1
+                self.clearButton.frame.size.height = 30
+                self.clearButton.frame.origin.y = self.searchOrigin
                 self.searchTextField.alpha = 1
                 self.blurView.alpha = 0.85
                 
@@ -933,7 +653,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
     }
     
-    func someAction(sender:UITapGestureRecognizer){
+    func someAction(sender:UITapGestureRecognizer?){
         
         self.searchIsPressed = !self.searchIsPressed
         
@@ -947,6 +667,9 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 self.doSearchButton.alpha = 0
                 self.doSearchButton.frame.size.height = 0
                 self.doSearchButton.frame.origin.y -= 180
+                self.clearButton.alpha = 0
+                self.clearButton.frame.size.height = 0
+                self.clearButton.frame.origin.y -= 180
                 self.searchTextField.alpha = 0
                 self.blurView.alpha = 0
                 
@@ -958,6 +681,9 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 self.doSearchButton.alpha = 1
                 self.doSearchButton.frame.size.height = 30
                 self.doSearchButton.frame.origin.y = self.searchOrigin
+                self.clearButton.alpha = 1
+                self.clearButton.frame.size.height = 30
+                self.clearButton.frame.origin.y = self.searchOrigin
                 self.searchTextField.alpha = 1
                 self.blurView.alpha = 0.85
                 
@@ -990,6 +716,9 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                         self.doSearchButton.alpha = 0
                         self.doSearchButton.frame.size.height = 0
                         self.doSearchButton.frame.origin.y -= 180
+                        self.clearButton.alpha = 0
+                        self.clearButton.frame.size.height = 0
+                        self.clearButton.frame.origin.y -= 180
                         self.searchTextField.alpha = 0
                         self.blurView.alpha = 0
                         
@@ -1001,6 +730,9 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                         self.doSearchButton.alpha = 1
                         self.doSearchButton.frame.size.height = 30
                         self.doSearchButton.frame.origin.y = self.searchOrigin
+                        self.clearButton.alpha = 1
+                        self.clearButton.frame.size.height = 30
+                        self.clearButton.frame.origin.y = self.searchOrigin
                         self.searchTextField.alpha = 1
                         self.blurView.alpha = 0.85
                         
@@ -1051,6 +783,461 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     }
     
 
+    
+    @IBAction func clearSearch(_ sender: Any) {
+        
+        
+        for j in 0...(self.isSearched.count - 1) {
+            
+            self.lastSearch?.isSelected[j] = false
+            
+        }
+        
+        collectionView.reloadData()
+        
+        if(isNewSeach(ls: lastSearch?.isSelected) == true){
+            
+            doSearchButton.normalBackgroundColor = UIColor(hex: "4bb272")
+            
+            doSearchButton.normalTextColor = UIColor.white
+            
+            doSearchButton.isEnabled = true
+            
+        }else{
+            
+            doSearchButton.normalBackgroundColor = UIColor.white
+            
+            doSearchButton.normalTextColor = UIColor.black
+            
+            doSearchButton.isEnabled = false
+            
+            
+        }
+        
+        
+    }
+    
+    
+    
+    
+    
+    @IBAction func doingSearch(_ sender: Any) {
+        
+        var lat: String
+        
+        var long: String
+        
+        let locManager = CLLocationManager()
+        
+        locManager.requestWhenInUseAuthorization()
+        
+        var currentLocation = CLLocation()
+        
+        if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
+            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorized){
+            
+            currentLocation = locManager.location!
+            
+        }
+        
+        //        long = String(currentLocation.coordinate.longitude)
+        //
+        //        lat = String(currentLocation.coordinate.latitude)
+        
+        long = String(51.4212297)
+        
+        lat = String(35.6329044)
+        
+        var categoryList:[String] = [String]()
+        
+        for j in 0...(self.isSearched.count - 1) {
+            
+            if(self.lastSearch?.isSelected[j] == true){
+                
+                categoryList.append((GlobalFields.CATEGORIES_LIST_DATAS?[j].category_code)!)
+                
+            }
+            
+        }
+        
+        
+        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: nil, SEARCH: nil, CATEGORY: String(describing: categoryList), SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------BEACON----------->>>> ")
+                
+                let obj = BeaconListResponseModel.init(json: JSON as! JSON)
+                
+                if ( obj?.code == "200" ){
+                    
+                    GlobalFields.BEACON_LIST_DATAS = obj?.data
+                    
+                    for i in 0...(self.isSearched.count - 1) {
+                        
+                        self.isSearched[i] = (self.lastSearch?.isSelected[i])!
+                        
+                    }
+                    
+                    self.loadHomeTable()
+                    
+                    self.rightTable.reloadData()
+                    
+                    self.leftTable.reloadData()
+                    
+                    self.someAction(sender: nil)
+                    
+                    if(self.isNewSeach(ls: self.lastSearch?.isSelected) == true){
+                        
+                        self.doSearchButton.normalBackgroundColor = UIColor(hex: "4bb272")
+                        
+                        self.doSearchButton.normalTextColor = UIColor.white
+                        
+                        self.doSearchButton.isEnabled = true
+                        
+                    }else{
+                        
+                        self.doSearchButton.normalBackgroundColor = UIColor.white
+                        
+                        self.doSearchButton.normalTextColor = UIColor.black
+                        
+                        self.doSearchButton.isEnabled = false
+                        
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+        
+    }
+    
+    
+    
+    func isNewSeach(ls:[Bool]?) -> Bool{
+        
+        for i in 0...(ls?.count)!-1 {
+            
+            if(ls?[i] != isSearched[i]){
+                
+                return true
+                
+            }
+            
+        }
+        
+        return false
+        
+    }
+    
+    
+    
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    
+    
+    
+    // tell the collection view how many cells to make
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return (GlobalFields.CATEGORIES_LIST_DATAS?.count)!
+    }
+    
+    // make a cell for each cell index path
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        // get a reference to our storyboard cell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath as IndexPath) as! FilterCollectionViewCell
+        
+        // Use the outlet in our custom class to get a reference to the UILabel in the cell
+      
+        
+        let data = GlobalFields.CATEGORIES_LIST_DATAS?[indexPath.item]
+        
+        var c1 : CGColor = UIColor(hex: "f5f7f8").cgColor
+        var c2 : CGColor = UIColor(hex: "7c1f72").cgColor
+        
+        let colorsString = data?.color_code?.characters.split(separator: "-").map(String.init)
+        
+        if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
+            
+            c1 = UIColor(hex: (colorsString?[0])!).cgColor
+            
+            c2 = UIColor(hex: (colorsString?[1])!).cgColor
+            
+        }
+        
+        //////// set data in cell
+        
+        cell.title.text = data?.title
+        
+        // set image
+        
+        
+        if(lastSearch?.prePic?[indexPath.item] == nil){
+            
+            if(data?.url_icon?.url != nil){
+                
+                var im: UIImage? = loadImage(picModel: (data?.url_icon!)!)
+                
+                if(im != nil){
+                    
+                    im = im?.imageWithColor(tintColor: UIColor.white)
+                    
+                    lastSearch?.prePic?[indexPath.item] = im
+                    
+                    cell.image.image = im
+                    
+                }else{
+                    
+                    request("http://"+(data!.url_icon?.url)! ,method: .post ,parameters: BeaconPicRequestModel(CODE: data!.url_icon?.code, FILE_TYPE: data?.url_icon?.file_type).getParams(), encoding : JSONEncoding.default).responseJSON { response in
+                        
+                        if let image = response.result.value {
+                            
+                            let obj = PicDataModel.init(json: image as! JSON)
+                            
+                            let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
+                            
+                            var coding: String = (data!.url_icon?.url)!
+                            
+                            coding.append((data?.url_icon?.code)!)
+                            
+                            SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
+                            
+                            self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
+                            
+                            let pic = UIImage(data: imageData as! Data)
+                            
+                            self.lastSearch?.prePic?.insert(pic, at: indexPath.item)
+                            
+                            cell.image.image = pic
+                            
+                            cell.image.contentMode = UIViewContentMode.scaleAspectFit
+                            
+                        }
+                    }
+                    
+                }
+                
+            }
+            
+        }else{
+            
+            cell.image.image = lastSearch?.prePic?[indexPath.item]
+            
+            cell.image.contentMode = UIViewContentMode.scaleAspectFit
+            
+        }
+        
+        
+        
+        
+        
+        //end seting image
+        
+        if(lastSearch?.isSelected[indexPath.item] == false){
+            // not selected
+            
+            cell.circleView.layer.insertSublayer(setGradientLayer(myView: cell.circleView, color1: UIColor.white.cgColor, color2: UIColor.white.cgColor), below: cell.circleView.layer.sublayers?.last)
+            
+            cell.image.image = setTintGradient(image: cell.image.image!, c: [c1,c2])
+            
+        }else{
+            //selected
+            
+            cell.circleView.layer.insertSublayer(setGradientLayer(myView: cell.circleView, color1: c1, color2: c2), below: cell.circleView.layer.sublayers?.last)
+            
+            cell.image.image = setTintGradient(image: cell.image.image!, c: [UIColor.white.cgColor ,UIColor.white.cgColor])
+            
+        }
+        
+        return cell
+    }
+    
+    // MARK: - UICollectionViewDelegate protocol
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let data = GlobalFields.CATEGORIES_LIST_DATAS?[indexPath.item]
+        
+        var c1 : CGColor = UIColor(hex: "f5f7f8").cgColor
+        var c2 : CGColor = UIColor(hex: "7c1f72").cgColor
+        
+        let colorsString = data?.color_code?.characters.split(separator: "-").map(String.init)
+        
+        if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
+            
+            c1 = UIColor(hex: (colorsString?[0])!).cgColor
+            
+            c2 = UIColor(hex: (colorsString?[1])!).cgColor
+            
+        }
+        
+        var cell = collectionView.cellForItem(at: indexPath) as! FilterCollectionViewCell
+        
+        if(lastSearch?.isSelected[indexPath.item] == false){
+            
+            // selected
+            
+            lastSearch?.isSelected[indexPath.item] = true
+            
+            cell.circleView.layer.insertSublayer(setGradientLayer(myView: cell.circleView, color1: c1, color2: c2), below: cell.circleView.layer.sublayers?.last)
+            
+            cell.image.image = setTintGradient(image: cell.image.image!, c: [UIColor.white.cgColor ,UIColor.white.cgColor])
+            
+        }else{
+            
+            //deselected
+            
+            lastSearch?.isSelected[indexPath.item] = false
+            
+            cell.circleView.layer.insertSublayer(setGradientLayer(myView: cell.circleView, color1: UIColor.white.cgColor, color2: UIColor.white.cgColor), below: cell.circleView.layer.sublayers?.last)
+            
+            cell.image.image = setTintGradient(image: cell.image.image!, c: [c1,c2])
+            
+        }
+        
+        
+        //if lastSearch.isSelected != lastSearched
+        // set doSearchButton green and enable it
+        //else disable doSearchButton
+        
+        if(isNewSeach(ls: lastSearch?.isSelected) == true){
+            
+            doSearchButton.normalBackgroundColor = UIColor(hex: "4bb272")
+            
+            doSearchButton.normalTextColor = UIColor.white
+            
+            doSearchButton.isEnabled = true
+            
+        }else{
+            
+            doSearchButton.normalBackgroundColor = UIColor.white
+            
+            doSearchButton.normalTextColor = UIColor.black
+            
+            doSearchButton.isEnabled = false
+            
+            
+        }
+        
+        
+        
+        print("You selected cell #\(indexPath.item)!")
+    }
+    
+    
+    
+    
+    
+    
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    
+    
+    
+    
+    func setTintGradient(image: UIImage , c : [CGColor] ) -> UIImage{
+        
+        UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale);
+        let context = UIGraphicsGetCurrentContext()
+        context!.translateBy(x: 0, y: image.size.height)
+        context!.scaleBy(x: 1.0, y: -1.0)
+        
+        context!.setBlendMode(CGBlendMode.normal)
+        
+        let rect = CGRect(x: 0, y: 0, width : image.size.width, height : image.size.height)
+        
+        // Create gradient
+        
+        let colors = c as CFArray
+        let space = CGColorSpaceCreateDeviceRGB()
+        let gradient = CGGradient(colorsSpace: space, colors: colors, locations: nil)
+        
+        // Apply gradient
+        
+        context!.clip(to: rect, mask: image.cgImage!)
+        context!.drawLinearGradient(gradient!, start: CGPoint(x:0, y:0), end: CGPoint(x:0,y: image.size.height), options: CGGradientDrawingOptions(rawValue: 0))
+        let gradientImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return gradientImage!
+        
+    }
+    
+    
+    
+    func setGradientLayer(myView: UIView , color1: CGColor , color2: CGColor) -> CALayer {
+        
+        let gradientLayer = CAGradientLayer()
+        
+        gradientLayer.frame = myView.bounds
+        
+        gradientLayer.colors = [color1, color2]
+        
+        gradientLayer.startPoint = CGPoint(x: 0,y: 0.5)
+        
+        gradientLayer.endPoint = CGPoint(x: 1,y: 0.5)
+        
+        return gradientLayer
+        
+    }
+
+    
+    @IBAction func map(_ sender: Any) {
+        
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "MapViewController"))! as! MapViewController
+            
+            self.addChildViewController(vc)
+            
+            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+            
+            self.container.addSubview(vc.view)
+            
+            vc.didMove(toParentViewController: self)
+            
+            self.navigationBar.alpha = 0
+            
+            self.rightTable.alpha = 0
+            
+            self.leftTable.alpha = 0
+            
+        }, completion: nil)
+        
+        
+    }
     
     
     

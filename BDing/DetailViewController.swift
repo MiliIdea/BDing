@@ -31,6 +31,11 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
 
     @IBOutlet weak var brandIcon: UIImageView!
     
+    @IBOutlet weak var topDataView: DCBorderedView!
+    
+    @IBOutlet weak var bottomDataView: UIView!
+    
+    @IBOutlet weak var heightChangerButton: UIButton!
     
     ///
     
@@ -68,6 +73,14 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     var cache: NSCache<AnyObject, AnyObject> = NSCache()
     
     var backgroundPic : PicModel? = nil
+    
+    var DELTA : CGFloat = 0.0
+    
+    var firstTextHeight : CGFloat = 0.0
+    
+    var firstScrollHeight : CGFloat = 0.0
+    
+    var firstBottomViewHeight : CGFloat = 0.0
     
     // for class categoryPageViewController
     
@@ -153,9 +166,15 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
         scrollView.delegate = self
         
+        viewInScrollView.frame.size.height += 25
+        
+        categoryName.frame.origin.y = 0
+        
         scrollView.addSubview(viewInScrollView)
         
         scrollView.contentSize = viewInScrollView.frame.size
+        
+        scrollView.contentSize.height += 35
         
         heightOfSemiCircular = semicircularView.frame.height
         
@@ -166,6 +185,69 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         self.cache = NSCache()
 
         self.scrollViewDidScroll(self.scrollView)
+        
+        firstScrollHeight = self.viewInScrollView.frame.size.height
+        
+        firstTextHeight = self.textView.frame.height
+        
+        firstBottomViewHeight = self.bottomView.frame.size.height
+        
+        self.textView.isScrollEnabled = false
+        
+        self.textView.frame.size.height = self.firstTextHeight
+        
+        
+        /////++++++++&&&&&&&&&%%%%%%%%%%%
+        
+        
+        let bottomHeight = self.bottomDataView.frame.height
+        
+        self.textView.frame.size.height = self.firstTextHeight
+        
+        self.viewInScrollView.frame.size.height = self.firstScrollHeight
+        
+        self.scrollView.contentSize = self.viewInScrollView.frame.size
+        
+        self.topView.frame.size.height = 193
+        
+        self.topView.frame.origin.y = 0
+        
+        self.bottomView.frame.size.height = self.firstBottomViewHeight
+        
+        self.bottomView.frame.origin.y = self.topView.frame.height + self.topView.frame.origin.y
+        
+        self.topDataView.frame.size.height = self.textView.frame.height + 65
+        
+        self.categoryName.frame.size.height = 30
+        
+        self.categoryName.frame.origin.y = 0
+        
+        self.brandName.frame.size.height = 30
+        
+        self.brandIcon.frame.origin.y = self.categoryName.frame.size.height + 4
+        
+        self.brandName.frame.origin.y = self.categoryName.frame.size.height + 4
+        
+        self.topDataView.frame.origin.y = self.brandName.frame.origin.y + self.brandName.frame.height + 6
+        
+        self.bottomDataView.frame.origin.y += self.topDataView.frame.origin.y + self.topDataView.frame.height + 10
+        
+        self.textView.frame.origin.y = 40
+        
+        self.heightChangerButton.frame.size.height = 24
+        
+        self.heightChangerButton.frame.origin.y = self.topDataView.frame.height - 24
+        
+        self.semicircularView.frame.size.width = self.view.frame.width
+        
+        self.semicircularView.frame.origin.y = self.topView.frame.height - self.semicircularView.frame.height
+        
+        self.bottomDataView.frame.origin.y = self.topDataView.frame.origin.y + self.topDataView.frame.height + 10
+        
+        self.bottomDataView.frame.size.height = bottomHeight
+        
+        self.textView.frame.size.height = self.firstTextHeight
+        
         
     }
     
@@ -214,7 +296,6 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
             
         }
         
-        print(self.scrollView.contentOffset.y)
         
         if(self.scrollView.contentOffset.y < 0){
             
@@ -231,9 +312,10 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
         semicircularView.frame.size.height = heightOfSemiCircular * (myPercentage)
         
+        self.semicircularView.frame.size.width = self.view.frame.width
         
-        
-        //        bottomView.frame.origin.y = offsetOfsemiCircular + heightOfSemiCircular
+        self.semicircularView.frame.origin.y = self.topView.frame.height - self.semicircularView.frame.height
+
         
         }
    
@@ -257,13 +339,165 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
             
             vc.deletSubView()
             
+        }else if(self.parent is MapViewController){
+            
+            let vc = self.parent as! MapViewController
+            
+            vc.deletSubView()
+            
         }
         
         
         
     }
     
+    var num = 0
+    
     @IBAction func changeHeightOfText(_ sender: Any) {
+        
+        //calculate height of text
+        
+        let fixedWidth = self.textView.frame.size.width
+        
+        let tempH = self.textView.frame.height
+        
+        self.textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        
+        let newSize = self.textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        
+        if(newSize.height < tempH && num == 0){
+            
+            return
+            
+        }
+        
+        if(num == 0){
+            
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+                let fixedWidth = self.textView.frame.size.width
+                
+                let tempH = self.textView.frame.height
+                
+                self.textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+                
+                let newSize = self.textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+                
+                var newFrame = self.textView.frame
+                
+                let bottomHeight = self.bottomDataView.frame.height
+                
+                newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+                
+                self.textView.frame = newFrame
+                
+                self.DELTA = self.textView.frame.height - tempH
+
+                self.viewInScrollView.frame.size.height += self.DELTA
+                
+                self.scrollView.contentSize = self.viewInScrollView.frame.size
+                
+                self.topView.frame.size.height = 193
+                
+                self.topView.frame.origin.y = 0
+                
+                self.bottomView.frame.size.height += self.DELTA
+                
+                self.bottomView.frame.origin.y = self.topView.frame.height + self.topView.frame.origin.y
+                
+                self.topDataView.frame.size.height = self.textView.frame.height + 65
+                
+                self.categoryName.frame.size.height = 30
+                
+                self.categoryName.frame.origin.y = 0
+                
+                self.brandName.frame.size.height = 30
+                
+                self.brandIcon.frame.origin.y = self.categoryName.frame.size.height + 4
+                
+                self.brandName.frame.origin.y = self.categoryName.frame.size.height + 4
+                
+                self.topDataView.frame.origin.y = self.brandName.frame.origin.y + self.brandName.frame.height + 6
+                
+                self.bottomDataView.frame.origin.y += self.topDataView.frame.origin.y + self.topDataView.frame.height + 10
+                
+                self.textView.frame.origin.y = 40
+                
+                self.heightChangerButton.frame.size.height = 24
+                
+                self.heightChangerButton.frame.origin.y = self.topDataView.frame.height - 24
+                
+                self.semicircularView.frame.size.width = self.view.frame.width
+                
+                self.semicircularView.frame.origin.y = self.topView.frame.height - self.semicircularView.frame.height
+                
+                self.bottomDataView.frame.origin.y = self.topDataView.frame.origin.y + self.topDataView.frame.height + 10
+                
+                self.bottomDataView.frame.size.height = bottomHeight
+                
+                self.textView.isScrollEnabled = false
+                
+                self.num = 1
+            
+            },completion : nil)
+            
+        }else{
+            
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                
+                let bottomHeight = self.bottomDataView.frame.height
+                
+                self.textView.frame.size.height = self.firstTextHeight
+                
+                self.viewInScrollView.frame.size.height = self.firstScrollHeight
+                
+                self.scrollView.contentSize = self.viewInScrollView.frame.size
+                
+                self.topView.frame.size.height = 193
+                
+                self.topView.frame.origin.y = 0
+                
+                self.bottomView.frame.size.height = self.firstBottomViewHeight
+                
+                self.bottomView.frame.origin.y = self.topView.frame.height + self.topView.frame.origin.y
+                
+                self.topDataView.frame.size.height = self.textView.frame.height + 65
+                
+                self.categoryName.frame.size.height = 30
+                
+                self.categoryName.frame.origin.y = 0
+                
+                self.brandName.frame.size.height = 30
+                
+                self.brandIcon.frame.origin.y = self.categoryName.frame.size.height + 4
+                
+                self.brandName.frame.origin.y = self.categoryName.frame.size.height + 4
+                
+                self.topDataView.frame.origin.y = self.brandName.frame.origin.y + self.brandName.frame.height + 6
+                
+                self.bottomDataView.frame.origin.y += self.topDataView.frame.origin.y + self.topDataView.frame.height + 10
+                
+                self.textView.frame.origin.y = 40
+                
+                self.heightChangerButton.frame.size.height = 24
+                
+                self.heightChangerButton.frame.origin.y = self.topDataView.frame.height - 24
+                
+                self.semicircularView.frame.size.width = self.view.frame.width
+                
+                self.semicircularView.frame.origin.y = self.topView.frame.height - self.semicircularView.frame.height
+                
+                self.bottomDataView.frame.origin.y = self.topDataView.frame.origin.y + self.topDataView.frame.height + 10
+                
+                self.bottomDataView.frame.size.height = bottomHeight
+                
+                self.textView.frame.size.height = self.firstTextHeight
+                
+            }, completion : nil )
+            
+            self.num = 0
+        }
+        
         
     }
     

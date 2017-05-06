@@ -35,6 +35,9 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>IRANYekanMobileBold.ttf</string>
+		<string>IRANYekanMobileRegular.ttf</string>
+		<string>IRANYekanMobileLight.ttf</string>
 		<string>IRANSANSWEB.TTF</string>
 		<string>IRANSANSWEB_BOLD.TTF</string>
 		<string>IRANSANSWEB_LIGHT.TTF</string>

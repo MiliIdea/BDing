@@ -76,7 +76,7 @@ class SignInPageTwoViewController: UIViewController {
                     SaveAndLoadModel().deleteAllObjectIn(entityName: "USER")
  
                     let b = SaveAndLoadModel().save(entityName: "USER", datas: ["user":s.USERNAME , "password":s.PASSWORD , "token":obj.token! , "userID" : obj.userID!])
-                    print(b)
+                   
                     
                     ///
                     
@@ -183,8 +183,7 @@ class SignInPageTwoViewController: UIViewController {
                 if ( obj?.code == "200" ){
                     
                     GlobalFields.CATEGORIES_LIST_DATAS = obj?.data
-                    print("%%%%%%%%%%%%%%")
-                    print(JSON)
+                   
                     
                 }
                 
