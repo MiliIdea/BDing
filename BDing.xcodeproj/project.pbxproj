@@ -91,6 +91,7 @@
 		1199BC2E1EC098A40006E545 /* IRANYekanMobileBold(FaNum).ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1199BC2A1EC098A40006E545 /* IRANYekanMobileBold(FaNum).ttf */; };
 		1199BC2F1EC098A40006E545 /* IRANYekanRegularMobile(FaNum).ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1199BC2B1EC098A40006E545 /* IRANYekanRegularMobile(FaNum).ttf */; };
 		1199BC301EC098A40006E545 /* MobileFonts.png in Resources */ = {isa = PBXBuildFile; fileRef = 1199BC2C1EC098A40006E545 /* MobileFonts.png */; };
+		1199BC321EC099BD0006E545 /* MyColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1199BC311EC099BD0006E545 /* MyColors.swift */; };
 		119F5D7E1E7671A60023D483 /* SignUpResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119F5D7D1E7671A60023D483 /* SignUpResponseModel.swift */; };
 		11A90B591E7542CB0076EAD7 /* DPDConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A90B4F1E7542CB0076EAD7 /* DPDConstants.swift */; };
 		11A90B5A1E7542CB0076EAD7 /* DPDKeyboardListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A90B501E7542CB0076EAD7 /* DPDKeyboardListener.swift */; };
@@ -359,6 +360,7 @@
 		1199BC2A1EC098A40006E545 /* IRANYekanMobileBold(FaNum).ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IRANYekanMobileBold(FaNum).ttf"; sourceTree = "<group>"; };
 		1199BC2B1EC098A40006E545 /* IRANYekanRegularMobile(FaNum).ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IRANYekanRegularMobile(FaNum).ttf"; sourceTree = "<group>"; };
 		1199BC2C1EC098A40006E545 /* MobileFonts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MobileFonts.png; sourceTree = "<group>"; };
+		1199BC311EC099BD0006E545 /* MyColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyColors.swift; sourceTree = "<group>"; };
 		119F5D7D1E7671A60023D483 /* SignUpResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpResponseModel.swift; sourceTree = "<group>"; };
 		11A90B4D1E7542CB0076EAD7 /* DropDown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDown.h; sourceTree = "<group>"; };
 		11A90B4F1E7542CB0076EAD7 /* DPDConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPDConstants.swift; sourceTree = "<group>"; };
@@ -872,6 +874,7 @@
 			isa = PBXGroup;
 			children = (
 				11D427B61E66B31E009F3763 /* MyFont.swift */,
+				1199BC311EC099BD0006E545 /* MyColors.swift */,
 				11FDEBB21EAC92C1002E999E /* Reachability.swift */,
 			);
 			name = Utils;
@@ -1489,6 +1492,7 @@
 				1179DDB51E767ED400BE7DED /* ExtensionArray.swift in Sources */,
 				11D428791E66BFA2009F3763 /* Blowfish+Foundation.swift in Sources */,
 				11D428781E66BFA2009F3763 /* AES+Foundation.swift in Sources */,
+				1199BC321EC099BD0006E545 /* MyColors.swift in Sources */,
 				11D428961E66BFA2009F3763 /* String+Extension.swift in Sources */,
 				110EB5391E9A404F00431534 /* TabBarController.swift in Sources */,
 				114F5D791EB5D23800FAEB6B /* FilterCollectionViewCell.swift in Sources */,
