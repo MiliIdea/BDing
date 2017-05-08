@@ -33,6 +33,8 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        MyFont().setFontForAllView(view: self.view)
 
         locationManager.delegate = self
 

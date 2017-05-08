@@ -36,6 +36,21 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     @IBOutlet weak var clearButton: UIButton!
     
+    // SORT 
+    
+    @IBOutlet weak var sortView: UIView!
+    
+    @IBOutlet weak var sortButton: UIButton!
+    
+    @IBOutlet weak var nearestButton: DCBorderedButton!
+    
+    @IBOutlet weak var maxCoinButton: DCBorderedButton!
+    
+    @IBOutlet weak var mostPopularButton: DCBorderedButton!
+    
+    @IBOutlet weak var newestButton: DCBorderedButton!
+    
+    var isShowSortView : Bool = false
     
     ///////////////////////////////
     
@@ -70,6 +85,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        sortView.alpha = 0
+        
         searchIsPressed = false
         self.searchView.frame.size.height = 0
         self.collectionView.frame.size.height = 0
@@ -162,9 +179,16 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     @IBAction func playResizeTables(_ sender: Any) {
         
+//        if(rightTable.isDragging || leftTable.isDragging){
+//            
+//            return
+//            
+//        }
+        
         AlarmViewController.mode = !AlarmViewController.mode
         
         UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+
             if !AlarmViewController.mode {
                 for c in 1...self.rightTable.numberOfRows(inSection: 0) {
                     
@@ -195,6 +219,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
             
+            
             if AlarmViewController.mode {
                 
                 //resizing table single
@@ -203,22 +228,44 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 self.rightWidth.constant = (self.rightTable.superview?.frame.width)!-4
                 ////////=========///////
 
-                
                 for c in 1...self.rightTable.numberOfRows(inSection: 0) {
                     
                     (self.rightTable.cellForRow(at: IndexPath(row: c-1, section: 0)) as? IndexHomeTableViewCell)?.setFirst()
                     
                 }
-
+                
+                self.leftTable.contentOffset = self.rightTable.contentOffset
+                
                 self.view.layoutIfNeeded()
+                
                 
             }else {
                 
+                print(self.leftTable.contentOffset)
+                print(self.rightTable.contentOffset)
+                
+//                if(self.rightTable.isDragging || self.leftTable.isDragging){
+                
+                    self.rightTable.contentOffset.y = 0
+                    self.leftTable.contentOffset.y = 0
+                    
+//                }else{
+//                    
+//                    
+//                    self.leftTable.contentOffset = CGPoint(x: 0, y: CGFloat((self.leftTable.indexPathsForVisibleRows?.first?.row)!) * ((self.leftTable.visibleCells.first?.frame.height)! * 1.3))
+//                    
+//                    
+//                    self.rightTable.contentOffset = self.leftTable.contentOffset
+//                    
+//                }
+                
                 //resizing table double
                 self.leftWidth.constant = -16
-                self.rightTable.frame.size.width = (self.rightTable.superview?.frame.width)! / 2
-                self.rightWidth.constant = (self.rightTable.superview?.frame.width)! / 2
 
+                self.rightTable.frame.size.width = self.leftTable.frame.width
+                self.rightWidth.constant =  self.leftTable.frame.width
+                
+                
                 for c in 1...self.rightTable.numberOfRows(inSection: 0) {
                     
                     (self.rightTable.cellForRow(at: IndexPath(row: c-1, section: 0)) as? IndexHomeTableViewCell)?.setLast()
@@ -227,10 +274,14 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 }
                 
                 self.view.layoutIfNeeded()
-     
+                
             }
             
         }, completion: nil)
+        
+        print(self.leftTable.contentOffset)
+        print(self.rightTable.contentOffset)
+        print()
         
     }
     
@@ -616,40 +667,15 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         self.searchIsPressed = !self.searchIsPressed
         
-        UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+        if(self.searchIsPressed == false){
             
-            if(self.searchIsPressed == false){
-                
-                self.searchView.frame.size.height = 0
-                self.collectionView.frame.size.height = 0
-                self.collectionView.alpha = 0
-                self.doSearchButton.alpha = 0
-                self.doSearchButton.frame.size.height = 0
-                self.doSearchButton.frame.origin.y -= 180
-                self.clearButton.alpha = 0
-                self.clearButton.frame.size.height = 0
-                self.clearButton.frame.origin.y -= 180
-                self.searchTextField.alpha = 0
-                self.blurView.alpha = 0
-                
-            }else{
-                
-                self.searchView.frame.size.height = 180
-                self.collectionView.frame.size.height = 70
-                self.collectionView.alpha = 1
-                self.doSearchButton.alpha = 1
-                self.doSearchButton.frame.size.height = 30
-                self.doSearchButton.frame.origin.y = self.searchOrigin
-                self.clearButton.alpha = 1
-                self.clearButton.frame.size.height = 30
-                self.clearButton.frame.origin.y = self.searchOrigin
-                self.searchTextField.alpha = 1
-                self.blurView.alpha = 0.85
-                
-            }
+            hiddenSearchView()
             
+        }else{
             
-        } , completion : nil)
+            showSearchView()
+            
+        }
         
     }
     
@@ -657,41 +683,15 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         self.searchIsPressed = !self.searchIsPressed
         
-        UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+        if(self.searchIsPressed == false){
             
-            if(self.searchIsPressed == false){
-                
-                self.searchView.frame.size.height = 0
-                self.collectionView.frame.size.height = 0
-                self.collectionView.alpha = 0
-                self.doSearchButton.alpha = 0
-                self.doSearchButton.frame.size.height = 0
-                self.doSearchButton.frame.origin.y -= 180
-                self.clearButton.alpha = 0
-                self.clearButton.frame.size.height = 0
-                self.clearButton.frame.origin.y -= 180
-                self.searchTextField.alpha = 0
-                self.blurView.alpha = 0
-                
-            }else{
-                
-                self.searchView.frame.size.height = 180
-                self.collectionView.frame.size.height = 70
-                self.collectionView.alpha = 1
-                self.doSearchButton.alpha = 1
-                self.doSearchButton.frame.size.height = 30
-                self.doSearchButton.frame.origin.y = self.searchOrigin
-                self.clearButton.alpha = 1
-                self.clearButton.frame.size.height = 30
-                self.clearButton.frame.origin.y = self.searchOrigin
-                self.searchTextField.alpha = 1
-                self.blurView.alpha = 0.85
-                
-                
-            }
+            hiddenSearchView()
             
+        }else{
             
-        } , completion : nil)
+            showSearchView()
+            
+        }
         
     }
     
@@ -702,50 +702,78 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             let currentPoint = touch.location(in: blurView)
             
+            if(currentPoint.y > 0 && currentPoint.x > 0 && isShowSortView == true){
+                
+                hiddenSortView()
+                
+            }
+            
             if(currentPoint.y > 0 && currentPoint.x > 0 && self.searchIsPressed == true){
                 
                 self.searchIsPressed = !self.searchIsPressed
-                
-                UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+
+                if(self.searchIsPressed == false){
                     
-                    if(self.searchIsPressed == false){
-                        
-                        self.searchView.frame.size.height = 0
-                        self.collectionView.frame.size.height = 0
-                        self.collectionView.alpha = 0
-                        self.doSearchButton.alpha = 0
-                        self.doSearchButton.frame.size.height = 0
-                        self.doSearchButton.frame.origin.y -= 180
-                        self.clearButton.alpha = 0
-                        self.clearButton.frame.size.height = 0
-                        self.clearButton.frame.origin.y -= 180
-                        self.searchTextField.alpha = 0
-                        self.blurView.alpha = 0
-                        
-                    }else{
-                        
-                        self.searchView.frame.size.height = 180
-                        self.collectionView.frame.size.height = 70
-                        self.collectionView.alpha = 1
-                        self.doSearchButton.alpha = 1
-                        self.doSearchButton.frame.size.height = 30
-                        self.doSearchButton.frame.origin.y = self.searchOrigin
-                        self.clearButton.alpha = 1
-                        self.clearButton.frame.size.height = 30
-                        self.clearButton.frame.origin.y = self.searchOrigin
-                        self.searchTextField.alpha = 1
-                        self.blurView.alpha = 0.85
-                        
-                        
-                    }
+                    hiddenSearchView()
                     
+                }else{
                     
-                } , completion : nil)
-                
+                    showSearchView()
+                    
+                }
                 
             }
             
         }
+        
+    }
+    
+    func showSearchView(){
+        
+        hiddenSortView()
+        
+        isShowSortView = false
+        
+        UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                
+                self.searchView.frame.size.height = 180
+                self.collectionView.frame.size.height = 70
+                self.collectionView.alpha = 1
+                self.doSearchButton.alpha = 1
+                self.doSearchButton.frame.size.height = 30
+                self.doSearchButton.frame.origin.y = self.searchOrigin
+                self.clearButton.alpha = 1
+                self.clearButton.frame.size.height = 30
+                self.clearButton.frame.origin.y = self.searchOrigin
+                self.searchTextField.alpha = 1
+                self.blurView.alpha = 0.85
+
+            
+        } , completion : nil)
+
+        
+    }
+    
+    
+    func hiddenSearchView(){
+        
+        UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            self.searchView.frame.size.height = 0
+            self.collectionView.frame.size.height = 0
+            self.collectionView.alpha = 0
+            self.doSearchButton.alpha = 0
+            self.doSearchButton.frame.size.height = 0
+            self.doSearchButton.frame.origin.y -= 180
+            self.clearButton.alpha = 0
+            self.clearButton.frame.size.height = 0
+            self.clearButton.frame.origin.y -= 180
+            self.searchTextField.alpha = 0
+            self.blurView.alpha = 0
+            
+            
+        } , completion : nil)
+        
         
     }
     
@@ -1164,8 +1192,246 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
+    //SORT
+    
+    func maxCoinSort(){
+
+        var result : [BeaconListData] = [BeaconListData]()
+        
+        while (GlobalFields.BEACON_LIST_DATAS?.count)! > 0 {
+            
+            let index = findMax(datas: GlobalFields.BEACON_LIST_DATAS!)
+            
+            result.append((GlobalFields.BEACON_LIST_DATAS?[index])!)
+            
+            GlobalFields.BEACON_LIST_DATAS?.remove(at: index)
+            
+        }
+        
+        GlobalFields.BEACON_LIST_DATAS = result
+        
+        self.rightTable.reloadData()
+        
+        self.leftTable.reloadData()
+        
+    }
+    
+    func findMax(datas : [BeaconListData]) -> Int{
+        
+        var max : BeaconListData = (datas[0])
+        
+        var index : Int = 0
+        
+        for i in 0...datas.count - 1 {
+            
+            if(max.coin == nil){
+                
+                max.coin = "0"
+                
+            }
+            if(datas[i].coin == nil){
+                
+                datas[i].coin = "0"
+                
+            }
+            
+            
+            if(Int(datas[i].coin!)! > Int(max.coin!)!){
+                
+                max = datas[i]
+                index = i
+                
+            }
+            
+            
+        }
+        
+        return index
+        
+    }
     
     
+    
+    func maxNearSort(){
+        
+        var result : [BeaconListData] = [BeaconListData]()
+        
+        while (GlobalFields.BEACON_LIST_DATAS?.count)! > 0 {
+            
+            let index = findMaxNear(datas: GlobalFields.BEACON_LIST_DATAS!)
+            
+            result.append((GlobalFields.BEACON_LIST_DATAS?[index])!)
+            
+            GlobalFields.BEACON_LIST_DATAS?.remove(at: index)
+            
+        }
+        
+        GlobalFields.BEACON_LIST_DATAS = result
+        
+        self.rightTable.reloadData()
+        
+        self.leftTable.reloadData()
+        
+    }
+    
+    func findMaxNear(datas : [BeaconListData]) -> Int{
+        
+        var max : BeaconListData = (datas[0])
+        
+        var index : Int = 0
+        
+        for i in 0...datas.count - 1 {
+            
+            if(max.distance == nil){
+                
+                max.distance = "0"
+                
+            }
+            if(datas[i].distance == nil){
+                
+                datas[i].distance = "0"
+                
+            }
+            
+            if(Double(datas[i].distance!)! < Double(max.distance!)!){
+                
+                max = datas[i]
+                index = i
+                
+            }
+            
+            
+        }
+        
+        return index
+        
+    }
+    
+    func showSortView(){
+        
+        hiddenSearchView()
+        
+        searchIsPressed = false
+        
+        UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            self.sortView.alpha = 1
+            
+            self.sortView.frame.size.height = 180
+            
+            self.blurView.alpha = 1
+            
+            self.mostPopularButton.frame.size.height = 30
+            
+            self.mostPopularButton.frame.origin.y = 110
+            
+            self.newestButton.frame.size.height = 30
+            
+            self.newestButton.frame.origin.y = 110
+            
+            self.nearestButton.frame.size.height = 30
+            
+            self.nearestButton.frame.origin.y = 35
+            
+            self.maxCoinButton.frame.size.height = 30
+            
+            self.maxCoinButton.frame.origin.y = 35
+            
+            
+        }, completion : nil )
+        
+    }
+    
+    func hiddenSortView(){
+        
+        UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            self.sortView.alpha = 0
+            
+            self.sortView.frame.size.height = 0
+            
+            self.blurView.alpha = 0
+            
+            self.mostPopularButton.frame.size.height = 0
+            
+            self.newestButton.frame.size.height = 0
+            
+            self.nearestButton.frame.size.height = 0
+            
+            self.maxCoinButton.frame.size.height = 0
+            
+        }, completion : nil )
+        
+    }
+    
+    
+    
+    @IBAction func popupSort(_ sender: Any) {
+        
+        if(isShowSortView){
+            
+            hiddenSortView()
+            
+            isShowSortView = false
+            
+        }else{
+            
+            showSortView()
+            
+            isShowSortView = true
+            
+            
+        }
+        
+    }
+    
+    
+    @IBAction func sortMaxCoin(_ sender: Any) {
+        
+        maxCoinSort()
+        
+        hiddenSortView()
+        
+    }
+    
+    @IBAction func nearest(_ sender: Any) {
+        
+        maxNearSort()
+        
+        hiddenSortView()
+        
+    }
+    
+    @IBAction func mostPopular(_ sender: Any) {
+        
+        hiddenSortView()
+        
+    }
+
+    @IBAction func newest(_ sender: Any) {
+        
+        hiddenSortView()
+        
+    }
+    
+    
+    
+    
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     
     func setTintGradient(image: UIImage , c : [CGColor] ) -> UIImage{

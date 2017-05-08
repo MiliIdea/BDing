@@ -87,6 +87,10 @@
 		1179DDEA1E7687D200BE7DED /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1179DDD71E7687D200BE7DED /* Validation.swift */; };
 		1179DE641E7699DA00BE7DED /* SignInRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1179DE631E7699DA00BE7DED /* SignInRequestModel.swift */; };
 		1179DE661E769C9C00BE7DED /* SignInResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1179DE651E769C9C00BE7DED /* SignInResponseModel.swift */; };
+		1199BC2D1EC098A40006E545 /* IRANYekanLightMobile(FaNum).ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1199BC291EC098A40006E545 /* IRANYekanLightMobile(FaNum).ttf */; };
+		1199BC2E1EC098A40006E545 /* IRANYekanMobileBold(FaNum).ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1199BC2A1EC098A40006E545 /* IRANYekanMobileBold(FaNum).ttf */; };
+		1199BC2F1EC098A40006E545 /* IRANYekanRegularMobile(FaNum).ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1199BC2B1EC098A40006E545 /* IRANYekanRegularMobile(FaNum).ttf */; };
+		1199BC301EC098A40006E545 /* MobileFonts.png in Resources */ = {isa = PBXBuildFile; fileRef = 1199BC2C1EC098A40006E545 /* MobileFonts.png */; };
 		119F5D7E1E7671A60023D483 /* SignUpResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119F5D7D1E7671A60023D483 /* SignUpResponseModel.swift */; };
 		11A90B591E7542CB0076EAD7 /* DPDConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A90B4F1E7542CB0076EAD7 /* DPDConstants.swift */; };
 		11A90B5A1E7542CB0076EAD7 /* DPDKeyboardListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A90B501E7542CB0076EAD7 /* DPDKeyboardListener.swift */; };
@@ -351,6 +355,10 @@
 		1179DDD71E7687D200BE7DED /* Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		1179DE631E7699DA00BE7DED /* SignInRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInRequestModel.swift; sourceTree = "<group>"; };
 		1179DE651E769C9C00BE7DED /* SignInResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInResponseModel.swift; sourceTree = "<group>"; };
+		1199BC291EC098A40006E545 /* IRANYekanLightMobile(FaNum).ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IRANYekanLightMobile(FaNum).ttf"; sourceTree = "<group>"; };
+		1199BC2A1EC098A40006E545 /* IRANYekanMobileBold(FaNum).ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IRANYekanMobileBold(FaNum).ttf"; sourceTree = "<group>"; };
+		1199BC2B1EC098A40006E545 /* IRANYekanRegularMobile(FaNum).ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IRANYekanRegularMobile(FaNum).ttf"; sourceTree = "<group>"; };
+		1199BC2C1EC098A40006E545 /* MobileFonts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MobileFonts.png; sourceTree = "<group>"; };
 		119F5D7D1E7671A60023D483 /* SignUpResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpResponseModel.swift; sourceTree = "<group>"; };
 		11A90B4D1E7542CB0076EAD7 /* DropDown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDown.h; sourceTree = "<group>"; };
 		11A90B4F1E7542CB0076EAD7 /* DPDConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPDConstants.swift; sourceTree = "<group>"; };
@@ -650,6 +658,18 @@
 			path = AlmofireSource;
 			sourceTree = "<group>";
 		};
+		1199BC281EC098A40006E545 /* IRANYekanFaNum */ = {
+			isa = PBXGroup;
+			children = (
+				1199BC291EC098A40006E545 /* IRANYekanLightMobile(FaNum).ttf */,
+				1199BC2A1EC098A40006E545 /* IRANYekanMobileBold(FaNum).ttf */,
+				1199BC2B1EC098A40006E545 /* IRANYekanRegularMobile(FaNum).ttf */,
+				1199BC2C1EC098A40006E545 /* MobileFonts.png */,
+			);
+			name = IRANYekanFaNum;
+			path = IRANYEKAN/IRANYekanFaNum;
+			sourceTree = "<group>";
+		};
 		119F5D791E7670290023D483 /* RquestModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -800,6 +820,7 @@
 				11D427C01E66BFA2009F3763 /* Crypto */,
 				11D428051E66BFA2009F3763 /* DCKit */,
 				11D428271E66BFA2009F3763 /* IRANSans-Light-web */,
+				1199BC281EC098A40006E545 /* IRANYekanFaNum */,
 				111D9D3B1EBDFC82006C7984 /* IRANYEKAN */,
 				11D4282D1E66BFA2009F3763 /* QuartzCore */,
 				11D4283F1E66BFA2009F3763 /* Spring */,
@@ -1254,14 +1275,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1199BC301EC098A40006E545 /* MobileFonts.png in Resources */,
 				111BB1741EB087DC00AD202D /* PayHistoryTableViewCell.xib in Resources */,
 				113F06B21E7966A900E7D74F /* Info-tvOS.plist in Resources */,
 				1179DDC21E76876400BE7DED /* Info.plist in Resources */,
+				1199BC2D1EC098A40006E545 /* IRANYekanLightMobile(FaNum).ttf in Resources */,
 				1179DDBB1E767EEE00BE7DED /* Info.plist in Resources */,
+				1199BC2E1EC098A40006E545 /* IRANYekanMobileBold(FaNum).ttf in Resources */,
 				1179DDDC1E7687D200BE7DED /* Info.plist in Resources */,
 				11D428831E66BFA2009F3763 /* Info.plist in Resources */,
 				114F5D7A1EB5D23800FAEB6B /* FilterCollectionViewCell.xib in Resources */,
 				11D4276F1E66AEC3009F3763 /* LaunchScreen.storyboard in Resources */,
+				1199BC2F1EC098A40006E545 /* IRANYekanRegularMobile(FaNum).ttf in Resources */,
 				111D9D421EBDFC82006C7984 /* IRANYekanMobileRegular.ttf in Resources */,
 				11A90B5D1E7542CB0076EAD7 /* DropDownCell.xib in Resources */,
 				111D9D431EBDFC82006C7984 /* MobileFonts.png in Resources */,

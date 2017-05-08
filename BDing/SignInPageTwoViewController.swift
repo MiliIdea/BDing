@@ -12,6 +12,9 @@ import CoreData
 
 import CoreLocation
 
+
+
+
 class SignInPageTwoViewController: UIViewController {
 
     
@@ -81,6 +84,15 @@ class SignInPageTwoViewController: UIViewController {
                     ///
                     
                     self.loadTabView()
+                    
+                    
+                    
+//                    let animationView = LOTAnimationView(name: "hamburger")
+//                    self.view.addSubview(animationView)
+//                    
+//                    animationView.play(completion: { finished in
+//                        // Do Something
+//                    })
                     
                     print(SaveAndLoadModel().load(entity: "USER")?.count ?? "nothing!")
                     

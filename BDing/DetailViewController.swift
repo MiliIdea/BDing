@@ -92,9 +92,13 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     
     var subCategoryIcon : UIImage? = nil
     
+    var cell:CustomerHomeTableCell? = nil
+    
     //==================================================================//
     
     func setup(data : CustomerHomeTableCell!){
+        
+        cell = data
         
         self.categoryName.text = data.customerCampaignTitle
         
@@ -156,6 +160,84 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
             
         }
 
+        
+        // set now is open
+        
+        let date = Date()
+        let calendar = Calendar.current
+        
+        let hour = calendar.component(.hour, from: date)
+        let minutes = calendar.component(.minute, from: date)
+        
+//        print("hours = \(hour):\(minutes):\(seconds)")
+//        
+//        print(cell?.workTime)
+        
+        var isOpen : Bool = false
+        
+        for s in (cell?.workTime?.characters.split(separator: "|"))!{
+            
+            let times: [String.CharacterView] = s.split(separator: "-")
+            
+            print(String(s))
+            
+            let h1 = String(times[0].split(separator: ":")[0])
+            
+            var m1 = "0"
+            
+            if(times[0].split(separator: ":").count > 1){
+                
+                m1 = String(times[0].split(separator: ":")[1])
+                
+            }
+            
+            let h2 = String(times[1].split(separator: ":")[0])
+            
+            var m2 = "0"
+            
+            if(times[1].split(separator: ":").count > 1){
+                
+                m2 = String(times[1].split(separator: ":")[1])
+                
+            }
+            
+            let time1 : Int = (Int(h1)! * 60) + Int(m1)!
+            
+            let time2 : Int = (Int(h2)! * 60) + Int(m2)!
+            
+            let mainTime : Int = (Int(hour) * 60) + Int(minutes)
+            
+            print(time1)
+            print(time2)
+            print(mainTime)
+            
+            if((mainTime < time1 || mainTime > time2) && isOpen == false){
+                
+                self.nowIsOpen.textColor = UIColor.red
+                
+                self.nowIsOpen.text = "بسته است"
+                
+            }else if(time2 - mainTime < 60){
+                
+                self.nowIsOpen.textColor = UIColor.yellow
+                
+                self.nowIsOpen.text = String(time2 - mainTime).appending(" دقیقه دیگر بسته می شود")
+                
+                isOpen = true
+                
+            }else{
+                
+                self.nowIsOpen.textColor = UIColor.green
+                
+                self.nowIsOpen.text = "باز است"
+                
+                isOpen = true
+                
+            }
+            
+            
+        }
+        
         
     }
     
@@ -249,7 +331,39 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         self.textView.frame.size.height = self.firstTextHeight
         
         
+        //set FONTs 
+        
+        MyFont().setFontForAllView(view: self.view)
+        
+        MyFont().setBoldFont(view: categoryName, mySize: 14)
+        
+        MyFont().setWebFont(view: brandName, mySize: 12)
+        
+        MyFont().setWebFont(view: coin, mySize: 12)
+        
+        MyFont().setWebFont(view: distance, mySize: 12)
+        
+        MyFont().setWebFont(view: discount, mySize: 12)
+        
+        MyFont().setLightFont(view: textView, mySize: 10)
+        
+        MyFont().setWebFont(view: nowIsOpen, mySize: 12)
+        
+        MyFont().setWebFont(view: timeOfWork, mySize: 12)
+        
+        MyFont().setWebFont(view: address, mySize: 12)
+        
+        MyFont().setWebFont(view: phone, mySize: 12)
+        
+        MyFont().setWebFont(view: webSiteAddress, mySize: 12)
+        
+        
+        
     }
+    
+    
+    
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

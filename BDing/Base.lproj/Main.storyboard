@@ -557,7 +557,7 @@
                                 <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textAttributes key="titleTextAttributes">
-                                    <fontDescription key="fontDescription" name="IRANSansWeb" family="IRANSansWeb" pointSize="19"/>
+                                    <fontDescription key="fontDescription" name="IRANYekanMobile" family="IRANYekanMobile" pointSize="20"/>
                                     <color key="textColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 </textAttributes>
                                 <items>
@@ -744,7 +744,7 @@
                                 <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textAttributes key="titleTextAttributes">
-                                    <fontDescription key="fontDescription" name="IRANSansWeb" family="IRANSansWeb" pointSize="19"/>
+                                    <fontDescription key="fontDescription" name="IRANYekanMobile" family="IRANYekanMobile" pointSize="20"/>
                                     <color key="textColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 </textAttributes>
                                 <items>
@@ -849,7 +849,7 @@
             </objects>
             <point key="canvasLocation" x="3660" y="-193.30985915492957"/>
         </scene>
-        <!--Index Home View Controller-->
+        <!--پیام ها-->
         <scene sceneID="D59-wt-afj">
             <objects>
                 <viewController storyboardIdentifier="IndexHomeViewController" id="vHh-dh-7TU" customClass="IndexHomeViewController" customModule="BDing" customModuleProvider="target" sceneMemberID="viewController">
@@ -868,7 +868,7 @@
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="70" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2qE-Xa-Zhz">
                                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="0.91907393930000003" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="indexHomeTableCellIdentifier" rowHeight="70" id="kQk-g8-Pvj" customClass="IndexHomeTableViewCell" customModule="BDing" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="320" height="70"/>
@@ -1009,7 +1009,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="contacts" id="Mhh-wA-eeW"/>
+                    <tabBarItem key="tabBarItem" title="پیام ها" image="ic_notifications_48pt" id="Mhh-wA-eeW">
+                        <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-3"/>
+                    </tabBarItem>
                     <navigationItem key="navigationItem" id="5hf-NL-7dU"/>
                     <connections>
                         <outlet property="IndexHomeTable" destination="2qE-Xa-Zhz" id="8qU-wf-9lE"/>
@@ -1166,7 +1169,7 @@
                                                                                                 <constraint firstAttribute="width" constant="26" id="HfC-3f-aYO"/>
                                                                                             </constraints>
                                                                                             <fontDescription key="fontDescription" type="system" pointSize="8"/>
-                                                                                            <color key="textColor" red="0.19443247359999999" green="1" blue="0.21171209420000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                                            <color key="textColor" red="0.0" green="0.78431372549019607" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
                                                                                             <nil key="highlightedColor"/>
                                                                                         </label>
                                                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_toll" translatesAutoresizingMaskIntoConstraints="NO" id="XWo-na-UzF">
@@ -1340,7 +1343,7 @@
             </objects>
             <point key="canvasLocation" x="6542" y="1510"/>
         </scene>
-        <!--Category View Controller-->
+        <!--دسته بندی ها-->
         <scene sceneID="Fse-Qu-NIK">
             <objects>
                 <viewController storyboardIdentifier="CategoryViewController" id="qfp-Kg-Ylx" customClass="CategoryViewController" customModule="BDing" customModuleProvider="target" sceneMemberID="viewController">
@@ -1487,7 +1490,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" systemItem="contacts" id="tBT-fn-ZBJ"/>
+                    <tabBarItem key="tabBarItem" title="دسته بندی ها" image="ic_view_list_48pt" id="tBT-fn-ZBJ">
+                        <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-3"/>
+                    </tabBarItem>
                     <connections>
                         <outlet property="container" destination="oyC-oN-FFl" id="rMW-7Z-ses"/>
                         <outlet property="navigationBar" destination="3Jm-Pv-pIb" id="pdV-ah-rjY"/>
@@ -1498,7 +1504,7 @@
             </objects>
             <point key="canvasLocation" x="5483" y="1510"/>
         </scene>
-        <!--Alarm View Controller-->
+        <!--خانه-->
         <scene sceneID="BUh-Xx-Ljy">
             <objects>
                 <viewController storyboardIdentifier="AlarmViewController" id="08H-Xd-nHE" customClass="AlarmViewController" customModule="BDing" customModuleProvider="target" sceneMemberID="viewController">
@@ -1515,7 +1521,8 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem id="IfY-HX-IyM">
-                                        <barButtonItem key="rightBarButtonItem" systemItem="play" id="iZu-4o-03Q">
+                                        <barButtonItem key="rightBarButtonItem" image="ic_view_list_48pt" id="iZu-4o-03Q">
+                                            <inset key="imageInsets" minX="13" minY="5" maxX="0.0" maxY="5"/>
                                             <connections>
                                                 <action selector="playResizeTables:" destination="08H-Xd-nHE" id="r1R-rr-xdQ"/>
                                             </connections>
@@ -1523,16 +1530,24 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NI1-hh-Zfx">
-                                <rect key="frame" x="4" y="29" width="65" height="24"/>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NI1-hh-Zfx">
+                                <rect key="frame" x="6" y="29" width="46" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="ic_search"/>
                                 <connections>
                                     <action selector="search:" destination="08H-Xd-nHE" eventType="touchUpInside" id="Dpk-Dh-E5R"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Mq-4H-ioM">
+                                <rect key="frame" x="60" y="30" width="35" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="ic_filter_list_48pt"/>
+                                <connections>
+                                    <action selector="popupSort:" destination="08H-Xd-nHE" eventType="touchUpInside" id="kx6-pU-t8q"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4AL-z1-gOS">
-                                <rect key="frame" x="241" y="29" width="27" height="24"/>
+                                <rect key="frame" x="221" y="29" width="27" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="ic_map_48pt"/>
                                 <connections>
@@ -1542,7 +1557,7 @@
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="109" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="S0g-bF-I1c">
                                 <rect key="frame" x="6" y="64" width="314" height="455"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.91907393930000003" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="160" id="pHE-RB-tCD"/>
                                 </constraints>
@@ -1690,7 +1705,7 @@
                                                 </view>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="0.91907393930000003" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="chW-wa-q0m" secondAttribute="trailing" constant="5" id="6GM-2t-FyO"/>
                                             <constraint firstAttribute="bottom" secondItem="chW-wa-q0m" secondAttribute="bottom" constant="4" id="BXk-s5-xiD"/>
@@ -1744,11 +1759,11 @@
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1jI-pV-mpy">
                                 <rect key="frame" x="0.0" y="64" width="4" height="455"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.91907393930000003" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="70" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iTT-82-oXf">
                                 <rect key="frame" x="0.0" y="64" width="320" height="455"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.91907393930000003" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="320" id="Wdx-6Z-x7O"/>
                                 </constraints>
@@ -1995,6 +2010,85 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.48673889767094913" green="0.48673889767094913" blue="0.48673889767094913" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </view>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Quu-nP-fvH">
+                                <rect key="frame" x="0.0" y="61" width="320" height="180"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sgd-Ov-QXG" customClass="DCBorderedButton" customModule="BDing" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="34" width="140" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="نزدیکترین">
+                                            <color key="titleColor" red="0.21006503809999999" green="0.21006503809999999" blue="0.21006503809999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="normalBackgroundColor">
+                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="nearest:" destination="08H-Xd-nHE" eventType="touchUpInside" id="pU1-L0-uCe"/>
+                                        </connections>
+                                    </button>
+                                    <button clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oO7-eJ-Qjj" customClass="DCBorderedButton" customModule="BDing" customModuleProvider="target">
+                                        <rect key="frame" x="172" y="35" width="140" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="بیشترین دینگ">
+                                            <color key="titleColor" red="0.21006503809999999" green="0.21006503809999999" blue="0.21006503809999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="normalBackgroundColor">
+                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="sortMaxCoin:" destination="08H-Xd-nHE" eventType="touchUpInside" id="Syk-5a-w7A"/>
+                                        </connections>
+                                    </button>
+                                    <button clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8fy-tu-M9g" customClass="DCBorderedButton" customModule="BDing" customModuleProvider="target">
+                                        <rect key="frame" x="172" y="105" width="140" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="محبوبترین">
+                                            <color key="titleColor" red="0.21006503809999999" green="0.21006503809999999" blue="0.21006503809999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="normalBackgroundColor">
+                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="mostPopular:" destination="08H-Xd-nHE" eventType="touchUpInside" id="oTA-E5-CQg"/>
+                                        </connections>
+                                    </button>
+                                    <button clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xyX-PU-9Jh" customClass="DCBorderedButton" customModule="BDing" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="105" width="140" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="جدیدترین ">
+                                            <color key="titleColor" red="0.21006503809999999" green="0.21006503809999999" blue="0.21006503809999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="normalBackgroundColor">
+                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="newest:" destination="08H-Xd-nHE" eventType="touchUpInside" id="ZWr-Kb-zg9"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.47319738389999999" green="0.58981982639999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            </view>
                             <visualEffectView opaque="NO" alpha="0.84999999999999998" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="duJ-8m-M8j">
                                 <rect key="frame" x="0.0" y="241" width="320" height="278"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -2014,7 +2108,10 @@
                             <constraint firstItem="S0g-bF-I1c" firstAttribute="leading" secondItem="0X1-IE-Of4" secondAttribute="leadingMargin" constant="-172" id="zre-5v-nC3"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="mostViewed" id="51E-6H-DDg"/>
+                    <tabBarItem key="tabBarItem" title="خانه" image="ic_home_48pt" id="51E-6H-DDg">
+                        <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-3"/>
+                    </tabBarItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="blurView" destination="duJ-8m-M8j" id="Hyf-bN-aKI"/>
@@ -2024,16 +2121,22 @@
                         <outlet property="doSearchButton" destination="gpn-zB-z80" id="A6p-OQ-0kS"/>
                         <outlet property="leftTable" destination="S0g-bF-I1c" id="FrW-mz-WI4"/>
                         <outlet property="leftWidth" destination="zre-5v-nC3" id="o7u-NO-YHr"/>
+                        <outlet property="maxCoinButton" destination="oO7-eJ-Qjj" id="7Oz-0U-voy"/>
+                        <outlet property="mostPopularButton" destination="8fy-tu-M9g" id="eIx-0R-3zH"/>
                         <outlet property="navigationBar" destination="Fhh-hc-UgU" id="Mmb-fy-aGo"/>
+                        <outlet property="nearestButton" destination="Sgd-Ov-QXG" id="LC9-OM-H95"/>
+                        <outlet property="newestButton" destination="xyX-PU-9Jh" id="Cgo-9c-XBq"/>
                         <outlet property="rightTable" destination="iTT-82-oXf" id="U4O-sl-Xud"/>
                         <outlet property="rightWidth" destination="Wdx-6Z-x7O" id="7pR-gY-zxA"/>
                         <outlet property="searchTextField" destination="dg9-pr-b3m" id="DUK-ft-3CK"/>
                         <outlet property="searchView" destination="iPY-pk-7p9" id="Ifn-it-zoM"/>
+                        <outlet property="sortButton" destination="3Mq-4H-ioM" id="xBh-Ea-kFL"/>
+                        <outlet property="sortView" destination="Quu-nP-fvH" id="8wM-e6-Grp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zV1-F2-9as" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5483" y="-276"/>
+            <point key="canvasLocation" x="5482.5" y="-276.76056338028167"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="yCH-pl-ris">
@@ -2221,7 +2324,7 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <subviews>
                                                     <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" alwaysBounceVertical="YES" scrollEnabled="NO" delaysContentTouches="NO" editable="NO" text="فست فود" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tht-vk-znZ" customClass="SpringTextView" customModule="BDing" customModuleProvider="target">
-                                                        <rect key="frame" x="36" y="0.0" width="249" height="30"/>
+                                                        <rect key="frame" x="36" y="447" width="249" height="30"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -2255,7 +2358,7 @@
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     </imageView>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="سکه" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MlM-bp-d5Q">
-                                                                        <rect key="frame" x="61" y="9" width="19" height="21"/>
+                                                                        <rect key="frame" x="46" y="9" width="34" height="21"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                                                         <nil key="highlightedColor"/>
@@ -2284,7 +2387,7 @@
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     </imageView>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="فاصله" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ekc-Pg-3eR">
-                                                                        <rect key="frame" x="58" y="9" width="22" height="21"/>
+                                                                        <rect key="frame" x="45" y="9" width="35" height="21"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                                                         <nil key="highlightedColor"/>
@@ -2308,7 +2411,7 @@
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     </imageView>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="تخفیف" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bK4-yi-Qbt">
-                                                                        <rect key="frame" x="58" y="9" width="22" height="21"/>
+                                                                        <rect key="frame" x="44" y="9" width="36" height="21"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                                                         <nil key="highlightedColor"/>
@@ -2332,7 +2435,7 @@
                                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Itc-gg-Nuj">
                                                                 <rect key="frame" x="-0.5" y="149.5" width="304.5" height="23"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                                                <color key="backgroundColor" red="0.77715180367987768" green="0.77715180367987768" blue="0.77715180367987768" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                <color key="backgroundColor" red="0.93189482398444623" green="0.93189482398444623" blue="0.93189482398444623" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <state key="normal" image="ic_keyboard_arrow_down_18pt"/>
                                                                 <connections>
@@ -2340,7 +2443,7 @@
                                                                 </connections>
                                                             </button>
                                                         </subviews>
-                                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                                                 <real key="value" value="1"/>
@@ -2357,7 +2460,7 @@
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ساعات فعالیت:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Vq-0R-7Bp">
-                                                                <rect key="frame" x="219" y="4" width="61" height="16"/>
+                                                                <rect key="frame" x="159" y="4" width="121" height="16"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                                                 <nil key="textColor"/>
@@ -2367,7 +2470,7 @@
                                                                 <rect key="frame" x="217" y="28" width="81" height="16"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                <color key="textColor" red="0.19443247359999999" green="1" blue="0.21171209420000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                <color key="textColor" red="0.0" green="0.78431372549019607" blue="0.32549019607843138" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="zibayi" translatesAutoresizingMaskIntoConstraints="NO" id="rIy-OA-huU">
@@ -2376,7 +2479,7 @@
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="نشانی:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="as0-yT-vQS">
-                                                                <rect key="frame" x="238" y="64" width="42" height="16"/>
+                                                                <rect key="frame" x="159" y="64" width="121" height="16"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                                                 <nil key="textColor"/>
@@ -2402,7 +2505,7 @@
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="شماره تماس:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="etv-lY-RLR">
-                                                                <rect key="frame" x="230" y="131" width="50" height="16"/>
+                                                                <rect key="frame" x="159" y="131" width="121" height="16"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                                                 <nil key="textColor"/>
@@ -2421,7 +2524,7 @@
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="وب سایت:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YyP-if-xVA">
-                                                                <rect key="frame" x="224" y="174" width="54" height="16"/>
+                                                                <rect key="frame" x="159" y="174" width="119" height="16"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                                                 <nil key="textColor"/>
@@ -2513,7 +2616,7 @@
             </objects>
             <point key="canvasLocation" x="6541.875" y="636.97183098591552"/>
         </scene>
-        <!--Profile Page View Controller-->
+        <!--من-->
         <scene sceneID="X5A-pH-WKD">
             <objects>
                 <viewController storyboardIdentifier="ProfilePageViewController" id="WPM-gG-B9a" customClass="ProfilePageViewController" customModule="BDing" customModuleProvider="target" sceneMemberID="viewController">
@@ -2564,12 +2667,12 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8DT-k2-tnb">
-                                                        <rect key="frame" x="0.0" y="126" width="320" height="82"/>
+                                                        <rect key="frame" x="0.0" y="128" width="320" height="82"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                         <color key="backgroundColor" red="0.92694294450000003" green="0.93711733819999998" blue="0.94436764719999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </view>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Semicircular" translatesAutoresizingMaskIntoConstraints="NO" id="Ag9-oD-PaQ">
-                                                        <rect key="frame" x="0.0" y="105" width="320" height="21"/>
+                                                        <rect key="frame" x="0.0" y="107" width="320" height="21"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                         <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     </imageView>
@@ -2958,7 +3061,7 @@
                                 <items/>
                             </toolbar>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LGF-2Y-kHi" customClass="DCBorderedButton" customModule="BDing" customModuleProvider="target">
-                                <rect key="frame" x="125" y="91" width="70" height="70"/>
+                                <rect key="frame" x="125" y="92" width="70" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="profile_pic"/>
                                 <userDefinedRuntimeAttributes>
@@ -2974,21 +3077,21 @@
                                 </userDefinedRuntimeAttributes>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="محمد (مبین) بهرامی" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yms-Wt-F6Z">
-                                <rect key="frame" x="100" y="165" width="121" height="18"/>
+                                <rect key="frame" x="100" y="166" width="121" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="۲۲۶" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i62-UZ-n1a">
-                                <rect key="frame" x="162" y="189" width="28" height="24"/>
+                                <rect key="frame" x="162" y="190" width="28" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                 <color key="textColor" red="0.2749235927" green="0.8370911593" blue="0.27023795099999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ic_account_balance_wallet_48pt" translatesAutoresizingMaskIntoConstraints="NO" id="Wxg-gy-CGH">
-                                <rect key="frame" x="143" y="192" width="15" height="18"/>
+                                <rect key="frame" x="143" y="193" width="15" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ic_chevron_left_white_asset" translatesAutoresizingMaskIntoConstraints="NO" id="hdy-Wt-0o8">
@@ -2998,7 +3101,10 @@
                         </subviews>
                         <color key="backgroundColor" white="0.91907393932342529" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="featured" id="tA7-dd-F1q"/>
+                    <tabBarItem key="tabBarItem" title="من" image="ic_person_48pt" id="tA7-dd-F1q">
+                        <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-3"/>
+                    </tabBarItem>
                     <connections>
                         <outlet property="aboutUsButton" destination="DYk-C1-t1p" id="Cwc-WX-nOm"/>
                         <outlet property="appSettingsIcon" destination="hdy-Wt-0o8" id="yIV-no-Hcp"/>
@@ -3177,8 +3283,8 @@
                     </tabBar>
                     <connections>
                         <segue destination="WPM-gG-B9a" kind="relationship" relationship="viewControllers" id="gPd-X6-cMU"/>
-                        <segue destination="qfp-Kg-Ylx" kind="relationship" relationship="viewControllers" id="slI-xj-2yz"/>
                         <segue destination="vHh-dh-7TU" kind="relationship" relationship="viewControllers" id="eRg-kC-a7C"/>
+                        <segue destination="qfp-Kg-Ylx" kind="relationship" relationship="viewControllers" id="slI-xj-2yz"/>
                         <segue destination="08H-Xd-nHE" kind="relationship" relationship="viewControllers" id="a1n-bb-gri"/>
                     </connections>
                 </tabBarController>
@@ -3216,14 +3322,18 @@
         <image name="ic_call_48pt" width="48" height="48"/>
         <image name="ic_chevron_left_white" width="24" height="24"/>
         <image name="ic_chevron_left_white_asset" width="24" height="24"/>
+        <image name="ic_filter_list_48pt" width="48" height="48"/>
+        <image name="ic_home_48pt" width="48" height="48"/>
         <image name="ic_keyboard_arrow_down_18pt" width="18" height="18"/>
         <image name="ic_keyboard_arrow_left_36pt" width="36" height="36"/>
         <image name="ic_language_48pt" width="48" height="48"/>
         <image name="ic_location_on_48pt" width="48" height="48"/>
         <image name="ic_map_48pt" width="48" height="48"/>
+        <image name="ic_notifications_48pt" width="48" height="48"/>
         <image name="ic_person_48pt" width="48" height="48"/>
         <image name="ic_search" width="24" height="24"/>
         <image name="ic_toll" width="24" height="24"/>
+        <image name="ic_view_list_48pt" width="48" height="48"/>
         <image name="mal" width="150" height="150"/>
         <image name="profile_pic" width="597" height="592"/>
         <image name="pushak" width="150" height="150"/>
@@ -3233,7 +3343,7 @@
         <image name="zibayi" width="150" height="150"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gaH-hZ-POq"/>
-        <segue reference="c2r-xI-204"/>
+        <segue reference="kvE-Sj-Bz5"/>
+        <segue reference="gtI-9i-NcA"/>
     </inferredMetricsTieBreakers>
 </document>

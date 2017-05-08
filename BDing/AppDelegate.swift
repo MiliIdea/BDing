@@ -19,10 +19,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
-            // Enable or disable features based on authorization.
+        if #available(iOS 10.0, *) {
+            let center = UNUserNotificationCenter.current()
+            center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+                // Enable or disable features based on authorization.
+            }
+        } else {
+            // Fallback on earlier versions
         }
+        
         return true
     }
 
@@ -53,6 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Core Data stack
 
+    @available(iOS 10.0, *)
     lazy var persistentContainer: NSPersistentContainer = {
         /*
          The persistent container for the application. This implementation
@@ -83,7 +89,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Core Data Saving support
 
     func saveContext () {
-        let context = persistentContainer.viewContext
+        if #available(iOS 10.0, *) {
+            let context = persistentContainer.viewContext
+        
         if context.hasChanges {
             do {
                 try context.save()
@@ -95,6 +103,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
+    else {
+    // Fallback on earlier versions
+    }
+    }
 }
 

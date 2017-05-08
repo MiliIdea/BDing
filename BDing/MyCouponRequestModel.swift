@@ -1,8 +1,8 @@
 //
-//  MyCouponRequestModel.swift
+//  GetCouponRequestModel.swift
 //  BDing
 //
-//  Created by MILAD on 4/26/17.
+//  Created by MILAD on 4/28/17.
 //  Copyright © 2017 MILAD. All rights reserved.
 //
 
@@ -20,8 +20,12 @@ class MyCouponRequestModel {
         
         var temp = self.TOKEN.md5().md5()
         
-        temp.append(self.USERID.md5().md5())
-
+        let temp2 = self.USERID.md5().md5()
+        
+        temp.append(temp2)
+        
+        temp.append(self.TOKEN)
+        
         self.HASH =  temp.md5()
         
     }

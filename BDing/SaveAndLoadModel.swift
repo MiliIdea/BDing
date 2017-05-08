@@ -22,29 +22,36 @@ class SaveAndLoadModel {
                 return
         }
         // 1
-        let managedContext =
-            appDelegate.persistentContainer.viewContext
-        
-        // 2
-        let entity =
-            NSEntityDescription.entity(forEntityName: entityName,
-                                       in: managedContext)!
-        
-        let person = NSManagedObject(entity: entity,
-                                     insertInto: managedContext)
-        
-        
-        // 3
-        for row in datas {
-            person.setValue(row.value, forKeyPath: row.key)
+        if #available(iOS 10.0, *) {
+            let managedContext =
+                appDelegate.persistentContainer.viewContext
+            
+            
+            // 2
+            let entity =
+                NSEntityDescription.entity(forEntityName: entityName,
+                                           in: managedContext)!
+            
+            let person = NSManagedObject(entity: entity,
+                                         insertInto: managedContext)
+            
+            
+            // 3
+            for row in datas {
+                person.setValue(row.value, forKeyPath: row.key)
+            }
+            
+            // 4
+            do {
+                try managedContext.save()
+            } catch let error as NSError {
+                print("Could not save. \(error), \(error.userInfo)")
+            }
+            
+        } else {
+            // Fallback on earlier versions
         }
         
-        // 4
-        do {
-            try managedContext.save()
-        } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
-        }
     }
     
     //---------------------------------------------------------------------------------------//
@@ -57,21 +64,29 @@ class SaveAndLoadModel {
                 return nil
         }
         
-        let managedContext =
-            appDelegate.persistentContainer.viewContext
-        
-        //2
-        let fetchRequest =
-            NSFetchRequest<NSManagedObject>(entityName: entity)
-        
-        //3
-        do {
-            let rows = try managedContext.fetch(fetchRequest) as [NSManagedObject]
-            return rows
-        } catch let error as NSError {
-            print("Could not fetch. \(error), \(error.userInfo)")
-            return nil
+        if #available(iOS 10.0, *) {
+            let managedContext =
+                appDelegate.persistentContainer.viewContext
+            
+            //2
+            let fetchRequest =
+                NSFetchRequest<NSManagedObject>(entityName: entity)
+            
+            //3
+            do {
+                let rows = try managedContext.fetch(fetchRequest) as [NSManagedObject]
+                return rows
+            } catch let error as NSError {
+                print("Could not fetch. \(error), \(error.userInfo)")
+                return nil
+            }
+            
+        } else {
+            // Fallback on earlier versions
         }
+        
+        return nil
+        
     }
     
     //---------------------------------------------------------------------------------------//
@@ -82,16 +97,16 @@ class SaveAndLoadModel {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         
-        let result = try? moc.fetch(fetchRequest)
+        let result = try? moc?.fetch(fetchRequest)
         
-        for object in result! {
+        for object in result!! {
             
-            moc.delete(object as! NSManagedObject)
+            moc?.delete(object as! NSManagedObject)
             
         }
         
         do {
-            try moc.save()
+            try moc?.save()
             print("saved!")
         } catch let error as NSError  {
             print("Could not save \(error), \(error.userInfo)")
@@ -113,20 +128,20 @@ class SaveAndLoadModel {
         
         fetchRequest.predicate = NSPredicate(format: s, item)
         
-        let result = try? moc.fetch(fetchRequest)
+        let result = try? moc?.fetch(fetchRequest)
         
-        if((result?.count)! > 0){
+        if((result??.count)! > 0){
          
-            for object in result! {
+            for object in result!! {
                 
-                moc.delete(object as! NSManagedObject)
+                moc?.delete(object as! NSManagedObject)
                 
             }
             
         }
         
         do {
-            try moc.save()
+            try moc?.save()
             print("saved!")
         } catch let error as NSError  {
             print("Could not save \(error), \(error.userInfo)")
@@ -148,7 +163,7 @@ class SaveAndLoadModel {
         
         fetchRequest.predicate = NSPredicate(format: s, item)
         
-        let result = try? moc.fetch(fetchRequest) as? [NSManagedObject]
+        let result = try? moc?.fetch(fetchRequest) as? [NSManagedObject]
         
         if((result??.count)! > 0){
      
@@ -157,7 +172,7 @@ class SaveAndLoadModel {
         }
         
         do {
-            try moc.save()
+            try moc?.save()
             print("saved!")
         } catch let error as NSError  {
             print("Could not save \(error), \(error.userInfo)")
@@ -170,9 +185,15 @@ class SaveAndLoadModel {
     
     
     
-    func getContext () -> NSManagedObjectContext {
+    func getContext () -> NSManagedObjectContext? {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        return appDelegate.persistentContainer.viewContext
+        if #available(iOS 10.0, *) {
+            return appDelegate.persistentContainer.viewContext
+        } else {
+            // Fallback on earlier versions
+           
+        }
+        return nil
     }
     
     

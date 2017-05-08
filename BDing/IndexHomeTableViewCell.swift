@@ -74,9 +74,9 @@ class IndexHomeTableViewCell: UITableViewCell {
         // Initialization code
         MyFont().setMediumFont(view: customerCampaignTitle, mySize: 12)
         MyFont().setWebFont(view: customerName, mySize: 9)
-        MyFont().setWebFont(view: customerDistanceToMe, mySize: 8)
-        MyFont().setWebFont(view: customerCampaignDiscount, mySize: 10)
-        MyFont().setMediumFont(view: customerCampaignCoin, mySize: 11)
+        MyFont().setWebFont(view: customerDistanceToMe, mySize: 12)
+        MyFont().setWebFont(view: customerCampaignDiscount, mySize: 12)
+        MyFont().setMediumFont(view: customerCampaignCoin, mySize: 14)
         customerThumbnail.layer.zPosition = 1
         
     }
