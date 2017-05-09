@@ -14,8 +14,8 @@ import CoreLocation
 
 import Lottie
 
-class SignInPageTwoViewController: UIViewController {
 
+class SignInPageTwoViewController: UIViewController {
     
     @IBOutlet weak var titler: UILabel!
     
@@ -48,6 +48,8 @@ class SignInPageTwoViewController: UIViewController {
         
         // Do any additional setup after loading the view.
     }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

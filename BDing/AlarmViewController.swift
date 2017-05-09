@@ -608,6 +608,15 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
             
+            //TODO
+            
+            code
+            
+            inja bayad b jaye customerCategoryIcon bayad az liste categoryha iconesh ro begirim
+            
+            GlobalFields.CATEGORIES_LIST_DATAS[0].url_icon
+            
+            
             if(result == nil){
                 let a = CustomerHomeTableCell.init(preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: image, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic)
                 customerHomeTableCells.append(a)

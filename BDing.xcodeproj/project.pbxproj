@@ -29,7 +29,6 @@
 		112A6C201E92698200043C0A /* CategoryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112A6C1F1E92698200043C0A /* CategoryPageViewController.swift */; };
 		112B7C931E6BECC10020BAF6 /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112B7C921E6BECC10020BAF6 /* AlarmViewController.swift */; };
 		113F069A1E792CE700E7D74F /* GlobalFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F06991E792CE700E7D74F /* GlobalFields.swift */; };
-		113F069D1E79342C00E7D74F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 113F069B1E79342C00E7D74F /* Main.storyboard */; };
 		113F069F1E793DFA00E7D74F /* BeaconPicRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F069E1E793DFA00E7D74F /* BeaconPicRequestModel.swift */; };
 		113F06AD1E7966A900E7D74F /* AFIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F06A11E7966A900E7D74F /* AFIError.swift */; };
 		113F06AE1E7966A900E7D74F /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F06A31E7966A900E7D74F /* Image.swift */; };
@@ -94,6 +93,9 @@
 		1199BC301EC098A40006E545 /* MobileFonts.png in Resources */ = {isa = PBXBuildFile; fileRef = 1199BC2C1EC098A40006E545 /* MobileFonts.png */; };
 		1199BC321EC099BD0006E545 /* MyColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1199BC311EC099BD0006E545 /* MyColors.swift */; };
 		119F5D7E1E7671A60023D483 /* SignUpResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119F5D7D1E7671A60023D483 /* SignUpResponseModel.swift */; };
+		11A2C6461EC1D61E00B2630E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11A2C6441EC1D61E00B2630E /* Main.storyboard */; };
+		11A2C6481EC1D7E000B2630E /* ding.svg in Resources */ = {isa = PBXBuildFile; fileRef = 11A2C6471EC1D7E000B2630E /* ding.svg */; };
+		11A2C64A1EC1D83200B2630E /* instagram.svg in Resources */ = {isa = PBXBuildFile; fileRef = 11A2C6491EC1D83200B2630E /* instagram.svg */; };
 		11A90B591E7542CB0076EAD7 /* DPDConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A90B4F1E7542CB0076EAD7 /* DPDConstants.swift */; };
 		11A90B5A1E7542CB0076EAD7 /* DPDKeyboardListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A90B501E7542CB0076EAD7 /* DPDKeyboardListener.swift */; };
 		11A90B5B1E7542CB0076EAD7 /* DPDUIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A90B511E7542CB0076EAD7 /* DPDUIView+Extension.swift */; };
@@ -103,7 +105,6 @@
 		11A90B5F1E7542CB0076EAD7 /* DropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A90B571E7542CB0076EAD7 /* DropDown.swift */; };
 		11A90B601E7542CB0076EAD7 /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A90B581E7542CB0076EAD7 /* DropDownCell.swift */; };
 		11A90B621E7572E90076EAD7 /* URLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A90B611E7572E90076EAD7 /* URLs.swift */; };
-		11B0BF661EC19415002867CB /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11B0BF651EC19415002867CB /* Lottie.framework */; };
 		11D427621E66AEC3009F3763 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D427611E66AEC3009F3763 /* AppDelegate.swift */; };
 		11D427641E66AEC3009F3763 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D427631E66AEC3009F3763 /* ViewController.swift */; };
 		11D4276A1E66AEC3009F3763 /* BDing.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 11D427681E66AEC3009F3763 /* BDing.xcdatamodeld */; };
@@ -254,9 +255,9 @@
 		11E747191E7806EF002AEEFD /* BeaconListRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E747181E7806EF002AEEFD /* BeaconListRequestModel.swift */; };
 		11FDEBB31EAC92C1002E999E /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FDEBB21EAC92C1002E999E /* Reachability.swift */; };
 		11FDEBB51EACB625002E999E /* GetBeaconRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FDEBB41EACB625002E999E /* GetBeaconRequestModel.swift */; };
+		235FF38C1A33E83EBD3FF159 /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED65191AE6B9F9004DA954 /* Pods_BDing.framework */; };
 		5C65055DE2496E5B5DF9FCA5 /* Pods_BDingUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBFBC709538EF38D5F97E397 /* Pods_BDingUITests.framework */; };
 		9B590B220CE391E6E3DF01F6 /* Pods_BDingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB1DEBF668C472A761E76D2D /* Pods_BDingTests.framework */; };
-		C987C3D841B44A7C3AA14990 /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED65191AE6B9F9004DA954 /* Pods_BDing.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -387,7 +388,6 @@
 		112A6C1F1E92698200043C0A /* CategoryPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryPageViewController.swift; sourceTree = "<group>"; };
 		112B7C921E6BECC10020BAF6 /* AlarmViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
 		113F06991E792CE700E7D74F /* GlobalFields.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalFields.swift; sourceTree = "<group>"; };
-		113F069C1E79342C00E7D74F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		113F069E1E793DFA00E7D74F /* BeaconPicRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconPicRequestModel.swift; sourceTree = "<group>"; };
 		113F06A11E7966A900E7D74F /* AFIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFIError.swift; sourceTree = "<group>"; };
 		113F06A21E7966A900E7D74F /* AlamofireImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlamofireImage.h; sourceTree = "<group>"; };
@@ -456,6 +456,9 @@
 		1199BC2C1EC098A40006E545 /* MobileFonts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MobileFonts.png; sourceTree = "<group>"; };
 		1199BC311EC099BD0006E545 /* MyColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyColors.swift; sourceTree = "<group>"; };
 		119F5D7D1E7671A60023D483 /* SignUpResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpResponseModel.swift; sourceTree = "<group>"; };
+		11A2C6451EC1D61E00B2630E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		11A2C6471EC1D7E000B2630E /* ding.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ding.svg; sourceTree = "<group>"; };
+		11A2C6491EC1D83200B2630E /* instagram.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = instagram.svg; sourceTree = "<group>"; };
 		11A90B4D1E7542CB0076EAD7 /* DropDown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDown.h; sourceTree = "<group>"; };
 		11A90B4F1E7542CB0076EAD7 /* DPDConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPDConstants.swift; sourceTree = "<group>"; };
 		11A90B501E7542CB0076EAD7 /* DPDKeyboardListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPDKeyboardListener.swift; sourceTree = "<group>"; };
@@ -648,8 +651,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C987C3D841B44A7C3AA14990 /* Pods_BDing.framework in Frameworks */,
-				11B0BF661EC19415002867CB /* Lottie.framework in Frameworks */,
+				235FF38C1A33E83EBD3FF159 /* Pods_BDing.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1075,6 +1077,8 @@
 		11D427601E66AEC3009F3763 /* BDing */ = {
 			isa = PBXGroup;
 			children = (
+				11A2C6471EC1D7E000B2630E /* ding.svg */,
+				11A2C6491EC1D83200B2630E /* instagram.svg */,
 				1161F4241EC197AF0057397B /* finall.json */,
 				11D427921E66AFE1009F3763 /* Libs */,
 				113F92781E70014D005CC419 /* Models */,
@@ -1084,7 +1088,7 @@
 				11D427611E66AEC3009F3763 /* AppDelegate.swift */,
 				11D427631E66AEC3009F3763 /* ViewController.swift */,
 				11D4276B1E66AEC3009F3763 /* Assets.xcassets */,
-				113F069B1E79342C00E7D74F /* Main.storyboard */,
+				11A2C6441EC1D61E00B2630E /* Main.storyboard */,
 				11D4276D1E66AEC3009F3763 /* LaunchScreen.storyboard */,
 				11D427701E66AEC3009F3763 /* Info.plist */,
 				11D427681E66AEC3009F3763 /* BDing.xcdatamodeld */,
@@ -1604,7 +1608,10 @@
 				113F06B21E7966A900E7D74F /* Info-tvOS.plist in Resources */,
 				1179DDC21E76876400BE7DED /* Info.plist in Resources */,
 				1199BC2D1EC098A40006E545 /* IRANYekanLightMobile(FaNum).ttf in Resources */,
+				11A2C64A1EC1D83200B2630E /* instagram.svg in Resources */,
 				1179DDBB1E767EEE00BE7DED /* Info.plist in Resources */,
+				11A2C6461EC1D61E00B2630E /* Main.storyboard in Resources */,
+				11A2C6481EC1D7E000B2630E /* ding.svg in Resources */,
 				1199BC2E1EC098A40006E545 /* IRANYekanMobileBold(FaNum).ttf in Resources */,
 				1179DDDC1E7687D200BE7DED /* Info.plist in Resources */,
 				11D428831E66BFA2009F3763 /* Info.plist in Resources */,
@@ -1614,7 +1621,6 @@
 				111D9D421EBDFC82006C7984 /* IRANYekanMobileRegular.ttf in Resources */,
 				11A90B5D1E7542CB0076EAD7 /* DropDownCell.xib in Resources */,
 				111D9D431EBDFC82006C7984 /* MobileFonts.png in Resources */,
-				113F069D1E79342C00E7D74F /* Main.storyboard in Resources */,
 				11D4276C1E66AEC3009F3763 /* Assets.xcassets in Resources */,
 				113F06B31E7966A900E7D74F /* Info.plist in Resources */,
 				11D4289E1E66BFA2009F3763 /* Info.plist in Resources */,
@@ -2039,10 +2045,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		113F069B1E79342C00E7D74F /* Main.storyboard */ = {
+		11A2C6441EC1D61E00B2630E /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				113F069C1E79342C00E7D74F /* Base */,
+				11A2C6451EC1D61E00B2630E /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
