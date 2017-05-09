@@ -12,10 +12,7 @@ import CoreData
 
 import CoreLocation
 
-
-
-
-
+import Lottie
 
 class SignInPageTwoViewController: UIViewController {
 
@@ -30,11 +27,19 @@ class SignInPageTwoViewController: UIViewController {
     
     @IBOutlet weak var signUpLink: UIButton!
     
+    var beaconBool : Bool = false
+    
+    var catBool : Bool = false
+    
+    var profileBool : Bool = false
+    
     var user : String = ""
+    
+    var animationView : LOTAnimationView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         MyFont().setMediumFont(view: self.titler, mySize: 13)
         MyFont().setMediumFont(view: self.passwordTextView, mySize: 15)
         MyFont().setMediumFont(view: self.vorudButton, mySize: 13)
@@ -59,11 +64,51 @@ class SignInPageTwoViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     
+    func setGradientLayer(myView: UIView , color1: CGColor , color2: CGColor) -> CALayer {
+        
+        let gradientLayer = CAGradientLayer()
+        
+        gradientLayer.frame = myView.bounds
+        
+        gradientLayer.colors = [color1, color2]
+        
+        gradientLayer.startPoint = CGPoint(x: 0,y: 0.5)
+        
+        gradientLayer.endPoint = CGPoint(x: 1,y: 0.5)
+        
+        return gradientLayer
+        
+    }
+    
     @IBAction func signInPressing(_ sender: Any) {
         
         let s = SignInRequestModel(USERNAME: user, PASSWORD: passwordTextView.text)
         
         print(s.getParams())
+        
+        self.view.endEditing(true)
+        
+        animationView = LOTAnimationView(name: "finall")
+        
+        animationView?.frame.size.height = 50
+        
+        animationView?.frame.size.width = 50
+        
+        animationView?.frame.origin.y = self.view.frame.height / 2 - 25
+        
+        animationView?.frame.origin.x = self.view.frame.width / 2 - 25
+        
+        animationView?.contentMode = UIViewContentMode.scaleAspectFit
+        
+        animationView?.alpha = 1
+        
+        self.view.addSubview(animationView!)
+        
+        animationView?.animationSpeed = 4
+        
+        animationView?.loopAnimation = true
+        
+        animationView?.play()
         
         request(URLs.signInUrl , method: .post , parameters: s.getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
@@ -88,22 +133,43 @@ class SignInPageTwoViewController: UIViewController {
                     self.loadTabView()
                     
                     
-                    
-                    
-//                    let animationView = LOTAnimationView(name: "hamburger")
-//                    self.view.addSubview(animationView)
-//                    
-//                    animationView.play(completion: { finished in
-//                        // Do Something
-//                    })
-                    
                     print(SaveAndLoadModel().load(entity: "USER")?.count ?? "nothing!")
                     
-                    let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                    var recycle : Bool = true
                     
-                    let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController") as! UITabBarController
+                    DispatchQueue.global(qos: .userInitiated).async {
+                        
+                        while (recycle) {
+                            
+                            if(self.profileBool && self.beaconBool && self.catBool){
+                                
+                                recycle = false
+                            }
+                            
+                        }
+                        
+                        DispatchQueue.main.async {
+                           
+                            if(recycle == false){
+                                
+                                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                                
+                                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController") as! UITabBarController
+                                
+                                self.present(nextViewController, animated:true, completion:nil)
+                                
+                            }
+                            
+                        }
+                    }
                     
-                    self.present(nextViewController, animated:true, completion:nil)
+                }else{
+                    
+                    self.animationView?.pause()
+                    
+                    self.animationView?.alpha = 0
+                    
+                    self.view.endEditing(false)
                     
                 }
                 
@@ -112,7 +178,7 @@ class SignInPageTwoViewController: UIViewController {
         }
         
     }
-    
+
     
     func loadTabView() {
         
@@ -129,7 +195,7 @@ class SignInPageTwoViewController: UIViewController {
                 
                 if ( obj?.code == "200" ){
                     
-                    
+                    self.profileBool = true
                     
                 }
                 
@@ -177,6 +243,8 @@ class SignInPageTwoViewController: UIViewController {
                     
                     GlobalFields.BEACON_LIST_DATAS = obj?.data
                     
+                    self.beaconBool = true
+                    
                 }
                 
             }
@@ -199,6 +267,7 @@ class SignInPageTwoViewController: UIViewController {
                     
                     GlobalFields.CATEGORIES_LIST_DATAS = obj?.data
                    
+                    self.catBool = true
                     
                 }
                 
