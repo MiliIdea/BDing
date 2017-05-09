@@ -9,6 +9,7 @@
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 
 #import <UIKit/UIKit.h>
+#import <Lottie/Lottie.h>
 #import <Foundation/Foundation.h>
 
 /** LOTAnimationTransitionController

@@ -16,6 +16,7 @@ import CoreLocation
 
 
 
+
 class SignInPageTwoViewController: UIViewController {
 
     
@@ -33,7 +34,7 @@ class SignInPageTwoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         MyFont().setMediumFont(view: self.titler, mySize: 13)
         MyFont().setMediumFont(view: self.passwordTextView, mySize: 15)
         MyFont().setMediumFont(view: self.vorudButton, mySize: 13)
@@ -85,6 +86,7 @@ class SignInPageTwoViewController: UIViewController {
                     ///
                     
                     self.loadTabView()
+                    
                     
                     
                     
