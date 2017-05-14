@@ -23,7 +23,7 @@ class MyColors{
     
     static var color6 : UIColor = UIColor(hex: "d50000")
     
-    static var color7 : UIColor = UIColor(hex: "00c853")
+    static var greenColor : UIColor = UIColor(hex: "00c853")
 
     
     

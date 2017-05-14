@@ -610,11 +610,11 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             //TODO
             
-            code
-            
-            inja bayad b jaye customerCategoryIcon bayad az liste categoryha iconesh ro begirim
-            
-            GlobalFields.CATEGORIES_LIST_DATAS[0].url_icon
+//            code
+//            
+//            inja bayad b jaye customerCategoryIcon bayad az liste categoryha iconesh ro begirim
+//            
+//            GlobalFields.CATEGORIES_LIST_DATAS[0].url_icon
             
             
             if(result == nil){

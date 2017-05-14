@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		110EB5391E9A404F00431534 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110EB5381E9A404F00431534 /* TabBarController.swift */; };
 		110EB53B1E9A4EA500431534 /* PicDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110EB53A1E9A4EA500431534 /* PicDataModel.swift */; };
+		1110B9B01EC32D5000EF182F /* ActivationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1110B9AF1EC32D5000EF182F /* ActivationCodeViewController.swift */; };
 		11187B551E98F215009110E2 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11187B541E98F215009110E2 /* DetailViewController.swift */; };
 		111BB16E1EB082F600AD202D /* TakeCouponViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111BB16D1EB082F600AD202D /* TakeCouponViewController.swift */; };
 		111BB1701EB0831B00AD202D /* PayHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111BB16F1EB0831B00AD202D /* PayHistoryViewController.swift */; };
@@ -42,6 +43,8 @@
 		113F06B61E7966A900E7D74F /* UIImage+AlamofireImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F06AB1E7966A900E7D74F /* UIImage+AlamofireImage.swift */; };
 		113F06B71E7966A900E7D74F /* UIImageView+AlamofireImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F06AC1E7966A900E7D74F /* UIImageView+AlamofireImage.swift */; };
 		113F927A1E70019D005CC419 /* SignUpRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F92791E70019D005CC419 /* SignUpRequestModel.swift */; };
+		114C640D1EC6ED0600B23525 /* ActivationCodeRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C640C1EC6ED0600B23525 /* ActivationCodeRequestModel.swift */; };
+		114C640F1EC7213C00B23525 /* ForgotPasswordRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C640E1EC7213C00B23525 /* ForgotPasswordRequestModel.swift */; };
 		114F5D6C1EB46D1700FAEB6B /* CouponListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114F5D6B1EB46D1700FAEB6B /* CouponListResponseModel.swift */; };
 		114F5D6E1EB46DA100FAEB6B /* CouponListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114F5D6D1EB46DA100FAEB6B /* CouponListData.swift */; };
 		114F5D701EB4785D00FAEB6B /* MyCouponListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114F5D6F1EB4785D00FAEB6B /* MyCouponListResponseModel.swift */; };
@@ -255,7 +258,6 @@
 		11E747191E7806EF002AEEFD /* BeaconListRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E747181E7806EF002AEEFD /* BeaconListRequestModel.swift */; };
 		11FDEBB31EAC92C1002E999E /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FDEBB21EAC92C1002E999E /* Reachability.swift */; };
 		11FDEBB51EACB625002E999E /* GetBeaconRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FDEBB41EACB625002E999E /* GetBeaconRequestModel.swift */; };
-		235FF38C1A33E83EBD3FF159 /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED65191AE6B9F9004DA954 /* Pods_BDing.framework */; };
 		5C65055DE2496E5B5DF9FCA5 /* Pods_BDingUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBFBC709538EF38D5F97E397 /* Pods_BDingUITests.framework */; };
 		9B590B220CE391E6E3DF01F6 /* Pods_BDingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB1DEBF668C472A761E76D2D /* Pods_BDingTests.framework */; };
 /* End PBXBuildFile section */
@@ -367,6 +369,7 @@
 		110B9E131EC183EA00F9BD02 /* Lottie.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Lottie.h; sourceTree = "<group>"; };
 		110EB5381E9A404F00431534 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		110EB53A1E9A4EA500431534 /* PicDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PicDataModel.swift; sourceTree = "<group>"; };
+		1110B9AF1EC32D5000EF182F /* ActivationCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivationCodeViewController.swift; sourceTree = "<group>"; };
 		11187B541E98F215009110E2 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		111BB16D1EB082F600AD202D /* TakeCouponViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TakeCouponViewController.swift; sourceTree = "<group>"; };
 		111BB16F1EB0831B00AD202D /* PayHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayHistoryViewController.swift; sourceTree = "<group>"; };
@@ -402,6 +405,8 @@
 		113F06AB1E7966A900E7D74F /* UIImage+AlamofireImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+AlamofireImage.swift"; sourceTree = "<group>"; };
 		113F06AC1E7966A900E7D74F /* UIImageView+AlamofireImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+AlamofireImage.swift"; sourceTree = "<group>"; };
 		113F92791E70019D005CC419 /* SignUpRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpRequestModel.swift; sourceTree = "<group>"; };
+		114C640C1EC6ED0600B23525 /* ActivationCodeRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivationCodeRequestModel.swift; sourceTree = "<group>"; };
+		114C640E1EC7213C00B23525 /* ForgotPasswordRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordRequestModel.swift; sourceTree = "<group>"; };
 		114F5D6B1EB46D1700FAEB6B /* CouponListResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponListResponseModel.swift; sourceTree = "<group>"; };
 		114F5D6D1EB46DA100FAEB6B /* CouponListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponListData.swift; sourceTree = "<group>"; };
 		114F5D6F1EB4785D00FAEB6B /* MyCouponListResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCouponListResponseModel.swift; sourceTree = "<group>"; };
@@ -651,7 +656,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				235FF38C1A33E83EBD3FF159 /* Pods_BDing.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -984,6 +988,8 @@
 				117671DD1EB0B98B00F8D41F /* PayListRequestModel.swift */,
 				111BB1751EB0AD0400AD202D /* GetCouponRequestModel.swift */,
 				117671DF1EB457EF00F8D41F /* MyCouponRequestModel.swift */,
+				114C640C1EC6ED0600B23525 /* ActivationCodeRequestModel.swift */,
+				114C640E1EC7213C00B23525 /* ForgotPasswordRequestModel.swift */,
 			);
 			name = RquestModels;
 			sourceTree = "<group>";
@@ -1142,6 +1148,7 @@
 				11D427A31E66B100009F3763 /* SignInPageOneViewController.swift */,
 				11D427A41E66B100009F3763 /* SignInPageTwoViewController.swift */,
 				11D427A51E66B100009F3763 /* SignUpViewController.swift */,
+				1110B9AF1EC32D5000EF182F /* ActivationCodeViewController.swift */,
 				112B7C921E6BECC10020BAF6 /* AlarmViewController.swift */,
 				1125ADAC1EB85D8500472356 /* MapViewController.swift */,
 				112A6C1F1E92698200043C0A /* CategoryPageViewController.swift */,
@@ -1864,6 +1871,7 @@
 				1179DDE41E7687D200BE7DED /* Result.swift in Sources */,
 				11D428AA1E66BFA2009F3763 /* DCBorderedTextView.swift in Sources */,
 				11D428AC1E66BFA2009F3763 /* DCBaseView.swift in Sources */,
+				1110B9B01EC32D5000EF182F /* ActivationCodeViewController.swift in Sources */,
 				11FDEBB51EACB625002E999E /* GetBeaconRequestModel.swift in Sources */,
 				11D4287D1E66BFA2009F3763 /* HMAC+Foundation.swift in Sources */,
 				11FDEBB31EAC92C1002E999E /* Reachability.swift in Sources */,
@@ -1950,6 +1958,7 @@
 				1179DDDA1E7687D200BE7DED /* DispatchQueue+Alamofire.swift in Sources */,
 				11D428DD1E66BFA3009F3763 /* TransitionZoom.swift in Sources */,
 				11D428D41E66BFA3009F3763 /* Spring.swift in Sources */,
+				114C640F1EC7213C00B23525 /* ForgotPasswordRequestModel.swift in Sources */,
 				117671E01EB457EF00F8D41F /* MyCouponRequestModel.swift in Sources */,
 				111BB1731EB087DC00AD202D /* PayHistoryTableViewCell.swift in Sources */,
 				11D427B31E66B2D1009F3763 /* CustomerHomeTableCell.swift in Sources */,
@@ -1974,6 +1983,7 @@
 				11D428CB1E66BFA3009F3763 /* DesignableTextView.swift in Sources */,
 				113F06AF1E7966A900E7D74F /* ImageCache.swift in Sources */,
 				11D428C31E66BFA3009F3763 /* AsyncImageView.swift in Sources */,
+				114C640D1EC6ED0600B23525 /* ActivationCodeRequestModel.swift in Sources */,
 				11E747151E77E5A8002AEEFD /* ProfileResponseModel.swift in Sources */,
 				11D428A01E66BFA2009F3763 /* DCBorderedButton.swift in Sources */,
 				112A6C1E1E921C4500043C0A /* SubCategoryData.swift in Sources */,

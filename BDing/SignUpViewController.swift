@@ -15,7 +15,7 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
 
     @IBOutlet weak var scrollViewSubView: UIView!
     
-    @IBOutlet weak var mobileOrEmail: UITextField!
+    @IBOutlet weak var mobile: UITextField!
     
     @IBOutlet weak var noticeText: UILabel!
 
@@ -33,12 +33,13 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
     
     @IBOutlet weak var gender: UITextField!
     
-    @IBOutlet weak var mobile: UITextField!
-    
     @IBOutlet weak var email: UITextField!
     
     @IBOutlet weak var expandedBox: UIView!
     
+    @IBOutlet weak var userName: UITextField!
+    
+    @IBOutlet weak var confirmationPass: UITextField!
     
     let dropDown = DropDown()
     
@@ -60,6 +61,14 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         signUpScrollView.contentSize = scrollViewSubView.frame.size
         
         self.addDoneButtonOnKeyboard()
+        
+        mobile.delegate = self
+        
+        userName.delegate = self
+        
+        password.delegate = self
+        
+        confirmationPass.delegate = self
         
         name.delegate = self
         
@@ -91,7 +100,8 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         dropDown.selectionAction = { [unowned self] (index: Int, item: String) in
             self.gender.text = item
             self.dropDown.hide()
-            self.mobile.becomeFirstResponder()
+            self.email.becomeFirstResponder()
+            self.email.window?.makeKeyAndVisible()
             
         }
         
@@ -107,6 +117,7 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         
         email.tag = 0
         
+
         
         // Do any additional setup after loading the view.
     }
@@ -116,30 +127,42 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         
         switch textField {
             
-        case mobileOrEmail:
-            password.becomeFirstResponder()
+        case mobile:
+            userName.becomeFirstResponder()
+            userName.window?.makeKeyAndVisible()
+            break
             
-//        case password:
-//            print("inja bas confirm kone!")
+        case userName:
+            password.becomeFirstResponder()
+            password.window?.makeKeyAndVisible()
+            break
+            
+        case password:
+            confirmationPass.becomeFirstResponder()
+            confirmationPass.window?.makeKeyAndVisible()
+            break
             
         case name:
             familyName.becomeFirstResponder()
+            familyName.window?.makeKeyAndVisible()
+            break
             
         case familyName:
             gender.becomeFirstResponder()
+            gender.window?.makeKeyAndVisible()
             self.dropDown.show()
+            break
             
         case gender:
             if(dropDown.selectedItem != "مرد" && dropDown.selectedItem != "زن"){
                 return false
             }
+            break
             
             gender.text = dropDown.selectedItem
             dropDown.hide()
-            mobile.becomeFirstResponder()
-        
-        case mobile:
             email.becomeFirstResponder()
+            email.window?.makeKeyAndVisible()
             
 //        case email:
 //            print("inja bas confirm kone!")
@@ -161,15 +184,26 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            print(textField.frame.origin.y)
+            
+            print(self.signUpScrollView.contentOffset.y)
             
             self.signUpScrollView.contentOffset.y = textField.frame.origin.y + 40
+            
+            if(textField == self.name || textField == self.familyName || textField == self.gender || textField == self.email){
+                print("expaaaanded BoOoxX")
+                print(self.expandedBox.frame.origin.y)
+                self.signUpScrollView.contentOffset.y += self.expandedBox.frame.origin.y
+                
+            }
             
             if(textField == self.gender){
                 
                 self.dropDown.show()
                 
-                self.signUpScrollView.contentOffset.y += 80
+//                self.signUpScrollView.contentOffset.y += 80
                 
             }
             
@@ -186,7 +220,7 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         doneToolbar.barStyle = UIBarStyle.default
         
         let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        let done: UIBarButtonItem = UIBarButtonItem(title: "Next", style: UIBarButtonItemStyle.done, target: self, action: #selector(SignUpViewController.doneButtonAction))
+        let done: UIBarButtonItem = UIBarButtonItem(title: "NEXT", style: UIBarButtonItemStyle.done, target: self, action: #selector(SignUpViewController.doneButtonAction))
         
         done.tintColor = UIColor.green
         
@@ -214,18 +248,19 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         doneToolbar2.items = items2
         doneToolbar2.sizeToFit()
         
-        self.mobileOrEmail.inputAccessoryView = doneToolbar2
+//        self.email.inputAccessoryView = doneToolbar2
         
     }
     
     func doneButtonAction()
     {
-        self.email.becomeFirstResponder()
+        self.userName.becomeFirstResponder()
+        userName.window?.makeKeyAndVisible()
     }
     
     func doneButtonAction2()
     {
-        self.password.becomeFirstResponder()
+//        self.confirmationPass.becomeFirstResponder()
     }
     
 
@@ -264,8 +299,46 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
     
     
     @IBAction func register(_ sender: Any) {
+        //, MOBILE : mobile.text
         
-        let m = SignUpRequestModel(USERNAME: mobileOrEmail.text, PASSWORD: password.text)
+        
+        if(password.text != confirmationPass.text){
+            
+            print("alo alo man jujuam ... he he")
+            
+            return
+            
+        }
+        
+        if((password.text?.characters.count)! < 6){
+            
+            print("alo alo un jujue")
+            
+            return
+            
+        }
+        
+        if(!(email.text?.contains("@"))! && (email.text != "" && email.text != nil)){
+            
+            print("email doros nis!!!")
+            
+            return
+            
+        }
+        
+        var gender2 : String = self.gender.text!
+        
+        if(gender2 == "مرد"){
+            
+            gender2 = "male"
+            
+        }else if(gender2 == "زن"){
+            
+            gender2 = "female"
+            
+        }
+        
+        let m = SignUpRequestModel(USERNAME: mobile.text, PASSWORD: password.text, SOCIALNAME: userName.text, GENDER: gender2, BDATE: nil, NAME: name.text, FAMILYNAME: familyName.text, EMAIL: email.text)
         
         print(m.getParams())
         
@@ -280,7 +353,13 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
                     
                     let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                     
-                    let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SignInPageOneViewController") as! SignInPageOneViewController
+                    let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ActivationCodeViewController") as! ActivationCodeViewController
+                    
+                    nextViewController.userName = self.mobile.text
+                    
+                    nextViewController.password = self.password.text
+                    
+                    nextViewController.upRequest = m
                     
                     self.present(nextViewController, animated:true, completion:nil)
                     

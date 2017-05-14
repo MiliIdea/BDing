@@ -27,6 +27,20 @@ class SignInPageTwoViewController: UIViewController {
     
     @IBOutlet weak var signUpLink: UIButton!
     
+    
+    @IBOutlet weak var blurView: UIVisualEffectView!
+    
+    @IBOutlet weak var forgotPopUpView: DCBorderedView!
+    
+    @IBOutlet weak var userNameForgot: UITextField!
+    
+    
+    
+    
+    
+    
+    
+    
     var beaconBool : Bool = false
     
     var catBool : Bool = false
@@ -45,6 +59,10 @@ class SignInPageTwoViewController: UIViewController {
         MyFont().setMediumFont(view: self.vorudButton, mySize: 13)
         MyFont().setMediumFont(view: self.smallText, mySize: 10)
         MyFont().setMediumFont(view: self.signUpLink, mySize: 10)
+        
+        blurView.alpha = 0
+        
+        forgotPopUpView.alpha = 0
         
         // Do any additional setup after loading the view.
     }
@@ -197,6 +215,8 @@ class SignInPageTwoViewController: UIViewController {
                 
                 if ( obj?.code == "200" ){
                     
+                    GlobalFields.PROFILEDATA = obj?.data
+                    
                     self.profileBool = true
                     
                 }
@@ -282,5 +302,69 @@ class SignInPageTwoViewController: UIViewController {
         
         
     }
+    
+    
+    
+    @IBAction func recyclePass(_ sender: Any) {
+        
+        UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            self.blurView.backgroundColor = UIColor.lightGray
+            
+            self.blurView.alpha = 0.3
+            
+            self.forgotPopUpView.alpha = 1 
+            
+        },completion : nil)
+        
+    }
+    
+    @IBAction func cansel(_ sender: Any) {
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            self.blurView.alpha = 0
+            
+            self.forgotPopUpView.alpha = 0
+            
+            self.view.endEditing(true)
+            
+        },completion : nil)
+        
+    }
+    
+    @IBAction func sendForgotUsername(_ sender: Any) {
+        
+        
+        request(URLs.forgotPassword , method: .post , parameters: ForgotpasswordRequestModel(USERNAME: userNameForgot.text).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------FORGOT PASSWORD----------->>>> " , JSON)
+                
+                let obj = CategoryListResponseModel.init(json: JSON as! JSON)
+                
+                if ( obj?.code == "200" ){
+                    
+                    self.view.endEditing(true)
+                    
+                }
+                
+            }
+            
+        }
+        
+        
+    }
+ 
 
 }
+
+
+
+
+
+
+
+
+

@@ -80,7 +80,41 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
     
     @IBOutlet var container: UIView!
     
+    // input popups
     
+    @IBOutlet weak var blurView: UIVisualEffectView!
+    
+    @IBOutlet weak var pickerContainerView: DCBorderedView!
+    
+    @IBOutlet weak var datePicker: UIDatePicker!
+    
+
+    
+    
+    @IBOutlet weak var inputContainerView: DCBorderedView!
+    
+    @IBOutlet weak var inputTextField: UITextField!
+    
+    @IBOutlet weak var inputTitle: UILabel!
+    
+    
+    
+    
+    
+ //profile data 
+    
+    
+    @IBOutlet weak var nameButton: UIButton!
+    
+    @IBOutlet weak var familyNameButton: UIButton!
+    
+    @IBOutlet weak var genderButton: UIButton!
+    
+    @IBOutlet weak var mobileButton: UIButton!
+    
+    @IBOutlet weak var emailButton: UIButton!
+    
+    @IBOutlet weak var BirthDayButton: UIButton!
     
     
     
@@ -134,6 +168,8 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
         scrollViewProfile.addSubview(viewInScrollView)
         
         scrollViewProfile.contentSize = viewInScrollView.frame.size
+        
+        scrollViewProfile.contentSize.height += 10
         
         heightOfSemiCircular = semicircularView.frame.height
         
@@ -189,7 +225,23 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
         
         reportLabel.layer.cornerRadius = 8
         
+        disAppearInputView()
         
+        disAppearDatePickerView()
+        
+        //fill profile data
+        
+        nameButton.setTitle(GlobalFields.PROFILEDATA?.name, for: UIControlState.normal)
+        
+        familyNameButton.setTitle(GlobalFields.PROFILEDATA?.family, for: UIControlState.normal)
+        
+        genderButton.setTitle(GlobalFields.PROFILEDATA?.gender, for: UIControlState.normal)
+        
+        mobileButton.setTitle(GlobalFields.PROFILEDATA?.mobile, for: UIControlState.normal)
+        
+        emailButton.setTitle(GlobalFields.PROFILEDATA?.email, for: UIControlState.normal)
+        
+        BirthDayButton.setTitle(GlobalFields.PROFILEDATA?.birthdate, for: UIControlState.normal)
         
         
     }
@@ -563,27 +615,119 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
     
     
     
+    @IBAction func editName(_ sender: Any) {
+        
+        appearInputView()
+        
+    }
+    
+    
+    @IBAction func editFamilyName(_ sender: Any) {
+        
+        appearInputView()
+        
+    }
+    
+    
+    @IBAction func editGender(_ sender: Any) {
+        
+        
+        
+    }
+   
+    
+    @IBAction func editMobile(_ sender: Any) {
+        
+        appearInputView()
+        
+    }
+    
+    
+    @IBAction func editEmail(_ sender: Any) {
+        
+        appearInputView()
+        
+    }
+    
+    
+    @IBAction func editBirthDay(_ sender: Any) {
+        
+        appearDatePickerView()
+        
+    }
     
     
     
+    @IBAction func confirmInput(_ sender: Any) {
+        
+        //set
+        
+        //
+        disAppearInputView()
+        
+    }
+    
+    @IBAction func canselInput(_ sender: Any) {
+       
+        disAppearInputView()
+        
+    }
+
+    @IBAction func confirmDatePicker(_ sender: Any) {
+        
+        //set
+        
+        //
+        disAppearDatePickerView()
+        
+    }
+    
+    @IBAction func canselDataPicker(_ sender: Any) {
+        
+        disAppearDatePickerView()
+        
+    }
     
     
+    func appearDatePickerView(){
+        
+        self.pickerContainerView.alpha = 1
+        
+        self.pickerContainerView.layer.zPosition = 1
+        
+        self.blurView.alpha = 0.3
+        
+        self.blurView.layer.zPosition = 1
+        
+    }
     
+    func disAppearDatePickerView(){
+        
+        self.pickerContainerView.alpha = 0
+        
+        self.blurView.alpha = 0
+        
+    }
     
+    func appearInputView(){
+        
+        self.inputContainerView.alpha = 1
+        
+        self.inputContainerView.layer.zPosition = 1
+        
+        self.blurView.alpha = 0.3
+        
+        self.blurView.layer.zPosition = 1
+        
+    }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    func disAppearInputView(){
+        
+        self.inputContainerView.alpha = 0
+        
+        self.blurView.alpha = 0
+        
+    }
     
     
     

@@ -26,6 +26,8 @@ class URLs {
     
     //***REMAIN***//
     
+    static let activationCode = server + "register/active"
+    
     static let getMyCoupon = server + "user/getcoupon" // coupon haye man
     
     static let getCoupons = server + "coupon" // liste couponhaye mojud
@@ -37,6 +39,8 @@ class URLs {
     static let payWithToll = server + "user/pay" // pardakht ba seke
     
     static let paylistHistory = server + "user/paylist" //tarikhche pardakhtha
+    
+    static let forgotPassword = server + "register/forget"
     
 }
 

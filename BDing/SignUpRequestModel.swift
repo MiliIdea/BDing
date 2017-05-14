@@ -10,24 +10,42 @@ import Foundation
 
 class SignUpRequestModel {
     
-    init(USERNAME: String! , PASSWORD: String!) {
+    // describtion : bdate should be d/m/y in miladi
+    
+    init(USERNAME: String! , PASSWORD: String! , SOCIALNAME : String! , GENDER :String? , BDATE : String? , NAME: String? , FAMILYNAME : String? ,EMAIL : String?) {
         
         self.USERNAME = USERNAME
         
         self.PASSWORD = PASSWORD
         
-        self.KEY = PASSWORD.md5()
+        self.SOCIALNAME = SOCIALNAME
         
-        if USERNAME.contains("@") && USERNAME.contains(".") {
+        self.BDATE = BDATE
+        
+        self.GENDER = GENDER
+        
+        self.KEY = PASSWORD.md5()
+   
+        self.TYPE = "tell"
+        
+        self.NAME = NAME
+        
+        self.FAMILYNAME = FAMILYNAME
+        
+        if(NAME != nil && FAMILYNAME != nil){
             
-            self.TYPE = "email"
+            var fn : String = NAME!
             
-        }else{
+            fn.append(" ")
             
-            self.TYPE = "tell"
+            fn.append(FAMILYNAME!)
+            
+            self.FULLNAME = fn
             
         }
         
+        self.EMAIL = EMAIL
+
         var temp = self.USERNAME
         
         temp?.append(self.PASSWORD)
@@ -40,13 +58,21 @@ class SignUpRequestModel {
     
     var FULLNAME: String?
     
+    var NAME: String?
+    
+    var FAMILYNAME: String?
+    
+    var EMAIL: String?
+    
     var USERNAME: String!
     
     var PASSWORD: String!
     
+    var SOCIALNAME: String!
+    
     var KEY: String!
     
-    var BDATE: Date?
+    var BDATE: String?
     
     var GENDER: String?
     
@@ -55,7 +81,7 @@ class SignUpRequestModel {
     var HASH: String!
     
     func getParams() -> [String: Any]{
-        return ["username": USERNAME , "password": PASSWORD , "type":TYPE , "hash": HASH , "key": KEY , "gender": "" , "bdate": "" , "fullname": ""]
+        return ["username": USERNAME , "password": PASSWORD , "type":TYPE , "hash": HASH , "key": KEY , "gender": GENDER , "bdate": BDATE , "fullname": FULLNAME , "email" : EMAIL, "social_name" : SOCIALNAME]
         
     }
     
