@@ -8,13 +8,15 @@
 
 import UIKit
 
+import Lottie
+
+import CoreData
+
+import CoreLocation
+
 class SignInPageOneViewController: UIViewController {
 
     @IBOutlet weak var resumeButton: DCBorderedButton!
-    
-    @IBOutlet weak var telegramButton: DCBorderedButton!
-    
-    @IBOutlet weak var googleButton: DCBorderedButton!
     
     @IBOutlet weak var mobileHint: UITextField!
     
@@ -26,17 +28,21 @@ class SignInPageOneViewController: UIViewController {
     
     @IBOutlet weak var text: UILabel!
     
-    @IBOutlet weak var yaHesabText: UILabel!
+    var beaconBool : Bool = false
+    
+    var catBool : Bool = false
+    
+    var profileBool : Bool = false
+    
+    var animationView : LOTAnimationView?
+    
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         MyFont().setMediumFont(view: self.resumeButton, mySize: 13)
-        
-        MyFont().setMediumFont(view: self.telegramButton, mySize: 13)
-        
-        MyFont().setMediumFont(view: self.googleButton, mySize: 13)
         
         MyFont().setMediumFont(view: self.karbariText, mySize: 13)
         
@@ -45,8 +51,6 @@ class SignInPageOneViewController: UIViewController {
         MyFont().setMediumFont(view: self.signUpLink, mySize: 10)
         
         MyFont().setMediumFont(view: self.text, mySize: 10)
-        
-        MyFont().setLightFont(view: self.yaHesabText, mySize: 11)
         
         MyFont().setMediumFont(view: self.mobileHint, mySize: 15)
         // Do any additional setup after loading the view.
@@ -76,14 +80,7 @@ class SignInPageOneViewController: UIViewController {
     @IBAction func resumePressing(_ sender: DCBorderedButton) {
         
     }
-
-    @IBAction func telegramPressing(_ sender: Any) {
-        
-    }
-
-    @IBAction func googlePressing(_ sender: Any) {
-        
-    }
+    
     
     
 }

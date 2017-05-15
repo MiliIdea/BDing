@@ -42,5 +42,7 @@ class URLs {
     
     static let forgotPassword = server + "register/forget"
     
+    static let userUpdate = server + "user/update"
+    
 }
 

@@ -8,7 +8,10 @@
 
 import UIKit
 
-class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
+import DLRadioButton
+
+
+class ProfilePageViewController: UIViewController , UIScrollViewDelegate{
     
     @IBOutlet weak var scrollViewProfile: UIScrollView!
     
@@ -97,8 +100,11 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
     
     @IBOutlet weak var inputTitle: UILabel!
     
+    @IBOutlet weak var inputGenderViewContainer: UIView!
     
+    @IBOutlet weak var maleRadio: DLRadioButton!
     
+    @IBOutlet weak var femaleRadio: DLRadioButton!
     
     
  //profile data 
@@ -122,6 +128,8 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        MyFont().setFontForAllView(view: self.view)
         
         for subView in inputBoarderView.subviews {
             if (subView is UILabel){
@@ -231,18 +239,56 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
         
         //fill profile data
         
+        inputGenderViewContainer.alpha = 0
+        
+        maleRadio.icon = maleRadio.icon.af_imageAspectScaled(toFit: CGSize.init(width: 50, height: 50))
+        
+        maleRadio.iconSelected = maleRadio.iconSelected.af_imageAspectScaled(toFit: CGSize.init(width: 50, height: 50))
+        
+        femaleRadio.icon = femaleRadio.icon.af_imageAspectScaled(toFit: CGSize.init(width: 50, height: 50))
+        
+        femaleRadio.iconSelected = femaleRadio.iconSelected.af_imageAspectScaled(toFit: CGSize.init(width: 50, height: 50))
+        
         nameButton.setTitle(GlobalFields.PROFILEDATA?.name, for: UIControlState.normal)
         
         familyNameButton.setTitle(GlobalFields.PROFILEDATA?.family, for: UIControlState.normal)
         
-        genderButton.setTitle(GlobalFields.PROFILEDATA?.gender, for: UIControlState.normal)
+        if(GlobalFields.PROFILEDATA?.gender == "male"){
+            
+            self.genderButton.setTitle("مرد", for: UIControlState.normal)
+            
+        }else if(GlobalFields.PROFILEDATA?.gender == "female"){
+            
+            self.genderButton.setTitle("زن", for: UIControlState.normal)
+            
+        }
+        
         
         mobileButton.setTitle(GlobalFields.PROFILEDATA?.mobile, for: UIControlState.normal)
         
         emailButton.setTitle(GlobalFields.PROFILEDATA?.email, for: UIControlState.normal)
         
+        
+        
         BirthDayButton.setTitle(GlobalFields.PROFILEDATA?.birthdate, for: UIControlState.normal)
         
+        if(GlobalFields.PROFILEDATA?.birthdate != nil && GlobalFields.PROFILEDATA?.birthdate != ""){
+            
+            let formatter = DateFormatter()
+            
+            formatter.dateFormat = "dd/MM/yyyy"
+            
+            formatter.calendar = Calendar(identifier: .gregorian)
+            
+            let d = formatter.date(from: (GlobalFields.PROFILEDATA?.birthdate)!)
+            
+            formatter.dateFormat = "yyyy/MM/dd"
+            
+            formatter.calendar = Calendar(identifier: .persian)
+            
+            self.BirthDayButton.setTitle(formatter.string(from: d!), for: UIControlState.normal)
+            
+        }
         
     }
 
@@ -617,35 +663,37 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
     
     @IBAction func editName(_ sender: Any) {
         
-        appearInputView()
+        appearInputView(field: "نام")
         
     }
     
     
     @IBAction func editFamilyName(_ sender: Any) {
         
-        appearInputView()
+        appearInputView(field: "نام خانوادگی")
         
     }
     
     
     @IBAction func editGender(_ sender: Any) {
         
+        appearInputView(field: "جنسیت")
         
+        inputGenderViewContainer.alpha = 1
         
     }
    
     
     @IBAction func editMobile(_ sender: Any) {
         
-        appearInputView()
+        appearInputView(field: "موبایل")
         
     }
     
     
     @IBAction func editEmail(_ sender: Any) {
         
-        appearInputView()
+        appearInputView(field: "ایمیل")
         
     }
     
@@ -662,6 +710,98 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
         
         //set
         
+        var rm : UserUpdateRequestModel?
+        
+        if(self.inputTitle.text == "نام"){
+            
+            rm = UserUpdateRequestModel.init(NAME: self.inputTextField.text, FAMILY: nil, ATTRNAME: nil, ATTRDATA: nil)
+            
+        }else if(self.inputTitle.text == "نام خانوادگی"){
+            
+            rm = UserUpdateRequestModel.init(NAME: nil, FAMILY: self.inputTextField.text, ATTRNAME: nil, ATTRDATA: nil)
+            
+        }else if(self.inputTitle.text == "موبایل"){
+            
+            rm = UserUpdateRequestModel.init(NAME: nil, FAMILY: nil, ATTRNAME: "mobile", ATTRDATA: self.inputTextField.text)
+            
+        }else if(self.inputTitle.text == "ایمیل"){
+            
+            rm = UserUpdateRequestModel.init(NAME: nil, FAMILY: nil, ATTRNAME: "email", ATTRDATA: self.inputTextField.text)
+            
+        }else if(self.inputTitle.text == "جنسیت"){
+            
+            if(maleRadio.isSelected){
+                
+                rm = UserUpdateRequestModel.init(NAME: nil, FAMILY: nil, ATTRNAME: "gender", ATTRDATA: "male")
+                
+            }else if(femaleRadio.isSelected){
+                
+                rm = UserUpdateRequestModel.init(NAME: nil, FAMILY: nil, ATTRNAME: "gender", ATTRDATA: "female")
+                
+            }
+            
+        }
+        
+        request(URLs.userUpdate , method: .post , parameters: rm?.getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------User Update----------->>>> " , JSON)
+                
+                let obj = ProfileResponseModel.init(json: JSON as! JSON)
+                
+                if ( obj?.code == "200" ){
+                    
+                    
+                    if(self.inputTitle.text == "نام"){
+                        
+                        self.nameButton.setTitle(self.inputTextField.text, for: UIControlState.normal)
+                        
+                        GlobalFields.PROFILEDATA?.name = self.inputTextField.text
+                        
+                    }else if(self.inputTitle.text == "نام خانوادگی"){
+                        
+                       self.familyNameButton.setTitle(self.inputTextField.text, for: UIControlState.normal)
+                        
+                        GlobalFields.PROFILEDATA?.family = self.inputTextField.text
+                        
+                    }else if(self.inputTitle.text == "موبایل"){
+                        
+                        self.mobileButton.setTitle(self.inputTextField.text, for: UIControlState.normal)
+                        
+                        GlobalFields.PROFILEDATA?.mobile = self.inputTextField.text
+                        
+                    }else if(self.inputTitle.text == "ایمیل"){
+                        
+                        self.emailButton.setTitle(self.inputTextField.text, for: UIControlState.normal)
+                        
+                        GlobalFields.PROFILEDATA?.email = self.inputTextField.text
+                        
+                    }else if(self.inputTitle.text == "جنسیت"){
+                        
+                        if(self.maleRadio.isSelected){
+                            
+                            self.genderButton.setTitle("مرد", for: UIControlState.normal)
+                            
+                            GlobalFields.PROFILEDATA?.gender = "male"
+                            
+                        }else if(self.femaleRadio.isSelected){
+                            
+                            self.genderButton.setTitle("زن", for: UIControlState.normal)
+                            
+                            GlobalFields.PROFILEDATA?.gender = "female"
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
         //
         disAppearInputView()
         
@@ -677,7 +817,39 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
         
         //set
         
-        //
+        self.datePicker.calendar = NSCalendar(identifier: NSCalendar.Identifier.gregorian) as Calendar!
+
+        let formatter = DateFormatter()
+        
+        formatter.dateFormat = "dd/MM/yyyy"
+        
+        formatter.calendar = Calendar(identifier: .gregorian)
+        
+        print(formatter.string(from: self.datePicker.date))
+        
+        request(URLs.userUpdate , method: .post , parameters: UserUpdateRequestModel.init(NAME: nil, FAMILY: nil, ATTRNAME: "birthdate", ATTRDATA: formatter.string(from: self.datePicker.date)).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------User Update----------->>>> " , JSON)
+                
+                let obj = ProfileResponseModel.init(json: JSON as! JSON)
+                
+                if ( obj?.code == "200" ){
+                    
+                    formatter.dateFormat = "yyyy/MM/dd"
+                    
+                    formatter.calendar = Calendar(identifier: .persian)
+                    
+                    self.BirthDayButton.setTitle(formatter.string(from: self.datePicker.date), for: UIControlState.normal)
+                    
+                }
+                
+            }
+            
+        }
+
         disAppearDatePickerView()
         
     }
@@ -690,6 +862,10 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
     
     
     func appearDatePickerView(){
+        
+        self.datePicker.calendar = NSCalendar(identifier: NSCalendar.Identifier.persian) as Calendar!
+        
+        self.datePicker.locale = NSLocale(localeIdentifier: "fa_IR") as Locale
         
         self.pickerContainerView.alpha = 1
         
@@ -709,7 +885,7 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
         
     }
     
-    func appearInputView(){
+    func appearInputView(field : String!){
         
         self.inputContainerView.alpha = 1
         
@@ -719,6 +895,8 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
         
         self.blurView.layer.zPosition = 1
         
+        self.inputTitle.text = field
+        
     }
     
     func disAppearInputView(){
@@ -726,6 +904,8 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate {
         self.inputContainerView.alpha = 0
         
         self.blurView.alpha = 0
+        
+        self.inputGenderViewContainer.alpha = 0
         
     }
     

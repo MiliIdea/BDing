@@ -31,7 +31,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
 
     @IBOutlet weak var brandIcon: UIImageView!
     
-    @IBOutlet weak var topDataView: DCBorderedView!
+    @IBOutlet weak var topDataView: UIView!
     
     @IBOutlet weak var bottomDataView: UIView!
     
@@ -298,7 +298,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
         self.bottomView.frame.origin.y = self.topView.frame.height + self.topView.frame.origin.y
         
-        self.topDataView.frame.size.height = self.textView.frame.height + 65
+        self.topDataView.frame.size.height = self.textView.frame.height + 77
         
         self.categoryName.frame.size.height = 30
         
@@ -316,9 +316,9 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
         self.textView.frame.origin.y = 40
         
-        self.heightChangerButton.frame.size.height = 24
+        self.heightChangerButton.frame.size.height = 40
         
-        self.heightChangerButton.frame.origin.y = self.topDataView.frame.height - 24
+        self.heightChangerButton.frame.origin.y = self.topDataView.frame.height - 40
         
         self.semicircularView.frame.size.width = self.view.frame.width
         
@@ -331,33 +331,43 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         self.textView.frame.size.height = self.firstTextHeight
         
         
+        
         //set FONTs 
         
         MyFont().setFontForAllView(view: self.view)
         
         MyFont().setBoldFont(view: categoryName, mySize: 14)
         
-        MyFont().setWebFont(view: brandName, mySize: 12)
+        MyFont().setWebFont(view: brandName, mySize: 13)
         
-        MyFont().setWebFont(view: coin, mySize: 12)
+        MyFont().setWebFont(view: coin, mySize: 13)
         
-        MyFont().setWebFont(view: distance, mySize: 12)
+        MyFont().setWebFont(view: distance, mySize: 13)
         
-        MyFont().setWebFont(view: discount, mySize: 12)
+        MyFont().setWebFont(view: discount, mySize: 13)
         
-        MyFont().setLightFont(view: textView, mySize: 10)
+        MyFont().setLightFont(view: textView, mySize: 13)
         
-        MyFont().setWebFont(view: nowIsOpen, mySize: 12)
+        MyFont().setWebFont(view: nowIsOpen, mySize: 13)
         
-        MyFont().setWebFont(view: timeOfWork, mySize: 12)
+        MyFont().setWebFont(view: timeOfWork, mySize: 13)
         
-        MyFont().setWebFont(view: address, mySize: 12)
+        MyFont().setWebFont(view: address, mySize: 13)
         
-        MyFont().setWebFont(view: phone, mySize: 12)
+        MyFont().setWebFont(view: phone, mySize: 13)
         
-        MyFont().setWebFont(view: webSiteAddress, mySize: 12)
+        MyFont().setWebFont(view: webSiteAddress, mySize: 13)
         
+        self.topDataView.layer.shadowColor = UIColor.black.cgColor
+        self.topDataView.layer.shadowOpacity = 0.25
+        self.topDataView.layer.shadowOffset = CGSize(width: -1, height: 1)
+        self.topDataView.layer.shadowRadius = 3
+
         
+        self.bottomDataView.layer.shadowColor = UIColor.black.cgColor
+        self.bottomDataView.layer.shadowOpacity = 0.25
+        self.bottomDataView.layer.shadowOffset = CGSize(width: -1, height: 1)
+        self.bottomDataView.layer.shadowRadius = 3
         
     }
     
@@ -519,7 +529,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                 
                 self.bottomView.frame.origin.y = self.topView.frame.height + self.topView.frame.origin.y
                 
-                self.topDataView.frame.size.height = self.textView.frame.height + 65
+                self.topDataView.frame.size.height = self.textView.frame.height + 77
                 
                 self.categoryName.frame.size.height = 30
                 
@@ -537,9 +547,9 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                 
                 self.textView.frame.origin.y = 40
                 
-                self.heightChangerButton.frame.size.height = 24
+                self.heightChangerButton.frame.size.height = 40
                 
-                self.heightChangerButton.frame.origin.y = self.topDataView.frame.height - 24
+                self.heightChangerButton.frame.origin.y = self.topDataView.frame.height - 40
                 
                 self.semicircularView.frame.size.width = self.view.frame.width
                 
@@ -575,7 +585,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                 
                 self.bottomView.frame.origin.y = self.topView.frame.height + self.topView.frame.origin.y
                 
-                self.topDataView.frame.size.height = self.textView.frame.height + 65
+                self.topDataView.frame.size.height = self.textView.frame.height + 77
                 
                 self.categoryName.frame.size.height = 30
                 
@@ -593,9 +603,9 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                 
                 self.textView.frame.origin.y = 40
                 
-                self.heightChangerButton.frame.size.height = 24
+                self.heightChangerButton.frame.size.height = 40
                 
-                self.heightChangerButton.frame.origin.y = self.topDataView.frame.height - 24
+                self.heightChangerButton.frame.origin.y = self.topDataView.frame.height - 40
                 
                 self.semicircularView.frame.size.width = self.view.frame.width
                 

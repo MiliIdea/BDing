@@ -37,10 +37,6 @@ class SignInPageTwoViewController: UIViewController {
     
     
     
-    
-    
-    
-    
     var beaconBool : Bool = false
     
     var catBool : Bool = false

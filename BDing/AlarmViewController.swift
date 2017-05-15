@@ -84,6 +84,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        MyFont().setFontForAllView(view: view)
 
         sortView.alpha = 0
         
@@ -93,6 +95,22 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         self.collectionView.alpha = 0
         self.doSearchButton.alpha = 0
         self.searchTextField.alpha = 0
+        
+        var s: String? = GlobalFields.PROFILEDATA?.name
+        
+        let s2: String? = " دنبال چی میگردی"
+        
+        if(s == nil){
+            
+            s = ""
+            
+        }else{
+            
+            s2?.appending(" ")
+            
+        }
+        
+        self.searchTextField.placeholder = s2?.appending(s!)
         self.clearButton.alpha = 0
         self.blurView.alpha = 0
         

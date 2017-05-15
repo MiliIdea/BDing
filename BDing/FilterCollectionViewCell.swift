@@ -18,6 +18,8 @@ class FilterCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        MyFont().setLightFont(view: title, mySize: 13)
         // Initialization code
     }
 

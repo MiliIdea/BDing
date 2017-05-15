@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		110B99C11EC8628100D87F6E /* UserUpdateRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110B99C01EC8628100D87F6E /* UserUpdateRequestModel.swift */; };
 		110EB5391E9A404F00431534 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110EB5381E9A404F00431534 /* TabBarController.swift */; };
 		110EB53B1E9A4EA500431534 /* PicDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110EB53A1E9A4EA500431534 /* PicDataModel.swift */; };
 		1110B9B01EC32D5000EF182F /* ActivationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1110B9AF1EC32D5000EF182F /* ActivationCodeViewController.swift */; };
@@ -258,6 +259,7 @@
 		11E747191E7806EF002AEEFD /* BeaconListRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E747181E7806EF002AEEFD /* BeaconListRequestModel.swift */; };
 		11FDEBB31EAC92C1002E999E /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FDEBB21EAC92C1002E999E /* Reachability.swift */; };
 		11FDEBB51EACB625002E999E /* GetBeaconRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FDEBB41EACB625002E999E /* GetBeaconRequestModel.swift */; };
+		25CF997A057D2EE2503DC1EE /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED65191AE6B9F9004DA954 /* Pods_BDing.framework */; };
 		5C65055DE2496E5B5DF9FCA5 /* Pods_BDingUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBFBC709538EF38D5F97E397 /* Pods_BDingUITests.framework */; };
 		9B590B220CE391E6E3DF01F6 /* Pods_BDingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB1DEBF668C472A761E76D2D /* Pods_BDingTests.framework */; };
 /* End PBXBuildFile section */
@@ -280,6 +282,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		110B99C01EC8628100D87F6E /* UserUpdateRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpdateRequestModel.swift; sourceTree = "<group>"; };
 		110B9DB41EC183E900F9BD02 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		110B9DB61EC183E900F9BD02 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		110B9DB81EC183E900F9BD02 /* LOTAnimatableLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LOTAnimatableLayer.h; sourceTree = "<group>"; };
@@ -656,6 +659,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25CF997A057D2EE2503DC1EE /* Pods_BDing.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -990,6 +994,7 @@
 				117671DF1EB457EF00F8D41F /* MyCouponRequestModel.swift */,
 				114C640C1EC6ED0600B23525 /* ActivationCodeRequestModel.swift */,
 				114C640E1EC7213C00B23525 /* ForgotPasswordRequestModel.swift */,
+				110B99C01EC8628100D87F6E /* UserUpdateRequestModel.swift */,
 			);
 			name = RquestModels;
 			sourceTree = "<group>";
@@ -1856,6 +1861,7 @@
 				11D427A81E66B100009F3763 /* ProfilePageViewController.swift in Sources */,
 				11D428761E66BFA2009F3763 /* Digest.swift in Sources */,
 				11D4276A1E66AEC3009F3763 /* BDing.xcdatamodeld in Sources */,
+				110B99C11EC8628100D87F6E /* UserUpdateRequestModel.swift in Sources */,
 				11D428931E66BFA2009F3763 /* SHA1.swift in Sources */,
 				1179DDB91E767ED400BE7DED /* GlossOperators.swift in Sources */,
 				11D428DA1E66BFA3009F3763 /* SpringTextView.swift in Sources */,

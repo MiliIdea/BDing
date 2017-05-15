@@ -8,6 +8,11 @@
 
 import UIKit
 
+import Lottie
+
+import CoreData
+
+import CoreLocation
 
 class ViewController: UIViewController , UIPageViewControllerDataSource{
     
@@ -29,10 +34,21 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
     @IBOutlet weak var signUpIcon: UIImageView!
     var smallTitles: Array<String> = []
     
+    var beaconBool : Bool = false
+    
+    var catBool : Bool = false
+    
+    var profileBool : Bool = false
+    
+    var animationView : LOTAnimationView?
+    
     //---------------------------------------------------------------------------------------------------//
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        
+        signInPressing()
         
         self.pageImages = ["1", "2", "4", "3"]
         
@@ -164,7 +180,227 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
     
     //---------------------------------------------------------------------------------------------------//
     
+    func signInPressing() {
+        
+        let model = SaveAndLoadModel().load(entity: "USER")?[0]
+        
+        if(model == nil){
+            
+            return
+            
+        }
+        
+        let user = model?.value(forKey: "user")
+        
+        let password = model?.value(forKey: "password")
+        
+        if(user == nil){
+            
+            return
+            
+        }
+        
+        let s = SignInRequestModel(USERNAME: user as! String!, PASSWORD: password as! String!)
+        
+        print(s.getParams())
+        
+        self.view.endEditing(true)
+        
+        animationView = LOTAnimationView(name: "finall")
+        
+        animationView?.frame.size.height = 50
+        
+        animationView?.frame.size.width = 50
+        
+        animationView?.frame.origin.y = self.view.frame.height / 2 - 25
+        
+        animationView?.frame.origin.x = self.view.frame.width / 2 - 25
+        
+        animationView?.contentMode = UIViewContentMode.scaleAspectFit
+        
+        animationView?.alpha = 1
+        
+        self.view.addSubview(animationView!)
+        
+        animationView?.animationSpeed = 4
+        
+        animationView?.loopAnimation = true
+        
+        animationView?.play()
+        
+        request(URLs.signInUrl , method: .post , parameters: s.getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON -----------SIGNIN---------->>>> " , JSON)
+                
+                let obj = SignInResponseModel.init(json: JSON as! JSON)
+                
+                if ( obj.code == "200" ){
+                    
+                    print(obj.token ?? "null")
+                    
+                    SaveAndLoadModel().deleteAllObjectIn(entityName: "USER")
+                    
+                    let b = SaveAndLoadModel().save(entityName: "USER", datas: ["user":s.USERNAME , "password":s.PASSWORD , "token":obj.token! , "userID" : obj.userID!])
+                    
+                    
+                    ///
+                    
+                    self.loadTabView()
+                    
+                    
+                    print(SaveAndLoadModel().load(entity: "USER")?.count ?? "nothing!")
+                    
+                    var recycle : Bool = true
+                    
+                    DispatchQueue.global(qos: .userInitiated).async {
+                        
+                        while (recycle) {
+                            
+                            if(self.profileBool && self.beaconBool && self.catBool){
+                                
+                                recycle = false
+                            }
+                            
+                        }
+                        
+                        DispatchQueue.main.async {
+                            
+                            if(recycle == false){
+                                
+                                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                                
+                                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController") as! UITabBarController
+                                
+                                self.present(nextViewController, animated:true, completion:nil)
+                                
+                            }
+                            
+                        }
+                    }
+                    
+                }else{
+                    
+                    self.animationView?.pause()
+                    
+                    self.animationView?.alpha = 0
+                    
+                    self.view.endEditing(false)
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
     
+    
+    func loadTabView() {
+        
+        // get profile
+        
+        request(URLs.getProfile , method: .post , parameters: ProfileRequestModel().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------PROFILE----------->>>> " , JSON)
+                
+                let obj = ProfileResponseModel.init(json: JSON as! JSON)
+                
+                if ( obj?.code == "200" ){
+                    
+                    GlobalFields.PROFILEDATA = obj?.data
+                    
+                    self.profileBool = true
+                    
+                }
+                
+            }
+            
+        }
+        
+        // get index Home
+        
+        var lat: String
+        
+        var long: String
+        
+        let locManager = CLLocationManager()
+        
+        locManager.requestWhenInUseAuthorization()
+        
+        var currentLocation = CLLocation()
+        
+        if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
+            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorized){
+            
+            currentLocation = locManager.location!
+            
+        }
+        
+        //        long = String(currentLocation.coordinate.longitude)
+        //
+        //        lat = String(currentLocation.coordinate.latitude)
+        
+        long = String(51.4212297)
+        
+        lat = String(35.6329044)
+        
+        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: nil, SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------BEACON----------->>>> ")
+                
+                let obj = BeaconListResponseModel.init(json: JSON as! JSON)
+                
+                if ( obj?.code == "200" ){
+                    
+                    GlobalFields.BEACON_LIST_DATAS = obj?.data
+                    
+                    self.beaconBool = true
+                    
+                }
+                
+            }
+            
+        }
+        
+        //get category
+        
+        
+        request(URLs.getCategory , method: .post , parameters: CategoryRequestModel().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------Category----------->>>> ")
+                
+                let obj = CategoryListResponseModel.init(json: JSON as! JSON)
+                
+                if ( obj?.code == "200" ){
+                    
+                    GlobalFields.CATEGORIES_LIST_DATAS = obj?.data
+                    
+                    self.catBool = true
+                    
+                }
+                
+            }
+            
+        }
+        
+        
+        
+        
+        
+    }
+
     
 
 }

@@ -79,6 +79,12 @@ class IndexHomeTableViewCell: UITableViewCell {
         MyFont().setMediumFont(view: customerCampaignCoin, mySize: 14)
         customerThumbnail.layer.zPosition = 1
         
+        self.contentView.layer.shadowColor = UIColor.black.cgColor
+        self.contentView.layer.shadowOpacity = 0.25
+        self.contentView.layer.shadowOffset = CGSize(width: -1, height: 1)
+        self.contentView.layer.shadowRadius = 3
+        
+        
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

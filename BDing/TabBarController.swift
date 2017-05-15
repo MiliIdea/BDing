@@ -34,6 +34,8 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
         
         super.viewDidLoad()
         
+        self.selectedIndex = 3
+        
         MyFont().setFontForAllView(view: self.view)
 
         locationManager.delegate = self
