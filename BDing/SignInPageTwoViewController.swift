@@ -35,8 +35,6 @@ class SignInPageTwoViewController: UIViewController {
     @IBOutlet weak var userNameForgot: UITextField!
     
     
-    
-    
     var beaconBool : Bool = false
     
     var catBool : Bool = false

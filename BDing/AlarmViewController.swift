@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import MapKit
+import Lottie
 
 class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDataSource , UICollectionViewDataSource, UICollectionViewDelegate{
     
@@ -66,6 +67,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     var searchIsPressed: Bool = true
     
+    var animationView : LOTAnimationView?
+    
     var customerHomeTableCells = [CustomerHomeTableCell]()
     
     struct LastSearchStruct {
@@ -81,7 +84,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     }
     
     var lastSearch : LastSearchStruct? = nil
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         

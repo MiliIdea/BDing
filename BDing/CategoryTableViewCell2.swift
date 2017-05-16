@@ -31,6 +31,7 @@ class CategoryTableViewCell2: UITableViewCell {
         
 //        iconView.layer.cornerRadius = iconView.frame.width / 2
 
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

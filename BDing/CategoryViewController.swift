@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import CoreLocation
+import Lottie
 
 class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableViewDataSource{
 
@@ -59,6 +60,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
     
     var cache: NSCache<AnyObject, AnyObject> = NSCache()
     
+    var animationView : LOTAnimationView?
 
     @IBOutlet weak var tableViewCategory: UITableView!
     
@@ -66,22 +68,77 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
     
     @IBOutlet var container: UIView!
     
+    @IBOutlet weak var loadingAnimationView: UIView!
+
+    override func viewDidAppear(_ animated: Bool) {
+        
+        super.viewDidAppear(animated)
+        
+        DispatchQueue.main.async(){
+            
+            self.showLoadingAnim()
+        
+        }
+
+    }
+    
+    
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
         tableViewCategory.dataSource = self
+        
         tableViewCategory.delegate = self
         
-        loadCategoryTable()
+        self.animationView = LOTAnimationView(name: "finall")
         
+        self.animationView?.frame.size.height = 50
+        
+        self.animationView?.frame.size.width = 50
+        
+        self.animationView?.frame.origin.y = self.view.frame.height / 2 - 25
+        
+        self.animationView?.frame.origin.x = self.view.frame.width / 2 - 25
+        
+        self.animationView?.contentMode = UIViewContentMode.scaleAspectFit
+        
+        self.animationView?.alpha = 1
+        
+        self.animationView?.layer.zPosition = 1
+        
+        self.animationView?.animationSpeed = 4
+        
+        self.animationView?.loopAnimation = true
+        
+        self.tableViewCategory.alpha = 0
+        
+        DispatchQueue.main.async(){
+            
+            self.loadCategoryTable()
+            
+            self.tableViewCategory.reloadData()
+            
+        }
+
         self.cache = NSCache()
         // Do any additional setup after loading the view.
     }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        self.animationView?.pause()
+        
+        self.animationView?.alpha = 0
+        
+        self.tableViewCategory.alpha = 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -205,6 +262,12 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
             myCell?.imageViewToggle.tintColor = UIColor.lightGray
             
             myCell?.labelViewCell1.text = sections[getSectionIndex(row: indexPath.row)].name
+            
+            myCell!.imageViewCell1.layer.zPosition = 2
+            
+            myCell!.imageViewCell1.frame.origin.y = 0
+            
+            myCell!.imageViewCell1.frame.size.height = 61
             
             DispatchQueue.main.async(execute: { () -> Void in
             myCell!.imageViewCell1.layer.addSublayer(self.setGradientLayer(myView: myCell!.imageViewCell1, color1: self.sections[self.getSectionIndex(row: indexPath.row)].color1 , color2: self.sections[self.getSectionIndex(row: indexPath.row)].color2))
@@ -373,11 +436,11 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
 
         if(getExpandedSection() != -1 && indexPath.row > getExpandedSection() && indexPath.row < (getExpandedSection() + sections[getExpandedSection()].items.count) ){
          
-            return 61
+            return 60
             
         }else{
             
-            return 70
+            return 69.5
             
         }
         
@@ -640,6 +703,10 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
         
         gradientLayer.frame = myView.bounds
         
+        gradientLayer.frame.size.height += 1
+        
+        gradientLayer.frame.origin.y = 0
+        
         gradientLayer.colors = [color1, color2]
         
         gradientLayer.startPoint = CGPoint(x: 0,y: 0.5)
@@ -735,6 +802,8 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
             
             shape.path = maskPath.cgPath
             
+            shape.borderWidth = 0
+            
             cell.boarderView.layer.mask = shape
             
         }else{
@@ -745,6 +814,8 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
             
             shape.path = maskPath.cgPath
             
+            shape.borderWidth = 0
+            
             cell.boarderView.layer.mask = shape
             
         }
@@ -754,7 +825,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
     func setSelectedCell(isSelected: Bool , cell: CategoryTableViewCell1){
         
         if(isSelected){
-            cell.imageViewToggle.image = UIImage(named: "ic_arrow_back.png")
+            cell.imageViewToggle.image = UIImage(named: "ic_keyboard_arrow_up_48pt")
             
             cell.boarderView.layer.cornerRadius = 0
             
@@ -764,6 +835,8 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
             
             shape.path = maskPath.cgPath
             
+            shape.borderWidth = 0
+            
             cell.boarderView.layer.mask = shape
             
             cell.boarderView.backgroundColor = UIColor(hex: "#f5f7f8")
@@ -772,7 +845,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
     
             cell.boarderView.backgroundColor = UIColor.white
             
-            cell.imageViewToggle.image = UIImage(named: "madar")
+            cell.imageViewToggle.image = UIImage(named: "ic_keyboard_arrow_down_18pt")
             
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()) {
                 
@@ -783,82 +856,95 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
     
     }
     
+    func showLoadingAnim(){
+
+        self.view.addSubview(self.animationView!)
+        
+        self.animationView?.play()
+        
+    }
+    
+    
     func loadCategoryTable(){
         
         let c1 = UIColor(hex: "f5f7f8").cgColor
         let c2 = UIColor(hex: "7c1f72").cgColor
         
         
-        for obj in GlobalFields.CATEGORIES_LIST_DATAS! {
+        sections.removeAll()
+        
+            for obj in GlobalFields.CATEGORIES_LIST_DATAS! {
             
-            var subs = [SubCategories]()
-            
-            for s in obj.item! {
+                var subs = [SubCategories]()
                 
-                var tempCode = s.url_icon?.url
-                
-                tempCode?.append((s.url_icon?.code!)!)
-                
-                let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
-                
-                var count: Int = 0
-                
-                if(s.count != nil){
-                    count = Int(s.count!)!
+                for s in obj.item! {
+                    
+                    var tempCode = s.url_icon?.url
+                    
+                    tempCode?.append((s.url_icon?.code!)!)
+                    
+                    let result: String? = self.isThereThisPicInDB(code: (tempCode?.md5())!)
+                    
+                    var count: Int = 0
+                    
+                    if(s.count != nil){
+                        count = Int(s.count!)!
+                    }
+                    
+                    if(result == nil){
+                        
+                        let subT = SubCategories(preImage: nil,name: s.title!, image: s.url_icon, numberOfMembers: count , subCategoryCode: s.sub_code!)
+                        
+                        subs.append(subT)
+                        
+                    }else{
+                        
+                        let subT = SubCategories(preImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,name: s.title!, image: s.url_icon, numberOfMembers: count , subCategoryCode: s.sub_code!)
+                        
+                        subs.append(subT)
+                        
+                    }
+                    
                 }
+                
+                var tempCode = obj.url_icon?.url
+                
+                tempCode?.append((obj.url_icon?.code!)!)
+                
+                let result: String? = self.isThereThisPicInDB(code: (tempCode?.md5())!)
                 
                 if(result == nil){
                     
-                    let subT = SubCategories(preImage: nil,name: s.title!, image: s.url_icon, numberOfMembers: count , subCategoryCode: s.sub_code!)
+                    let colorsString = obj.color_code?.characters.split(separator: "-").map(String.init)
                     
-                    subs.append(subT)
+                    if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
+                        let a = Section.init(preImage: nil,name: obj.title!, image: obj.url_icon, items: subs, color1: UIColor(hex:(colorsString?[0])! ).cgColor, color2: UIColor(hex: (colorsString?[1])!).cgColor, collapsed: true , categoryCode: obj.category_code!)
+                        self.sections.append(a)
+                        
+                    }else{
+                        let a = Section.init(preImage: nil,name: obj.title!, image: obj.url_icon, items: subs, color1: c1, color2: c2, collapsed: true , categoryCode: obj.category_code!)
+                        self.sections.append(a)
+                    }
+                    
                     
                 }else{
                     
-                    let subT = SubCategories(preImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,name: s.title!, image: s.url_icon, numberOfMembers: count , subCategoryCode: s.sub_code!)
+                    let colorsString = obj.color_code?.characters.split(separator: "-").map(String.init)
                     
-                    subs.append(subT)
+                    if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
+                        let a = Section.init(preImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data),name: obj.title!, image: obj.url_icon, items: subs, color1: UIColor(hex:(colorsString?[0])! ).cgColor, color2: UIColor(hex: (colorsString?[1])!).cgColor, collapsed: true, categoryCode: obj.category_code!)
+                        self.sections.append(a)
+                        
+                    }else{
+                        let a = Section.init(preImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data),name: obj.title!, image: obj.url_icon, items: subs, color1: c1, color2: c2, collapsed: true ,categoryCode: obj.category_code!)
+                        self.sections.append(a)
+                    }
                     
                 }
-                
+            
             }
             
-            var tempCode = obj.url_icon?.url
-            
-            tempCode?.append((obj.url_icon?.code!)!)
-            
-            let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
-            
-            if(result == nil){
-                
-                let colorsString = obj.color_code?.characters.split(separator: "-").map(String.init)
-                
-                if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
-                    let a = Section.init(preImage: nil,name: obj.title!, image: obj.url_icon, items: subs, color1: UIColor(hex:(colorsString?[0])! ).cgColor, color2: UIColor(hex: (colorsString?[1])!).cgColor, collapsed: true , categoryCode: obj.category_code!)
-                    sections.append(a)
-                    
-                }else{
-                    let a = Section.init(preImage: nil,name: obj.title!, image: obj.url_icon, items: subs, color1: c1, color2: c2, collapsed: true , categoryCode: obj.category_code!)
-                    sections.append(a)
-                }
-                
-                
-            }else{
-                
-                let colorsString = obj.color_code?.characters.split(separator: "-").map(String.init)
-                
-                if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
-                    let a = Section.init(preImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data),name: obj.title!, image: obj.url_icon, items: subs, color1: UIColor(hex:(colorsString?[0])! ).cgColor, color2: UIColor(hex: (colorsString?[1])!).cgColor, collapsed: true, categoryCode: obj.category_code!)
-                    sections.append(a)
-                    
-                }else{
-                    let a = Section.init(preImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data),name: obj.title!, image: obj.url_icon, items: subs, color1: c1, color2: c2, collapsed: true ,categoryCode: obj.category_code!)
-                    sections.append(a)
-                }
-                
-            }
-            
-        }
+        
         
     }
 

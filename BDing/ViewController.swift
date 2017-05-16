@@ -220,6 +220,8 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         
         animationView?.alpha = 1
         
+        animationView?.layer.zPosition = 1
+        
         self.view.addSubview(animationView!)
         
         animationView?.animationSpeed = 4

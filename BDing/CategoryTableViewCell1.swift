@@ -39,6 +39,8 @@ class CategoryTableViewCell1: UITableViewCell {
             
             shape.path = maskPath.cgPath
             
+            shape.borderWidth = 0
+            
             boarderView.layer.mask = shape
 
             boarderView.backgroundColor = UIColor(hex: "#f5f7f8")
@@ -57,11 +59,17 @@ class CategoryTableViewCell1: UITableViewCell {
             
             shape.path = maskPath.cgPath
             
+            shape.borderWidth = 0
+            
             imageViewCell1.layer.mask = shape
             
             
         }
-        
+       
+        self.contentView.layer.shadowColor = UIColor.black.cgColor
+        self.contentView.layer.shadowOpacity = 0.25
+        self.contentView.layer.shadowOffset = CGSize(width: -1, height: 1)
+        self.contentView.layer.shadowRadius = 3
        
     }
 

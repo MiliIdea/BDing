@@ -128,8 +128,13 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
             
         }
         
+        MyFont().setBoldFont(view: subCategoryName, mySize: 14)
+        
+        
         scrollViewDidScroll(self.scrollView)
     
+        
+        
         
     }
 
@@ -188,58 +193,68 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         cell.customerName.text = tableCell.customerName
         cell.customerCampaignTitle.text = tableCell.customerCampaignTitle
         cell.customerDistanceToMe.text = tableCell.customerDistanceToMe
-        cell.customerThumbnail.image = UIImage(named:"profile_pic")!
+//        cell.customerThumbnail.image = UIImage(named:"profile_pic")!
         
         //if its not in db load this
         
-        if(tableCell.customerImage?.url != nil){
-
-            var im: UIImage? = loadImage(picModel: tableCell.customerImage!)
+        if(tableCell.preCustomerImage == nil){
             
-            if(im != nil){
+            if(tableCell.customerImage?.url != nil){
                 
-                im = im?.imageWithColor(tintColor: UIColor.white)
+                var im: UIImage? = loadImage(picModel: tableCell.customerImage!)
                 
-                tableCell.preCustomerImage = im
-                
-                cell.customerThumbnail.image = im
-                
-            }else{
-                
-                request("http://"+(tableCell.customerImage?.url)! ,method: .post ,parameters: BeaconPicRequestModel(CODE: tableCell.customerImage?.code, FILE_TYPE: tableCell.customerImage?.file_type).getParams(), encoding : JSONEncoding.default).responseJSON { response in
+                if(im != nil){
                     
-                    if let image = response.result.value {
+                    //                im = im?.imageWithColor(tintColor: UIColor.white)
+                    
+                    customerHomeTableCells[indexPath.row].preCustomerImage = im
+                    
+                    cell.customerThumbnail.image = im
+                    
+                }else{
+                    
+                    request("http://"+(tableCell.customerImage?.url)! ,method: .post ,parameters: BeaconPicRequestModel(CODE: tableCell.customerImage?.code, FILE_TYPE: tableCell.customerImage?.file_type).getParams(), encoding : JSONEncoding.default).responseJSON { response in
                         
-                        let obj = PicDataModel.init(json: image as! JSON)
-                        
-                        let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
-                        
-                        var coding: String = (tableCell.customerImage?.url)!
-                        
-                        coding.append((tableCell.customerImage?.code)!)
-                        
-                        SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
-                        
-                        self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                        
-                        var pic = UIImage(data: imageData as! Data)
-                        
-                        pic = pic?.imageWithColor(tintColor: UIColor.white)
-                        
-                        tableCell.preCustomerImage = pic
-                        
-                        cell.customerThumbnail.image = pic
-                        
-                        cell.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFit
-                        
+                        if let image = response.result.value {
+                            
+                            let obj = PicDataModel.init(json: image as! JSON)
+                            
+                            let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
+                            
+                            var coding: String = (tableCell.customerImage?.url)!
+                            
+                            coding.append((tableCell.customerImage?.code)!)
+                            
+                            SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
+                            
+                            self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
+                            
+                            var pic = UIImage(data: imageData as! Data)
+                            
+                            //                        pic = pic?.imageWithColor(tintColor: UIColor.white)
+                            
+                            tableCell.preCustomerImage = pic
+                            
+                           cell.customerThumbnail.image = pic
+                            
+                            cell.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFit
+                            
+                        }
                     }
+                    
                 }
                 
             }
             
+        }else{
+            
+            cell.customerThumbnail.image = tableCell.preCustomerImage
+            
+            cell.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFit
+            
         }
         
-        //else load from db
+        
         
         cell.customerCampaignCoin.text = tableCell.customerCoinValue
         cell.customerCampaignDiscount.text = tableCell.customerDiscountValue
@@ -323,18 +338,18 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
     
     func loadHomeTable(){
         //create customer Home Table Cell from web service :)
-        let image : UIImage = UIImage(named:"profile_pic")!
-        let a1 = CustomerHomeTableCell.init(preCustomerImage:nil , customerImage: nil, customerCampaignTitle: "فروش فوق العاده", customerName: "آدیداس", customerCategoryIcon: image, customerDistanceToMe: "۱۲۵", customerCoinValue: "۱۲", customerCoinIcon: image, customerDiscountValue: "۱۰", customerDiscountIcon: image , tell: "09121233454" ,address: "unjaa" , text: "hgjhgc" ,workTime: "12-2 3-5" , website:  "www.asd.com" , customerBigImages: nil)
-        
-        customerHomeTableCells.append(a1)
-        customerHomeTableCells.append(a1)
-        customerHomeTableCells.append(a1)
-        customerHomeTableCells.append(a1)
-        customerHomeTableCells.append(a1)
-        customerHomeTableCells.append(a1)
-        customerHomeTableCells.append(a1)
-        customerHomeTableCells.append(a1)
-        customerHomeTableCells.append(a1)
+//        let image : UIImage = UIImage(named:"profile_pic")!
+//        let a1 = CustomerHomeTableCell.init(preCustomerImage:nil , customerImage: nil, customerCampaignTitle: "فروش فوق العاده", customerName: "آدیداس", customerCategoryIcon: image, customerDistanceToMe: "۱۲۵", customerCoinValue: "۱۲", customerCoinIcon: image, customerDiscountValue: "۱۰", customerDiscountIcon: image , tell: "09121233454" ,address: "unjaa" , text: "hgjhgc" ,workTime: "12-2 3-5" , website:  "www.asd.com" , customerBigImages: nil)
+//        
+//        customerHomeTableCells.append(a1)
+//        customerHomeTableCells.append(a1)
+//        customerHomeTableCells.append(a1)
+//        customerHomeTableCells.append(a1)
+//        customerHomeTableCells.append(a1)
+//        customerHomeTableCells.append(a1)
+//        customerHomeTableCells.append(a1)
+//        customerHomeTableCells.append(a1)
+//        customerHomeTableCells.append(a1)
 //        customerHomeTableCells.append(a1)
 //        customerHomeTableCells.append(a1)
 //        customerHomeTableCells.append(a1)

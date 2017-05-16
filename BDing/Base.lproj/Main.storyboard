@@ -7,7 +7,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -1221,25 +1220,19 @@
                                 </textAttributes>
                                 <items>
                                     <navigationItem title="BDING" id="FGs-EZ-4o3">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="search" id="sxG-Dd-0of">
-                                            <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="0.0"/>
-                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <barButtonItem key="leftBarButtonItem" systemItem="trash" id="G4E-pZ-gic"/>
+                                        <barButtonItem key="rightBarButtonItem" title="پیام ها" id="LDz-Na-2QE">
+                                            <connections>
+                                                <action selector="changeView:" destination="vHh-dh-7TU" id="eG8-Bo-ncx"/>
+                                            </connections>
                                         </barButtonItem>
-                                        <rightBarButtonItems>
-                                            <barButtonItem image="ic_chevron_left_white_asset" id="LDz-Na-2QE">
-                                                <connections>
-                                                    <action selector="changeView:" destination="vHh-dh-7TU" id="eG8-Bo-ncx"/>
-                                                </connections>
-                                            </barButtonItem>
-                                            <barButtonItem image="ic_chevron_left_white_asset" id="G4E-pZ-gic"/>
-                                        </rightBarButtonItems>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="پیام ها" image="ic_notifications_48pt" id="Mhh-wA-eeW">
+                    <tabBarItem key="tabBarItem" tag="1" title="پیام ها" image="ic_notifications_48pt" id="Mhh-wA-eeW">
                         <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-3"/>
                     </tabBarItem>
@@ -1507,7 +1500,7 @@
                                                                     </tableViewCell>
                                                                 </prototypes>
                                                             </tableView>
-                                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="فست فود" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5e7-DA-XOX">
+                                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" editable="NO" text="فست فود" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5e7-DA-XOX">
                                                                 <rect key="frame" x="90" y="5" width="142" height="29"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1594,6 +1587,11 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aHa-Up-BFC">
+                                <rect key="frame" x="122" y="180" width="77" height="77"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="TSl-k0-g7S">
                                 <rect key="frame" x="0.0" y="64" width="320" height="460"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -1606,25 +1604,25 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e5K-AH-Pgf">
+                                                <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e5K-AH-Pgf" customClass="DCBorderedView" customModule="BDing" customModuleProvider="target">
                                                     <rect key="frame" x="8" y="10" width="304" height="60"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ic_chevron_left_white_asset" translatesAutoresizingMaskIntoConstraints="NO" id="P8A-3x-GZY">
-                                                            <rect key="frame" x="15.5" y="17" width="23.5" height="22"/>
+                                                            <rect key="frame" x="15.5" y="19" width="23.5" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="خوشمزه ها" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8La-fs-zW9">
-                                                            <rect key="frame" x="134" y="17" width="101.5" height="22"/>
+                                                            <rect key="frame" x="134" y="19" width="101.5" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SMu-ev-QqN">
-                                                            <rect key="frame" x="244" y="-1" width="60" height="63"/>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SMu-ev-QqN">
+                                                            <rect key="frame" x="244" y="0.0" width="60" height="60"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES"/>
-                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <color key="backgroundColor" red="0.47319738389999999" green="0.58981982639999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                     <real key="value" value="8"/>
@@ -1633,6 +1631,14 @@
                                                         </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                            <real key="value" value="0.0"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                            <real key="value" value="8"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
                                                 </view>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -1663,7 +1669,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Kn-16-t9d" customClass="DCCircleView" customModule="BDing" customModuleProvider="target">
-                                                            <rect key="frame" x="257" y="12" width="34" height="34"/>
+                                                            <rect key="frame" x="257" y="13" width="34" height="34"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES"/>
                                                             <color key="backgroundColor" red="0.69655577850355332" green="0.69655577850355332" blue="0.69655577850355332" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                             <userDefinedRuntimeAttributes>
@@ -1715,19 +1721,20 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="دسته بندی ها" image="ic_view_list_48pt" id="tBT-fn-ZBJ">
+                    <tabBarItem key="tabBarItem" tag="2" title="دسته بندی ها" image="ic_view_list_48pt" id="tBT-fn-ZBJ">
                         <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-3"/>
                     </tabBarItem>
                     <connections>
                         <outlet property="container" destination="oyC-oN-FFl" id="rMW-7Z-ses"/>
+                        <outlet property="loadingAnimationView" destination="aHa-Up-BFC" id="5JR-MC-FqR"/>
                         <outlet property="navigationBar" destination="3Jm-Pv-pIb" id="pdV-ah-rjY"/>
                         <outlet property="tableViewCategory" destination="TSl-k0-g7S" id="jOj-as-g4p"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FFU-MH-7VO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5483" y="1510"/>
+            <point key="canvasLocation" x="5482.5" y="1509.5070422535211"/>
         </scene>
         <!--خانه-->
         <scene sceneID="BUh-Xx-Ljy">
@@ -2334,7 +2341,7 @@
                             <constraint firstItem="S0g-bF-I1c" firstAttribute="leading" secondItem="0X1-IE-Of4" secondAttribute="leadingMargin" constant="-172" id="zre-5v-nC3"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="خانه" image="ic_home_48pt" id="51E-6H-DDg">
+                    <tabBarItem key="tabBarItem" tag="3" title="خانه" image="ic_home_48pt" id="51E-6H-DDg">
                         <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-3"/>
                     </tabBarItem>

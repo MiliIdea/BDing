@@ -13,6 +13,7 @@ import CoreData
 import UserNotifications
 import UserNotificationsUI
 import AudioToolbox
+import Lottie
 
 
 class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocationManagerDelegate{
@@ -20,7 +21,7 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
     var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     
     let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: "e2c56db5-dffb-48d2-b060-d0f5a71096e0")! as UUID, identifier: "Bding")
-    
+    var animationView : LOTAnimationView?
     
     let locationManager = CLLocationManager()
     
@@ -96,6 +97,8 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
         print("Selected item" , self.selectedIndex)
         
     }
+    
+    
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         
