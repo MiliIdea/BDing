@@ -381,7 +381,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
             
             if let JSON = response.result.value {
                 
-                print("JSON ----------Category----------->>>> ")
+                print("JSON ----------Category----------->>>> " , JSON)
                 
                 let obj = CategoryListResponseModel.init(json: JSON as! JSON)
                 

@@ -379,7 +379,7 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
             
             let data = self.customerHomeTableCells[indexPath.row]
             
-            vc.setup(data: data)
+            vc.setup(data: data , isPopup: true)
             
             vc.color1 = self.color1
             

@@ -24,6 +24,8 @@ class CategoryListData : Decodable{
     
     var url_icon_m : PicModel?
     
+    var url_icon_map : PicModel?
+    
     
     required init?(json: JSON) {
         
@@ -40,6 +42,8 @@ class CategoryListData : Decodable{
         self.url_icon = "url_icon" <~~ json
         
         self.url_icon_m = "url_icon_m" <~~ json
+        
+        self.url_icon_map = "url_icon_map" <~~ json
         
     }
     

@@ -54,6 +54,9 @@ class MyFont: NSObject {
                 
             }
       
+        }else if(view is UIButton){
+            (view as! UIButton).titleLabel?.font = UIFont(name: "IRANYekanMobileFaNum", size: CGFloat(mySize))
+            
         }
         
     }

@@ -39,7 +39,7 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
     
     var index : Int = 0
     
-    
+    var pinsImage : [String : PicModel] = [String : PicModel]()
     
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation = CLLocation()
@@ -135,12 +135,45 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
             
             let result: UIImage? = LoadPicture().load(picModel: obj.url_icon!)
             
-            if(result == nil){
-                vc.setup(data: CustomerHomeTableCell.init(preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: image, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic))
-            }else{
-                vc.setup(data: CustomerHomeTableCell.init(preCustomerImage: result ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: image, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic))
-            }
+            var catIcon : UIImage? = nil
+            
+            for cat in GlobalFields.CATEGORIES_LIST_DATAS! {
+                
+                if(cat.category_code == obj.category_id){
+                    
+                    LoadPicture().proLoad(picModel: cat.url_icon!){ resImage in
+                     
+                        catIcon = resImage
+                        
+                        var c1 : CGColor = UIColor(hex: "f5f7f8").cgColor
+                        var c2 : CGColor = UIColor(hex: "7c1f72").cgColor
+                        
+                        let colorsString = cat.color_code?.characters.split(separator: "-").map(String.init)
+                        
+                        if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
+                            
+                            c1 = UIColor(hex: (colorsString?[0])!).cgColor
+                            
+                            c2 = UIColor(hex: (colorsString?[1])!).cgColor
+                            
+                        }
+                        
+                        catIcon = self.setTintGradient(image: catIcon!, c: [c1,c2])
+                        
+                        if(result == nil){
+                            vc.setup(data: CustomerHomeTableCell.init(preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic) , isPopup: false)
+                        }else{
+                            vc.setup(data: CustomerHomeTableCell.init(preCustomerImage: result ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic), isPopup: false)
+                        }
 
+                        
+                        
+                    }
+                    
+                }
+                
+            }
+            
             
             self.navigationBar.alpha = 0
             
@@ -149,6 +182,37 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
         }, completion: nil)
         
     }
+    
+    
+    func setTintGradient(image: UIImage , c : [CGColor] ) -> UIImage{
+        
+        UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale);
+        let context = UIGraphicsGetCurrentContext()
+        context!.translateBy(x: 0, y: image.size.height)
+        context!.scaleBy(x: 1.0, y: -1.0)
+        
+        context!.setBlendMode(CGBlendMode.normal)
+        
+        let rect = CGRect(x: 0, y: 0, width : image.size.width, height : image.size.height)
+        
+        // Create gradient
+        
+        let colors = c as CFArray
+        let space = CGColorSpaceCreateDeviceRGB()
+        let gradient = CGGradient(colorsSpace: space, colors: colors, locations: nil)
+        
+        // Apply gradient
+        
+        context!.clip(to: rect, mask: image.cgImage!)
+        context!.drawLinearGradient(gradient!, start: CGPoint(x:0, y:0), end: CGPoint(x:0,y: image.size.height), options: CGGradientDrawingOptions(rawValue: 0))
+        let gradientImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return gradientImage!
+        
+    }
+    
+    
     
     func deletSubView(){
         UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
@@ -177,6 +241,64 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
         if !(annotation is MKPointAnnotation) {
             return nil
         }
+        //////////////
+        
+        let tit = annotation.title
+        
+        let subT = annotation.subtitle
+        
+        self.index = -1
+        
+        for j in 0...GlobalFields.BEACON_LIST_DATAS!.count - 1 {
+            
+            self.index = j
+            
+            var i = GlobalFields.BEACON_LIST_DATAS![j]
+            
+            if(tit! == i.title! && subT! == i.category_title!){
+                
+                
+                let reuseId = i.category_id
+                
+                var anView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId!)
+                
+                anView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+                
+                for im in pinsImage {
+                    
+                    if(im.key == i.category_id){
+                        
+                        LoadPicture().proLoad(picModel: im.value){ resImage in
+                            
+                            anView?.image = resImage
+
+                            mapView.reloadInputViews()
+
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+                
+                anView?.frame.size.width = 40
+                
+                anView?.frame.size.height = 40
+                
+                anView?.canShowCallout = false
+                
+                anView?.alpha = 1
+                
+                return anView
+                
+                
+            }
+            
+            
+        }
+        
+        //////////////
         
         let reuseId = "test"
 
@@ -271,6 +393,47 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
 
                         
                     }
+                    /////////
+                    
+                    
+                    
+                    
+                    var catIcon : UIImage? = nil
+                    
+                    for cat in GlobalFields.CATEGORIES_LIST_DATAS! {
+                        
+                        if(cat.category_code == i.category_id){
+                            
+                            LoadPicture().proLoad(picModel: cat.url_icon!){ resImage in
+                                
+                                catIcon = resImage
+                                
+                                var c1 : CGColor = UIColor(hex: "f5f7f8").cgColor
+                                var c2 : CGColor = UIColor(hex: "7c1f72").cgColor
+                                
+                                let colorsString = cat.color_code?.characters.split(separator: "-").map(String.init)
+                                
+                                if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
+                                    
+                                    c1 = UIColor(hex: (colorsString?[0])!).cgColor
+                                    
+                                    c2 = UIColor(hex: (colorsString?[1])!).cgColor
+                                    
+                                }
+                                
+                                catIcon = self.setTintGradient(image: catIcon!, c: [c1,c2])
+                                
+                                self.categoryIcon.image = catIcon
+                                
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                    
+                    
+                    ////////
                     
                     break
                     

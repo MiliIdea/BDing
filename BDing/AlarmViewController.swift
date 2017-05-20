@@ -558,7 +558,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 
                 vc.didMove(toParentViewController: self)
                 
-                vc.setup(data: self.customerHomeTableCells[indexPath.row])
+                vc.setup(data: self.customerHomeTableCells[indexPath.row] , isPopup: false)
                 
                 self.navigationBar.alpha = 0
                 
@@ -583,7 +583,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 
                 vc.didMove(toParentViewController: self)
                 
-                vc.setup(data: self.customerHomeTableCells[(indexPath.row * 2) + 1])
+                vc.setup(data: self.customerHomeTableCells[(indexPath.row * 2) + 1] , isPopup: false)
                 
                 self.navigationBar.alpha = 0
                 
@@ -629,23 +629,51 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
             
-            //TODO
+            var catIcon : UIImage? = nil
             
-//            code
-//            
-//            inja bayad b jaye customerCategoryIcon bayad az liste categoryha iconesh ro begirim
-//            
-//            GlobalFields.CATEGORIES_LIST_DATAS[0].url_icon
-            
-            
-            if(result == nil){
-                let a = CustomerHomeTableCell.init(preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: image, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic)
-                customerHomeTableCells.append(a)
-            }else{
-                let a = CustomerHomeTableCell.init(preCustomerImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: image, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic)
-                customerHomeTableCells.append(a)
+            for cat in GlobalFields.CATEGORIES_LIST_DATAS! {
+                
+                if(cat.category_code == obj.category_id){
+
+                    LoadPicture().proLoad(picModel: cat.url_icon!){ resImage in
+                        
+                        catIcon = resImage
+                        
+                        var c1 : CGColor = UIColor(hex: "f5f7f8").cgColor
+                        var c2 : CGColor = UIColor(hex: "7c1f72").cgColor
+                        
+                        let colorsString = cat.color_code?.characters.split(separator: "-").map(String.init)
+                        
+                        if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
+                            
+                            c1 = UIColor(hex: (colorsString?[0])!).cgColor
+                            
+                            c2 = UIColor(hex: (colorsString?[1])!).cgColor
+                            
+                        }
+                        
+                        catIcon = self.setTintGradient(image: catIcon!, c: [c1,c2])
+                        
+                        //////
+                        
+                        if(result == nil){
+                            let a = CustomerHomeTableCell.init(preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic)
+                            self.customerHomeTableCells.append(a)
+                        }else{
+                            let a = CustomerHomeTableCell.init(preCustomerImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic)
+                            self.customerHomeTableCells.append(a)
+                        }
+                        
+                        //////
+                        
+                    }
+                    
+                }
+                
             }
+            
         }
+        
     }
     
     
@@ -1520,15 +1548,56 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
             
-            self.container.addSubview(vc.view)
+            var counter = 0
             
-            vc.didMove(toParentViewController: self)
+            vc.pinsImage.removeAll()
             
-            self.navigationBar.alpha = 0
+            for c in GlobalFields.CATEGORIES_LIST_DATAS! {
+                
+                if(c.url_icon_map?.url != nil){
+         
+                    vc.pinsImage[c.category_code!] = c.url_icon_map
+                            
+                    counter += 1
+
+                }
+                
+            }
             
-            self.rightTable.alpha = 0
+            var b : Bool = true
             
-            self.leftTable.alpha = 0
+            while b {
+                
+                sleep(1)
+                
+                if(counter == GlobalFields.CATEGORIES_LIST_DATAS!.count){
+                    
+                    self.container.addSubview(vc.view)
+                    
+                    vc.didMove(toParentViewController: self)
+                    
+                    self.navigationBar.alpha = 0
+                    
+                    self.rightTable.alpha = 0
+                    
+                    self.leftTable.alpha = 0
+                    
+                    b = false
+                    
+                }
+                
+            }
+            
+            
+//            self.container.addSubview(vc.view)
+//
+//            vc.didMove(toParentViewController: self)
+//
+//            self.navigationBar.alpha = 0
+//
+//            self.rightTable.alpha = 0
+//            
+//            self.leftTable.alpha = 0
             
         }, completion: nil)
         

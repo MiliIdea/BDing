@@ -57,10 +57,11 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     
     @IBOutlet weak var address: UILabel!
     
-    @IBOutlet weak var phone: UILabel!
+    @IBOutlet weak var phone: UIButton!
     
-    @IBOutlet weak var webSiteAddress: UILabel!
+    @IBOutlet weak var webSiteAddress: UIButton!
     
+    @IBOutlet weak var progressBarView: UIProgressView!
     
     var heightOfSemiCircular: CGFloat = 0.0
     
@@ -94,9 +95,12 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     
     var cell:CustomerHomeTableCell? = nil
     
+    var isPopup: Bool = false
+    
+    var timer = Timer()
     //==================================================================//
     
-    func setup(data : CustomerHomeTableCell!){
+    func setup(data : CustomerHomeTableCell! , isPopup : Bool){
         
         cell = data
         
@@ -118,9 +122,11 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
         address.text = data.address
         
-        phone.text = data.tell
+        phone.setTitle(data.tell, for: UIControlState.normal)
         
-        webSiteAddress.text = data.website
+        webSiteAddress.setTitle(data.website, for: UIControlState.normal)
+        
+        brandIcon.image = data.customerCategoryIcon
         
         backgroundPic = data.customerBigImages?[0]
         
@@ -238,6 +244,8 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
             
         }
         
+        self.isPopup = isPopup
+  
         
     }
     
@@ -247,6 +255,8 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         super.viewDidLoad()
         
         scrollView.delegate = self
+        
+        self.progressBarView.setProgress(0.0, animated: true)
         
         viewInScrollView.frame.size.height += 25
         
@@ -369,10 +379,59 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         self.bottomDataView.layer.shadowOffset = CGSize(width: -1, height: 1)
         self.bottomDataView.layer.shadowRadius = 3
         
+        if(isPopup == true){
+            
+            self.progressBarView.alpha = 1
+            
+        }else{
+            
+            self.progressBarView.alpha = 0
+            
+        }
+
+        
     }
     
     
+    override func viewDidAppear(_ animated: Bool) {
+        if(isPopup == true){
+            
+            self.progressBarView.alpha = 1
+            
+            DispatchQueue.main.async {
+             
+                self.timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(DetailViewController.setProgressBar), userInfo: nil, repeats: true)
+            
+            }
+            
+        }else{
+            
+            self.progressBarView.alpha = 0
+            
+        }
+
+    } 
     
+    var counter : Float = 0.0
+    
+    func setProgressBar() {
+        
+        if counter >= 1 {
+            
+            progressBarView.tintColor = UIColor.green
+            
+            progressBarView.backgroundColor = UIColor.green
+            
+            timer.invalidate()
+            
+            return
+        }
+        // increment the counter
+        counter += 0.01
+        
+        progressBarView.progress = counter
+        
+    }
     
     
     override func didReceiveMemoryWarning() {
@@ -402,7 +461,8 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-        
+        scrollView.contentOffset.x = 0
+       
         let k: CGFloat = (offsetOfsemiCircular + heightOfSemiCircular) / (offsetOfsemiCircular + heightOfSemiCircular - (navigationBar.frame.height+navigationBar.frame.origin.y))
         
         var myPercentage = 1 - k * ( self.scrollView.contentOffset.y / (semicircularView.frame.origin.y + semicircularView.frame.height) )
@@ -674,4 +734,58 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
     }
     
+    @IBAction func call(_ sender: Any) {
+        
+        guard let number = URL(string: "telprompt://" + (phone.titleLabel?.text)!) else { return }
+        
+        if #available(iOS 10.0, *) {
+            
+            UIApplication.shared.open(number, options: [:], completionHandler: nil)
+            
+        } else {
+            
+            if let url = URL(string: "tel://\(number)") {
+                
+                UIApplication.shared.openURL(url)
+                
+            }
+            
+        }
+        
+    }
+    
+    @IBAction func goWeb(_ sender: Any) {
+        
+        UIApplication.shared.openURL(NSURL(string: "http://" + (webSiteAddress.titleLabel?.text)!)! as URL)
+        
+    }
+    
+    @IBAction func share(_ sender: Any) {
+        
+        let myShare = "My beautiful photo! <3 <3"
+        let image: UIImage = UIImage(named: "mal")!
+        
+        let shareVC: UIActivityViewController = UIActivityViewController(activityItems: [(image), myShare], applicationActivities: nil)
+        
+        self.present(shareVC, animated: true, completion: nil)
+        
+    }
+    
+    
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

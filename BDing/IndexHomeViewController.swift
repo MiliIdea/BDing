@@ -19,6 +19,7 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
     
     @IBOutlet weak var navigationBar: UINavigationBar!
     
+    @IBOutlet weak var popupView: DCBorderedView!
     var customerHomeTableCells = [CustomerHomeTableCell]()
     
 //    let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: "8F69043E-9623-4F35-B553-FDAA27995EF3")! as UUID, identifier: "Bding")
@@ -32,6 +33,7 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         IndexHomeTable.dataSource = self
         IndexHomeTable.delegate = self
         
+        popupView.alpha = 0
         
 //        locationManager = CLLocationManager()
 //        
@@ -122,17 +124,22 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             
             self.addChildViewController(vc)
             
-            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+//            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+
+            vc.view.frame = CGRect(x:0,y: 0,width: self.popupView.frame.size.width, height: self.popupView.frame.size.height);
             
-            self.container.addSubview(vc.view)
+            self.popupView.addSubview(vc.view)
             
             vc.didMove(toParentViewController: self)
             
-            vc.setup(data: self.customerHomeTableCells[indexPath.row])
+            vc.setup(data: self.customerHomeTableCells[indexPath.row] ,isPopup:  true)
             
             self.navigationBar.alpha = 0
             
-            self.IndexHomeTable.alpha = 0
+//            self.IndexHomeTable.alpha = 0
+            
+            self.popupView.alpha = 1
+            
         }, completion: nil)
     }
     
@@ -285,23 +292,25 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
     
     @IBAction func changeView(_ sender: Any) {
         
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-        let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CategoryPageViewController"))! as! CategoryPageViewController
-        
-        vc.parentView = "IndexHomeViewController"
-            
-        self.addChildViewController(vc)
-        
-        vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-        
-        self.container.addSubview(vc.view)
-        
-        vc.didMove(toParentViewController: self)
-        
-        self.navigationBar.alpha = 0
-        
-        self.IndexHomeTable.alpha = 0
-        }, completion: nil)
+//        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+//        let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CategoryPageViewController"))! as! CategoryPageViewController
+//        
+//        vc.parentView = "IndexHomeViewController"
+//            
+//        self.addChildViewController(vc)
+//        
+//        vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+//        
+////        self.container.addSubview(vc.view)
+//            
+//        self.IndexHomeTable.addSubview(vc.view)
+//        
+//        vc.didMove(toParentViewController: self)
+//        
+//        self.navigationBar.alpha = 0
+//        
+//        self.IndexHomeTable.alpha = 0
+//        }, completion: nil)
     }
     
 
@@ -315,7 +324,7 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         
         self.container.addSubview(vc.view)
             
-            
+        self.popupView.alpha = 0
         
         vc.didMove(toParentViewController: self)
         }, completion: nil)
