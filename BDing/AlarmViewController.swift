@@ -19,7 +19,11 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     @IBOutlet weak var rightWidth: NSLayoutConstraint!
     
-    @IBOutlet weak var leftWidth: NSLayoutConstraint!
+    @IBOutlet weak var leftWidth: NSLayoutConstraint! // left leading -172
+    
+    @IBOutlet weak var leftOrginalWidth: NSLayoutConstraint!
+    
+    
   
     @IBOutlet var container: UIView!
     
@@ -244,9 +248,17 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             if AlarmViewController.mode {
                 
                 //resizing table single
-                self.leftWidth.constant = -(self.rightTable.superview?.frame.width)!/2+4
-                self.rightTable.frame.size.width = (self.rightTable.superview?.frame.width)!
+//                self.leftWidth.constant = -(self.rightTable.superview?.frame.width)!/2+4
+//                self.rightTable.frame.size.width = (self.rightTable.superview?.frame.width)!
+//                self.rightWidth.constant = (self.rightTable.superview?.frame.width)!-4
+
+                self.leftOrginalWidth.constant = self.view.frame.width / 2
+                
+                self.leftWidth.constant = -(self.view.frame.width)/2+4
+                self.rightTable.frame.size.width = (self.view.frame.width)
                 self.rightWidth.constant = (self.rightTable.superview?.frame.width)!-4
+                
+                
                 ////////=========///////
 
                 for c in 1...self.rightTable.numberOfRows(inSection: 0) {
@@ -256,6 +268,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 }
                 
                 self.leftTable.contentOffset = self.rightTable.contentOffset
+                
                 
                 self.view.layoutIfNeeded()
                 
@@ -283,9 +296,17 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 //resizing table double
                 self.leftWidth.constant = -16
 
-                self.rightTable.frame.size.width = self.leftTable.frame.width
+//                self.rightTable.frame.size.width = self.leftTable.frame.width
+//                self.rightWidth.constant =  self.leftTable.frame.width
+
+                
+                self.rightTable.frame.size.width = self.view.frame.width / 2
+                
+                self.leftTable.frame.size.width = self.view.frame.width / 2
+                
                 self.rightWidth.constant =  self.leftTable.frame.width
                 
+                self.leftOrginalWidth.constant = self.view.frame.width / 2
                 
                 for c in 1...self.rightTable.numberOfRows(inSection: 0) {
                     

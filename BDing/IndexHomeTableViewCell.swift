@@ -84,7 +84,7 @@ class IndexHomeTableViewCell: UITableViewCell {
         self.contentView.layer.shadowOffset = CGSize(width: -1, height: 1)
         self.contentView.layer.shadowRadius = 3
         
-        
+//        viewW.constant = self.frame.width
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -94,8 +94,12 @@ class IndexHomeTableViewCell: UITableViewCell {
     
     func setFirst(){
         
+//        viewW.constant = self.frame.width
+        
         imgH.constant = viewH.constant
         imgW.constant = viewW.constant/3.5
+        
+        
         customerThumbnail.contentMode = UIViewContentMode.scaleAspectFill
         titleTop.constant = viewH.constant / 8
         titleTr.constant = imgW.constant + 8
@@ -126,8 +130,17 @@ class IndexHomeTableViewCell: UITableViewCell {
     
     func setLast(){
         
+        print(viewW.constant)
+        
+        print(self.boarderView.frame.width)
+        
+//        viewW.constant = self.boarderView.frame.width
+        
+//        viewW.constant = self.frame.width
+        
         imgH.constant = viewH.constant * 1.3
-        imgW.constant = viewW.constant/2
+//        imgW.constant = viewW.constant/2
+        imgW.constant = self.frame.width
         customerThumbnail.contentMode = UIViewContentMode.scaleAspectFill
         titleTop.constant = imgH.constant + 8
         titleTr.constant = 10

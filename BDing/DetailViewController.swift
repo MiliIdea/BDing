@@ -250,6 +250,9 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     }
     
     
+  
+    
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()

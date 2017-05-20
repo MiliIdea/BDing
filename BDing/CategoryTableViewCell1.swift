@@ -27,6 +27,25 @@ class CategoryTableViewCell1: UITableViewCell {
         
         MyFont().setMediumFont(view: labelViewCell1, mySize: 13)
         
+        self.frame.size.height = UIScreen.main.bounds.height / 8
+        
+        self.boarderView.frame.size.height = self.frame.size.height - 10
+        
+        self.boarderView.frame.origin.y = 10
+        
+        self.boarderView.frame.size.width = self.frame.width - 16
+        
+        self.boarderView.frame.origin.x = 8
+        
+        self.imageViewCell1.frame.size.height = self.boarderView.frame.size.height + 0.5
+        
+        self.imageViewCell1.frame.size.width = self.imageViewCell1.frame.size.height + 0.5
+        
+        self.imageViewCell1.frame.origin.y = 0
+        
+        self.imageViewCell1.frame.origin.x = self.boarderView.frame.width - self.imageViewCell1.frame.width
+        
+        
         if (self.isSelected) {
             
             boarderView.layer.cornerRadius = 0
@@ -75,6 +94,25 @@ class CategoryTableViewCell1: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+        
+        
+        self.frame.size.height = UIScreen.main.bounds.height / 8
+        
+        self.boarderView.frame.size.height = self.frame.size.height - 10
+        
+        self.boarderView.frame.origin.y = 10
+        
+        self.boarderView.frame.size.width = self.frame.width - 16
+        
+        self.boarderView.frame.origin.x = 8
+        
+        self.imageViewCell1.frame.size.height = self.boarderView.frame.size.height + 0.5
+        
+        self.imageViewCell1.frame.size.width = self.imageViewCell1.frame.size.height + 0.5
+        
+        self.imageViewCell1.frame.origin.y = 0
+        
+        self.imageViewCell1.frame.origin.x = self.boarderView.frame.width - self.imageViewCell1.frame.width
  
 //        if(selected){
 //            

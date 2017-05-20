@@ -182,6 +182,12 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
     
     func signInPressing() {
         
+        if((SaveAndLoadModel().load(entity: "USER")?.count)! <= 0){
+            
+            return
+            
+        }
+        
         let model = SaveAndLoadModel().load(entity: "USER")?[0]
         
         if(model == nil){

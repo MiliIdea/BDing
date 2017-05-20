@@ -202,6 +202,8 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                 
                 cell2?.iconView.image = dataCell2.preImage?.imageWithColor(tintColor: UIColor.white)
                 
+                cell2?.iconView.contentMode = UIViewContentMode.scaleAspectFit
+                
             }else{
                 
                 var im: UIImage? = loadImage(picModel: dataCell2.image!)
@@ -213,6 +215,8 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                     dataCell2.preImage = im
                     
                     cell2?.iconView.image = im
+                    
+                    cell2?.iconView.contentMode = UIViewContentMode.scaleAspectFit
                     
                 }else{
                     
@@ -249,6 +253,8 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                 
             }
             
+            cell2?.setLayout()
+            
             return cell2!
             
             
@@ -263,11 +269,11 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
             
             myCell?.labelViewCell1.text = sections[getSectionIndex(row: indexPath.row)].name
             
-            myCell!.imageViewCell1.layer.zPosition = 2
-            
-            myCell!.imageViewCell1.frame.origin.y = 0
-            
-            myCell!.imageViewCell1.frame.size.height = 61
+//            myCell!.imageViewCell1.layer.zPosition = 2
+//            
+//            myCell!.imageViewCell1.frame.origin.y = 0
+//            
+//            myCell!.imageViewCell1.frame.size.height = 61
             
             DispatchQueue.main.async(execute: { () -> Void in
             myCell!.imageViewCell1.layer.addSublayer(self.setGradientLayer(myView: myCell!.imageViewCell1, color1: self.sections[self.getSectionIndex(row: indexPath.row)].color1 , color2: self.sections[self.getSectionIndex(row: indexPath.row)].color2))
@@ -334,6 +340,9 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                     myL.contents = myI?.cgImage
                     
                     myCell?.imageViewCell1.layer.addSublayer(myL)
+                    
+                    myCell?.imageViewCell1.contentMode = UIViewContentMode.scaleAspectFit
+                    
                 } else if (sections[getSectionIndex(row: indexPath.row)].image?.url != nil){
                     
                     var tempCode = sections[getSectionIndex(row: indexPath.row)].image?.url
@@ -378,7 +387,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                                 
                                 myCell?.imageViewCell1.layer.addSublayer(myLayer)
                                 
-                                
+                                myCell?.imageViewCell1.contentMode = UIViewContentMode.scaleAspectFit
                                 
                             }
                             
@@ -436,11 +445,11 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
 
         if(getExpandedSection() != -1 && indexPath.row > getExpandedSection() && indexPath.row < (getExpandedSection() + sections[getExpandedSection()].items.count) ){
          
-            return 60
+            return UIScreen.main.bounds.height / 8 - 10
             
         }else{
             
-            return 69.5
+            return UIScreen.main.bounds.height / 8
             
         }
         
@@ -567,6 +576,8 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                                 vc.setGradientLayer(color1: color.color1, color2: color.color2)
                                 
                                 vc.subCategoryIcon.image = self.loadImage(picModel: (subC?.image)!)?.imageWithColor(tintColor: UIColor.white)
+                                
+                                vc.subCategoryIcon.contentMode = UIViewContentMode.scaleAspectFit
                                 
                                 vc.subCategoryName.text = subC?.name
                                 

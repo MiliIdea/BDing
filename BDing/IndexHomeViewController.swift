@@ -88,7 +88,15 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         cell?.customerName.text = tableCell.customerName
         cell?.customerCampaignTitle.text = tableCell.customerCampaignTitle
         cell?.customerDistanceToMe.text = tableCell.customerDistanceToMe
+        
         cell?.customerThumbnail.image = UIImage(named:"profile_pic")!
+        
+        LoadPicture().proLoad(picModel: tableCell.customerImage!){ resImage in
+            
+            cell?.customerThumbnail.image = resImage
+            
+        }
+        
         cell?.customerCampaignCoin.text = tableCell.customerCoinValue
         cell?.customerCampaignDiscount.text = tableCell.customerDiscountValue
         cell?.customerCategoryThumbnail.image = tableCell.customerCategoryIcon
@@ -103,6 +111,8 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         shape.path = maskPath.cgPath
         
         cell?.customerThumbnail.layer.mask = shape
+        
+        cell?.setFirst()
         
         return cell!
     }
