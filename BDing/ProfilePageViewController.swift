@@ -11,7 +11,9 @@ import UIKit
 import DLRadioButton
 
 
-class ProfilePageViewController: UIViewController , UIScrollViewDelegate{
+class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelegate, UIScrollViewDelegate , UINavigationControllerDelegate{
+    
+    @IBOutlet weak var backgroundProfilePic: UIImageView!
     
     @IBOutlet weak var scrollViewProfile: UIScrollView!
     
@@ -122,12 +124,14 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate{
     
     @IBOutlet weak var BirthDayButton: UIButton!
     
-    
+    var imagePicker = UIImagePickerController()
     
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        imagePicker.delegate = self
         
         MyFont().setFontForAllView(view: self.view)
         
@@ -195,14 +199,6 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate{
         
         name.adjustsFontSizeToFitWidth = true
         
-        nameStartXY.x = name.frame.origin.x
-        
-        nameStartXY.y = name.frame.origin.y
-        
-        nameStartWH.x = name.frame.width
-        
-        nameStartWH.y = name.frame.height
-        
         startNameFontSize = name.font.pointSize
         
         //---
@@ -249,6 +245,51 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate{
         
         femaleRadio.iconSelected = femaleRadio.iconSelected.af_imageAspectScaled(toFit: CGSize.init(width: 50, height: 50))
         
+        ///
+        
+        
+        /// fill data was here
+        
+        
+        ///
+//        coinValue and coinIcon should set origin.x here
+        
+        let fixedHeight = self.coinValue.frame.size.height
+        
+        self.coinValue.frame.size = self.coinValue.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: fixedHeight))
+        
+        var sumW = coinValue.frame.width + coinIcon.frame.width
+        
+        coinIcon.frame.origin.x = self.view.frame.width / 2 - sumW / 2
+        
+        coinValue.frame.origin.x = coinIcon.frame.origin.x + coinIcon.frame.width
+        
+        coinValue.frame.origin.y = coinIcon.frame.origin.y
+        
+        
+        nameStartXY.y = name.frame.origin.y
+        
+        print(name.frame.width)
+        
+        let fixedH = self.name.frame.size.height
+        
+        self.name.frame.size = self.name.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: fixedH))
+        
+        name.textAlignment = NSTextAlignment.center
+        
+        name.frame.origin.x = self.view.frame.width / 2 - self.name.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: fixedH)).width / 3
+        
+        nameStartXY.x = name.frame.origin.x
+        
+        nameStartWH.x = name.frame.width
+        
+        nameStartWH.y = name.frame.height
+        
+        scrollViewDidScroll(self.scrollViewProfile)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
         nameButton.setTitle(GlobalFields.PROFILEDATA?.name, for: UIControlState.normal)
         
         familyNameButton.setTitle(GlobalFields.PROFILEDATA?.family, for: UIControlState.normal)
@@ -290,7 +331,44 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate{
             
         }
         
+        coinValue.text = GlobalFields.PROFILEDATA?.all_coin
+        
+        var s : String? = GlobalFields.PROFILEDATA?.name
+        
+        
+        if(GlobalFields.PROFILEDATA?.family != nil){
+            
+            s?.append(" ")
+            
+            s?.append((GlobalFields.PROFILEDATA?.family)!)
+            
+        }
+        
+        
+        name.text = s
+        
+        nameStartXY.y = name.frame.origin.y
+        
+        print(name.frame.width)
+        
+        let fixedH = self.name.frame.size.height
+        
+        self.name.frame.size = self.name.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: fixedH))
+        
+        name.textAlignment = NSTextAlignment.center
+        
+        name.frame.origin.x = self.view.frame.width / 2 - self.name.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: fixedH)).width / 2
+        
+        nameStartXY.x = name.frame.origin.x
+        
+        nameStartWH.x = name.frame.width
+        
+        nameStartWH.y = name.frame.height
+
+
+        scrollViewDidScroll(self.scrollViewProfile)
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -414,7 +492,7 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate{
         
         cigWH.y = coinIconStartWH.y * 0.5
         
-        ngXY.x = pgXY.x - ngWH.x
+        ngXY.x = pgXY.x - ngWH.x - 4
         
         ngXY.y = pgXY.y
         
@@ -433,6 +511,7 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate{
         fontCoinSG.x = startCoinFontSize
         
         fontCoinSG.y = startCoinFontSize / 1.4
+        
         
         myAnimateWithScroll(view: name, goalXY: ngXY, startXY: nameStartXY, goalWH: ngWH, startWH: nameStartWH, fontSG: fontNameSG)
         
@@ -910,21 +989,77 @@ class ProfilePageViewController: UIViewController , UIScrollViewDelegate{
     }
     
     
+    @IBAction func setProfilePic(_ sender: Any) {
+        
+//        self.btnEdit.setTitleColor(UIColor.white, for: .normal)
+//        self.btnEdit.isUserInteractionEnabled = true
+        
+        let alert = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
+            self.openCamera()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { _ in
+            self.openGallary()
+        }))
+        
+        alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+        
+    }
     
     
+    func openCamera()
+    {
+        if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.camera))
+        {
+            imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+            imagePicker.allowsEditing = true
+            self.present(imagePicker, animated: true, completion: nil)
+            
+        }
+        else
+        {
+            let alert  = UIAlertController(title: "Warning", message: "You don't have camera", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func openGallary()
+    {
+        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        imagePicker.allowsEditing = true
+        self.present(imagePicker, animated: true, completion: nil)
+    }
     
     
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let pickedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+            
+            
+            profilePicButton.contentMode = UIViewContentMode.scaleAspectFill
+            
+            
+            
+            profilePicButton.setBackgroundImage(pickedImage, for: .normal)
+            
+            
+            
+            
+            
+            backgroundProfilePic.image = pickedImage
+            
+            backgroundProfilePic.contentMode = UIViewContentMode.scaleAspectFill
+            
+        }
+        
+        dismiss(animated: true, completion: nil)
+    }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     
     
     

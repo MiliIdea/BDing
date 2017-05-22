@@ -136,13 +136,13 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             
 //            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
 
-            vc.view.frame = CGRect(x:0,y: 0,width: self.popupView.frame.size.width, height: self.popupView.frame.size.height);
+            vc.view.frame = CGRect(x:0,y: 0,width: self.popupView.frame.size.width, height: self.popupView.frame.size.height)
             
             self.popupView.addSubview(vc.view)
             
             vc.didMove(toParentViewController: self)
             
-            vc.setup(data: self.customerHomeTableCells[indexPath.row] ,isPopup:  true)
+            vc.setup(data: self.customerHomeTableCells[indexPath.row] ,isPopup:  true , rect: CGRect(x:0,y: 0,width: self.popupView.frame.size.width, height: self.popupView.frame.size.height))
             
             self.navigationBar.alpha = 0
             

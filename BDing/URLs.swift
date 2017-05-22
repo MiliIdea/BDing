@@ -24,8 +24,6 @@ class URLs {
     
     static let getBeacon = server + "beacon/getbeacon"
     
-    //***REMAIN***//
-    
     static let activationCode = server + "register/active"
     
     static let getMyCoupon = server + "user/getcoupon" // coupon haye man

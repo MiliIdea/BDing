@@ -97,6 +97,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         sortView.alpha = 0
         
         searchIsPressed = false
+        
+        searchOrigin = self.doSearchButton.frame.origin.y
         self.searchView.frame.size.height = 0
         self.collectionView.frame.size.height = 0
         self.collectionView.alpha = 0
@@ -120,8 +122,6 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         self.searchTextField.placeholder = s2?.appending(s!)
         self.clearButton.alpha = 0
         self.blurView.alpha = 0
-        
-        searchOrigin = self.doSearchButton.frame.origin.y
         
         var temp:[Bool] = [Bool]()
         
@@ -162,6 +162,10 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         loadHomeTable()
         
+        self.rightTable.reloadData()
+        
+        self.leftTable.reloadData()
+        
         if(AlarmViewController.mode){
             
             self.leftWidth.constant = -(self.rightTable.superview?.frame.width)!/2+4
@@ -180,10 +184,9 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         // Do any additional setup after loading the view.
     }
-    
-    
-    
 
+    
+    
     ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -579,7 +582,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 
                 vc.didMove(toParentViewController: self)
                 
-                vc.setup(data: self.customerHomeTableCells[indexPath.row] , isPopup: false)
+                vc.setup(data: self.customerHomeTableCells[indexPath.row] , isPopup: false , rect: nil)
                 
                 self.navigationBar.alpha = 0
                 
@@ -604,7 +607,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 
                 vc.didMove(toParentViewController: self)
                 
-                vc.setup(data: self.customerHomeTableCells[(indexPath.row * 2) + 1] , isPopup: false)
+                vc.setup(data: self.customerHomeTableCells[(indexPath.row * 2) + 1] , isPopup: false , rect: nil)
                 
                 self.navigationBar.alpha = 0
                 
@@ -680,9 +683,18 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                         if(result == nil){
                             let a = CustomerHomeTableCell.init(preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic)
                             self.customerHomeTableCells.append(a)
+                            
+                            self.rightTable.reloadData()
+                            
+                            self.leftTable.reloadData()
                         }else{
                             let a = CustomerHomeTableCell.init(preCustomerImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic)
                             self.customerHomeTableCells.append(a)
+                            
+                            self.rightTable.reloadData()
+                            
+                            self.leftTable.reloadData()
+                            
                         }
                         
                         //////
@@ -820,10 +832,10 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 self.collectionView.alpha = 1
                 self.doSearchButton.alpha = 1
                 self.doSearchButton.frame.size.height = 30
-                self.doSearchButton.frame.origin.y = self.searchOrigin
                 self.clearButton.alpha = 1
                 self.clearButton.frame.size.height = 30
-                self.clearButton.frame.origin.y = self.searchOrigin
+                self.clearButton.frame.origin.y = self.searchView.frame.height - 10 - self.clearButton.frame.height
+                self.doSearchButton.frame.origin.y = self.searchView.frame.height - 10 - self.clearButton.frame.height
                 self.searchTextField.alpha = 1
                 self.blurView.alpha = 0.85
 
@@ -1094,6 +1106,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         //////// set data in cell
         
         cell.title.text = data?.title
+        
+        MyFont().setLightFont(view: cell.title, mySize: 10)
         
         // set image
         

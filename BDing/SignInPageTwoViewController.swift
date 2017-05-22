@@ -251,7 +251,7 @@ class SignInPageTwoViewController: UIViewController {
             
             if let JSON = response.result.value {
                 
-                print("JSON ----------BEACON----------->>>> ")
+                print("JSON ----------BEACON----------->>>> " , JSON)
 
                 let obj = BeaconListResponseModel.init(json: JSON as! JSON)
                 

@@ -10,13 +10,15 @@ import Foundation
 
 class SetCoinRequestModel {
     
-    init(CODE: String! , TYPE: String! , MODE: String!) {
+
+    
+    init(CODE: String!) {
         
         self.CODE = CODE
         
-        self.TYPE = TYPE
+        self.TYPE = "beacon"
         
-        self.MODE = MODE
+        self.MODE = "show"
         
         let m = SaveAndLoadModel().load(entity: "USER")?[0]
         

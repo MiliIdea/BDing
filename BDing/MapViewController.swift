@@ -161,9 +161,9 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
                         catIcon = self.setTintGradient(image: catIcon!, c: [c1,c2])
                         
                         if(result == nil){
-                            vc.setup(data: CustomerHomeTableCell.init(preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic) , isPopup: false)
+                            vc.setup(data: CustomerHomeTableCell.init(preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic) , isPopup: false , rect: nil)
                         }else{
-                            vc.setup(data: CustomerHomeTableCell.init(preCustomerImage: result ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic), isPopup: false)
+                            vc.setup(data: CustomerHomeTableCell.init(preCustomerImage: result ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic), isPopup: false, rect: nil)
                         }
 
                         
@@ -271,6 +271,14 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
                         LoadPicture().proLoad(picModel: im.value){ resImage in
                             
                             anView?.image = resImage
+                            
+                            anView?.frame.size.width = 40
+                            
+                            anView?.frame.size.height = 40
+                            
+                            anView?.canShowCallout = false
+                            
+                            anView?.alpha = 1
 
                             mapView.reloadInputViews()
 

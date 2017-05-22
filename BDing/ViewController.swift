@@ -182,7 +182,44 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
     
     func signInPressing() {
         
+        animationView = LOTAnimationView(name: "finall")
+        
+        animationView?.frame.size.height = 200
+        
+        animationView?.frame.size.width = 200
+        
+//        animationView?.backgroundColor = UIColor.red
+        
+        animationView?.frame.origin.y = self.view.frame.height / 2 - (animationView?.frame.height)! / 2
+        
+        animationView?.frame.origin.x = self.view.frame.width / 2 - (animationView?.frame.width)! / 2
+        
+        animationView?.contentMode = UIViewContentMode.center
+        
+        animationView?.alpha = 1
+        
+        animationView?.layer.zPosition = 1
+        
+        self.view.addSubview(animationView!)
+        
+        animationView?.animationSpeed = 1
+        
+        animationView?.loopAnimation = true
+        
+        animationView?.play()
+        
+        requestForAutoLogin()
+        
+    }
+    
+    
+    func requestForAutoLogin(){
+        
         if((SaveAndLoadModel().load(entity: "USER")?.count)! <= 0){
+            
+            animationView?.pause()
+            
+            animationView?.alpha = 0
             
             return
             
@@ -205,6 +242,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
             return
             
         }
+
         
         let s = SignInRequestModel(USERNAME: user as! String!, PASSWORD: password as! String!)
         
@@ -212,36 +250,12 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         
         self.view.endEditing(true)
         
-        animationView = LOTAnimationView(name: "finall")
-        
-        animationView?.frame.size.height = 50
-        
-        animationView?.frame.size.width = 50
-        
-        animationView?.frame.origin.y = self.view.frame.height / 2 - 25
-        
-        animationView?.frame.origin.x = self.view.frame.width / 2 - 25
-        
-        animationView?.contentMode = UIViewContentMode.scaleAspectFit
-        
-        animationView?.alpha = 1
-        
-        animationView?.layer.zPosition = 1
-        
-        self.view.addSubview(animationView!)
-        
-        animationView?.animationSpeed = 4
-        
-        animationView?.loopAnimation = true
-        
-        animationView?.play()
-        
         request(URLs.signInUrl , method: .post , parameters: s.getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
             
             if let JSON = response.result.value {
                 
-                print("JSON -----------SIGNIN---------->>>> " , JSON)
+                print("JSON -----------SIGNIN---------->>>> " )
                 
                 let obj = SignInResponseModel.init(json: JSON as! JSON)
                 
@@ -302,9 +316,9 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
             }
             
         }
+
         
     }
-    
     
     func loadTabView() {
         
@@ -315,7 +329,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
             
             if let JSON = response.result.value {
                 
-                print("JSON ----------PROFILE----------->>>> " , JSON)
+                print("JSON ----------PROFILE----------->>>> " )
                 
                 let obj = ProfileResponseModel.init(json: JSON as! JSON)
                 
@@ -363,7 +377,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
             
             if let JSON = response.result.value {
                 
-                print("JSON ----------BEACON----------->>>> ")
+                print("JSON ----------BEACON----------->>>> " )
                 
                 let obj = BeaconListResponseModel.init(json: JSON as! JSON)
                 
@@ -387,7 +401,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
             
             if let JSON = response.result.value {
                 
-                print("JSON ----------Category----------->>>> " , JSON)
+                print("JSON ----------Category----------->>>> " )
                 
                 let obj = CategoryListResponseModel.init(json: JSON as! JSON)
                 
