@@ -207,6 +207,7 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                     if(SignUpResponseModel.init(json: JSON as! JSON).code == "200"){
                         
                         //notify ferestade shod
+                        self.navigationController?.pushViewController(SignInPageOneViewController() as! UIViewController, animated: true)
                         
                     }
                     

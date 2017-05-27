@@ -59,12 +59,81 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
         
         cell.discountLabel.text = coupons?[indexPath.row].discount
         
+        LoadPicture().proLoad(picType: "coupon" , picModel: (coupons?[indexPath.row].url_pic)!){ resImage in
+            
+            cell.couponImage.image = resImage
+            
+        }
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        
+        let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CouponPopupViewController"))! as! CouponPopupViewController
+        
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            self.addChildViewController(vc)
+            
+           vc.view.frame = CGRect(x:0,y: 0,width: self.view.frame.size.width, height: self.view.frame.size.height)
+            
+            vc.view.tag = 123
+            
+            self.view.addSubview(vc.view)
+            
+            vc.didMove(toParentViewController: self)
+            
+            vc.setup(myCoupon: nil, coupon: (self.coupons?[indexPath.row])! , isMyCoupon: false)
+            
+            vc.view.alpha = 1
+            
+            self.view.alpha = 1
+            
+        },completion : nil)
+        
+
+        self.table.deselectRow(at: indexPath, animated: true)
+        
+        
+    }
+    
+    func deletSubView(){
+        
+        if let viewWithTag = self.view.viewWithTag(123) {
+            
+            
+        
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                
+                viewWithTag.alpha = 0
+                
+                viewWithTag.frame.size.width = 0
+                
+                viewWithTag.frame.size.height = 0
+                
+                viewWithTag.frame.origin.x = self.view.frame.width / 2
+                
+                viewWithTag.frame.origin.y = self.view.frame.height / 2
+                
+            }){ completion in
+                
+                viewWithTag.removeFromSuperview()
+                
+            }
+        
+            
+        
+        }
+        
+    }
+    
+    
     
     @IBAction func backButton(_ sender: Any) {
         
@@ -74,24 +143,5 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
         
     }
     
-    //    func requestForBuyCoupon(){
-    //
-    //        request(URLs.buyCoupon , method: .post , parameters: BuyCouponRequestModel.init(CODE: "").getParams(), encoding: JSONEncoding.default).responseJSON { response in
-    //            print()
-    //
-    //            if let JSON = response.result.value {
-    //
-    //                print("JSON ----------MY BUY COUPON----------->>>> ")
-    //                //create my coupon response model
-    //
-    //                print(JSON)
-    //
-    //            }
-    //
-    //        }
-    //        
-    //        
-    //    }
-
 
 }

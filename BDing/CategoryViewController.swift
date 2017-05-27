@@ -73,12 +73,20 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
     override func viewDidAppear(_ animated: Bool) {
         
         super.viewDidAppear(animated)
+//        
+//        DispatchQueue.main.async(){
+//            
+//            self.showLoadingAnim()
+//        
+//        }
         
-        DispatchQueue.main.async(){
+
             
-            self.showLoadingAnim()
+        self.loadCategoryTable()
+            
+        self.tableViewCategory.reloadData()
+            
         
-        }
 
     }
     
@@ -113,15 +121,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
         self.animationView?.loopAnimation = true
         
         self.tableViewCategory.alpha = 0
-        
-        DispatchQueue.main.async(){
-            
-            self.loadCategoryTable()
-            
-            self.tableViewCategory.reloadData()
-            
-        }
-
+       
         self.cache = NSCache()
         // Do any additional setup after loading the view.
     }
@@ -931,10 +931,12 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                     if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
                         let a = Section.init(preImage: nil,name: obj.title!, image: obj.url_icon, items: subs, color1: UIColor(hex:(colorsString?[0])! ).cgColor, color2: UIColor(hex: (colorsString?[1])!).cgColor, collapsed: true , categoryCode: obj.category_code!)
                         self.sections.append(a)
+                        self.tableViewCategory.reloadData()
                         
                     }else{
                         let a = Section.init(preImage: nil,name: obj.title!, image: obj.url_icon, items: subs, color1: c1, color2: c2, collapsed: true , categoryCode: obj.category_code!)
                         self.sections.append(a)
+                        self.tableViewCategory.reloadData()
                     }
                     
                     
@@ -945,10 +947,12 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                     if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
                         let a = Section.init(preImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data),name: obj.title!, image: obj.url_icon, items: subs, color1: UIColor(hex:(colorsString?[0])! ).cgColor, color2: UIColor(hex: (colorsString?[1])!).cgColor, collapsed: true, categoryCode: obj.category_code!)
                         self.sections.append(a)
+                        self.tableViewCategory.reloadData()
                         
                     }else{
                         let a = Section.init(preImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data),name: obj.title!, image: obj.url_icon, items: subs, color1: c1, color2: c2, collapsed: true ,categoryCode: obj.category_code!)
                         self.sections.append(a)
+                        self.tableViewCategory.reloadData()
                     }
                     
                 }

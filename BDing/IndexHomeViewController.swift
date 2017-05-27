@@ -129,12 +129,12 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        let vc = (self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController"))! as! DetailViewController
+        
         UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController"))! as! DetailViewController
+            
             
             self.addChildViewController(vc)
-            
-//            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
 
             vc.view.frame = CGRect(x:0,y: 0,width: self.popupView.frame.size.width, height: self.popupView.frame.size.height)
             
@@ -146,11 +146,14 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             
             self.navigationBar.alpha = 0
             
-//            self.IndexHomeTable.alpha = 0
+            vc.view.alpha = 1
             
             self.popupView.alpha = 1
             
         }, completion: nil)
+        
+        
+        
     }
     
     

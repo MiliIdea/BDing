@@ -30,6 +30,9 @@
 		112A6C1E1E921C4500043C0A /* SubCategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112A6C1D1E921C4500043C0A /* SubCategoryData.swift */; };
 		112A6C201E92698200043C0A /* CategoryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112A6C1F1E92698200043C0A /* CategoryPageViewController.swift */; };
 		112B7C931E6BECC10020BAF6 /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112B7C921E6BECC10020BAF6 /* AlarmViewController.swift */; };
+		11307D2D1ED4239A0003ED7A /* CouponRequestPicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11307D2C1ED4239A0003ED7A /* CouponRequestPicModel.swift */; };
+		11307D331ED45BBC0003ED7A /* CouponPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11307D321ED45BBC0003ED7A /* CouponPopupViewController.swift */; };
+		11307D351ED5C8900003ED7A /* AboutUsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11307D341ED5C8900003ED7A /* AboutUsViewController.swift */; };
 		113E7DFC1ED17D4300D97BC1 /* finall.json in Resources */ = {isa = PBXBuildFile; fileRef = 113E7DFB1ED17D4300D97BC1 /* finall.json */; };
 		113F069A1E792CE700E7D74F /* GlobalFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F06991E792CE700E7D74F /* GlobalFields.swift */; };
 		113F069F1E793DFA00E7D74F /* BeaconPicRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F069E1E793DFA00E7D74F /* BeaconPicRequestModel.swift */; };
@@ -395,6 +398,9 @@
 		112A6C1D1E921C4500043C0A /* SubCategoryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubCategoryData.swift; sourceTree = "<group>"; };
 		112A6C1F1E92698200043C0A /* CategoryPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryPageViewController.swift; sourceTree = "<group>"; };
 		112B7C921E6BECC10020BAF6 /* AlarmViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
+		11307D2C1ED4239A0003ED7A /* CouponRequestPicModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponRequestPicModel.swift; sourceTree = "<group>"; };
+		11307D321ED45BBC0003ED7A /* CouponPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponPopupViewController.swift; sourceTree = "<group>"; };
+		11307D341ED5C8900003ED7A /* AboutUsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutUsViewController.swift; sourceTree = "<group>"; };
 		113E7DFB1ED17D4300D97BC1 /* finall.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = finall.json; sourceTree = "<group>"; };
 		113F06991E792CE700E7D74F /* GlobalFields.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalFields.swift; sourceTree = "<group>"; };
 		113F069E1E793DFA00E7D74F /* BeaconPicRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconPicRequestModel.swift; sourceTree = "<group>"; };
@@ -999,6 +1005,7 @@
 				114C640C1EC6ED0600B23525 /* ActivationCodeRequestModel.swift */,
 				114C640E1EC7213C00B23525 /* ForgotPasswordRequestModel.swift */,
 				110B99C01EC8628100D87F6E /* UserUpdateRequestModel.swift */,
+				11307D2C1ED4239A0003ED7A /* CouponRequestPicModel.swift */,
 			);
 			name = RquestModels;
 			sourceTree = "<group>";
@@ -1169,6 +1176,8 @@
 				115A30CA1EAE2801003A9104 /* MyCouponViewController.swift */,
 				111BB16D1EB082F600AD202D /* TakeCouponViewController.swift */,
 				111BB16F1EB0831B00AD202D /* PayHistoryViewController.swift */,
+				11307D321ED45BBC0003ED7A /* CouponPopupViewController.swift */,
+				11307D341ED5C8900003ED7A /* AboutUsViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1817,6 +1826,7 @@
 			files = (
 				11D428D51E66BFA3009F3763 /* SpringAnimation.swift in Sources */,
 				11D427B71E66B31E009F3763 /* MyFont.swift in Sources */,
+				11307D331ED45BBC0003ED7A /* CouponPopupViewController.swift in Sources */,
 				11D4286E1E66BFA2009F3763 /* Blowfish.swift in Sources */,
 				11D428631E66BFA2009F3763 /* BlockCipher.swift in Sources */,
 				11D428A71E66BFA2009F3763 /* DCMandatoryTextField.swift in Sources */,
@@ -1968,6 +1978,7 @@
 				1179DE641E7699DA00BE7DED /* SignInRequestModel.swift in Sources */,
 				1125ADAD1EB85D8600472356 /* MapViewController.swift in Sources */,
 				1179DDB81E767ED400BE7DED /* Gloss.swift in Sources */,
+				11307D2D1ED4239A0003ED7A /* CouponRequestPicModel.swift in Sources */,
 				1179DDEA1E7687D200BE7DED /* Validation.swift in Sources */,
 				1179DDDA1E7687D200BE7DED /* DispatchQueue+Alamofire.swift in Sources */,
 				11D428DD1E66BFA3009F3763 /* TransitionZoom.swift in Sources */,
@@ -2027,6 +2038,7 @@
 				11D428C91E66BFA3009F3763 /* DesignableTabBarController.swift in Sources */,
 				11A90B591E7542CB0076EAD7 /* DPDConstants.swift in Sources */,
 				11D428B01E66BFA2009F3763 /* DCHairlineView.swift in Sources */,
+				11307D351ED5C8900003ED7A /* AboutUsViewController.swift in Sources */,
 				1179DDE01E7687D200BE7DED /* ParameterEncoding.swift in Sources */,
 				11D428AF1E66BFA2009F3763 /* DCDashedBorderedView.swift in Sources */,
 				11D428D71E66BFA3009F3763 /* SpringImageView.swift in Sources */,

@@ -374,6 +374,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
             
         }
 
+        
     } 
     
     var counter : Float = 0.0
@@ -383,7 +384,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         if counter >= 1 {
             
             timer.invalidate()
-            
+
             //inja bayad set coin she agar read shode bud countero bayad az qabl 1esh konam
             
             request(URLs.setCoin , method: .post , parameters: SetCoinRequestModel(CODE: self.cell?.customerImage?.code).getParams(), encoding: JSONEncoding.default).responseJSON { response in
@@ -728,8 +729,9 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     
     @IBAction func share(_ sender: Any) {
         
-        let myShare = "My beautiful photo! <3 <3"
-        let image: UIImage = UIImage(named: "mal")!
+        let myShare = self.textView.text
+        
+        let image: UIImage = backgroundPicView.image!
         
         let shareVC: UIActivityViewController = UIActivityViewController(activityItems: [(image), myShare], applicationActivities: nil)
         

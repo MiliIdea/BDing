@@ -70,56 +70,20 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
         
         cell.detailLabel.text = data.coupon_code
         
-        if(couponsPrePics.count < indexPath.row + 1){
-                
-                if(data.url_pic?.url != nil){
-                    
-                    var im: UIImage? = loadImage(picModel: data.url_pic!)
-                    
-                    if(im != nil){
-                        
-                        im = im?.imageWithColor(tintColor: UIColor.white)
-                        
-                        couponsPrePics[indexPath.row] = im
-                        
-                        cell.couponImage.image = im
-                        
-                    }else{
-                        
-                        request("http://"+(data.url_pic?.url)! ,method: .post ,parameters: BeaconPicRequestModel(CODE: data.url_pic?.code, FILE_TYPE: data.url_pic?.file_type).getParams(), encoding : JSONEncoding.default).responseJSON { response in
-                            
-                            if let image = response.result.value {
-                                
-                                let obj = PicDataModel.init(json: image as! JSON)
-                                
-                                let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
-                                
-                                var coding: String = (data.url_pic?.url)!
-                                
-                                coding.append((data.url_pic?.code)!)
-                                
-                                SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
-                                
-                                self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                                
-                                var pic = UIImage(data: imageData as! Data)
-                                
-                                pic = pic?.imageWithColor(tintColor: UIColor.white)
-                                
-                                self.couponsPrePics.insert(pic, at: indexPath.row)
-                                
-                                cell.couponImage.image = pic
-                                
-                                cell.couponImage.contentMode = UIViewContentMode.scaleAspectFit
-                                
-                            }
-                        }
-                        
-                    }
-                    
-                }
+        if(couponsPrePics.count < indexPath.row + 1 || couponsPrePics[indexPath.row] == nil){
             
-        }else{
+            LoadPicture().proLoad(picType: "coupon", picModel: data.url_pic!){ resImage in
+             
+                self.couponsPrePics.insert(resImage, at: indexPath.row)
+                
+                cell.couponImage.image = resImage
+                
+                cell.couponImage.contentMode = UIViewContentMode.scaleAspectFit
+                
+            }
+            
+                    
+        } else {
             
             cell.couponImage.image = couponsPrePics[indexPath.row]
             
@@ -130,6 +94,43 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
 
         return cell
     }
+    
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        
+        let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CouponPopupViewController"))! as! CouponPopupViewController
+        
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            self.addChildViewController(vc)
+            
+            vc.view.frame = CGRect(x:0,y: 0,width: self.view.frame.size.width, height: self.view.frame.size.height)
+            
+            vc.view.tag = 1234
+            
+            self.view.addSubview(vc.view)
+            
+            vc.didMove(toParentViewController: self)
+            
+            vc.setup(myCoupon: (self.coupons?[indexPath.row])!, coupon: nil , isMyCoupon: true)
+            
+            vc.view.alpha = 1
+            
+            self.view.alpha = 1
+            
+        }, completion: nil)
+        
+        
+        self.table.deselectRow(at: indexPath, animated: true)
+        
+        
+    }
+    
+    
+    
+    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
@@ -192,6 +193,24 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
         
     }
 
+    
+    
+    func deletSubView(){
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "MyCouponViewController"))! as! MyCouponViewController
+            
+            self.addChildViewController(vc)
+            
+            if let viewWithTag = self.view.viewWithTag(1234) {
+                
+                viewWithTag.removeFromSuperview()
+                
+                
+            }
+            
+        }, completion: nil)
+        
+    }
     
     
 

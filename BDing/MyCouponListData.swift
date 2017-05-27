@@ -28,6 +28,21 @@ class MyCouponListData : Decodable{
     
     var coupon_code : String?
     
+    var address : String?
+    
+    var description : String?
+    
+    var shop_date : String?
+    
+    var end_date : String?
+    
+    var site : String?
+    
+    var start_date : String?
+    
+    var tel : String?
+    
+    
     
     required init?(json: JSON) {
         
@@ -48,6 +63,20 @@ class MyCouponListData : Decodable{
         self.count_used = "count_used" <~~ json
         
         self.coupon_code = "coupon_code" <~~ json
+        
+        self.address = "address" <~~ json
+        
+        self.description = "description" <~~ json
+        
+        self.shop_date = "shop_date" <~~ json
+        
+        self.end_date = "end_date" <~~ json
+        
+        self.site = "site" <~~ json
+        
+        self.start_date = "start_date" <~~ json
+        
+        self.tel = "tel" <~~ json
         
     }
     

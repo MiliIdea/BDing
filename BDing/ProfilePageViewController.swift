@@ -251,6 +251,64 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         /// fill data was here
         
         
+        var im : UIImage? = nil
+        
+        if(loadProfilePicAsDB() == nil){
+            print(GlobalFields.PROFILEDATA?.url_pic)
+            request("http://"+(GlobalFields.PROFILEDATA?.url_pic)! , method: .post , parameters: ProfileRequestModel().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                print()
+                
+                if let image = response.result.value {
+                    
+                    print("JSON ----------Profile Pic----------->>>> " , image)
+                    
+                    let obj = PicDataModel.init(json: image as! JSON)
+                    
+                    if(obj?.data != nil){
+                        
+                        let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
+                        
+                        
+                        im = UIImage(data: imageData as! Data)!
+                        
+                        self.profilePicButton.contentMode = UIViewContentMode.scaleAspectFill
+                        
+                        self.profilePicButton.setBackgroundImage(im, for: .normal)
+                        
+                        self.backgroundProfilePic.image = im
+                        
+                        self.backgroundProfilePic.contentMode = UIViewContentMode.scaleAspectFill
+                        
+                        var coding: String = ("http://"+(GlobalFields.PROFILEDATA?.url_pic)!)
+                        
+                        coding.append("ProfilePic")
+                        
+                        SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
+                        
+                        LoadPicture.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
+                        
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }else{
+            
+            let im : UIImage = loadProfilePicAsDB()!
+            
+            self.profilePicButton.contentMode = UIViewContentMode.scaleAspectFill
+            
+            self.profilePicButton.setBackgroundImage(im, for: .normal)
+            
+            self.backgroundProfilePic.image = im
+            
+            self.backgroundProfilePic.contentMode = UIViewContentMode.scaleAspectFill
+            
+        }
+        
+        
         ///
 //        coinValue and coinIcon should set origin.x here
         
@@ -287,6 +345,55 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         scrollViewDidScroll(self.scrollViewProfile)
     }
+    
+    func isThereThisPicInDB (code: String) -> String?{
+        
+        for i in SaveAndLoadModel().load(entity: "IMAGE")!{
+            
+            if(i.value(forKey: "imageCode") as! String == code){
+                
+                return i.value(forKey: "imageData") as! String
+                
+            }
+            
+        }
+        
+        return nil
+        
+    }
+    
+    func loadProfilePicAsDB() -> UIImage?{
+        
+        var tempCode : String! = ("http://"+(GlobalFields.PROFILEDATA?.url_pic)!)
+        
+        tempCode?.append("ProfilePic")
+        
+        let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
+        
+        if(result != nil){
+            
+            if LoadPicture.cache.object(forKey: tempCode?.md5() as AnyObject) != nil {
+                
+                return UIImage(data: LoadPicture.cache.object(forKey: tempCode?.md5() as AnyObject) as! Data)!
+                
+            }else{
+                
+                let imageData = NSData(base64Encoded: result!, options: .ignoreUnknownCharacters)
+                
+                LoadPicture.cache.setObject(imageData!, forKey: tempCode?.md5() as AnyObject)
+                
+                return UIImage(data: imageData as! Data)!
+                
+            }
+            
+        }else{
+            
+            return nil
+            
+        }
+        
+    }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         
@@ -343,6 +450,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
             s?.append((GlobalFields.PROFILEDATA?.family)!)
             
         }
+        
         
         
         name.text = s
@@ -577,7 +685,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
             
             if let JSON = response.result.value {
 
-                print("JSON ----------MY COUPON----------->>>> ")
+                print("JSON ----------MY COUPON----------->>>> " ,JSON)
                 //create my coupon response model
                
                 if( MyCouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
@@ -588,6 +696,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         self.addChildViewController(vc)
                         
                         vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+                        
+                        vc.view.tag = 125
                         
                         self.container.addSubview(vc.view)
                         
@@ -624,25 +734,27 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                 
                 print(GetCouponRequestModel.init().getParams())
                 
-                print("JSON ----------GET COUPON----------->>>> ")
+                print("JSON ----------GET COUPON----------->>>> " ,JSON)
                 //create my coupon response model
+                
+                let vc = (self.storyboard?.instantiateViewController(withIdentifier: "TakeCouponViewController"))! as! TakeCouponViewController
+                
+                self.addChildViewController(vc)
                 
                 if(CouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
                     
-                    UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                        let vc = (self.storyboard?.instantiateViewController(withIdentifier: "TakeCouponViewController"))! as! TakeCouponViewController
+                    self.navigationBar.alpha = 0
+                    
+                    self.profilePicButton.alpha = 0
+                    
+                    UIView.animate(withDuration: 2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                         
-                        self.addChildViewController(vc)
-                        
-                        vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+                        vc.view.tag = 125
                         
                         self.container.addSubview(vc.view)
                         
                         vc.didMove(toParentViewController: self)
                         
-                        self.navigationBar.alpha = 0
-                        
-                        self.profilePicButton.alpha = 0
                         
                         vc.coupons = CouponListResponseModel.init(json: JSON as! JSON)?.data
                         
@@ -671,6 +783,10 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                 //create my coupon response model
                 if(PayListResponseModel.init(json: JSON as! JSON)?.code == "200"){
                     
+                    self.navigationBar.alpha = 0
+                    
+                    self.profilePicButton.alpha = 0
+                    
                     UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                         let vc = (self.storyboard?.instantiateViewController(withIdentifier: "PayHistoryViewController"))! as! PayHistoryViewController
                         
@@ -678,13 +794,11 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         
                         vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
                         
+                        vc.view.tag = 125
+                        
                         self.container.addSubview(vc.view)
                         
                         vc.didMove(toParentViewController: self)
-                        
-                        self.navigationBar.alpha = 0
-                        
-                        self.profilePicButton.alpha = 0
                         
                         if(PayListResponseModel.init(json: JSON as! JSON)?.data == nil){
                             
@@ -721,20 +835,26 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     
     func deletSubView(){
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "ProfilePageViewController"))! as! ProfilePageViewController
-            
-            self.addChildViewController(vc)
-            
-            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-            
-            self.container.addSubview(vc.view)
-            
-            
-            
-            vc.didMove(toParentViewController: self)
-        }, completion: nil)
         
+        if let viewWithTag = self.view.viewWithTag(125) {
+        
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                
+                viewWithTag.frame.origin.x = self.view.frame.width
+                
+                self.navigationBar.alpha = 1
+                
+                self.profilePicButton.alpha = 1
+                
+                self.scrollViewDidScroll(self.scrollViewProfile)
+                
+            }){ completion in
+                
+                viewWithTag.removeFromSuperview()
+                
+            }
+            
+        }
     }
 
     
@@ -1039,20 +1159,48 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
             
+            request(URLs.userUpdate , method: .post , parameters: UserUpdateRequestModel.init(NAME: nil, FAMILY: nil, ATTRNAME: "pic", ATTRDATA: UIImagePNGRepresentation(pickedImage)!.base64EncodedString()).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                print()
+                
+                if let JSON = response.result.value {
+                    
+                    print("JSON ----------User Update----------->>>> " , JSON)
+                    
+                    let obj = ProfileResponseModel.init(json: JSON as! JSON)
+                    
+                    if ( obj?.code == "200" ){
+                        
+                        self.profilePicButton.contentMode = UIViewContentMode.scaleAspectFill
+                        
+                        self.profilePicButton.setBackgroundImage(pickedImage, for: .normal)
+                        
+                        self.backgroundProfilePic.image = pickedImage
+                        
+                        self.backgroundProfilePic.contentMode = UIViewContentMode.scaleAspectFill
+                        
+                        var coding: String = ("http://"+(GlobalFields.PROFILEDATA?.url_pic)!)
+                        
+                        coding.append("ProfilePic")
+                        
+                        let imageData = NSData(base64Encoded: UIImagePNGRepresentation(pickedImage)!.base64EncodedString(), options: .ignoreUnknownCharacters)
+                        
+                        SaveAndLoadModel().deleteAllObjectIn(entityName: "IMAGE")
+                        
+                        SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": UIImagePNGRepresentation(pickedImage)!.base64EncodedString()])
+                        
+                        LoadPicture.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
+                        
+                        
+                        
+                        
+                    }
+                    
+                }
+                
+            }
             
-            profilePicButton.contentMode = UIViewContentMode.scaleAspectFill
             
             
-            
-            profilePicButton.setBackgroundImage(pickedImage, for: .normal)
-            
-            
-            
-            
-            
-            backgroundProfilePic.image = pickedImage
-            
-            backgroundProfilePic.contentMode = UIViewContentMode.scaleAspectFill
             
         }
         
@@ -1060,7 +1208,58 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     }
     
 
+    @IBAction func exitAccount(_ sender: Any) {
+        
+        SaveAndLoadModel().deleteAllObjectIn(entityName: "USER")
+        
+        
+        
+    }
+
+    @IBAction func goAboutUs(_ sender: Any) {
+        
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "AboutUsViewController"))! as! AboutUsViewController
+            
+            self.addChildViewController(vc)
+            
+            vc.view.frame = CGRect(x:0,y: 0,width: self.view.frame.size.width, height: self.view.frame.size.height);
+            
+            vc.view.tag = 125
+            
+            self.view.addSubview(vc.view)
+            
+            vc.didMove(toParentViewController: self)
+            
+            
+            
+        }, completion: nil)
+        
+    }
+    
+
+    @IBAction func goFAQ(_ sender: Any) {
+    
+    
+    }
     
     
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
