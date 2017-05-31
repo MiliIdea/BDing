@@ -85,7 +85,10 @@ class IndexHomeTableViewCell: UITableViewCell {
         self.contentView.layer.shadowRadius = 3
         
 //        viewW.constant = self.frame.width
+        
+        
     }
+    
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -125,6 +128,7 @@ class IndexHomeTableViewCell: UITableViewCell {
         
         distanceIconTop.constant = categoryThumbnailTop.constant + 20
         
+        customerThumbnail.frame.origin.y = 0
         
     }
     

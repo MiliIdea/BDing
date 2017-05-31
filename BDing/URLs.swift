@@ -34,13 +34,17 @@ class URLs {
     
     static let buyCoupon = server + "user/buycoupon" // kharide coupon
     
-    static let payWithToll = server + "user/pay" // pardakht ba seke
+    static let payWithCoins = server + "user/pay" // pardakht ba seke
     
     static let paylistHistory = server + "user/paylist" //tarikhche pardakhtha
     
     static let forgotPassword = server + "register/forget"
     
     static let userUpdate = server + "user/update"
+    
+    static let changePassword = server + "user/password"
+    
+    static let payTitle = server + "user/pay/name/"
     
 }
 

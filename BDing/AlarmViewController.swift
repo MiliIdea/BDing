@@ -645,59 +645,63 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
 
         customerHomeTableCells.removeAll()
         
-        for obj in GlobalFields.BEACON_LIST_DATAS! {
+        if(GlobalFields.BEACON_LIST_DATAS != nil){
             
-            var tempCode = obj.url_icon?.url
-            
-            tempCode?.append((obj.url_icon?.code!)!)
-            
-            let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
-            
-            var catIcon : UIImage? = nil
-            
-            for cat in GlobalFields.CATEGORIES_LIST_DATAS! {
+            for obj in GlobalFields.BEACON_LIST_DATAS! {
                 
-                if(cat.category_code == obj.category_id){
-
-                    LoadPicture().proLoad(picModel: cat.url_icon!){ resImage in
+                var tempCode = obj.url_icon?.url
+                
+                tempCode?.append((obj.url_icon?.code!)!)
+                
+                let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
+                
+                var catIcon : UIImage? = nil
+                
+                for cat in GlobalFields.CATEGORIES_LIST_DATAS! {
+                    
+                    if(cat.category_code == obj.category_id){
                         
-                        catIcon = resImage
-                        
-                        var c1 : CGColor = UIColor(hex: "f5f7f8").cgColor
-                        var c2 : CGColor = UIColor(hex: "7c1f72").cgColor
-                        
-                        let colorsString = cat.color_code?.characters.split(separator: "-").map(String.init)
-                        
-                        if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
+                        LoadPicture().proLoad(view: nil,picModel: cat.url_icon!){ resImage in
                             
-                            c1 = UIColor(hex: (colorsString?[0])!).cgColor
+                            catIcon = resImage
                             
-                            c2 = UIColor(hex: (colorsString?[1])!).cgColor
+                            var c1 : CGColor = UIColor(hex: "f5f7f8").cgColor
+                            var c2 : CGColor = UIColor(hex: "7c1f72").cgColor
+                            
+                            let colorsString = cat.color_code?.characters.split(separator: "-").map(String.init)
+                            
+                            if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
+                                
+                                c1 = UIColor(hex: (colorsString?[0])!).cgColor
+                                
+                                c2 = UIColor(hex: (colorsString?[1])!).cgColor
+                                
+                            }
+                            
+                            catIcon = self.setTintGradient(image: catIcon!, c: [c1,c2])
+                            
+                            //////
+                            
+                            if(result == nil){
+                                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic)
+                                self.customerHomeTableCells.append(a)
+                                
+                                self.rightTable.reloadData()
+                                
+                                self.leftTable.reloadData()
+                            }else{
+                                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic)
+                                self.customerHomeTableCells.append(a)
+                                
+                                self.rightTable.reloadData()
+                                
+                                self.leftTable.reloadData()
+                                
+                            }
+                            
+                            //////
                             
                         }
-                        
-                        catIcon = self.setTintGradient(image: catIcon!, c: [c1,c2])
-                        
-                        //////
-                        
-                        if(result == nil){
-                            let a = CustomerHomeTableCell.init(preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic)
-                            self.customerHomeTableCells.append(a)
-                            
-                            self.rightTable.reloadData()
-                            
-                            self.leftTable.reloadData()
-                        }else{
-                            let a = CustomerHomeTableCell.init(preCustomerImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic)
-                            self.customerHomeTableCells.append(a)
-                            
-                            self.rightTable.reloadData()
-                            
-                            self.leftTable.reloadData()
-                            
-                        }
-                        
-                        //////
                         
                     }
                     
@@ -959,13 +963,13 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
         }
         
-        //        long = String(currentLocation.coordinate.longitude)
-        //
-        //        lat = String(currentLocation.coordinate.latitude)
+        long = String(currentLocation.coordinate.longitude)
         
-        long = String(51.4212297)
+        lat = String(currentLocation.coordinate.latitude)
         
-        lat = String(35.6329044)
+//        long = String(51.4212297)
+//        
+//        lat = String(35.6329044)
         
         var categoryList:[String] = [String]()
         
@@ -980,7 +984,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         }
         
         
-        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: nil, SEARCH: nil, CATEGORY: String(describing: categoryList), SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: String(describing: categoryList), SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
             
             if let JSON = response.result.value {

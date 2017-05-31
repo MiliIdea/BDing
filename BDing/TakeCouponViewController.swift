@@ -12,11 +12,19 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
 
     @IBOutlet weak var table: UITableView!
     
+    @IBOutlet weak var loading: UIActivityIndicatorView!
+    
+    
     var coupons: [CouponListData]? = [CouponListData]()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loading.hidesWhenStopped = true;
+        loading.activityIndicatorViewStyle  = UIActivityIndicatorViewStyle.gray;
+        
+        loading.startAnimating()
         
         self.table.register(UINib(nibName: "CouponTableViewCell", bundle: nil), forCellReuseIdentifier: "couponCell")
         
@@ -59,7 +67,7 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
         
         cell.discountLabel.text = coupons?[indexPath.row].discount
         
-        LoadPicture().proLoad(picType: "coupon" , picModel: (coupons?[indexPath.row].url_pic)!){ resImage in
+        LoadPicture().proLoad(view: cell.couponImage,picType: "coupon" , picModel: (coupons?[indexPath.row].url_pic)!){ resImage in
             
             cell.couponImage.image = resImage
             
@@ -69,7 +77,7 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        return self.view.frame.width * 7 / 32
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -94,6 +102,8 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
             vc.view.alpha = 1
             
             self.view.alpha = 1
+
+            
             
         },completion : nil)
         
@@ -137,11 +147,27 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
     
     @IBAction func backButton(_ sender: Any) {
         
-        let vc = self.parent as! ProfilePageViewController
-        
-        vc.deletSubView()
+        _ = navigationController?.popViewController(animated: true)
         
     }
+    
+    
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        
+//        if(segue.identifier == "toCouponPopupViewController"){
+//            
+//            let nextVc = segue.destination as! CouponPopupViewController
+//            
+////            nextVc.setup(myCoupon: nil, coupon: (self.coupons?[indexPath.row])! , isMyCoupon: false)
+//
+//            print("yeaaaaa")
+//            
+//        }
+//        
+//    }
+    
+    
     
 
 }

@@ -1,0 +1,209 @@
+//
+//  SettingViewController.swift
+//  BDing
+//
+//  Created by MILAD on 5/29/17.
+//  Copyright © 2017 MILAD. All rights reserved.
+//
+
+import UIKit
+
+class SettingViewController: UIViewController , UIPickerViewDataSource, UIPickerViewDelegate {
+    
+    @IBOutlet weak var blurView: UIVisualEffectView!
+    
+    @IBOutlet weak var rangePickerView: DCBorderedView!
+    
+    @IBOutlet weak var pickerView: UIPickerView!
+    
+    @IBOutlet weak var changePasswordView: DCBorderedView!
+    
+    @IBOutlet weak var oldPass: UILabel!
+
+    @IBOutlet weak var newPass: UILabel!
+    
+    @IBOutlet weak var reNewPass: UILabel!
+    
+    @IBOutlet weak var rangeButton: UIButton!
+    
+    
+    var pickerDataSource = ["500", "1000", "1500", "2000"]
+    
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+
+        MyFont().setFontForAllView(view: self.view)
+        
+        rangeButton.setTitle(String(GlobalFields.BEACON_RANG), for: .normal)
+        
+        rangePickerView.alpha = 0
+        
+        changePasswordView.alpha = 0
+        
+        blurView.alpha = 0
+        
+        self.pickerView.dataSource = self
+        
+        self.pickerView.delegate = self
+        
+        // Do any additional setup after loading the view.
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
+    
+    @IBAction func changeRange(_ sender: Any) {
+        
+        rangePickerView.alpha = 1
+        
+        blurView.alpha = 0.9
+        
+    }
+    
+  
+    @IBAction func changePassword(_ sender: Any) {
+        
+        changePasswordView.alpha = 1
+        
+        blurView.alpha = 0.9
+        
+    }
+    
+    @IBAction func confirmPicker(_ sender: Any) {
+        
+        let row = self.pickerView.selectedRow(inComponent: 0)
+        
+        if(row == 0){
+            
+            GlobalFields.BEACON_RANG = 500
+            
+        }else if(row == 1){
+            
+            GlobalFields.BEACON_RANG = 1000
+            
+        }else if(row == 2){
+            
+            GlobalFields.BEACON_RANG = 1500
+            
+        }else{
+            
+            GlobalFields.BEACON_RANG = 2000
+            
+        }
+        
+        rangeButton.setTitle(String(GlobalFields.BEACON_RANG), for: .normal)
+        
+        rangePickerView.alpha = 0
+        
+        changePasswordView.alpha = 0
+        
+        blurView.alpha = 0
+        
+    }
+    
+    @IBAction func canselPicker(_ sender: Any) {
+        
+        
+        rangePickerView.alpha = 0
+        
+        changePasswordView.alpha = 0
+        
+        blurView.alpha = 0
+        
+    }
+    
+    @IBAction func backPressed(_ sender: Any) {
+        
+         _ = navigationController?.popViewController(animated: true)
+        
+    }
+    
+    @IBAction func confirmNewPass(_ sender: Any) {
+        
+        if(newPass.text == reNewPass.text){
+            
+            request(URLs.changePassword , method: .post , parameters: ChangePasswordRequestModel.init(NEW_PASS: newPass.text, OLD_PASS: oldPass.text).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                print()
+                
+                if let JSON = response.result.value {
+                    
+                    print(GetCouponRequestModel.init().getParams())
+                    
+                    print("JSON ----------GET COUPON----------->>>> " ,JSON)
+                    //create my coupon response model
+                    
+                    if(CouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                        
+                        
+                        self.rangePickerView.alpha = 0
+                        
+                        self.changePasswordView.alpha = 0
+                        
+                        self.blurView.alpha = 0
+                        
+                        
+                    }
+                    
+                    print(JSON)
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    @IBAction func canselNewPass(_ sender: Any) {
+        
+        
+        rangePickerView.alpha = 0
+        
+        changePasswordView.alpha = 0
+        
+        blurView.alpha = 0
+        
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        
+        return 1
+        
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        
+        return pickerDataSource.count
+        
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
+        return pickerDataSource[row]
+        
+    }
+    
+
+    
+    
+}
+
+
+
+
+
+

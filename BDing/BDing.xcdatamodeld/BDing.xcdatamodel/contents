@@ -3,6 +3,7 @@
     <entity name="BEACON" representedClassName="BEACON" syncable="YES" codeGenerationType="class">
         <attribute name="beaconDataJSON" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isRemoved" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isSeen" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="major" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="minor" optional="YES" attributeType="String" syncable="YES"/>
@@ -20,8 +21,8 @@
         <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
+        <element name="BEACON" positionX="-63" positionY="18" width="128" height="165"/>
         <element name="IMAGE" positionX="-63" positionY="9" width="128" height="75"/>
         <element name="USER" positionX="-63" positionY="-18" width="128" height="105"/>
-        <element name="BEACON" positionX="-63" positionY="18" width="128" height="150"/>
     </elements>
 </model>

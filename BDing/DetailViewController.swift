@@ -114,8 +114,6 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
         print()
         
-        
-        
     }
     
     func setup(data : CustomerHomeTableCell! , isPopup : Bool , rect : CGRect?){

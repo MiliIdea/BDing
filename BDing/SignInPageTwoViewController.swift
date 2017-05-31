@@ -238,15 +238,19 @@ class SignInPageTwoViewController: UIViewController {
             
         }
         
-//        long = String(currentLocation.coordinate.longitude)
-//        
-//        lat = String(currentLocation.coordinate.latitude)
-
-        long = String(51.4212297)
+        long = String(currentLocation.coordinate.longitude)
         
-        lat = String(35.6329044)
+        lat = String(currentLocation.coordinate.latitude)
+
+//        long = String(51.4212297)
+//        
+//        lat = String(35.6329044)
+        
+        print("lat and long")
+        print(lat)
+        print(long)
     
-        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: nil, SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
             
             if let JSON = response.result.value {

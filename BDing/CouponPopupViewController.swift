@@ -10,6 +10,7 @@ import UIKit
 
 class CouponPopupViewController: UIViewController {
 
+    @IBOutlet weak var loading: UIActivityIndicatorView!
     
     @IBOutlet weak var couponImage: UIImageView!
     
@@ -73,7 +74,7 @@ class CouponPopupViewController: UIViewController {
             
             couponAddress.setTitle(myCoupon?.address, for: .normal)
             
-            LoadPicture().proLoad(picType: "coupon", picModel: (myCoupon?.url_pic!)!){ resImage in
+            LoadPicture().proLoad(view: self.couponImage,picType: "coupon", picModel: (myCoupon?.url_pic!)!){ resImage in
                 
                 self.couponImage.image = resImage
                 
@@ -103,7 +104,7 @@ class CouponPopupViewController: UIViewController {
             
             couponAddress.setTitle(coupon?.address, for: .normal)
             
-            LoadPicture().proLoad(picType: "coupon", picModel: (coupon?.url_pic!)!){ resImage in
+            LoadPicture().proLoad(view: self.couponImage,picType: "coupon", picModel: (coupon?.url_pic!)!){ resImage in
                 
                 self.couponImage.image = resImage
                 
@@ -119,6 +120,8 @@ class CouponPopupViewController: UIViewController {
         super.viewDidLoad()
         
         MyFont().setFontForAllView(view: self.view)
+        
+        loading.hidesWhenStopped = true
 
         // Do any additional setup after loading the view.
     }
@@ -160,6 +163,11 @@ class CouponPopupViewController: UIViewController {
     }
     
     @IBAction func buyCoupon(_ sender: Any) {
+        
+        loading.startAnimating()
+        
+        (sender as! UIButton).setTitle("", for: .normal)
+        
         print(BuyCouponRequestModel.init(CODE: code).getParams())
         request(URLs.buyCoupon , method: .post , parameters: BuyCouponRequestModel.init(CODE: code).getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
@@ -172,8 +180,16 @@ class CouponPopupViewController: UIViewController {
                 print()
                 if(CouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
 
+                    self.loading.stopAnimating()
+                    
                     self.close("")
                 
+                }else{
+                    
+                    self.loading.stopAnimating()
+                    
+                    (sender as! UIButton).setTitle("خرید کوپن", for: .normal)
+                    
                 }
             }
             

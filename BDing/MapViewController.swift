@@ -141,7 +141,7 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
                 
                 if(cat.category_code == obj.category_id){
                     
-                    LoadPicture().proLoad(picModel: cat.url_icon!){ resImage in
+                    LoadPicture().proLoad(view: nil ,picModel: cat.url_icon!){ resImage in
                      
                         catIcon = resImage
                         
@@ -161,9 +161,9 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
                         catIcon = self.setTintGradient(image: catIcon!, c: [c1,c2])
                         
                         if(result == nil){
-                            vc.setup(data: CustomerHomeTableCell.init(preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic) , isPopup: false , rect: nil)
+                            vc.setup(data: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic) , isPopup: false , rect: nil)
                         }else{
-                            vc.setup(data: CustomerHomeTableCell.init(preCustomerImage: result ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic), isPopup: false, rect: nil)
+                            vc.setup(data: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: result ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic), isPopup: false, rect: nil)
                         }
 
                         
@@ -268,7 +268,7 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
                     
                     if(im.key == i.category_id){
                         
-                        LoadPicture().proLoad(picModel: im.value){ resImage in
+                        LoadPicture().proLoad(view: nil ,picModel: im.value){ resImage in
                             
                             anView?.image = resImage
                             
@@ -412,7 +412,7 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
                         
                         if(cat.category_code == i.category_id){
                             
-                            LoadPicture().proLoad(picModel: cat.url_icon!){ resImage in
+                            LoadPicture().proLoad(view : nil,picModel: cat.url_icon!){ resImage in
                                 
                                 catIcon = resImage
                                 

@@ -184,6 +184,33 @@ class SaveAndLoadModel {
     
     
     
+    func getSpecificItemIn(entityName : String , keyAttribute : String , item : String ) -> NSManagedObject?{
+        
+        let moc = getContext()
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        
+        var s : String = keyAttribute
+        
+        s.append(" == %@")
+        
+        fetchRequest.predicate = NSPredicate(format: s, item)
+        
+        let result = try? moc?.fetch(fetchRequest) as? [NSManagedObject]
+        
+        if((result??.count)! > 0){
+            
+            return (result??[0])!
+            
+        }else{
+            
+            return nil
+            
+        }
+        
+    }
+    
+    
     
     func getContext () -> NSManagedObjectContext? {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

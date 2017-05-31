@@ -45,9 +45,11 @@ class CustomerHomeTableCell: NSObject {
     var workTime : String?
     
     var website : String?
+    
+    var uuidMajorMinorMD5 : String?
 
     
-    init(preCustomerImage : UIImage?,customerImage : PicModel?,customerCampaignTitle : String,customerName : String,customerCategoryIcon : UIImage,customerDistanceToMe : String,customerCoinValue : String,customerCoinIcon : UIImage,customerDiscountValue : String,customerDiscountIcon : UIImage ,tell : String , address : String , text : String , workTime : String , website : String , customerBigImages : [PicModel]?){
+    init(uuidMajorMinorMD5 : String? ,preCustomerImage : UIImage?,customerImage : PicModel?,customerCampaignTitle : String,customerName : String,customerCategoryIcon : UIImage,customerDistanceToMe : String,customerCoinValue : String,customerCoinIcon : UIImage,customerDiscountValue : String,customerDiscountIcon : UIImage ,tell : String , address : String , text : String , workTime : String , website : String , customerBigImages : [PicModel]?){
         
         self.preCustomerImage = preCustomerImage
         
@@ -57,13 +59,13 @@ class CustomerHomeTableCell: NSObject {
         
         self.customerName = customerName
         
-        self.customerCoinIcon = UIImage(named: "ic_toll")!
+        self.customerCoinIcon = UIImage(named: "ding 18")!
         
         self.customerCoinValue = customerCoinValue
         
         self.customerCategoryIcon = customerCategoryIcon
         
-        self.customerDiscountIcon = UIImage(named: "sale")!
+        self.customerDiscountIcon = UIImage(named: "sale 18")!
         
         self.customerDistanceToMe = customerDistanceToMe
         
@@ -80,6 +82,8 @@ class CustomerHomeTableCell: NSObject {
         self.workTime = workTime
         
         self.website = website
+        
+        self.uuidMajorMinorMD5 = uuidMajorMinorMD5
         
     }
     

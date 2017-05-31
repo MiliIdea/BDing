@@ -172,6 +172,8 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         
         backgroundView.layer.insertSublayer(gradientLayer, at: 0)
         
+//        navigationBar.layer.insertSublayer(gradientLayer, at: 0)
+        
     }
     
     

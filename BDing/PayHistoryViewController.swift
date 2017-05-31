@@ -58,15 +58,13 @@ class PayHistoryViewController: UIViewController ,UITableViewDelegate ,UITableVi
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        return self.view.frame.width * 7 / 32
     }
     
     
     @IBAction func backButton(_ sender: Any) {
         
-        let vc = self.parent as! ProfilePageViewController
-        
-        vc.deletSubView()
+         _ = navigationController?.popViewController(animated: true)
         
     }
     

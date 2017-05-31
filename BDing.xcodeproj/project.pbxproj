@@ -33,6 +33,10 @@
 		11307D2D1ED4239A0003ED7A /* CouponRequestPicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11307D2C1ED4239A0003ED7A /* CouponRequestPicModel.swift */; };
 		11307D331ED45BBC0003ED7A /* CouponPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11307D321ED45BBC0003ED7A /* CouponPopupViewController.swift */; };
 		11307D351ED5C8900003ED7A /* AboutUsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11307D341ED5C8900003ED7A /* AboutUsViewController.swift */; };
+		1132A4F21EDECBA900E0B2CF /* PayTitleResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1132A4F11EDECBA900E0B2CF /* PayTitleResponseModel.swift */; };
+		1132A4F41EDECCA300E0B2CF /* ResultTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1132A4F31EDECCA300E0B2CF /* ResultTitle.swift */; };
+		1132A4F61EDEE59300E0B2CF /* PayWithCoinsRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1132A4F51EDEE59300E0B2CF /* PayWithCoinsRequestModel.swift */; };
+		113D9B9D1EDC35F400E99103 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D9B9C1EDC35F400E99103 /* SettingViewController.swift */; };
 		113E7DFC1ED17D4300D97BC1 /* finall.json in Resources */ = {isa = PBXBuildFile; fileRef = 113E7DFB1ED17D4300D97BC1 /* finall.json */; };
 		113F069A1E792CE700E7D74F /* GlobalFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F06991E792CE700E7D74F /* GlobalFields.swift */; };
 		113F069F1E793DFA00E7D74F /* BeaconPicRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F069E1E793DFA00E7D74F /* BeaconPicRequestModel.swift */; };
@@ -60,6 +64,7 @@
 		114F5D761EB4B3C200FAEB6B /* PayListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114F5D751EB4B3C200FAEB6B /* PayListData.swift */; };
 		114F5D791EB5D23800FAEB6B /* FilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114F5D771EB5D23800FAEB6B /* FilterCollectionViewCell.swift */; };
 		114F5D7A1EB5D23800FAEB6B /* FilterCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 114F5D781EB5D23800FAEB6B /* FilterCollectionViewCell.xib */; };
+		115442BF1EDD47E800E5F3A4 /* ChangePasswordRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115442BE1EDD47E800E5F3A4 /* ChangePasswordRequestModel.swift */; };
 		115A30C81EAE25AF003A9104 /* CouponTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115A30C61EAE25AF003A9104 /* CouponTableViewCell.swift */; };
 		115A30C91EAE25AF003A9104 /* CouponTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 115A30C71EAE25AF003A9104 /* CouponTableViewCell.xib */; };
 		115A30CB1EAE2801003A9104 /* MyCouponViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115A30CA1EAE2801003A9104 /* MyCouponViewController.swift */; };
@@ -401,6 +406,10 @@
 		11307D2C1ED4239A0003ED7A /* CouponRequestPicModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponRequestPicModel.swift; sourceTree = "<group>"; };
 		11307D321ED45BBC0003ED7A /* CouponPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponPopupViewController.swift; sourceTree = "<group>"; };
 		11307D341ED5C8900003ED7A /* AboutUsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutUsViewController.swift; sourceTree = "<group>"; };
+		1132A4F11EDECBA900E0B2CF /* PayTitleResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayTitleResponseModel.swift; sourceTree = "<group>"; };
+		1132A4F31EDECCA300E0B2CF /* ResultTitle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultTitle.swift; sourceTree = "<group>"; };
+		1132A4F51EDEE59300E0B2CF /* PayWithCoinsRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayWithCoinsRequestModel.swift; sourceTree = "<group>"; };
+		113D9B9C1EDC35F400E99103 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		113E7DFB1ED17D4300D97BC1 /* finall.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = finall.json; sourceTree = "<group>"; };
 		113F06991E792CE700E7D74F /* GlobalFields.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalFields.swift; sourceTree = "<group>"; };
 		113F069E1E793DFA00E7D74F /* BeaconPicRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconPicRequestModel.swift; sourceTree = "<group>"; };
@@ -429,6 +438,7 @@
 		114F5D751EB4B3C200FAEB6B /* PayListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayListData.swift; sourceTree = "<group>"; };
 		114F5D771EB5D23800FAEB6B /* FilterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterCollectionViewCell.swift; sourceTree = "<group>"; };
 		114F5D781EB5D23800FAEB6B /* FilterCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterCollectionViewCell.xib; sourceTree = "<group>"; };
+		115442BE1EDD47E800E5F3A4 /* ChangePasswordRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordRequestModel.swift; sourceTree = "<group>"; };
 		115A30C61EAE25AF003A9104 /* CouponTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponTableViewCell.swift; sourceTree = "<group>"; };
 		115A30C71EAE25AF003A9104 /* CouponTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CouponTableViewCell.xib; sourceTree = "<group>"; };
 		115A30CA1EAE2801003A9104 /* MyCouponViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCouponViewController.swift; sourceTree = "<group>"; };
@@ -1006,6 +1016,8 @@
 				114C640E1EC7213C00B23525 /* ForgotPasswordRequestModel.swift */,
 				110B99C01EC8628100D87F6E /* UserUpdateRequestModel.swift */,
 				11307D2C1ED4239A0003ED7A /* CouponRequestPicModel.swift */,
+				115442BE1EDD47E800E5F3A4 /* ChangePasswordRequestModel.swift */,
+				1132A4F51EDEE59300E0B2CF /* PayWithCoinsRequestModel.swift */,
 			);
 			name = RquestModels;
 			sourceTree = "<group>";
@@ -1032,6 +1044,8 @@
 				114F5D751EB4B3C200FAEB6B /* PayListData.swift */,
 				114C25C11ED2BF1B00C980F3 /* SetCoinResponseModel.swift */,
 				114C25C31ED2BFA700C980F3 /* CoinDataModel.swift */,
+				1132A4F11EDECBA900E0B2CF /* PayTitleResponseModel.swift */,
+				1132A4F31EDECCA300E0B2CF /* ResultTitle.swift */,
 			);
 			name = ResponseModels;
 			sourceTree = "<group>";
@@ -1178,6 +1192,7 @@
 				111BB16F1EB0831B00AD202D /* PayHistoryViewController.swift */,
 				11307D321ED45BBC0003ED7A /* CouponPopupViewController.swift */,
 				11307D341ED5C8900003ED7A /* AboutUsViewController.swift */,
+				113D9B9C1EDC35F400E99103 /* SettingViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1935,6 +1950,7 @@
 				1179DDB71E767ED400BE7DED /* ExtensionDictionary.swift in Sources */,
 				11D428971E66BFA2009F3763 /* UInt16+Extension.swift in Sources */,
 				11D428C51E66BFA3009F3763 /* BlurView.swift in Sources */,
+				113D9B9D1EDC35F400E99103 /* SettingViewController.swift in Sources */,
 				11D428771E66BFA2009F3763 /* DigestType.swift in Sources */,
 				11D428A21E66BFA2009F3763 /* DCBaseLabel.swift in Sources */,
 				113F069F1E793DFA00E7D74F /* BeaconPicRequestModel.swift in Sources */,
@@ -1952,7 +1968,9 @@
 				11D428AB1E66BFA2009F3763 /* DCPlaceholderTextView.swift in Sources */,
 				11D4288E1E66BFA2009F3763 /* Poly1305.swift in Sources */,
 				11D428721E66BFA2009F3763 /* Cipher.swift in Sources */,
+				1132A4F21EDECBA900E0B2CF /* PayTitleResponseModel.swift in Sources */,
 				11DB600A1E791DA700A26115 /* PicModel.swift in Sources */,
+				1132A4F41EDECCA300E0B2CF /* ResultTitle.swift in Sources */,
 				11D427621E66AEC3009F3763 /* AppDelegate.swift in Sources */,
 				11D428751E66BFA2009F3763 /* CSArrayType+Extensions.swift in Sources */,
 				111BB16E1EB082F600AD202D /* TakeCouponViewController.swift in Sources */,
@@ -1979,6 +1997,7 @@
 				1125ADAD1EB85D8600472356 /* MapViewController.swift in Sources */,
 				1179DDB81E767ED400BE7DED /* Gloss.swift in Sources */,
 				11307D2D1ED4239A0003ED7A /* CouponRequestPicModel.swift in Sources */,
+				115442BF1EDD47E800E5F3A4 /* ChangePasswordRequestModel.swift in Sources */,
 				1179DDEA1E7687D200BE7DED /* Validation.swift in Sources */,
 				1179DDDA1E7687D200BE7DED /* DispatchQueue+Alamofire.swift in Sources */,
 				11D428DD1E66BFA3009F3763 /* TransitionZoom.swift in Sources */,
@@ -1998,6 +2017,7 @@
 				11D428BF1E66BFA3009F3763 /* CAMediaTimingFunction+AdditionalEquations.m in Sources */,
 				11D428A51E66BFA2009F3763 /* DCMandatoryEmailTextField.swift in Sources */,
 				115A30CB1EAE2801003A9104 /* MyCouponViewController.swift in Sources */,
+				1132A4F61EDEE59300E0B2CF /* PayWithCoinsRequestModel.swift in Sources */,
 				11D428D01E66BFA3009F3763 /* LoadingView.swift in Sources */,
 				11D427AA1E66B100009F3763 /* SignInPageTwoViewController.swift in Sources */,
 				11D428A11E66BFA2009F3763 /* DCRoundedButton.swift in Sources */,

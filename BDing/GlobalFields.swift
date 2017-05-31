@@ -18,4 +18,6 @@ class GlobalFields {
     
     static var PAY_UUIDS: [String]? = nil
     
+    static var BEACON_RANG : Int = 2000
+    
 }

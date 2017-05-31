@@ -46,7 +46,22 @@ class LoadPicture {
         
     }
     
-    func proLoad(picType : String = "beacon" ,picModel: PicModel , completion: @escaping (UIImage)->Void){
+    func proLoad(view : UIImageView? ,picType : String = "beacon" ,picModel: PicModel , completion: @escaping (UIImage)->Void){
+        
+        let loading : UIActivityIndicatorView = UIActivityIndicatorView()
+        
+        if(view != nil){
+            
+            loading.frame(forAlignmentRect: (view?.frame)!)
+            
+            loading.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+            
+            view?.addSubview(loading)
+            
+            loading.startAnimating()
+            
+        }
+        
         
         var tempCode = picModel.url
         
@@ -57,7 +72,9 @@ class LoadPicture {
         if(result != nil){
             
             if LoadPicture.cache.object(forKey: tempCode?.md5() as AnyObject) != nil {
-                
+                if(view != nil){
+                    loading.stopAnimating()
+                }
                 completion(UIImage(data: LoadPicture.cache.object(forKey: tempCode?.md5() as AnyObject) as! Data)!)
                 
             }else{
@@ -65,7 +82,9 @@ class LoadPicture {
                 let imageData = NSData(base64Encoded: result!, options: .ignoreUnknownCharacters)
                 
                 LoadPicture.cache.setObject(imageData!, forKey: tempCode?.md5() as AnyObject)
-                
+                if(view != nil){
+                    loading.stopAnimating()
+                }
                 completion(UIImage(data: imageData as! Data)!)
                 
             }
@@ -94,7 +113,9 @@ class LoadPicture {
                             SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
                             
                             LoadPicture.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                            
+                            if(view != nil){
+                                loading.stopAnimating()
+                            }
                             completion(UIImage(data: imageData as! Data)!)
                             
                         }
@@ -125,7 +146,9 @@ class LoadPicture {
                             SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
                             
                             LoadPicture.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                            
+                            if(view != nil){
+                                loading.stopAnimating()
+                            }
                             completion(UIImage(data: imageData as! Data)!)
                             
                         }

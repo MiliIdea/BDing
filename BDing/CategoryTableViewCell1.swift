@@ -18,6 +18,9 @@ class CategoryTableViewCell1: UITableViewCell {
     
     @IBOutlet weak var boarderView: UIView!
     
+    @IBOutlet weak var loading: UIActivityIndicatorView!
+    
+    
     var expanded: Bool = true
     
     override func awakeFromNib() {
@@ -90,6 +93,8 @@ class CategoryTableViewCell1: UITableViewCell {
         self.contentView.layer.shadowOffset = CGSize(width: -1, height: 1)
         self.contentView.layer.shadowRadius = 3
        
+        
+        loading.hidesWhenStopped = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

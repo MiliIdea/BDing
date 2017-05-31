@@ -21,13 +21,23 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
         var preImage: UIImage?
         var visible : Bool
         var subCategoryCode : String
+        var all_track : Bool = false
         
-        init(preImage: UIImage?,name: String , image: PicModel? , numberOfMembers: Int , subCategoryCode: String) {
+        init(preImage: UIImage?,name: String , image: PicModel? , numberOfMembers: Int , subCategoryCode: String , all_track : Bool?) {
             self.name = name
             self.image = image
             self.preImage = preImage
             self.numberOfMembers = numberOfMembers
             self.visible = false
+            if(all_track != nil){
+                
+                self.all_track = all_track!
+                
+            }else{
+                
+                self.all_track = false
+                
+            }
             self.subCategoryCode = subCategoryCode
         }
         
@@ -70,23 +80,23 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
     
     @IBOutlet weak var loadingAnimationView: UIView!
 
+    @IBOutlet weak var loading: UIActivityIndicatorView!
+    
+    
+    
     override func viewDidAppear(_ animated: Bool) {
         
         super.viewDidAppear(animated)
-//        
-//        DispatchQueue.main.async(){
-//            
-//            self.showLoadingAnim()
-//        
-//        }
-        
-
             
         self.loadCategoryTable()
             
         self.tableViewCategory.reloadData()
             
+        loading.stopAnimating()
         
+//        loadCategoryTableTwo()
+        
+//        self.tableViewCategory.reloadData()
 
     }
     
@@ -121,6 +131,10 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
         self.animationView?.loopAnimation = true
         
         self.tableViewCategory.alpha = 0
+        
+        loading.startAnimating()
+        
+        loading.hidesWhenStopped = true
        
         self.cache = NSCache()
         // Do any additional setup after loading the view.
@@ -483,7 +497,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
         }
         
     }
-    
+
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             
@@ -514,79 +528,159 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                 
             }
             
-            //        long = String(currentLocation.coordinate.longitude)
-            //        
-            //        lat = String(currentLocation.coordinate.latitude)
+            long = String(currentLocation.coordinate.longitude)
+                    
+            lat = String(currentLocation.coordinate.latitude)
             
-            long = String(51.411739)
+//            long = String(51.411739)
+//            
+//            lat = String(35.625465)
             
-            lat = String(35.625465)
-            
-            request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: nil, SEARCH: nil, CATEGORY: nil, SUBCATEGORY: (subC?.subCategoryCode)!).getParams(), encoding: JSONEncoding.default).responseJSON { response in
-                print()
+            if(subC?.all_track == true){
                 
-                if let JSON = response.result.value {
+                request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: sections[getSectionIndex(row: indexPath.row)].categoryCode, SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                    print()
                     
-                    print("JSON ----------LOAD SUBCATEGORY----------->>>> ")
-                    
-                    let obj = BeaconListResponseModel.init(json: JSON as! JSON)
-                    
-                    print(JSON)
-                    
-                    print("=++++++++++++++++=")
-                    
-                    if ( obj?.code == "200" ){
+                    if let JSON = response.result.value {
                         
-                        print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: nil, SEARCH: nil, CATEGORY: nil, SUBCATEGORY: subC?.subCategoryCode).getParams())
+                        print("JSON ----------LOAD SUBCATEGORY----------->>>> ")
                         
-                        print(obj?.data)
+                        let obj = BeaconListResponseModel.init(json: JSON as! JSON)
                         
-                        if(obj?.data == nil){
+                        print(JSON)
+                        
+                        print("=++++++++++++++++=")
+                        
+                        if ( obj?.code == "200" ){
                             
-                            //TODO
-                            print("dar in lat long beacon nadarim!")
+                            print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: self.sections[self.getSectionIndex(row: indexPath.row)].categoryCode, SUBCATEGORY: nil).getParams())
                             
-                        }else{
-                            //bayad bere tu liste category
-                            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                                let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CategoryPageViewController"))! as! CategoryPageViewController
+                            print(obj?.data)
+                            
+                            if(obj?.data == nil){
                                 
-                                vc.parentView = "CategoryViewController"
+                                //TODO
+                                print("dar in lat long beacon nadarim!")
                                 
-                                print(obj?.data)
-                                
-                                let image : UIImage = UIImage(named:"amlak")!
-                                for i in (obj?.data!)! {
-                                    let a = CustomerHomeTableCell.init(preCustomerImage:nil ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: i.discount!, customerDiscountIcon: image, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic)
-                                    vc.customerHomeTableCells.append(a)
+                            }else{
+                                //bayad bere tu liste category
+                                UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                                    let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CategoryPageViewController"))! as! CategoryPageViewController
                                     
+                                    vc.parentView = "CategoryViewController"
                                     
-                                }
- 
-                                self.addChildViewController(vc)
+                                    print(obj?.data)
+                                    
+                                    let image : UIImage = UIImage(named:"amlak")!
+                                    for i in (obj?.data!)! {
+                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:nil ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: i.discount!, customerDiscountIcon: image, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic)
+                                        vc.customerHomeTableCells.append(a)
+                                        
+                                        
+                                    }
+                                    
+                                    self.addChildViewController(vc)
+                                    
+                                    vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+                                    
+                                    self.container.addSubview(vc.view)
+                                    
+                                    vc.didMove(toParentViewController: self)
+                                    
+                                    let color = self.sections[self.getSectionIndex(row: indexPath.row)]
+                                    
+                                    vc.setGradientLayer(color1: color.color1, color2: color.color2)
+                                    
+                                    vc.subCategoryIcon.image = self.loadImage(picModel: (subC?.image)!)?.imageWithColor(tintColor: UIColor.white)
+                                    
+                                    vc.subCategoryIcon.contentMode = UIViewContentMode.scaleAspectFit
+                                    
+                                    vc.subCategoryName.text = subC?.name
+                                    
+                                    self.navigationBar.alpha = 0
+                                    
+                                    self.tableViewCategory.alpha = 0
+                                    
+                                }, completion: nil)
                                 
-                                vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
                                 
-                                self.container.addSubview(vc.view)
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+            }else{
+                
+                request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: (subC?.subCategoryCode)!).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                    print()
+                    
+                    if let JSON = response.result.value {
+                        
+                        print("JSON ----------LOAD SUBCATEGORY----------->>>> ")
+                        
+                        let obj = BeaconListResponseModel.init(json: JSON as! JSON)
+                        
+                        print(JSON)
+                        
+                        print("=++++++++++++++++=")
+                        
+                        if ( obj?.code == "200" ){
+                            
+                            print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: subC?.subCategoryCode).getParams())
+                            
+                            print(obj?.data)
+                            
+                            if(obj?.data == nil){
                                 
-                                vc.didMove(toParentViewController: self)
+                                //TODO
+                                print("dar in lat long beacon nadarim!")
                                 
-                                let color = self.sections[self.getSectionIndex(row: indexPath.row)]
+                            }else{
+                                //bayad bere tu liste category
+                                UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                                    let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CategoryPageViewController"))! as! CategoryPageViewController
+                                    
+                                    vc.parentView = "CategoryViewController"
+                                    
+                                    print(obj?.data)
+                                    
+                                    let image : UIImage = UIImage(named:"amlak")!
+                                    for i in (obj?.data!)! {
+                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:nil ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: i.discount!, customerDiscountIcon: image, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic)
+                                        vc.customerHomeTableCells.append(a)
+                                        
+                                        
+                                    }
+                                    
+                                    self.addChildViewController(vc)
+                                    
+                                    vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+                                    
+                                    self.container.addSubview(vc.view)
+                                    
+                                    vc.didMove(toParentViewController: self)
+                                    
+                                    let color = self.sections[self.getSectionIndex(row: indexPath.row)]
+                                    
+                                    vc.setGradientLayer(color1: color.color1, color2: color.color2)
+                                    
+                                    vc.subCategoryIcon.image = self.loadImage(picModel: (subC?.image)!)?.imageWithColor(tintColor: UIColor.white)
+                                    
+                                    vc.subCategoryIcon.contentMode = UIViewContentMode.scaleAspectFit
+                                    
+                                    vc.subCategoryName.text = subC?.name
+                                    
+                                    self.navigationBar.alpha = 0
+                                    
+                                    self.tableViewCategory.alpha = 0
+                                    
+                                }, completion: nil)
                                 
-                                vc.setGradientLayer(color1: color.color1, color2: color.color2)
                                 
-                                vc.subCategoryIcon.image = self.loadImage(picModel: (subC?.image)!)?.imageWithColor(tintColor: UIColor.white)
-                                
-                                vc.subCategoryIcon.contentMode = UIViewContentMode.scaleAspectFit
-                                
-                                vc.subCategoryName.text = subC?.name
-                                
-                                self.navigationBar.alpha = 0
-                                
-                                self.tableViewCategory.alpha = 0
-                                
-                            }, completion: nil)
-
+                            }
                             
                         }
                         
@@ -629,6 +723,9 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
             }
             
             if(!isDoubleClick){
+                
+                loadCategoryTableTwo(count: self.getSectionIndex(row: indexPath.row))
+                
                 
                 var indexes : [IndexPath] = [IndexPath]()
                 
@@ -888,35 +985,35 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
             
                 var subs = [SubCategories]()
                 
-                for s in obj.item! {
-                    
-                    var tempCode = s.url_icon?.url
-                    
-                    tempCode?.append((s.url_icon?.code!)!)
-                    
-                    let result: String? = self.isThereThisPicInDB(code: (tempCode?.md5())!)
-                    
-                    var count: Int = 0
-                    
-                    if(s.count != nil){
-                        count = Int(s.count!)!
-                    }
-                    
-                    if(result == nil){
-                        
-                        let subT = SubCategories(preImage: nil,name: s.title!, image: s.url_icon, numberOfMembers: count , subCategoryCode: s.sub_code!)
-                        
-                        subs.append(subT)
-                        
-                    }else{
-                        
-                        let subT = SubCategories(preImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,name: s.title!, image: s.url_icon, numberOfMembers: count , subCategoryCode: s.sub_code!)
-                        
-                        subs.append(subT)
-                        
-                    }
-                    
-                }
+//                for s in obj.item! {
+//                    
+//                    var tempCode = s.url_icon?.url
+//                    
+//                    tempCode?.append((s.url_icon?.code!)!)
+//                    
+//                    let result: String? = self.isThereThisPicInDB(code: (tempCode?.md5())!)
+//                    
+//                    var count: Int = 0
+//                    
+//                    if(s.count != nil){
+//                        count = Int(s.count!)!
+//                    }
+//                    
+//                    if(result == nil){
+//                        
+//                        let subT = SubCategories(preImage: nil,name: s.title!, image: s.url_icon, numberOfMembers: count , subCategoryCode: s.sub_code!)
+//                        
+//                        subs.append(subT)
+//                        
+//                    }else{
+//                        
+//                        let subT = SubCategories(preImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,name: s.title!, image: s.url_icon, numberOfMembers: count , subCategoryCode: s.sub_code!)
+//                        
+//                        subs.append(subT)
+//                        
+//                    }
+//                    
+//                }
                 
                 var tempCode = obj.url_icon?.url
                 
@@ -964,4 +1061,53 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
     }
 
 
+    func loadCategoryTableTwo(count : Int){
+        
+        
+//        var count = -1
+//        for obj in GlobalFields.CATEGORIES_LIST_DATAS! {
+//            count += 1
+            var subs = [SubCategories]()
+//            obj.item!
+            for s in GlobalFields.CATEGORIES_LIST_DATAS![count].item! {
+                
+                var tempCode = s.url_icon?.url
+                
+                tempCode?.append((s.url_icon?.code!)!)
+                
+                let result: String? = self.isThereThisPicInDB(code: (tempCode?.md5())!)
+                
+                var count: Int = 0
+                
+                if(s.count != nil){
+                    count = Int(s.count!)!
+                }
+                
+                if(result == nil){
+                    
+                    let subT = SubCategories(preImage: nil,name: s.title!, image: s.url_icon, numberOfMembers: count , subCategoryCode: s.sub_code! , all_track : Bool.init(s.all_track!))
+                    
+                    subs.append(subT)
+                    
+                }else{
+                    
+                    let subT = SubCategories(preImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,name: s.title!, image: s.url_icon, numberOfMembers: count , subCategoryCode: s.sub_code! , all_track : Bool.init(s.all_track!))
+                    
+                    subs.append(subT)
+                    
+                    
+                }
+                
+            }
+            
+            sections[count].items = subs
+            
+//        }
+        
+        
+        
+    }
+    
+    
+    
 }

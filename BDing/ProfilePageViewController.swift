@@ -7,11 +7,12 @@
 //
 
 import UIKit
-
+import CoreLocation
+import CoreBluetooth
 import DLRadioButton
 
 
-class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelegate, UIScrollViewDelegate , UINavigationControllerDelegate{
+class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelegate, UIScrollViewDelegate , UINavigationControllerDelegate , CLLocationManagerDelegate{
     
     @IBOutlet weak var backgroundProfilePic: UIImageView!
     
@@ -32,6 +33,10 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     @IBOutlet weak var patternView: UIView!
     
     @IBOutlet weak var appSettingsIcon: UIImageView!
+    
+    
+    let locationManager = CLLocationManager()
+    
     
     
     //num of pattern images in background
@@ -107,6 +112,17 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     @IBOutlet weak var maleRadio: DLRadioButton!
     
     @IBOutlet weak var femaleRadio: DLRadioButton!
+    
+    
+    // pay with coins 
+    
+    @IBOutlet weak var myCoinsValueLabel: UILabel!
+    
+    @IBOutlet weak var payTitleLabel: UILabel!
+    
+    @IBOutlet weak var inputPayTextField: UITextField!
+    
+    @IBOutlet weak var payContainer: DCBorderedView!
     
     
  //profile data 
@@ -661,24 +677,11 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
 
 
     @IBAction func changeView(_ sender: DCBorderedButton) {
-        
-        if(sender.tag == 0){
-            
-            self.requestForGetCoupon()
-            
-        }else if(sender.tag == 1){
-            
-            self.requestForMyCoupon()
-            
-        }else if(sender.tag == 2){
-            
-            self.requestForPayHistory()
-            
-        }
+
         
     }
     
-    func requestForMyCoupon(){
+    func requestForMyCoupon(nextVc : MyCouponViewController){
         
         request(URLs.getMyCoupon , method: .post , parameters: MyCouponRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
@@ -691,23 +694,10 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                 if( MyCouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
                     
                     UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                        let vc = (self.storyboard?.instantiateViewController(withIdentifier: "MyCouponViewController"))! as! MyCouponViewController
                         
-                        self.addChildViewController(vc)
+                        nextVc.coupons = MyCouponListResponseModel.init(json: JSON as! JSON)?.data
                         
-                        vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-                        
-                        vc.view.tag = 125
-                        
-                        self.container.addSubview(vc.view)
-                        
-                        vc.didMove(toParentViewController: self)
-                        
-                        self.navigationBar.alpha = 0
-                        
-                        self.profilePicButton.alpha = 0
-                        
-                        vc.coupons = MyCouponListResponseModel.init(json: JSON as! JSON)?.data
+                        nextVc.table.reloadData()
                         
                     }, completion: nil)
 
@@ -725,7 +715,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     }
     
     
-    func requestForGetCoupon(){
+    func requestForGetCoupon(nextVc : TakeCouponViewController){
+        
         
         request(URLs.getCoupons , method: .post , parameters: GetCouponRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
@@ -737,28 +728,14 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                 print("JSON ----------GET COUPON----------->>>> " ,JSON)
                 //create my coupon response model
                 
-                let vc = (self.storyboard?.instantiateViewController(withIdentifier: "TakeCouponViewController"))! as! TakeCouponViewController
-                
-                self.addChildViewController(vc)
-                
                 if(CouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
                     
-                    self.navigationBar.alpha = 0
+                    nextVc.coupons = CouponListResponseModel.init(json: JSON as! JSON)?.data
                     
-                    self.profilePicButton.alpha = 0
+                    nextVc.loading.stopAnimating()
                     
-                    UIView.animate(withDuration: 2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                        
-                        vc.view.tag = 125
-                        
-                        self.container.addSubview(vc.view)
-                        
-                        vc.didMove(toParentViewController: self)
-                        
-                        
-                        vc.coupons = CouponListResponseModel.init(json: JSON as! JSON)?.data
-                        
-                    }, completion: nil)
+                    nextVc.table.reloadData()
+                    
                     
                 }
                 
@@ -772,7 +749,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     }
     
 
-    func requestForPayHistory(){
+    func requestForPayHistory(nextVc : PayHistoryViewController){
         
         request(URLs.paylistHistory , method: .post , parameters: PayListRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
@@ -783,29 +760,17 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                 //create my coupon response model
                 if(PayListResponseModel.init(json: JSON as! JSON)?.code == "200"){
                     
-                    self.navigationBar.alpha = 0
-                    
-                    self.profilePicButton.alpha = 0
-                    
                     UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                        let vc = (self.storyboard?.instantiateViewController(withIdentifier: "PayHistoryViewController"))! as! PayHistoryViewController
-                        
-                        self.addChildViewController(vc)
-                        
-                        vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-                        
-                        vc.view.tag = 125
-                        
-                        self.container.addSubview(vc.view)
-                        
-                        vc.didMove(toParentViewController: self)
                         
                         if(PayListResponseModel.init(json: JSON as! JSON)?.data == nil){
                             
                             // data nadarim
                             
                         }else{
-                            vc.payHistory = (PayListResponseModel.init(json: JSON as! JSON)?.data)!
+                            nextVc.payHistory = (PayListResponseModel.init(json: JSON as! JSON)?.data)!
+                            
+                            nextVc.table.reloadData()
+                            
                         }
                         
                     }, completion: nil)
@@ -1243,6 +1208,185 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     }
     
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        if(segue.identifier == "toTakeCouponViewController"){
+            
+            let nextVc = segue.destination as! TakeCouponViewController
+            
+            self.requestForGetCoupon(nextVc: nextVc)
+
+            
+        }else if(segue.identifier == "toMyCouponViewController"){
+            
+            let nextVc = segue.destination as! MyCouponViewController
+            
+            self.requestForMyCoupon(nextVc: nextVc)
+            
+            
+        }else if(segue.identifier == "toPayHistoryViewController"){
+            
+            let nextVc = segue.destination as! PayHistoryViewController
+            
+            self.requestForPayHistory(nextVc: nextVc)
+            
+            
+        }
+
+        
+        
+    }
+    
+    
+    
+    @IBAction func doPayWithTolls(_ sender: Any) {
+        
+        
+        locationManager.delegate = self
+        
+        locationManager.requestAlwaysAuthorization()
+        
+        for payUuids in GlobalFields.PAY_UUIDS!{
+            
+            let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: payUuids)! as UUID, identifier: "Bding")
+            
+            locationManager.startRangingBeacons(in: region)
+            
+        }
+        
+        locationManager.distanceFilter = 1
+        
+        
+        
+        
+    }
+    
+    func showPayPopup(payTitle : String){
+        
+        appearPayView()
+        
+        self.payTitleLabel.text = payTitle
+        
+        self.myCoinsValueLabel.text = GlobalFields.PROFILEDATA?.all_coin
+        
+    }
+    
+    var payBeacon : CLBeacon? = nil
+    
+    func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
+        
+        
+        for b in beacons {
+            
+            let beaconString = String(describing: b.proximityUUID)
+            
+            if(GlobalFields.PAY_UUIDS?.contains(beaconString))!{
+                
+                request(URLs.payTitle + String(describing: b.proximityUUID) + String(describing: b.major) + String(describing: b.minor) , method: .get , encoding: JSONEncoding.default).responseJSON { response in
+                    print()
+                    
+                    if let JSON = response.result.value {
+                        
+                        print("JSON ----------GET PAY TITLE----------->>>> " ,JSON)
+                        //create my coupon response model
+                        
+                        if( PayTitleResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                            
+                            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                                
+                                self.showPayPopup(payTitle: (PayTitleResponseModel.init(json: JSON as! JSON)?.result?.title)!)
+                                
+                                self.payBeacon = b
+                                
+                            }, completion: nil)
+                            
+                            
+                        }
+                        
+                        
+                        print(JSON)
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
+            
+        locationManager.stopRangingBeacons(in: region)
+
+        
+    }
+    
+    
+    @IBAction func confirmPay(_ sender: Any) {
+        
+        if(Int(self.inputPayTextField.text!)! > Int((GlobalFields.PROFILEDATA?.all_coin)!)!){
+            //mablaq bishtar az wallet ast
+            return
+            
+        }
+        
+        
+        request(URLs.payWithCoins , method: .post , parameters: PayWithCoinsRequestModel.init(BEACON: payBeacon, PAY: inputPayTextField.text!).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------MY COUPON----------->>>> " ,JSON)
+                //create my coupon response model
+                
+                if( MyCouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                    
+                    self.disAppearPayView()
+                    
+                }
+                
+                
+                print(JSON)
+                
+            }
+            
+        }
+        
+        
+        
+        
+    }
+    
+    
+    @IBAction func canselPay(_ sender: Any) {
+        
+        
+        
+        disAppearPayView()
+        
+    }
+    
+    
+    func appearPayView(){
+        
+        self.payContainer.alpha = 1
+        
+        self.payContainer.layer.zPosition = 1
+        
+        self.blurView.alpha = 0.3
+        
+        self.blurView.layer.zPosition = 1
+        
+    }
+    
+    func disAppearPayView(){
+        
+        self.payContainer.alpha = 0
+        
+        self.blurView.alpha = 0
+        
+    }
     
     
 }

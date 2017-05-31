@@ -364,15 +364,19 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
             
         }
         
-        //        long = String(currentLocation.coordinate.longitude)
-        //
-        //        lat = String(currentLocation.coordinate.latitude)
+        long = String(currentLocation.coordinate.longitude)
         
-        long = String(51.4212297)
+        lat = String(currentLocation.coordinate.latitude)
         
-        lat = String(35.6329044)
+//        long = String(51.4212297)
+//        
+//        lat = String(35.6329044)
         
-        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: nil, SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+        print("lat and long")
+        print(lat)
+        print(long)
+        
+        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
             
             if let JSON = response.result.value {
@@ -401,7 +405,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
             
             if let JSON = response.result.value {
                 
-                print("JSON ----------Category----------->>>> " )
+                print("JSON ----------Category----------->>>> " , JSON)
                 
                 let obj = CategoryListResponseModel.init(json: JSON as! JSON)
                 

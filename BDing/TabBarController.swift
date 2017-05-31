@@ -45,11 +45,9 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
         
         locationManager.startRangingBeacons(in: region)
         
-        locationManager.startUpdatingLocation()
+        locationManager.distanceFilter = 1
         
-        locationManager.distanceFilter = 7
-        
-        locationManager.allowDeferredLocationUpdates(untilTraveled: locationManager.distanceFilter, timeout: 7)
+        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
         
         let nc = NotificationCenter.default
         nc.addObserver(forName:myNotification, object:nil, queue:nil, using:catchNotification)
@@ -114,7 +112,7 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
             
         }
         
-        if(visitTime == 3){
+        if(visitTime == 2){
             
             locationManager.stopRangingBeacons(in: region)
             
@@ -138,17 +136,92 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
     }
 
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    var lastLocation : CLLocation? = nil
+    
+    static var timeCount : Int = 0
+    
+    static var scanTimeCount : Int = 0
+    
+    func update(){
         
-        locationManager.startRangingBeacons(in: region)
+        TabBarController.timeCount += 5
         
+        TabBarController.scanTimeCount += 5
+        
+        if(TabBarController.timeCount >= 70 ){
+            
+            TabBarController.timeCount = 0
+            
+            updateBeaconsList()
+            
+        }
+        
+        if(TabBarController.scanTimeCount >= 20){
+            
+            TabBarController.scanTimeCount = 0
+            
+            locationManager.startRangingBeacons(in: region)
+            
+        }
         
     }
     
 
-    func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
-        print("Paaaaaaaaaause!!!!")
+    
+    func updateBeaconsList(){
+        
+        var lat: String
+        
+        var long: String
+        
+        let locManager = CLLocationManager()
+        
+        locManager.requestWhenInUseAuthorization()
+        
+        var currentLocation = CLLocation()
+        
+        if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
+            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorized){
+            
+            currentLocation = locManager.location!
+            
+        }
+        
+        long = String(currentLocation.coordinate.longitude)
+        
+        lat = String(currentLocation.coordinate.latitude)
+        
+        //        long = String(51.4212297)
+        //
+        //        lat = String(35.6329044)
+        
+        print("lat and long")
+        print(lat)
+        print(long)
+        
+        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------BEACON----------->>>> " , JSON)
+                
+                let obj = BeaconListResponseModel.init(json: JSON as! JSON)
+                
+                if ( obj?.code == "200" ){
+                    
+                    GlobalFields.BEACON_LIST_DATAS = obj?.data
+                    
+                }
+                
+            }
+            
+        }
+
+        
     }
+    
+
     
     
     func checkDB2(beacon : CLBeacon , beacon2_db : [NSManagedObject]){
@@ -187,7 +260,7 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
                     
                     if(hoursBetween(date1: t2 as NSDate, date2: t1 as NSDate) > 12){
                         
-                        self.db.updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s, newItem: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : nil , "beaconDataJSON" : nil])
+                        self.db.updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s, newItem: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : nil , "beaconDataJSON" : nil , "isRemoved" : false])
                         
    
                         //notify!!!!!
@@ -240,7 +313,7 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
         if(!isInDB){
             //insert into DB
             
-            db.save(entityName: "BEACON", datas: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : nil , "beaconDataJSON" : nil])
+            db.save(entityName: "BEACON", datas: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : nil , "beaconDataJSON" : nil , "isRemoved" : false])
             
             let nc = NotificationCenter.default
             nc.post(name:myNotification,

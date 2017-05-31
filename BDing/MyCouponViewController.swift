@@ -72,8 +72,14 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
         
         if(couponsPrePics.count < indexPath.row + 1 || couponsPrePics[indexPath.row] == nil){
             
-            LoadPicture().proLoad(picType: "coupon", picModel: data.url_pic!){ resImage in
+            LoadPicture().proLoad(view : cell.couponImage,picType: "coupon", picModel: data.url_pic!){ resImage in
              
+                if(self.couponsPrePics.count < indexPath.row){
+                    
+                    self.couponsPrePics.append(nil)
+                    
+                }
+                
                 self.couponsPrePics.insert(resImage, at: indexPath.row)
                 
                 cell.couponImage.image = resImage
@@ -133,14 +139,12 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        return self.view.frame.width * 7 / 32
     }
 
     @IBAction func backButton(_ sender: Any) {
         
-        let vc = self.parent as! ProfilePageViewController
-        
-        vc.deletSubView()
+         _ = navigationController?.popViewController(animated: true)
         
     }
    
@@ -196,20 +200,29 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
     
     
     func deletSubView(){
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "MyCouponViewController"))! as! MyCouponViewController
+        
+        if let viewWithTag = self.view.viewWithTag(1234) {
             
-            self.addChildViewController(vc)
-            
-            if let viewWithTag = self.view.viewWithTag(1234) {
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                
+                viewWithTag.alpha = 0
+                
+                viewWithTag.frame.size.width = 0
+                
+                viewWithTag.frame.size.height = 0
+                
+                viewWithTag.frame.origin.x = self.view.frame.width / 2
+                
+                viewWithTag.frame.origin.y = self.view.frame.height / 2
+                
+            }){ completion in
                 
                 viewWithTag.removeFromSuperview()
                 
-                
             }
             
-        }, completion: nil)
-        
+        }
+
     }
     
     
