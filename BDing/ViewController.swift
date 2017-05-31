@@ -423,6 +423,25 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         
         
         
+        request(URLs.getPayUuids , method: .post , parameters: PayUuidsRequestModel().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------PAY UUID----------->>>> " , JSON)
+                
+                let obj = PayUuidResponseModel.init(json: JSON as! JSON)
+                
+                if ( obj?.code == "200" ){
+                    
+                    GlobalFields.PAY_UUIDS = obj?.result
+                    
+                }
+                
+            }
+            
+        }
+        
         
         
     }

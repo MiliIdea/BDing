@@ -46,5 +46,7 @@ class URLs {
     
     static let payTitle = server + "user/pay/name/"
     
+    static let getPayUuids = server + "beacon/uuidpaylist"
+    
 }
 

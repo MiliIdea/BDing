@@ -1249,6 +1249,12 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         locationManager.requestAlwaysAuthorization()
         
+        if(GlobalFields.PAY_UUIDS == nil){
+            
+            return
+            
+        }
+        
         for payUuids in GlobalFields.PAY_UUIDS!{
             
             let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: payUuids)! as UUID, identifier: "Bding")
