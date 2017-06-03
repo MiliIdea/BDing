@@ -53,6 +53,8 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
         nc.addObserver(forName:myNotification, object:nil, queue:nil, using:catchNotification)
         
         registerBackgroundTask()
+ 
+        updateBadgeVlue()
         
         // Do any additional setup after loading the view.
     }
@@ -222,6 +224,23 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
     }
     
 
+    func updateBadgeVlue(){
+        
+        var count = 0
+        
+        for obj in db.load(entity: "BEACON")! {
+            
+            if(obj.value(forKey: "isRemoved") as! Bool == false && obj.value(forKey: "isSeen") as! Bool == false){
+                
+                count += 1
+                
+            }
+            
+        }
+        
+        self.tabBar.items?[1].badgeValue = String(count)
+        
+    }
     
     
     func checkDB2(beacon : CLBeacon , beacon2_db : [NSManagedObject]){
@@ -263,6 +282,8 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
                         self.db.updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s, newItem: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : nil , "beaconDataJSON" : nil , "isRemoved" : false])
                         
    
+                        updateBadgeVlue()
+                        
                         //notify!!!!!
                         
                         let nc = NotificationCenter.default

@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import DynamicColor
+import CoreImage
+import ChameleonFramework
 
 class DetailViewController: UIViewController , UIScrollViewDelegate {
     
@@ -38,6 +41,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     @IBOutlet weak var heightChangerButton: UIButton!
     
     ///
+    @IBOutlet weak var shareButton: UIButton!
     
     @IBOutlet weak var categoryName: UITextView!
     
@@ -406,14 +410,17 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                         
                         // set this beacon as a readed
                         
+                        let d = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5)!)
+                        
+                        SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5!)! , newItem: ["uuid" : d?.value(forKey: "uuid") , "major" : d?.value(forKey: "major") , "minor" : d?.value(forKey: "minor") , "id" : d?.value(forKey: "id") , "isSeen" : d?.value(forKey: "isSeen") , "seenTime" : true , "beaconDataJSON" : d?.value(forKey: "beaconDataJSON") ,"isRemoved" : d?.value(forKey: "isRemoved")])
+                        
+                        self.updateBadgeVlue()
+                        
                     }
                     
                 }
                 
             }
-            
-            
-            
             
             
             return
@@ -422,6 +429,24 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         counter += 0.01
         
         progressBarView.progress = counter
+        
+    }
+    
+    func updateBadgeVlue(){
+        
+        var count = 0
+        
+        for obj in SaveAndLoadModel().load(entity: "BEACON")! {
+            
+            if(obj.value(forKey: "isRemoved") as! Bool == false && obj.value(forKey: "isSeen") as! Bool == false){
+                
+                count += 1
+                
+            }
+            
+        }
+        
+        self.tabBarItem.badgeValue = String(count)
         
     }
     
@@ -483,6 +508,39 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         }
         
         navigationBar.alpha = 1 - myPercentage
+        
+        ///////////////////////
+        
+        let buttonImage = UIImage(named: "ic_arrow_back")
+        
+        backButton.setImage(buttonImage?.withRenderingMode(.alwaysTemplate), for: .normal)
+        
+       
+        
+        var originalColor = DynamicColor(cgColor : UIColor.init(averageColorFrom: self.backgroundPicView.image).inverted().cgColor)
+
+        
+        print(((originalColor.redComponent * 299) + (originalColor.greenComponent * 587) + (originalColor.blueComponent * 114)) / 1000)
+        
+        if(((originalColor.redComponent * 299) + (originalColor.greenComponent * 587) + (originalColor.blueComponent * 114)) / 1000 > 0.5){
+            
+            originalColor = UIColor.white
+            
+        }else{
+            
+            originalColor = UIColor.black
+            
+        }
+        
+        
+        let blackColor = DynamicColor.init(hexString: "#000000")
+        
+        
+        backButton.tintColor = originalColor.mixedRGB(withColor: blackColor, weight: 1-myPercentage)
+        
+        shareButton.tintColor = originalColor.mixedRGB(withColor: blackColor, weight: 1-myPercentage)
+        
+        ////////////////////////////////////
         
         semicircularView.frame.origin.y = offsetOfsemiCircular + (heightOfSemiCircular - (heightOfSemiCircular * (myPercentage)))
         
@@ -552,6 +610,8 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         if(num == 0){
 //            
             UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                
+                self.heightChangerButton.imageView?.image = UIImage.init(named: "ic_keyboard_arrow_up_48pt")
 
                 let fixedWidth = self.textView.frame.size.width
                 
@@ -633,6 +693,8 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
             
             //baste shodan
             UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                
+                self.heightChangerButton.imageView?.image = UIImage.init(named: "ic_keyboard_arrow_down_18pt")
                 
                 self.setFirstPosition()
              

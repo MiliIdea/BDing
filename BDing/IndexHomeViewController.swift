@@ -94,6 +94,12 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         
         cell?.setFirst()
         
+        if(SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: tableCell.uuidMajorMinorMD5!)?.value(forKey: "isSeen") as! Bool == true){
+            
+            cell?.boarderView.backgroundColor = UIColor.red
+            
+        }
+        
         return cell!
     }
     
@@ -110,7 +116,6 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if(isDeleteMode == true){
-            
             
             
             
