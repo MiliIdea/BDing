@@ -390,15 +390,19 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                                 
                                 coding.append((tableCell.customerImage?.code)!)
                                 
-                                SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
-                                
-                                let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
-                                
-                                self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                                
-                                cell.customerThumbnail.image = UIImage(data: imageData as! Data)
-                                
-                                self.customerHomeTableCells[indexPath.row].preCustomerImage = UIImage(data: imageData as! Data)
+                                if(obj?.data != nil){
+                                    
+                                    SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
+                                    
+                                    let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
+                                    
+                                    self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
+                                    
+                                    cell.customerThumbnail.image = UIImage(data: imageData as! Data)
+                                    
+                                    self.customerHomeTableCells[indexPath.row].preCustomerImage = UIImage(data: imageData as! Data)
+                                    
+                                }
                                 
                             }
                             
@@ -486,13 +490,17 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                             
                             coding.append((tableCell.customerImage?.code)!)
                             
-                            SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
-                            
-                            let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
-                            
-                            self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                            
-                            cell2.customerThumbnail.image = UIImage(data: imageData as! Data)
+                            if(obj?.data != nil){
+                                
+                                SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
+                                
+                                let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
+                                
+                                self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
+                                
+                                cell2.customerThumbnail.image = UIImage(data: imageData as! Data)
+                                
+                            }
                             
                         }
                         
@@ -1347,6 +1355,62 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
     }
     
+    func mosPopular(){
+        
+        var result : [BeaconListData] = [BeaconListData]()
+        
+        while (GlobalFields.BEACON_LIST_DATAS?.count)! > 0 {
+            
+            let index = findMostPopular(datas: GlobalFields.BEACON_LIST_DATAS!)
+            
+            result.append((GlobalFields.BEACON_LIST_DATAS?[index])!)
+            
+            GlobalFields.BEACON_LIST_DATAS?.remove(at: index)
+            
+        }
+        
+        GlobalFields.BEACON_LIST_DATAS = result
+        
+        self.rightTable.reloadData()
+        
+        self.leftTable.reloadData()
+        
+        
+    }
+    
+    func findMostPopular(datas : [BeaconListData]) -> Int{
+        
+        var max : BeaconListData = (datas[0])
+        
+        var index : Int = 0
+        
+        for i in 0...datas.count - 1 {
+            
+            if(max.popular == nil){
+                
+                max.popular = "0"
+                
+            }
+            if(datas[i].popular == nil){
+                
+                datas[i].popular = "0"
+                
+            }
+            
+            if(Double(datas[i].popular!)! > Double(max.popular!)!){
+                
+                max = datas[i]
+                index = i
+                
+            }
+            
+            
+        }
+        
+        return index
+        
+    }
+    
     
     
     func maxNearSort(){
@@ -1500,6 +1564,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     }
     
     @IBAction func mostPopular(_ sender: Any) {
+        
+        
         
         hiddenSortView()
         

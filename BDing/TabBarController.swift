@@ -172,6 +172,12 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
     
     func updateBeaconsList(){
         
+        if(SaveAndLoadModel().load(entity: "USER")?.count == 0){
+            
+            return
+            
+        }
+        
         var lat: String
         
         var long: String
@@ -193,9 +199,9 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
         
         lat = String(currentLocation.coordinate.latitude)
         
-        //        long = String(51.4212297)
-        //
-        //        lat = String(35.6329044)
+                long = String(51.4212297)
+        
+                lat = String(35.6329044)
         
         print("lat and long")
         print(lat)

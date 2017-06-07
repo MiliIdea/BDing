@@ -532,9 +532,9 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                     
             lat = String(currentLocation.coordinate.latitude)
             
-//            long = String(51.411739)
-//            
-//            lat = String(35.625465)
+            long = String(51.411739)
+            
+            lat = String(35.625465)
             
             if(subC?.all_track == true){
                 
@@ -694,6 +694,8 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
         
             tableView.beginUpdates()
             
+            loadCategoryTableTwo(count: self.getSectionIndex(row: indexPath.row))
+            
             for s in 0...self.sections.count-1 {
                 
                 if(self.sections[s].collapsed == false){
@@ -704,7 +706,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                     
                     var indexes : [IndexPath] = [IndexPath]()
                     
-                    for n in 1...self.sections[s].items.count {
+                    for n in 1...GlobalFields.CATEGORIES_LIST_DATAS![s].item!.count {
                         
                         sections[s].items[n-1].visible = false
                         
@@ -714,7 +716,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                     
                     tableView.deleteRows(at: indexes, with: .automatic)
                     
-                    countOfDeleted = self.sections[s].items.count
+                    countOfDeleted = GlobalFields.CATEGORIES_LIST_DATAS![s].item!.count
                     indexOfDeleted = s
                     
                 }
@@ -724,7 +726,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
             
             if(!isDoubleClick){
                 
-                loadCategoryTableTwo(count: self.getSectionIndex(row: indexPath.row))
+//                loadCategoryTableTwo(count: self.getSectionIndex(row: indexPath.row))
                 
                 
                 var indexes : [IndexPath] = [IndexPath]()
@@ -732,14 +734,18 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                 if(indexOfDeleted < self.getSectionIndex(row: indexPath.row)){
                     
                     self.sections[self.getSectionIndex(row: indexPath.row - countOfDeleted)].collapsed = false
-                    
-                    for n in 1...self.sections[self.getSectionIndex(row: indexPath.row - countOfDeleted)].items.count {
+                    if(self.sections[self.getSectionIndex(row: indexPath.row - countOfDeleted)].items.count > 0){
                         
-                        
-                        sections[self.getSectionIndex(row: indexPath.row - countOfDeleted)].items[n-1].visible = true
-                        indexes.append(IndexPath(row: self.getSectionIndex(row: (indexPath.row - countOfDeleted))+n , section: 0))
+                        for n in 1...self.sections[self.getSectionIndex(row: indexPath.row - countOfDeleted)].items.count {
+                            
+                            
+                            sections[self.getSectionIndex(row: indexPath.row - countOfDeleted)].items[n-1].visible = true
+                            indexes.append(IndexPath(row: self.getSectionIndex(row: (indexPath.row - countOfDeleted))+n , section: 0))
+                            
+                        }
                         
                     }
+                    
                     
                     tableView.insertRows(at: indexes, with: .automatic)
                     

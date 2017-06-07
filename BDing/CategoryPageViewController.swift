@@ -221,25 +221,29 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
                             
                             let obj = PicDataModel.init(json: image as! JSON)
                             
-                            let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
-                            
-                            var coding: String = (tableCell.customerImage?.url)!
-                            
-                            coding.append((tableCell.customerImage?.code)!)
-                            
-                            SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
-                            
-                            self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                            
-                            var pic = UIImage(data: imageData as! Data)
-                            
-                            //                        pic = pic?.imageWithColor(tintColor: UIColor.white)
-                            
-                            tableCell.preCustomerImage = pic
-                            
-                           cell.customerThumbnail.image = pic
-                            
-                            cell.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFit
+                            if(obj?.data != nil){
+                                
+                                let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
+                                
+                                var coding: String = (tableCell.customerImage?.url)!
+                                
+                                coding.append((tableCell.customerImage?.code)!)
+                                
+                                SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
+                                
+                                self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
+                                
+                                var pic = UIImage(data: imageData as! Data)
+                                
+                                //                        pic = pic?.imageWithColor(tintColor: UIColor.white)
+                                
+                                tableCell.preCustomerImage = pic
+                                
+                                cell.customerThumbnail.image = pic
+                                
+                                cell.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFit
+                                
+                            }
                             
                         }
                     }

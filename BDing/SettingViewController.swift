@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SettingViewController: UIViewController , UIPickerViewDataSource, UIPickerViewDelegate {
+class SettingViewController: UIViewController , UIPickerViewDataSource, UIPickerViewDelegate , UITextFieldDelegate{
     
     @IBOutlet weak var blurView: UIVisualEffectView!
     
@@ -18,11 +18,11 @@ class SettingViewController: UIViewController , UIPickerViewDataSource, UIPicker
     
     @IBOutlet weak var changePasswordView: DCBorderedView!
     
-    @IBOutlet weak var oldPass: UILabel!
-
-    @IBOutlet weak var newPass: UILabel!
+    @IBOutlet weak var oldPass: UITextField!
+   
+    @IBOutlet weak var newPass: UITextField!
     
-    @IBOutlet weak var reNewPass: UILabel!
+    @IBOutlet weak var reNewPass: UITextField!
     
     @IBOutlet weak var rangeButton: UIButton!
     
@@ -47,12 +47,47 @@ class SettingViewController: UIViewController , UIPickerViewDataSource, UIPicker
         
         self.pickerView.delegate = self
         
+        oldPass.delegate = self
+        
+        newPass.delegate = self
+        
+        reNewPass.delegate = self
+        
         // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+        
+        switch textField {
+            
+        case oldPass:
+            newPass.becomeFirstResponder()
+            newPass.window?.makeKeyAndVisible()
+            break
+        
+        case newPass:
+            reNewPass.becomeFirstResponder()
+            reNewPass.window?.makeKeyAndVisible()
+            break
+            
+        case reNewPass:
+            self.view.endEditing(true)
+            break
+            
+        default:
+            textField.resignFirstResponder()
+            
+        }
+        
+        // Do not add a line break
+        return true
     }
     
 
@@ -139,11 +174,13 @@ class SettingViewController: UIViewController , UIPickerViewDataSource, UIPicker
             request(URLs.changePassword , method: .post , parameters: ChangePasswordRequestModel.init(NEW_PASS: newPass.text, OLD_PASS: oldPass.text).getParams(), encoding: JSONEncoding.default).responseJSON { response in
                 print()
                 
+                print(ChangePasswordRequestModel.init(NEW_PASS: self.newPass.text, OLD_PASS: self.oldPass.text).getParams())
+                
                 if let JSON = response.result.value {
                     
-                    print(GetCouponRequestModel.init().getParams())
                     
-                    print("JSON ----------GET COUPON----------->>>> " ,JSON)
+                    
+                    print("JSON ----------SET NEW PASS----------->>>> " ,JSON)
                     //create my coupon response model
                     
                     if(CouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){

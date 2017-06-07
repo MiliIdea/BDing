@@ -42,7 +42,7 @@
                     </label>
                 </subviews>
             </view>
-            <color key="backgroundColor" red="0.48673889770000001" green="0.48673889770000001" blue="0.48673889770000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color key="backgroundColor" red="0.92549019610000005" green="0.93725490199999995" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <size key="customSize" width="70" height="75"/>
             <connections>
                 <outlet property="circleView" destination="HIe-KX-VNQ" id="fKM-QF-eY0"/>

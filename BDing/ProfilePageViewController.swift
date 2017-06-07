@@ -18,6 +18,9 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     @IBOutlet weak var scrollViewProfile: UIScrollView!
     
+    @IBOutlet weak var botViewInScrollView: UIView!
+    
+    
     @IBOutlet weak var viewInScrollView: UIView!
     
     @IBOutlet weak var topView: UIView!
@@ -73,6 +76,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     @IBOutlet weak var coinValue: UILabel!
     
     @IBOutlet weak var reportLabel: UILabel!
+    
+    @IBOutlet weak var closeReportButton: UIButton!
     
     @IBOutlet weak var payWithTolls: DCBorderedButton!
     
@@ -197,7 +202,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         scrollViewProfile.contentSize = viewInScrollView.frame.size
         
-        scrollViewProfile.contentSize.height += 10
+//        scrollViewProfile.contentSize.height += 10
         
         heightOfSemiCircular = semicircularView.frame.height
         
@@ -360,6 +365,13 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         nameStartWH.y = name.frame.height
         
         scrollViewDidScroll(self.scrollViewProfile)
+    
+        if(Int((GlobalFields.PROFILEDATA?.all_coin)!)! >= 150){
+            
+            self.closeReport("")
+            
+        }
+        
     }
     
     func isThereThisPicInDB (code: String) -> String?{
@@ -471,8 +483,6 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         name.text = s
         
-        nameStartXY.y = name.frame.origin.y
-        
         print(name.frame.width)
         
         let fixedH = self.name.frame.size.height
@@ -481,12 +491,11 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         name.textAlignment = NSTextAlignment.center
         
-        name.frame.origin.x = self.view.frame.width / 2 - self.name.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: fixedH)).width / 2
-        
-        nameStartXY.x = name.frame.origin.x
+        self.name.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: fixedH))
+
         
         nameStartWH.x = name.frame.width
-        
+
         nameStartWH.y = name.frame.height
 
 
@@ -991,6 +1000,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         print(formatter.string(from: self.datePicker.date))
         
+        GlobalFields.PROFILEDATA?.birthdate = formatter.string(from: self.datePicker.date)
+        
         request(URLs.userUpdate , method: .post , parameters: UserUpdateRequestModel.init(NAME: nil, FAMILY: nil, ATTRNAME: "birthdate", ATTRDATA: formatter.string(from: self.datePicker.date)).getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
             
@@ -1007,6 +1018,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                     formatter.calendar = Calendar(identifier: .persian)
                     
                     self.BirthDayButton.setTitle(formatter.string(from: self.datePicker.date), for: UIControlState.normal)
+                    
+                    
                     
                 }
                 
@@ -1284,14 +1297,49 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
         
+        if(beacons.count == 0){
+            
+            Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
+                
+                self.present(alarm, animated: true, completion: nil)
+                
+            }
+            
+            locationManager.stopRangingBeacons(in: region)
+            
+            return
+            
+        }
         
         for b in beacons {
             
             let beaconString = String(describing: b.proximityUUID)
             
-            if(GlobalFields.PAY_UUIDS?.contains(beaconString))!{
+            for u in GlobalFields.PAY_UUIDS! {
                 
-                request(URLs.payTitle + String(describing: b.proximityUUID) + String(describing: b.major) + String(describing: b.minor) , method: .get , encoding: JSONEncoding.default).responseJSON { response in
+                print(u)
+                
+            }
+            
+            if(GlobalFields.PAY_UUIDS?.contains(beaconString.lowercased()))!{
+                
+                var payUrlString : String = ""
+                
+                payUrlString.append(URLs.payTitle)
+                
+                payUrlString.append(String(describing: b.proximityUUID).lowercased())
+                
+                payUrlString.append("-")
+                
+                payUrlString.append(String(describing: b.major).lowercased())
+                
+                payUrlString.append("-")
+                
+                payUrlString.append(String(describing: b.minor).lowercased())
+                
+                locationManager.stopRangingBeacons(in: region)
+                
+                request( payUrlString , method: .get , encoding: JSONEncoding.default).responseJSON { response in
                     print()
                     
                     if let JSON = response.result.value {
@@ -1350,6 +1398,28 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                     
                     self.disAppearPayView()
                     
+                    Notifys().notif(message: "پرداخت با موفقیت انجام شد."){ alert in
+                        
+                        self.present(alert, animated: true, completion: nil)
+                        
+                    }
+                    
+                    self.view.endEditing(true)
+                    
+                    GlobalFields.PROFILEDATA?.all_coin = String(Int((GlobalFields.PROFILEDATA?.all_coin)!)! - Int(self.inputPayTextField.text!)!)
+                    
+                    self.coinValue.text = GlobalFields.PROFILEDATA?.all_coin
+                    
+                }else{
+                    
+                    Notifys().notif(message: "عملیات پرداخت ناموفق!"){ alert in
+                        
+                        self.present(alert, animated: true, completion: nil)
+                        
+                    }
+                    
+                    self.view.endEditing(true)
+                    
                 }
                 
                 
@@ -1391,6 +1461,32 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         self.payContainer.alpha = 0
         
         self.blurView.alpha = 0
+        
+    }
+    
+    
+    @IBAction func closeReport(_ sender: Any) {
+
+        
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+   
+            self.reportLabel.frame.size.height = 0
+            
+            self.closeReportButton.frame.size.height = 0
+            
+            self.reportLabel.alpha = 0
+            
+            self.closeReportButton.alpha = 0
+            
+            for v in self.botViewInScrollView.subviews{
+                
+                v.frame.origin.y -= 40
+                
+            }
+            
+            
+        }, completion: nil)
+        
         
     }
     

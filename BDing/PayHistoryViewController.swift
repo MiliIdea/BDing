@@ -58,7 +58,9 @@ class PayHistoryViewController: UIViewController ,UITableViewDelegate ,UITableVi
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
         return self.view.frame.width * 7 / 32
+        
     }
     
     

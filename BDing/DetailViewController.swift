@@ -173,21 +173,25 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                     
                     let obj = PicDataModel.init(json: image as! JSON)
                     
-                    let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
-                    
-                    var coding: String = (self.backgroundPic?.url)!
-                    
-                    coding.append((self.backgroundPic?.code)!)
-                    
-                    SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
-                    
-                    self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                    
-                    var pic = UIImage(data: imageData as! Data)
-                    
-                    self.backgroundPicView.image = pic
-                    
-                    self.backgroundPicView.contentMode = UIViewContentMode.scaleAspectFill
+                    if(obj?.data != nil){
+                        
+                        let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
+                        
+                        var coding: String = (self.backgroundPic?.url)!
+                        
+                        coding.append((self.backgroundPic?.code)!)
+                        
+                        SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
+                        
+                        self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
+                        
+                        var pic = UIImage(data: imageData as! Data)
+                        
+                        self.backgroundPicView.image = pic
+                        
+                        self.backgroundPicView.contentMode = UIViewContentMode.scaleAspectFill
+                        
+                    }
                     
                 }
             }
@@ -383,6 +387,14 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     
     func setProgressBar() {
         
+        if(SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5)!)?.value(forKey: "isSeen") as! Bool == true){
+            
+            timer.invalidate()
+            
+            return
+            
+        }
+        
         if counter >= 1 {
             
             timer.invalidate()
@@ -412,7 +424,32 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                         
                         let d = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5)!)
                         
-                        SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5!)! , newItem: ["uuid" : d?.value(forKey: "uuid") , "major" : d?.value(forKey: "major") , "minor" : d?.value(forKey: "minor") , "id" : d?.value(forKey: "id") , "isSeen" : d?.value(forKey: "isSeen") , "seenTime" : true , "beaconDataJSON" : d?.value(forKey: "beaconDataJSON") ,"isRemoved" : d?.value(forKey: "isRemoved")])
+                        SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5!)! , newItem: ["uuid" : d?.value(forKey: "uuid") , "major" : d?.value(forKey: "major") , "minor" : d?.value(forKey: "minor") , "id" : d?.value(forKey: "id") , "isSeen" : true , "seenTime" : d?.value(forKey: "seenTime") , "beaconDataJSON" : d?.value(forKey: "beaconDataJSON") ,"isRemoved" : d?.value(forKey: "isRemoved")])
+                        
+                        self.updateBadgeVlue()
+                        
+                        Notifys().notif(message: "تبریک! دینگ این پیام را دریافت کردید."){ alert in
+                            
+                            self.present(alert, animated: true, completion: nil)
+                            
+                        }
+                        
+                        
+                    }else if ( obj?.code == "700" ){
+                        
+                        self.progressBarView.tintColor = UIColor.red
+                        
+                        self.progressBarView.backgroundColor = UIColor.red
+                        
+                        Notifys().notif(message: "در ۱۲ ساعت گذشته دینگ این پیام را دریافت کرده اید"){ alert in
+                            
+                            self.present(alert, animated: true, completion: nil)
+                            
+                        }
+                        
+                        let d = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5)!)
+                        
+                        SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5!)! , newItem: ["uuid" : d?.value(forKey: "uuid") , "major" : d?.value(forKey: "major") , "minor" : d?.value(forKey: "minor") , "id" : d?.value(forKey: "id") , "isSeen" : true , "seenTime" : d?.value(forKey: "seenTime") , "beaconDataJSON" : d?.value(forKey: "beaconDataJSON") ,"isRemoved" : d?.value(forKey: "isRemoved")])
                         
                         self.updateBadgeVlue()
                         
@@ -446,7 +483,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
             
         }
         
-        self.tabBarItem.badgeValue = String(count)
+        self.tabBarController?.tabBar.items?[1].badgeValue = String(count)
         
     }
     
@@ -511,11 +548,13 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
         ///////////////////////
         
-        let buttonImage = UIImage(named: "ic_arrow_back")
+        let buttonImage = UIImage(named: "arrow-right 18")
+        
+        let buttonImage2 = UIImage(named: "share 18")
         
         backButton.setImage(buttonImage?.withRenderingMode(.alwaysTemplate), for: .normal)
         
-       
+        shareButton.setImage(buttonImage2?.withRenderingMode(.alwaysTemplate), for: .normal)
         
         var originalColor = DynamicColor(cgColor : UIColor.init(averageColorFrom: self.backgroundPicView.image).inverted().cgColor)
 
@@ -535,10 +574,9 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
         let blackColor = DynamicColor.init(hexString: "#000000")
         
+        shareButton.tintColor = originalColor.mixedRGB(withColor: blackColor, weight: 1-myPercentage)
         
         backButton.tintColor = originalColor.mixedRGB(withColor: blackColor, weight: 1-myPercentage)
-        
-        shareButton.tintColor = originalColor.mixedRGB(withColor: blackColor, weight: 1-myPercentage)
         
         ////////////////////////////////////
         

@@ -119,7 +119,7 @@ class CouponPopupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        MyFont().setFontForAllView(view: self.view)
+//        MyFont().setFontForAllView(view: self.view)
         
         loading.hidesWhenStopped = true
 
@@ -183,6 +183,12 @@ class CouponPopupViewController: UIViewController {
                     self.loading.stopAnimating()
                     
                     self.close("")
+                    
+                    Notifys().notif(message: "خرید با موفقیت انجام شد."){ alert in
+                        
+                        self.present(alert, animated: true, completion: nil)
+                        
+                    }
                 
                 }else{
                     
@@ -190,6 +196,11 @@ class CouponPopupViewController: UIViewController {
                     
                     (sender as! UIButton).setTitle("خرید کوپن", for: .normal)
                     
+                    Notifys().notif(message: "خرید ناموفق!"){ alert in
+                        
+                        self.present(alert, animated: true, completion: nil)
+                        
+                    }
                 }
             }
             

@@ -52,6 +52,12 @@ class BeaconListData : Decodable{
     
     var cusomer_web : String?
     
+    var popular : String?
+    
+    var start_date : String?
+    
+    var end_date : String?
+    
     
     required init?(json: JSON) {
         

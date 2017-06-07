@@ -49,6 +49,8 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
     
     override func viewDidAppear(_ animated: Bool) {
         
+        self.updateBadgeVlue()
+        
         loadHomeTable()
         
     }
@@ -96,9 +98,11 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         
         if(SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: tableCell.uuidMajorMinorMD5!)?.value(forKey: "isSeen") as! Bool == true){
             
-            cell?.boarderView.backgroundColor = UIColor.red
+            cell?.boarderView.backgroundColor = UIColor.init(hex: "eceff1")
             
         }
+        
+        self.updateBadgeVlue()
         
         return cell!
     }
@@ -343,6 +347,24 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         }
         
         return nil
+        
+    }
+    
+    func updateBadgeVlue(){
+        
+        var count = 0
+        
+        for obj in SaveAndLoadModel().load(entity: "BEACON")! {
+            
+            if(obj.value(forKey: "isRemoved") as! Bool == false && obj.value(forKey: "isSeen") as! Bool == false){
+                
+                count += 1
+                
+            }
+            
+        }
+        
+        self.tabBarController?.tabBar.items?[1].badgeValue = String(count)
         
     }
     

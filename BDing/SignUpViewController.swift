@@ -361,7 +361,9 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
                     
                     nextViewController.upRequest = m
                     
-                    self.present(nextViewController, animated:true, completion:nil)
+                    self.navigationController?.pushViewController(nextViewController, animated: true)
+                    
+//                    self.present(nextViewController, animated:true, completion:nil)
                     
                 }
                 

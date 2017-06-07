@@ -42,7 +42,7 @@ class URLs {
     
     static let userUpdate = server + "user/update"
     
-    static let changePassword = server + "user/password"
+    static let changePassword = server + "user/pass"
     
     static let payTitle = server + "user/pay/name/"
     

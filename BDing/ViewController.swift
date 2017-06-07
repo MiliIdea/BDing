@@ -184,25 +184,21 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         
         animationView = LOTAnimationView(name: "finall")
         
-        animationView?.frame.size.height = 200
+        animationView?.frame.size.height = 50
         
-        animationView?.frame.size.width = 200
+        animationView?.frame.size.width = 50
         
-//        animationView?.backgroundColor = UIColor.red
+        animationView?.frame.origin.y = self.view.frame.height / 2 - 25
         
-        animationView?.frame.origin.y = self.view.frame.height / 2 - (animationView?.frame.height)! / 2
+        animationView?.frame.origin.x = self.view.frame.width / 2 - 25
         
-        animationView?.frame.origin.x = self.view.frame.width / 2 - (animationView?.frame.width)! / 2
-        
-        animationView?.contentMode = UIViewContentMode.center
+        animationView?.contentMode = UIViewContentMode.scaleAspectFit
         
         animationView?.alpha = 1
         
-        animationView?.layer.zPosition = 1
-        
         self.view.addSubview(animationView!)
         
-        animationView?.animationSpeed = 1
+        animationView?.layer.zPosition = 1
         
         animationView?.loopAnimation = true
         
@@ -329,7 +325,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
             
             if let JSON = response.result.value {
                 
-                print("JSON ----------PROFILE----------->>>> " )
+                print("JSON ----------PROFILE----------->>>> ", JSON)
                 
                 let obj = ProfileResponseModel.init(json: JSON as! JSON)
                 
@@ -353,12 +349,12 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         
         let locManager = CLLocationManager()
         
-        locManager.requestWhenInUseAuthorization()
+        locManager.requestAlwaysAuthorization()
         
         var currentLocation = CLLocation()
         
-        if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
-            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorized){
+        if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways ||
+            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
             
             currentLocation = locManager.location!
             
@@ -368,20 +364,20 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         
         lat = String(currentLocation.coordinate.latitude)
         
-//        long = String(51.4212297)
-//        
-//        lat = String(35.6329044)
+        long = String(51.4212297)
+        
+        lat = String(35.6329044)
         
         print("lat and long")
         print(lat)
         print(long)
         
         request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
-            print()
+            print(response)
             
             if let JSON = response.result.value {
                 
-                print("JSON ----------BEACON----------->>>> " )
+                print("JSON ----------BEACON----------->>>> " ,JSON)
                 
                 let obj = BeaconListResponseModel.init(json: JSON as! JSON)
                 

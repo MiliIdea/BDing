@@ -23,6 +23,7 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
     
     @IBOutlet weak var resendButton: UIButton!
     
+    @IBOutlet weak var backButton: UIBarButtonItem!
     
     
     var upRequest : SignUpRequestModel?
@@ -82,7 +83,7 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
             
             timeRemaining.alpha = 1
             
-            resendButton.backgroundColor = UIColor.lightGray
+//            resendButton.backgroundColor = UIColor.lightGray
             
             timeRemaining.text = String((Int(timeRemaining.text!)! - 1))
             
@@ -92,7 +93,7 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                 
                 timeRemaining.alpha = 0
                 
-                resendButton.setTitleColor(MyColors.greenColor , for : UIControlState.normal)
+//                resendButton.setTitleColor(MyColors.greenColor , for : UIControlState.normal)
                 
                 
                 
@@ -104,7 +105,7 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
             
             resendButton.isEnabled = true
             
-            resendButton.setTitleColor(MyColors.greenColor , for : UIControlState.normal)
+//            resendButton.setTitleColor(MyColors.greenColor , for : UIControlState.normal)
             
         }
         
@@ -191,7 +192,7 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
             
             timeRemaining.alpha = 1
             
-            resendButton.setTitleColor(UIColor.lightGray , for : UIControlState.normal)
+//            resendButton.setTitleColor(UIColor.lightGray , for : UIControlState.normal)
             
             resendButton.isEnabled = false
             
@@ -506,6 +507,11 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
         
     }
     
+    @IBAction func backPressed(_ sender: Any) {
+        
+        self.navigationController?.popViewController(animated: true)
+        
+    }
     
     
     

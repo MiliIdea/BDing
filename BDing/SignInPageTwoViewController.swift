@@ -118,8 +118,6 @@ class SignInPageTwoViewController: UIViewController {
         
         self.view.addSubview(animationView!)
         
-        animationView?.animationSpeed = 4
-        
         animationView?.loopAnimation = true
         
         animationView?.play()
@@ -365,6 +363,8 @@ class SignInPageTwoViewController: UIViewController {
                 if ( obj?.code == "200" ){
                     
                     self.view.endEditing(true)
+                    
+                    self.cansel("")
                     
                 }
                 
