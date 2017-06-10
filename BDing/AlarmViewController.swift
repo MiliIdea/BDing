@@ -82,6 +82,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             self.isSelected = isSelected
         }
         
+        var text : String = ""
+        
         var prePic : [UIImage?]? = [UIImage]()
 
         var isSelected : [Bool] = [Bool]()
@@ -181,6 +183,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         }
         
         self.cache = NSCache()
+        
+        self.searchTextField.addTarget(self, action: #selector(AlarmViewController.searchFieldChange), for: UIControlEvents.editingChanged)
         
         // Do any additional setup after loading the view.
     }
@@ -690,15 +694,17 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                             
                             //////
                             
+                            print(String(describing: obj.coin))
+                            
                             if(result == nil){
-                                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic)
+                                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100), customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic)
                                 self.customerHomeTableCells.append(a)
                                 
                                 self.rightTable.reloadData()
                                 
                                 self.leftTable.reloadData()
                             }else{
-                                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic)
+                                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic)
                                 self.customerHomeTableCells.append(a)
                                 
                                 self.rightTable.reloadData()
@@ -932,6 +938,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             doSearchButton.normalTextColor = UIColor.white
             
+            searchTextField.text = ""
+            
             doSearchButton.isEnabled = true
             
         }else{
@@ -949,7 +957,28 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     }
     
     
-    
+    func searchFieldChange(){
+        
+        if(isNewSeach(ls: lastSearch?.isSelected) == true){
+            
+            doSearchButton.normalBackgroundColor = UIColor(hex: "4bb272")
+            
+            doSearchButton.normalTextColor = UIColor.white
+            
+            doSearchButton.isEnabled = true
+            
+        }else{
+            
+            doSearchButton.normalBackgroundColor = UIColor.white
+            
+            doSearchButton.normalTextColor = UIColor.black
+            
+            doSearchButton.isEnabled = false
+            
+            
+        }
+        
+    }
     
     
     @IBAction func doingSearch(_ sender: Any) {
@@ -975,9 +1004,9 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         lat = String(currentLocation.coordinate.latitude)
         
-//        long = String(51.4212297)
-//        
-//        lat = String(35.6329044)
+        long = String(51.4212297)
+        
+        lat = String(35.6329044)
         
         var categoryList:[String] = [String]()
         
@@ -990,9 +1019,13 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             }
             
         }
+
+        self.lastSearch?.text = self.searchTextField.text!
+        
+        print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: searchTextField.text, CATEGORY: String(describing: categoryList), SUBCATEGORY: nil).getParams())
         
         
-        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: String(describing: categoryList), SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: searchTextField.text, CATEGORY: String(describing: categoryList), SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
             
             if let JSON = response.result.value {
@@ -1016,6 +1049,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                     self.rightTable.reloadData()
                     
                     self.leftTable.reloadData()
+                    
+                    self.view.endEditing(true)
                     
                     self.someAction(sender: nil)
                     
@@ -1058,6 +1093,12 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 return true
                 
             }
+            
+        }
+        
+        if(self.searchTextField.text != self.lastSearch?.text){
+            
+            return true
             
         }
         
@@ -1312,8 +1353,10 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             GlobalFields.BEACON_LIST_DATAS?.remove(at: index)
             
         }
-        
+
         GlobalFields.BEACON_LIST_DATAS = result
+  
+        loadHomeTable()
         
         self.rightTable.reloadData()
         
@@ -1355,7 +1398,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
     }
     
-    func mosPopular(){
+    func mostPopular(){
         
         var result : [BeaconListData] = [BeaconListData]()
         
@@ -1370,6 +1413,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         }
         
         GlobalFields.BEACON_LIST_DATAS = result
+        
+        loadHomeTable()
         
         self.rightTable.reloadData()
         
@@ -1412,6 +1457,75 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     }
     
     
+    func newest(){
+        
+        var result : [BeaconListData] = [BeaconListData]()
+        
+        while (GlobalFields.BEACON_LIST_DATAS?.count)! > 0 {
+            
+            let index = findMaxNew(datas: GlobalFields.BEACON_LIST_DATAS!)
+            
+            result.append((GlobalFields.BEACON_LIST_DATAS?[index])!)
+            
+            GlobalFields.BEACON_LIST_DATAS?.remove(at: index)
+            
+        }
+        
+        GlobalFields.BEACON_LIST_DATAS = result
+        
+        loadHomeTable()
+        
+        self.rightTable.reloadData()
+        
+        self.leftTable.reloadData()
+        
+    }
+    
+    
+    func findMaxNew(datas : [BeaconListData]) -> Int{
+        
+        var max : BeaconListData = (datas[0])
+        
+        var index : Int = 0
+        
+        for i in 0...datas.count - 1 {
+            
+            if(max.start_date == nil){
+                
+                max.start_date = Date()
+                
+            }
+            if(datas[i].start_date == nil){
+                
+                datas[i].start_date = Date()
+                
+            }
+            
+            let formatter = DateFormatter()
+            
+            formatter.dateFormat = "dd/MM/yyyy"
+            
+            formatter.calendar = Calendar(identifier: .gregorian)
+            
+            let d1 = datas[i].start_date!
+            
+            let d2 = max.start_date!
+            
+            if(d1 > d2){
+                
+                max = datas[i]
+                index = i
+                
+            }
+            
+            
+        }
+        
+        return index
+        
+    }
+
+    
     
     func maxNearSort(){
         
@@ -1429,6 +1543,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         GlobalFields.BEACON_LIST_DATAS = result
         
+        loadHomeTable()
+        
         self.rightTable.reloadData()
         
         self.leftTable.reloadData()
@@ -1445,16 +1561,16 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             if(max.distance == nil){
                 
-                max.distance = "0"
+                max.distance = 0
                 
             }
             if(datas[i].distance == nil){
                 
-                datas[i].distance = "0"
+                datas[i].distance = 0
                 
             }
             
-            if(Double(datas[i].distance!)! < Double(max.distance!)!){
+            if(Double(datas[i].distance!) < Double(max.distance!)){
                 
                 max = datas[i]
                 index = i
@@ -1565,13 +1681,15 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     @IBAction func mostPopular(_ sender: Any) {
         
-        
+        mostPopular()
         
         hiddenSortView()
         
     }
 
     @IBAction func newest(_ sender: Any) {
+        
+        newest()
         
         hiddenSortView()
         

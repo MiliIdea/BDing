@@ -573,9 +573,8 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                                     
                                     let image : UIImage = UIImage(named:"amlak")!
                                     for i in (obj?.data!)! {
-                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:nil ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: i.discount!, customerDiscountIcon: image, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic)
+                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:nil ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: i.discount!, customerDiscountIcon: image, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic)
                                         vc.customerHomeTableCells.append(a)
-                                        
                                         
                                     }
                                     
@@ -649,7 +648,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                                     
                                     let image : UIImage = UIImage(named:"amlak")!
                                     for i in (obj?.data!)! {
-                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:nil ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: i.discount!, customerDiscountIcon: image, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic)
+                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:nil ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: i.discount!, customerDiscountIcon: image, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic)
                                         vc.customerHomeTableCells.append(a)
                                         
                                         

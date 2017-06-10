@@ -401,6 +401,8 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
 
             //inja bayad set coin she agar read shode bud countero bayad az qabl 1esh konam
             
+            print(SetCoinRequestModel(CODE: self.cell?.customerImage?.code).getParams())
+            
             request(URLs.setCoin , method: .post , parameters: SetCoinRequestModel(CODE: self.cell?.customerImage?.code).getParams(), encoding: JSONEncoding.default).responseJSON { response in
                 print()
                 

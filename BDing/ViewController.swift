@@ -325,7 +325,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
             
             if let JSON = response.result.value {
                 
-                print("JSON ----------PROFILE----------->>>> ", JSON)
+                print("JSON ----------PROFILE----------->>>> ")
                 
                 let obj = ProfileResponseModel.init(json: JSON as! JSON)
                 
@@ -401,7 +401,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
             
             if let JSON = response.result.value {
                 
-                print("JSON ----------Category----------->>>> " , JSON)
+                print("JSON ----------Category----------->>>> " )
                 
                 let obj = CategoryListResponseModel.init(json: JSON as! JSON)
                 
@@ -424,7 +424,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
             
             if let JSON = response.result.value {
                 
-                print("JSON ----------PAY UUID----------->>>> " , JSON)
+                print("JSON ----------PAY UUID----------->>>> ")
                 
                 let obj = PayUuidResponseModel.init(json: JSON as! JSON)
                 

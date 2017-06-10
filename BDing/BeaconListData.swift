@@ -22,7 +22,7 @@ class BeaconListData : Decodable{
     
     var discount : String?
     
-    var distance : String?
+    var distance : Double?
     
     var file_count : String?
     
@@ -54,9 +54,9 @@ class BeaconListData : Decodable{
     
     var popular : String?
     
-    var start_date : String?
+    var start_date : Date?
     
-    var end_date : String?
+    var end_date : Date?
     
     
     required init?(json: JSON) {
