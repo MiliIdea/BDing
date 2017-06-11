@@ -154,7 +154,7 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
             
             TabBarController.timeCount = 0
             
-            updateBeaconsList()
+//            updateBeaconsList()
             
         }
         

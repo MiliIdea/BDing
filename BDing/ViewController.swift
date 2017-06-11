@@ -372,6 +372,8 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         print(lat)
         print(long)
         
+        print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams())
+        
         request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print(response)
             
@@ -395,6 +397,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         
         //get category
         
+        print(CategoryRequestModel().getParams())
         
         request(URLs.getCategory , method: .post , parameters: CategoryRequestModel().getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()

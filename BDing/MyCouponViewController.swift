@@ -148,54 +148,54 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
         
     }
    
-    func loadImage(picModel: PicModel) -> UIImage?{
-        
-        var tempCode = picModel.url
-        
-        tempCode?.append((picModel.code)!)
-        
-        let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
-        
-        if(result != nil){
-            
-            if self.cache.object(forKey: tempCode?.md5() as AnyObject) != nil {
-                
-                return UIImage(data: self.cache.object(forKey: tempCode?.md5() as AnyObject) as! Data)!
-                
-            }else{
-                
-                let imageData = NSData(base64Encoded: result!, options: .ignoreUnknownCharacters)
-                
-                self.cache.setObject(imageData!, forKey: tempCode?.md5() as AnyObject)
-                
-                return UIImage(data: imageData as! Data)!
-                
-            }
-            
-        }else{
-            
-            return nil
-            
-        }
-        
-    }
-    
-    
-    func isThereThisPicInDB (code: String) -> String?{
-        
-        for i in SaveAndLoadModel().load(entity: "IMAGE")!{
-            
-            if(i.value(forKey: "imageCode") as! String == code){
-                
-                return i.value(forKey: "imageData") as! String
-                
-            }
-            
-        }
-        
-        return nil
-        
-    }
+//    func loadImage(picModel: PicModel) -> UIImage?{
+//        
+//        var tempCode = picModel.url
+//        
+//        tempCode?.append((picModel.code)!)
+//        
+//        let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
+//        
+//        if(result != nil){
+//            
+//            if self.cache.object(forKey: tempCode?.md5() as AnyObject) != nil {
+//                
+//                return UIImage(data: self.cache.object(forKey: tempCode?.md5() as AnyObject) as! Data)!
+//                
+//            }else{
+//                
+//                let imageData = NSData(base64Encoded: result!, options: .ignoreUnknownCharacters)
+//                
+//                self.cache.setObject(imageData!, forKey: tempCode?.md5() as AnyObject)
+//                
+//                return UIImage(data: imageData as! Data)!
+//                
+//            }
+//            
+//        }else{
+//            
+//            return nil
+//            
+//        }
+//        
+//    }
+//    
+//    
+//    func isThereThisPicInDB (code: String) -> String?{
+//        
+//        for i in SaveAndLoadModel().load(entity: "IMAGE")!{
+//            
+//            if(i.value(forKey: "imageCode") as! String == code){
+//                
+//                return i.value(forKey: "imageData") as! String
+//                
+//            }
+//            
+//        }
+//        
+//        return nil
+//        
+//    }
 
     
     

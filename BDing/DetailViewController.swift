@@ -603,9 +603,11 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
             
         }else if(self.parent is CategoryPageViewController){
             
-            let vc = self.parent as! CategoryPageViewController
-            
-            vc.deletSubView(cells: customerHomeTableCellsOfCategoryPage , color1 : color1! , color2 : color2! , subCName: subCategoryName! , subCIcon : subCategoryIcon!)
+//            let vc = self.parent as! CategoryPageViewController
+//            
+//            vc.deletSubView(cells: customerHomeTableCellsOfCategoryPage , color1 : color1! , color2 : color2! , subCName: subCategoryName! , subCIcon : subCategoryIcon!)
+
+            _ = self.navigationController?.popViewController(animated: true)
             
         }else if(self.parent is AlarmViewController){
             

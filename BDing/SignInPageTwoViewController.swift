@@ -240,9 +240,9 @@ class SignInPageTwoViewController: UIViewController {
         
         lat = String(currentLocation.coordinate.latitude)
 
-//        long = String(51.4212297)
-//        
-//        lat = String(35.6329044)
+        long = String(51.4212297)
+        
+        lat = String(35.6329044)
         
         print("lat and long")
         print(lat)

@@ -61,7 +61,7 @@ class BeaconListRequestModel {
     
     func getParams() -> [String: Any]{
         
-        return ["user": USERID , "token": TOKEN  , "hash": HASH , "lat": LAT , "long": LONG , "redius": REDIUS , "search": SEARCH , "category": CATEGORY , "subcategory": SUBCATEGORY]
+        return ["user": USERID , "token": TOKEN  , "hash": HASH , "lat": LAT , "long": LONG , "redius": REDIUS , "search": SEARCH , "category": CATEGORY , "subcategory": SUBCATEGORY , "allsearch" : "true"]
         
     }
     

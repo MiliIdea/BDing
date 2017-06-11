@@ -58,6 +58,10 @@ class LoadPicture {
             
             view?.addSubview(loading)
             
+            loading.frame.origin.x = (view?.frame.width)! / 2
+            
+            loading.frame.origin.y = (view?.frame.height)! / 2
+            
             loading.startAnimating()
             
         }
@@ -71,95 +75,102 @@ class LoadPicture {
         
         if(result != nil){
             
-            if LoadPicture.cache.object(forKey: tempCode?.md5() as AnyObject) != nil {
-                if(view != nil){
-                    loading.stopAnimating()
+            DispatchQueue.main.async(execute: { () -> Void in
+            
+                if LoadPicture.cache.object(forKey: tempCode?.md5() as AnyObject) != nil {
+                    if(view != nil){
+                        loading.stopAnimating()
+                    }
+                    completion(UIImage(data: LoadPicture.cache.object(forKey: tempCode?.md5() as AnyObject) as! Data)!)
+                    
+                }else{
+                    
+                    let imageData = NSData(base64Encoded: result!, options: .ignoreUnknownCharacters)
+                    
+                    LoadPicture.cache.setObject(imageData!, forKey: tempCode?.md5() as AnyObject)
+                    if(view != nil){
+                        loading.stopAnimating()
+                    }
+                    completion(UIImage(data: imageData as! Data)!)
+                    
                 }
-                completion(UIImage(data: LoadPicture.cache.object(forKey: tempCode?.md5() as AnyObject) as! Data)!)
-                
-            }else{
-                
-                let imageData = NSData(base64Encoded: result!, options: .ignoreUnknownCharacters)
-                
-                LoadPicture.cache.setObject(imageData!, forKey: tempCode?.md5() as AnyObject)
-                if(view != nil){
-                    loading.stopAnimating()
-                }
-                completion(UIImage(data: imageData as! Data)!)
-                
-            }
+            
+            })
             
         }else{
             
-            if(picType == "beacon"){
+            DispatchQueue.main.async(execute: { () -> Void in
                 
-                //////
-                request("http://"+(picModel.url)! ,method: .post ,parameters: BeaconPicRequestModel(CODE: picModel.code, FILE_TYPE: picModel.file_type).getParams(), encoding : JSONEncoding.default).responseJSON { response in
+                if(picType == "beacon"){
                     
-                    if let image = response.result.value {
+                    //////
+                    request("http://"+(picModel.url)! ,method: .post ,parameters: BeaconPicRequestModel(CODE: picModel.code, FILE_TYPE: picModel.file_type).getParams(), encoding : JSONEncoding.default).responseJSON { response in
                         
-                        print("^^^^^^^^^^^" , image)
-                        
-                        let obj = PicDataModel.init(json: image as! JSON)
-                        
-                        if(obj?.data != nil){
+                        if let image = response.result.value {
                             
-                            let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
+                            print("^^^^^^^^^^^" , image)
                             
-                            var coding: String = (picModel.url)!
+                            let obj = PicDataModel.init(json: image as! JSON)
                             
-                            coding.append((picModel.code)!)
-                            
-                            SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
-                            
-                            LoadPicture.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                            if(view != nil){
-                                loading.stopAnimating()
+                            if(obj?.data != nil){
+                                
+                                let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
+                                
+                                var coding: String = (picModel.url)!
+                                
+                                coding.append((picModel.code)!)
+                                
+                                SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
+                                
+                                LoadPicture.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
+                                if(view != nil){
+                                    loading.stopAnimating()
+                                }
+                                completion(UIImage(data: imageData as! Data)!)
+                                
                             }
-                            completion(UIImage(data: imageData as! Data)!)
                             
                         }
-                        
                     }
-                }
-                ///////
-                
-            }else if(picType == "coupon"){
-                
-                //////
-                request("http://"+(picModel.url)! ,method: .post ,parameters: CouponRequestPicModel(CODE: picModel.code, FILE_TYPE: picModel.file_type).getParams(), encoding : JSONEncoding.default).responseJSON { response in
+                    ///////
                     
-                    if let image = response.result.value {
+                }else if(picType == "coupon"){
+                    
+                    //////
+                    request("http://"+(picModel.url)! ,method: .post ,parameters: CouponRequestPicModel(CODE: picModel.code, FILE_TYPE: picModel.file_type).getParams(), encoding : JSONEncoding.default).responseJSON { response in
                         
-                        print("^^^^^^^^^^^" , image)
-                        
-                        let obj = PicDataModel.init(json: image as! JSON)
-                        
-                        if(obj?.data != nil){
+                        if let image = response.result.value {
                             
-                            let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
+                            print("^^^^^^^^^^^" , image)
                             
-                            var coding: String = (picModel.url)!
+                            let obj = PicDataModel.init(json: image as! JSON)
                             
-                            coding.append((picModel.code)!)
-                            
-                            SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
-                            
-                            LoadPicture.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                            if(view != nil){
-                                loading.stopAnimating()
+                            if(obj?.data != nil){
+                                
+                                let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
+                                
+                                var coding: String = (picModel.url)!
+                                
+                                coding.append((picModel.code)!)
+                                
+                                SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
+                                
+                                LoadPicture.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
+                                if(view != nil){
+                                    loading.stopAnimating()
+                                }
+                                completion(UIImage(data: imageData as! Data)!)
+                                
                             }
-                            completion(UIImage(data: imageData as! Data)!)
                             
                         }
-                        
                     }
+                    ///////
+                    
                 }
-                ///////
                 
-            }
-            
-            
+            })
+        
         }
         
     }

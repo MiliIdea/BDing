@@ -104,8 +104,6 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         
         table.isScrollEnabled = false
         
-        loadHomeTable()
-        
         let sizeOfFooter: CGFloat = 55
         
         let heightOfTable = CGFloat(customerHomeTableCells.count * 70) - (self.view.frame.height - table.frame.origin.y - sizeOfFooter)/2
@@ -133,7 +131,7 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         
         scrollViewDidScroll(self.scrollView)
     
-        
+        setGradientLayer()
         
         
     }
@@ -143,28 +141,15 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         // Dispose of any resources that can be recreated.
     }
     
-
-    
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
     
     
-    func setGradientLayer(color1: CGColor , color2: CGColor){
-        
-        self.color1 = color1
-        
-        self.color2 = color2
+    func setGradientLayer(){
         
         let gradientLayer = CAGradientLayer()
         
         gradientLayer.frame = backgroundView.bounds
         
-        gradientLayer.colors = [color1, color2]
+        gradientLayer.colors = [color1!, color2!]
         
         gradientLayer.startPoint = CGPoint(x: 0,y: 0.5)
         
@@ -201,54 +186,11 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         
         if(tableCell.preCustomerImage == nil){
             
-            if(tableCell.customerImage?.url != nil){
+            LoadPicture().proLoad(view: cell.customerThumbnail, picModel: tableCell.customerImage!){ resImage in
                 
-                var im: UIImage? = loadImage(picModel: tableCell.customerImage!)
+                self.customerHomeTableCells[indexPath.row].preCustomerImage = resImage
                 
-                if(im != nil){
-                    
-                    //                im = im?.imageWithColor(tintColor: UIColor.white)
-                    
-                    customerHomeTableCells[indexPath.row].preCustomerImage = im
-                    
-                    cell.customerThumbnail.image = im
-                    
-                }else{
-                    
-                    request("http://"+(tableCell.customerImage?.url)! ,method: .post ,parameters: BeaconPicRequestModel(CODE: tableCell.customerImage?.code, FILE_TYPE: tableCell.customerImage?.file_type).getParams(), encoding : JSONEncoding.default).responseJSON { response in
-                        
-                        if let image = response.result.value {
-                            
-                            let obj = PicDataModel.init(json: image as! JSON)
-                            
-                            if(obj?.data != nil){
-                                
-                                let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
-                                
-                                var coding: String = (tableCell.customerImage?.url)!
-                                
-                                coding.append((tableCell.customerImage?.code)!)
-                                
-                                SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
-                                
-                                self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                                
-                                var pic = UIImage(data: imageData as! Data)
-                                
-                                //                        pic = pic?.imageWithColor(tintColor: UIColor.white)
-                                
-                                tableCell.preCustomerImage = pic
-                                
-                                cell.customerThumbnail.image = pic
-                                
-                                cell.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFit
-                                
-                            }
-                            
-                        }
-                    }
-                    
-                }
+                cell.customerThumbnail.image = resImage
                 
             }
             
@@ -306,6 +248,8 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
             
 //            self.table.frame.size.height += self.scrollView.contentOffset.y
             
+            self.table.frame.size.height = self.view.frame.size.height - self.table.frame.origin.y - (self.tabBarController?.tabBar.frame.height)!
+            
         }else{
             
             myPercentage = 0
@@ -341,173 +285,115 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
     
     
     
-    
-    func loadHomeTable(){
-        //create customer Home Table Cell from web service :)
-//        let image : UIImage = UIImage(named:"profile_pic")!
-//        let a1 = CustomerHomeTableCell.init(preCustomerImage:nil , customerImage: nil, customerCampaignTitle: "فروش فوق العاده", customerName: "آدیداس", customerCategoryIcon: image, customerDistanceToMe: "۱۲۵", customerCoinValue: "۱۲", customerCoinIcon: image, customerDiscountValue: "۱۰", customerDiscountIcon: image , tell: "09121233454" ,address: "unjaa" , text: "hgjhgc" ,workTime: "12-2 3-5" , website:  "www.asd.com" , customerBigImages: nil)
-//        
-//        customerHomeTableCells.append(a1)
-//        customerHomeTableCells.append(a1)
-//        customerHomeTableCells.append(a1)
-//        customerHomeTableCells.append(a1)
-//        customerHomeTableCells.append(a1)
-//        customerHomeTableCells.append(a1)
-//        customerHomeTableCells.append(a1)
-//        customerHomeTableCells.append(a1)
-//        customerHomeTableCells.append(a1)
-//        customerHomeTableCells.append(a1)
-//        customerHomeTableCells.append(a1)
-//        customerHomeTableCells.append(a1)
-        
-//        for obj in GlobalFields.BEACON_LIST_DATAS! {
-//            let a = CustomerHomeTableCell.init(customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: image, customerDistanceToMe: "0", customerCoinValue: "0", customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image)
-//            customerHomeTableCells.append(a)
-//            
-//            
-//        }
-    }
-    
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController"))! as! DetailViewController
-
-            self.addChildViewController(vc)
-            
-            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-            
-            self.container.addSubview(vc.view)
-            
-            vc.didMove(toParentViewController: self)
+//            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController"))! as! DetailViewController
+//
+//            self.addChildViewController(vc)
+//            
+//            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+//            
+//            self.container.addSubview(vc.view)
+//            
+//            vc.didMove(toParentViewController: self)
             
             // add data
             
-            let data = self.customerHomeTableCells[indexPath.row]
-            
-            vc.setup(data: data , isPopup: false , rect: nil)
-            
-            vc.color1 = self.color1
-            
-            vc.color2 = self.color2
-            
-            vc.subCategoryName = self.subCategoryName.text
-            
-            vc.subCategoryIcon = self.subCategoryIcon.image
-            
-            vc.customerHomeTableCellsOfCategoryPage = self.customerHomeTableCells
+//            let data = self.customerHomeTableCells[indexPath.row]
+//            
+//            vc.setup(data: data , isPopup: false , rect: nil)
+//            
+//            vc.color1 = self.color1
+//            
+//            vc.color2 = self.color2
+//            
+//            vc.subCategoryName = self.subCategoryName.text
+//            
+//            vc.subCategoryIcon = self.subCategoryIcon.image
+//            
+//            vc.customerHomeTableCellsOfCategoryPage = self.customerHomeTableCells
 
-            self.navigationBar.alpha = 0
-            
-            self.table.alpha = 0
+//            self.navigationBar.alpha = 0
+//            
+//            self.table.alpha = 0
             
         }, completion: nil)
     }
     
-    func deletSubView(cells: [CustomerHomeTableCell] , color1 : CGColor , color2 : CGColor , subCName : String , subCIcon : UIImage){
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CategoryPageViewController"))! as! CategoryPageViewController
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        if(segue.identifier == "subCategoryDetailSegue"){
             
-            self.addChildViewController(vc)
+            let nextVc = segue.destination as! DetailViewController
             
-            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+            nextVc.setup(data: self.customerHomeTableCells[(self.table.indexPath(for: (sender as! IndexHomeTableViewCell))?.row)!], isPopup: false, rect: nil)
             
-            self.container.addSubview(vc.view)
-            
-            vc.didMove(toParentViewController: self)
-            
-            vc.customerHomeTableCells = cells
-            
-            vc.setGradientLayer(color1: color1, color2: color2)
-            
-            vc.subCategoryName.text = subCName
-            
-            vc.subCategoryIcon.image = subCIcon
-            
-        }, completion: nil)
+        }
         
     }
     
     
-    func presentIndex(){
-        
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CategoryViewController"))! as! CategoryViewController
-            
-            self.addChildViewController(vc)
-            
-            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-            
-            self.container.addSubview(vc.view)
-            
-            vc.didMove(toParentViewController: self)
-        }, completion: nil)
-    }
+    
+//    func deletSubView(cells: [CustomerHomeTableCell] , color1 : CGColor , color2 : CGColor , subCName : String , subCIcon : UIImage){
+//        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+//            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CategoryPageViewController"))! as! CategoryPageViewController
+//            
+//            self.addChildViewController(vc)
+//            
+//            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+//            
+//            self.container.addSubview(vc.view)
+//            
+//            vc.didMove(toParentViewController: self)
+//            
+//            vc.customerHomeTableCells = cells
+//            
+//            vc.setGradientLayer(color1: color1, color2: color2)
+//            
+//            vc.subCategoryName.text = subCName
+//            
+//            vc.subCategoryIcon.image = subCIcon
+//            
+//        }, completion: nil)
+//        
+//    }
+    
+    
+//    func presentIndex(){
+//        
+//        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+//            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CategoryViewController"))! as! CategoryViewController
+//            
+//            self.addChildViewController(vc)
+//            
+//            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+//            
+//            self.container.addSubview(vc.view)
+//            
+//            vc.didMove(toParentViewController: self)
+//        }, completion: nil)
+//    }
 
     @IBAction func backButton(_ sender: Any) {
         
-        if(self.parent is CategoryViewController){
-         
-            let vc = self.parent as! CategoryViewController
-            
-            vc.deletSubView()
-            
-        }else{
-            presentIndex()
-        }
+//        if(self.parent is CategoryViewController){
+//         
+//            let vc = self.parent as! CategoryViewController
+//            
+//            vc.deletSubView()
+//            
+//        }else{
+//            presentIndex()
+//        }
+        
+        _ = navigationController?.popViewController(animated: true)
         
     }
-    
-    
-    func loadImage(picModel: PicModel) -> UIImage?{
-        
-        var tempCode = picModel.url
-        
-        tempCode?.append((picModel.code)!)
-        
-        let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
-        
-        if(result != nil){
-            
-            if self.cache.object(forKey: tempCode?.md5() as AnyObject) != nil {
-                
-                return UIImage(data: self.cache.object(forKey: tempCode?.md5() as AnyObject) as! Data)!
-                
-            }else{
-                
-                let imageData = NSData(base64Encoded: result!, options: .ignoreUnknownCharacters)
-                
-                self.cache.setObject(imageData!, forKey: tempCode?.md5() as AnyObject)
-                
-                return UIImage(data: imageData as! Data)!
-                
-            }
-            
-        }else{
-            
-            return nil
-            
-        }
-        
-    }
-    
-    
-    func isThereThisPicInDB (code: String) -> String?{
-        
-        for i in SaveAndLoadModel().load(entity: "IMAGE")!{
-            
-            if(i.value(forKey: "imageCode") as! String == code){
-                
-                return i.value(forKey: "imageData") as! String
-                
-            }
-            
-        }
-        
-        return nil
-        
-    }
-    
+
     
 }
 

@@ -162,11 +162,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         leftTable.delegate = self
 //        leftTable.register(UITableViewCell.self, forCellReuseIdentifier: "leftCell")
         
-        loadHomeTable()
         
-        self.rightTable.reloadData()
-        
-        self.leftTable.reloadData()
         
         if(AlarmViewController.mode){
             
@@ -189,6 +185,19 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         // Do any additional setup after loading the view.
     }
 
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        if(self.customerHomeTableCells.count == 0){
+           
+            loadHomeTable()
+            
+            self.rightTable.reloadData()
+            
+            self.leftTable.reloadData()
+            
+        }
+    }
     
     
     ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -374,64 +383,14 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             }else{
                 if(tableCell.customerImage?.url != nil){
                     
-                    var tempCode = tableCell.customerImage?.url
-                    
-                    tempCode?.append((tableCell.customerImage?.code)!)
-                    
-                    let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
-                    
-                    if(result == nil){
-                        //if its not in db load this
+                    LoadPicture().proLoad(view: cell.customerThumbnail, picModel: tableCell.customerImage!) { resImage in
+                     
+                        cell.customerThumbnail.image = resImage
                         
-                        //                    if cell.customerThumbnail.image == UIImage(named:"profile_pic")! {
-                        request("http://"+(tableCell.customerImage?.url)! ,method: .post ,parameters: BeaconPicRequestModel(CODE: tableCell.customerImage?.code, FILE_TYPE: tableCell.customerImage?.file_type).getParams(), encoding : JSONEncoding.default).responseJSON { response in
-                            
-                            if let image = response.result.value {
-                                
-                                let obj = PicDataModel.init(json: image as! JSON)
-                                
-                                var coding: String = (tableCell.customerImage?.url)!
-                                
-                                coding.append((tableCell.customerImage?.code)!)
-                                
-                                if(obj?.data != nil){
-                                    
-                                    SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
-                                    
-                                    let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
-                                    
-                                    self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                                    
-                                    cell.customerThumbnail.image = UIImage(data: imageData as! Data)
-                                    
-                                    self.customerHomeTableCells[indexPath.row].preCustomerImage = UIImage(data: imageData as! Data)
-                                    
-                                }
-                                
-                            }
-                            
-                        }
-                        //                    }
-                        
-                    }else{
-                        //else load from db
-                        if self.cache.object(forKey: tempCode?.md5() as AnyObject) != nil{
-                            
-                            cell.customerThumbnail.image = UIImage(data: self.cache.object(forKey: tempCode?.md5() as AnyObject) as! Data)
-                            
-                        }else{
-                            DispatchQueue.main.async(execute: { () -> Void in
-                                
-                                let imageData = NSData(base64Encoded: result!, options: .ignoreUnknownCharacters)
-                                
-                                self.cache.setObject(imageData!, forKey: tempCode?.md5() as AnyObject)
-                                
-                                cell.customerThumbnail.image = UIImage(data: imageData as! Data)
-                                
-                            })
-                        }
+                        self.customerHomeTableCells[indexPath.row].preCustomerImage = resImage
                         
                     }
+                    
                     
                 }
             }
@@ -476,60 +435,15 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 
             }else{
                 
-                var tempCode = tableCell.customerImage?.url
                 
-                tempCode?.append((tableCell.customerImage?.code)!)
-                
-                let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
-                
-                if(result == nil){
+                LoadPicture().proLoad(view: cell2.customerThumbnail, picModel: tableCell.customerImage!) { resImage in
                     
-                    //                if cell2.customerThumbnail.image == UIImage(named:"profile_pic")! {
-                    request("http://"+(tableCell.customerImage?.url)! ,method: .post ,parameters: BeaconPicRequestModel(CODE: tableCell.customerImage?.code, FILE_TYPE: tableCell.customerImage?.file_type).getParams() , encoding : JSONEncoding.default).responseJSON { response in
-                        
-                        if let image = response.result.value {
-                            let obj = PicDataModel.init(json: image as! JSON)
-                            
-                            var coding: String = (tableCell.customerImage?.url)!
-                            
-                            coding.append((tableCell.customerImage?.code)!)
-                            
-                            if(obj?.data != nil){
-                                
-                                SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
-                                
-                                let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
-                                
-                                self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                                
-                                cell2.customerThumbnail.image = UIImage(data: imageData as! Data)
-                                
-                            }
-                            
-                        }
-                        
-                    }
-                    //                }
+                    cell2.customerThumbnail.image = resImage
                     
-                }else{
-                    
-                    if self.cache.object(forKey: tempCode?.md5() as AnyObject) != nil{
-                        
-                        cell2.customerThumbnail.image = UIImage(data: self.cache.object(forKey: tempCode?.md5() as AnyObject) as! Data)
-                        
-                    }else{
-                        DispatchQueue.main.async(execute: { () -> Void in
-                            
-                            let imageData = NSData(base64Encoded: result!, options: .ignoreUnknownCharacters)
-                            
-                            self.cache.setObject(imageData!, forKey: tempCode?.md5() as AnyObject)
-                            
-                            cell2.customerThumbnail.image = UIImage(data: imageData as! Data)
-                            
-                        })
-                    }
+                    self.customerHomeTableCells[indexPath.row].preCustomerImage = resImage
                     
                 }
+
                 
             }
             
@@ -571,6 +485,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             return 150
         }
     }
+    
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
@@ -651,78 +566,113 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
     }
 
+    var lazyLoaded : Int = 0
+    
     func loadHomeTable(){
-        //create customer Home Table Cell from web service :)
-        let image : UIImage = UIImage(named:"mal")!
-
-        customerHomeTableCells.removeAll()
         
-        if(GlobalFields.BEACON_LIST_DATAS != nil){
+        DispatchQueue.global(qos: .userInitiated).async {
+            //create customer Home Table Cell from web service :)
+            let image : UIImage = UIImage(named:"mal")!
+
             
-            for obj in GlobalFields.BEACON_LIST_DATAS! {
+            if(GlobalFields.BEACON_LIST_DATAS != nil){
                 
-                var tempCode = obj.url_icon?.url
+                var count = 0
                 
-                tempCode?.append((obj.url_icon?.code!)!)
+                var end = self.lazyLoaded + 9
                 
-                let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
-                
-                var catIcon : UIImage? = nil
-                
-                for cat in GlobalFields.CATEGORIES_LIST_DATAS! {
+                if((GlobalFields.BEACON_LIST_DATAS?.count)! - 1 < end){
                     
-                    if(cat.category_code == obj.category_id){
+                    end = (GlobalFields.BEACON_LIST_DATAS?.count)! - 1
+                    
+                }
+                
+                for obj in (GlobalFields.BEACON_LIST_DATAS?[self.lazyLoaded...end])! {
+                    
+                    if(count == 9){
                         
-                        LoadPicture().proLoad(view: nil,picModel: cat.url_icon!){ resImage in
+                        self.lazyLoaded += 10
+                        
+                        print("%%%%%%%%%%%%%%% count %%%%%%%%%%%%%%%%")
+                        print(self.customerHomeTableCells.count)
+                        
+                        self.rightTable.reloadData()
+                        
+                        self.leftTable.reloadData()
+                        
+                        return
+                        
+                    }
+                    
+                    var tempCode = obj.url_icon?.url
+                    
+                    tempCode?.append((obj.url_icon?.code!)!)
+                    
+                    let result: String? = self.isThereThisPicInDB(code: (tempCode?.md5())!)
+                    
+                    var catIcon : UIImage? = nil
+                    
+                    for cat in GlobalFields.CATEGORIES_LIST_DATAS! {
+                        
+                        if(cat.category_code == obj.category_id){
                             
-                            catIcon = resImage
-                            
-                            var c1 : CGColor = UIColor(hex: "f5f7f8").cgColor
-                            var c2 : CGColor = UIColor(hex: "7c1f72").cgColor
-                            
-                            let colorsString = cat.color_code?.characters.split(separator: "-").map(String.init)
-                            
-                            if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
+                            LoadPicture().proLoad(view: nil,picModel: cat.url_icon!){ resImage in
                                 
-                                c1 = UIColor(hex: (colorsString?[0])!).cgColor
+                                catIcon = resImage
                                 
-                                c2 = UIColor(hex: (colorsString?[1])!).cgColor
+                                var c1 : CGColor = UIColor(hex: "f5f7f8").cgColor
+                                var c2 : CGColor = UIColor(hex: "7c1f72").cgColor
+                                
+                                let colorsString = cat.color_code?.characters.split(separator: "-").map(String.init)
+                                
+                                if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
+                                    
+                                    c1 = UIColor(hex: (colorsString?[0])!).cgColor
+                                    
+                                    c2 = UIColor(hex: (colorsString?[1])!).cgColor
+                                    
+                                }
+                                
+                                catIcon = self.setTintGradient(image: catIcon!, c: [c1,c2])
+                                
+                                //////
+                                
+                                print(String(describing: obj.coin))
+                                
+                                if(result == nil){
+                                    let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100), customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount ?? "%0", customerDiscountIcon: image, tell: obj.customer_tell ?? "" ,address: obj.customer_address ?? "" , text: obj.text ?? "" ,workTime: obj.customer_work_time ?? "" ,website: obj.cusomer_web ?? "" ,customerBigImages: obj.url_pic)
+                                    
+                                    self.customerHomeTableCells.append(a)
+                                    
+                                    
+                                }else{
+                                    let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount ?? "%0", customerDiscountIcon: image, tell: obj.customer_tell ?? "" ,address: obj.customer_address ?? "" , text: obj.text ?? "" ,workTime: obj.customer_work_time ?? "" ,website: obj.cusomer_web ?? "" ,customerBigImages: obj.url_pic)
+                                    
+                                    self.customerHomeTableCells.append(a)
+                                    
+                                    
+                                }
+                                
+                                //////
                                 
                             }
-                            
-                            catIcon = self.setTintGradient(image: catIcon!, c: [c1,c2])
-                            
-                            //////
-                            
-                            print(String(describing: obj.coin))
-                            
-                            if(result == nil){
-                                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100), customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic)
-                                self.customerHomeTableCells.append(a)
-                                
-                                self.rightTable.reloadData()
-                                
-                                self.leftTable.reloadData()
-                            }else{
-                                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic)
-                                self.customerHomeTableCells.append(a)
-                                
-                                self.rightTable.reloadData()
-                                
-                                self.leftTable.reloadData()
-                                
-                            }
-                            
-                            //////
                             
                         }
                         
                     }
                     
+                    count += 1
+                    
                 }
                 
             }
             
+            print("%%%%%%%%%%%%%%% count %%%%%%%%%%%%%%%%")
+            print(self.customerHomeTableCells.count)
+            
+            self.rightTable.reloadData()
+            
+            self.leftTable.reloadData()
         }
         
     }
@@ -731,9 +681,17 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if(scrollView == rightTable){
             leftTable.contentOffset = rightTable.contentOffset
+            let  height = scrollView.frame.size.height
+            let contentYoffset = scrollView.contentOffset.y
+            let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+            if distanceFromBottom == height {
+                loadHomeTable()
+            }
         }else if(scrollView == leftTable){
             rightTable.contentOffset = leftTable.contentOffset
         }
+        
+        
     }
     
     func isThereThisPicInDB (code: String) -> String?{

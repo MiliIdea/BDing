@@ -1599,6 +1599,7 @@
                                                                             <outlet property="titleW" destination="zLM-7k-cBC" id="acg-vk-vsh"/>
                                                                             <outlet property="viewH" destination="bcR-BI-656" id="Ygm-GX-Zfu"/>
                                                                             <outlet property="viewW" destination="hNd-Oh-tPr" id="Z8E-CD-91u"/>
+                                                                            <segue destination="yge-Gg-gl6" kind="show" identifier="subCategoryDetailSegue" id="fp7-yd-I86"/>
                                                                         </connections>
                                                                     </tableViewCell>
                                                                 </prototypes>
@@ -1665,9 +1666,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aDA-ym-bka" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6541.6000000000004" y="1509.8950524737631"/>
+            <point key="canvasLocation" x="7537.5" y="1509.5070422535211"/>
         </scene>
-        <!--دسته بندی ها-->
+        <!--Category View Controller-->
         <scene sceneID="Fse-Qu-NIK">
             <objects>
                 <viewController storyboardIdentifier="CategoryViewController" id="qfp-Kg-Ylx" customClass="CategoryViewController" customModule="BDing" customModuleProvider="target" sceneMemberID="viewController">
@@ -1817,6 +1818,7 @@
                                             <outlet property="iconView" destination="ztd-f7-5V2" id="Obg-Th-2xX"/>
                                             <outlet property="labelNumOfItemsCell2" destination="MrA-ew-gnU" id="iAS-Tf-WgN"/>
                                             <outlet property="labelViewCell2" destination="JRE-Pe-E4j" id="Cc8-Z9-U5W"/>
+                                            <segue destination="uiN-1F-PNy" kind="show" identifier="categorySubcategorySegue" id="bas-Ir-g64"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1834,10 +1836,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="2" title="دسته بندی ها" image="ic_view_list_48pt" id="tBT-fn-ZBJ">
-                        <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
-                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-3"/>
-                    </tabBarItem>
+                    <navigationItem key="navigationItem" id="chO-zW-oua"/>
                     <connections>
                         <outlet property="container" destination="oyC-oN-FFl" id="rMW-7Z-ses"/>
                         <outlet property="loading" destination="0R6-Dn-mWX" id="wIr-FG-7wX"/>
@@ -1848,7 +1847,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FFU-MH-7VO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5482.5" y="1509.5070422535211"/>
+            <point key="canvasLocation" x="6480" y="1509.5070422535211"/>
         </scene>
         <!--خانه-->
         <scene sceneID="BUh-Xx-Ljy">
@@ -2103,7 +2102,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.91907393930000003" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="70" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iTT-82-oXf">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="70" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iTT-82-oXf">
                                 <rect key="frame" x="0.0" y="66" width="320" height="453"/>
                                 <color key="backgroundColor" white="0.91907393930000003" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -4445,7 +4444,7 @@
                     <connections>
                         <segue destination="Q3L-Tv-EyX" kind="relationship" relationship="viewControllers" id="gPd-X6-cMU"/>
                         <segue destination="vHh-dh-7TU" kind="relationship" relationship="viewControllers" id="eRg-kC-a7C"/>
-                        <segue destination="qfp-Kg-Ylx" kind="relationship" relationship="viewControllers" id="slI-xj-2yz"/>
+                        <segue destination="ICS-F3-1NL" kind="relationship" relationship="viewControllers" id="slI-xj-2yz"/>
                         <segue destination="08H-Xd-nHE" kind="relationship" relationship="viewControllers" id="a1n-bb-gri"/>
                     </connections>
                 </tabBarController>
@@ -4775,6 +4774,28 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NUy-O7-EGu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5482.5" y="-1554.9295774647887"/>
+        </scene>
+        <!--دسته بندی ها-->
+        <scene sceneID="PaD-V3-O75">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="ICS-F3-1NL" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" tag="2" title="دسته بندی ها" image="ic_view_list_48pt" id="tBT-fn-ZBJ">
+                        <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-3"/>
+                    </tabBarItem>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="JGs-wn-17X">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="qfp-Kg-Ylx" kind="relationship" relationship="rootViewController" id="vnP-03-JLI"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bgy-UH-HKV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5482.5" y="1509.5070422535211"/>
         </scene>
     </scenes>
     <resources>
