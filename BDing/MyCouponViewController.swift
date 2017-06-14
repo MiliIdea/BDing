@@ -12,9 +12,11 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
 
     @IBOutlet weak var table: UITableView!
     
+    @IBOutlet weak var navigation: UINavigationBar!
+    
     var coupons : [MyCouponListData]? = [MyCouponListData]()
     
-    var couponsPrePics : [UIImage?] = [UIImage]()
+    var couponsPrePics : [UIImage?]? = nil
     
     var cache: NSCache<AnyObject, AnyObject> = NSCache()
     
@@ -22,19 +24,19 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.automaticallyAdjustsScrollViewInsets = false
+        table.contentInset = UIEdgeInsets.zero
+        
         self.table.register(UINib(nibName: "CouponTableViewCell", bundle: nil), forCellReuseIdentifier: "couponCell")
         
         table.dataSource = self
         table.delegate = self
         
+        
         self.cache = NSCache()
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -70,17 +72,21 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
         
         cell.detailLabel.text = data.coupon_code
         
-        if(couponsPrePics.count < indexPath.row + 1 || couponsPrePics[indexPath.row] == nil){
+        if((couponsPrePics?.count)! < indexPath.row + 1 || couponsPrePics?[indexPath.row] == nil){
             
             LoadPicture().proLoad(view : cell.couponImage,picType: "coupon", picModel: data.url_pic!){ resImage in
              
-                if(self.couponsPrePics.count < indexPath.row){
+                if((self.couponsPrePics?.count)! < (self.coupons?.count)!){
                     
-                    self.couponsPrePics.append(nil)
+                    for _ in self.coupons!{
+                        
+                        self.couponsPrePics?.append(nil)
+                        
+                    }
                     
                 }
                 
-                self.couponsPrePics.insert(resImage, at: indexPath.row)
+                self.couponsPrePics?[indexPath.row] = resImage
                 
                 cell.couponImage.image = resImage
                 
@@ -91,7 +97,7 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
                     
         } else {
             
-            cell.couponImage.image = couponsPrePics[indexPath.row]
+            cell.couponImage.image = couponsPrePics?[indexPath.row]
             
             cell.couponImage.contentMode = UIViewContentMode.scaleAspectFit
             
@@ -108,15 +114,21 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
         
         let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CouponPopupViewController"))! as! CouponPopupViewController
         
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            
-            self.addChildViewController(vc)
+        self.addChildViewController(vc)
+        
+//        vc.view.frame = CGRect(x:self.view.frame.width / 2,y: self.view.frame.height / 2,width: 0, height: 0)
+        
+        
+//        UIView.animate(withDuration: 3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+        
             
             vc.view.frame = CGRect(x:0,y: 0,width: self.view.frame.size.width, height: self.view.frame.size.height)
             
             vc.view.tag = 1234
             
-            self.view.addSubview(vc.view)
+//            self.view.addSubview(vc.view)
+            
+        UIView.transition(with: self.view, duration: 3, options: UIViewAnimationOptions.transitionCurlDown ,animations: {self.view.addSubview(vc.view)}, completion: nil)
             
             vc.didMove(toParentViewController: self)
             
@@ -126,7 +138,7 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
             
             self.view.alpha = 1
             
-        }, completion: nil)
+//        }, completion: nil)
         
         
         self.table.deselectRow(at: indexPath, animated: true)
@@ -147,56 +159,6 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
          _ = navigationController?.popViewController(animated: true)
         
     }
-   
-//    func loadImage(picModel: PicModel) -> UIImage?{
-//        
-//        var tempCode = picModel.url
-//        
-//        tempCode?.append((picModel.code)!)
-//        
-//        let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
-//        
-//        if(result != nil){
-//            
-//            if self.cache.object(forKey: tempCode?.md5() as AnyObject) != nil {
-//                
-//                return UIImage(data: self.cache.object(forKey: tempCode?.md5() as AnyObject) as! Data)!
-//                
-//            }else{
-//                
-//                let imageData = NSData(base64Encoded: result!, options: .ignoreUnknownCharacters)
-//                
-//                self.cache.setObject(imageData!, forKey: tempCode?.md5() as AnyObject)
-//                
-//                return UIImage(data: imageData as! Data)!
-//                
-//            }
-//            
-//        }else{
-//            
-//            return nil
-//            
-//        }
-//        
-//    }
-//    
-//    
-//    func isThereThisPicInDB (code: String) -> String?{
-//        
-//        for i in SaveAndLoadModel().load(entity: "IMAGE")!{
-//            
-//            if(i.value(forKey: "imageCode") as! String == code){
-//                
-//                return i.value(forKey: "imageData") as! String
-//                
-//            }
-//            
-//        }
-//        
-//        return nil
-//        
-//    }
-
     
     
     func deletSubView(){

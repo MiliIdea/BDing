@@ -39,7 +39,7 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
     
     var index : Int = 0
     
-    var pinsImage : [String : PicModel] = [String : PicModel]()
+    var pinsImage : [String : UIImage] = [String : UIImage]()
     
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation = CLLocation()
@@ -80,7 +80,7 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
         
         setPins()
         
-        let singleTap = UITapGestureRecognizer(target: self, action: Selector("tapDetected"))
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(MapViewController.tapDetected))
         singleTap.numberOfTapsRequired = 1 // you can change this value
         cellView.isUserInteractionEnabled = true
         cellView.addGestureRecognizer(singleTap)
@@ -118,17 +118,6 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
     
     func tapDetected() {
         
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController"))! as! DetailViewController
-            
-            self.addChildViewController(vc)
-            
-            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-            
-            self.container.addSubview(vc.view)
-            
-            vc.didMove(toParentViewController: self)
-            
             let obj = GlobalFields.BEACON_LIST_DATAS![self.index]
             
             let image : UIImage = UIImage(named:"mal")!
@@ -161,9 +150,13 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
                         catIcon = self.setTintGradient(image: catIcon!, c: [c1,c2])
                         
                         if(result == nil){
-                            vc.setup(data: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic) , isPopup: false , rect: nil)
+                            
+                            self.performSegue(withIdentifier: "mapDetailSegue", sender: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic))
+                            
                         }else{
-                            vc.setup(data: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: result ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic), isPopup: false, rect: nil)
+                            
+                            self.performSegue(withIdentifier: "mapDetailSegue", sender: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: result ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic))
+                            
                         }
 
                         
@@ -173,13 +166,16 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
                 }
                 
             }
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if(segue.identifier == "mapDetailSegue"){
             
+            (segue.destination as! DetailViewController).setup(data: sender as! CustomerHomeTableCell, isPopup: false, rect: nil)
             
-            self.navigationBar.alpha = 0
-            
-            self.mapView.alpha = 0
-            
-        }, completion: nil)
+        }
         
     }
     
@@ -215,17 +211,6 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
     
     
     func deletSubView(){
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "MapViewController"))! as! MapViewController
-            
-            self.addChildViewController(vc)
-            
-            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-            
-            self.container.addSubview(vc.view)
-            
-            vc.didMove(toParentViewController: self)
-        }, completion: nil)
         
     }
     
@@ -253,9 +238,9 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
             
             self.index = j
             
-            var i = GlobalFields.BEACON_LIST_DATAS![j]
+            let i = GlobalFields.BEACON_LIST_DATAS![j]
             
-            if(tit! == i.title! && subT! == i.category_title!){
+            if(tit ?? "" == i.title ?? "" && subT ?? "" == i.category_title ?? ""){
                 
                 
                 let reuseId = i.category_id
@@ -267,23 +252,17 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
                 for im in pinsImage {
                     
                     if(im.key == i.category_id){
+
+                        anView?.image = im.value
                         
-                        LoadPicture().proLoad(view: nil ,picModel: im.value){ resImage in
-                            
-                            anView?.image = resImage
-                            
-                            anView?.frame.size.width = 40
-                            
-                            anView?.frame.size.height = 40
-                            
-                            anView?.canShowCallout = false
-                            
-                            anView?.alpha = 1
-
-                            mapView.reloadInputViews()
-
-                            
-                        }
+                        anView?.frame.size.width = 40
+                        
+                        anView?.frame.size.height = 40
+                        
+                        anView?.canShowCallout = false
+                        
+                        anView?.alpha = 1
+                        
                         
                     }
                     
@@ -475,17 +454,8 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
     
     @IBAction func backButton(_ sender: Any) {
         
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "AlarmViewController"))! as! AlarmViewController
-            
-            self.addChildViewController(vc)
-            
-            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-            
-            self.container.addSubview(vc.view)
-            
-            vc.didMove(toParentViewController: self)
-        }, completion: nil)
+        _ = self.navigationController?.popViewController(animated: true)
+        
     }
 
 }

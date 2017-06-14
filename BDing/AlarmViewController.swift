@@ -10,6 +10,9 @@ import UIKit
 import CoreLocation
 import MapKit
 import Lottie
+import CCBottomRefreshControl
+import Hero
+import CellAnimator
 
 class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDataSource , UICollectionViewDataSource, UICollectionViewDelegate{
     
@@ -90,6 +93,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     }
     
     var lastSearch : LastSearchStruct? = nil
+    
+    var userRefreshControl : UIRefreshControl = UIRefreshControl.init()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -182,6 +187,32 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         self.searchTextField.addTarget(self, action: #selector(AlarmViewController.searchFieldChange), for: UIControlEvents.editingChanged)
         
+        if(view != nil){
+            
+            loading.frame(forAlignmentRect: (view?.frame)!)
+            
+            loading.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+            
+            view?.addSubview(loading)
+            
+            loading.hidesWhenStopped = true
+            
+            loading.frame.origin.x = (view?.frame.width)! / 2
+            
+            loading.frame.origin.y = (view?.frame.height)! / 2
+            
+        }
+        
+        userRefreshControl.triggerVerticalOffset = 100
+        
+        userRefreshControl.addTarget(self, action: #selector(AlarmViewController.loadHomeTable), for: UIControlEvents.valueChanged)
+        
+        self.rightTable.bottomRefreshControl = userRefreshControl
+     
+        rightTable.heroModifiers = [.cascade]
+        
+        leftTable.heroModifiers = [.cascade]
+        
         // Do any additional setup after loading the view.
     }
 
@@ -220,12 +251,6 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     @IBAction func playResizeTables(_ sender: Any) {
         
-//        if(rightTable.isDragging || leftTable.isDragging){
-//            
-//            return
-//            
-//        }
-        
         AlarmViewController.mode = !AlarmViewController.mode
         
         UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
@@ -239,7 +264,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                         
                     }
                     
-                    (self.leftTable.cellForRow(at: IndexPath(row: c-1, section: 0)) as? IndexHomeTableViewCell)?.setLast()
+                    (self.leftTable.cellForRow(at: IndexPath(row: c-1, section: 0)) as? IndexHomeTableViewCell)?.setLast(screenWidth: self.view.frame.width)
                     
                 }
                 
@@ -279,7 +304,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
 
                 for c in 1...self.rightTable.numberOfRows(inSection: 0) {
                     
-                    (self.rightTable.cellForRow(at: IndexPath(row: c-1, section: 0)) as? IndexHomeTableViewCell)?.setFirst()
+                    (self.rightTable.cellForRow(at: IndexPath(row: c-1, section: 0)) as? IndexHomeTableViewCell)?.setFirst(screenWidth: self.view.frame.width)
                     
                 }
                 
@@ -326,8 +351,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 
                 for c in 1...self.rightTable.numberOfRows(inSection: 0) {
                     
-                    (self.rightTable.cellForRow(at: IndexPath(row: c-1, section: 0)) as? IndexHomeTableViewCell)?.setLast()
-                    (self.leftTable.cellForRow(at: IndexPath(row: c-1, section: 0)) as? IndexHomeTableViewCell)?.setLast()
+                    (self.rightTable.cellForRow(at: IndexPath(row: c-1, section: 0)) as? IndexHomeTableViewCell)?.setLast(screenWidth: self.view.frame.width)
+                    (self.leftTable.cellForRow(at: IndexPath(row: c-1, section: 0)) as? IndexHomeTableViewCell)?.setLast(screenWidth: self.view.frame.width)
                     
                 }
                 
@@ -360,17 +385,20 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if tableView == rightTable {
+        
+            print(" =======>>>>>> ",indexPath.row)
             
             let cell = self.rightTable.dequeueReusableCell(withIdentifier: "rightCell" , for: indexPath) as! IndexHomeTableViewCell
             
             let tableCell = customerHomeTableCells[indexPath.row]
             
-//            cell.backgroundColor = UIColor.red
-            //////////
-            cell.customerName.text = tableCell.customerName
-            cell.customerCampaignTitle.text = tableCell.customerCampaignTitle
-            cell.customerDistanceToMe.text = tableCell.customerDistanceToMe
-//            cell.customerThumbnail.image = UIImage(named:"profile_pic")!
+            DispatchQueue.main.async(execute: { () -> Void in
+                
+                cell.customerName.text = tableCell.customerName
+                cell.customerCampaignTitle.text = tableCell.customerCampaignTitle
+                cell.customerDistanceToMe.text = tableCell.customerDistanceToMe
+            
+            })
             
             if(tableCell.preCustomerImage != nil){
                 
@@ -380,14 +408,30 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                     
                 })
                 
+            }
+            
+            ///////cat icon
+            if(tableCell.customerCategoryIcon != nil){
+                
+                DispatchQueue.main.async(execute: { () -> Void in
+                    autoreleasepool { () -> () in
+    
+                        cell.customerCategoryThumbnail.image = tableCell.customerCategoryIcon
+    
+                    }
+                })
+                
             }else{
-                if(tableCell.customerImage?.url != nil){
+                
+                let cat = findCategory(catID: GlobalFields.BEACON_LIST_DATAS?[indexPath.row].category_id)
+                
+                if(cat != nil){
                     
-                    LoadPicture().proLoad(view: cell.customerThumbnail, picModel: tableCell.customerImage!) { resImage in
-                     
-                        cell.customerThumbnail.image = resImage
+                    LoadPicture().proLoad(view: cell.customerCategoryThumbnail, picModel: (cat?.url_icon)!) { resImage in
                         
-                        self.customerHomeTableCells[indexPath.row].preCustomerImage = resImage
+                        cell.customerCategoryThumbnail.image = resImage
+                        
+                        self.customerHomeTableCells[indexPath.row].customerCategoryIcon = resImage
                         
                     }
                     
@@ -395,20 +439,25 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 }
             }
             
+            ///////
+            DispatchQueue.main.async(execute: { () -> Void in
+                
+                cell.customerCampaignCoin.text = tableCell.customerCoinValue
+                cell.customerCampaignDiscount.text = tableCell.customerDiscountValue
+                cell.customerCategoryThumbnail.image = tableCell.customerCategoryIcon
+                cell.coinThumbnail.image = tableCell.customerCoinIcon
+                cell.discountThumbnail.image = tableCell.customerDiscountIcon
+                //////////
+                if(AlarmViewController.mode){
+                    cell.viewH.constant = self.view.frame.width * 7 / 32
+                    cell.setFirst(screenWidth: self.view.frame.width)
+                }else{
+                    cell.setLast(screenWidth: self.view.frame.width)
+                }
+            })
             
+            cell.heroModifiers = [.fade, .scale(0.5)]
             
-            
-            cell.customerCampaignCoin.text = tableCell.customerCoinValue
-            cell.customerCampaignDiscount.text = tableCell.customerDiscountValue
-            cell.customerCategoryThumbnail.image = tableCell.customerCategoryIcon
-            cell.coinThumbnail.image = tableCell.customerCoinIcon
-            cell.discountThumbnail.image = tableCell.customerDiscountIcon
-            //////////
-            if(AlarmViewController.mode){
-                cell.setFirst()
-            }else{
-                cell.setLast()
-            }
             return cell
             
         }else if tableView == leftTable{
@@ -417,44 +466,53 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             let tableCell = customerHomeTableCells[indexPath.row * 2 + 1]
             
-//            cell2.backgroundColor = UIColor.blue
+            DispatchQueue.main.async(execute: { () -> Void in
+                
+                cell2.customerName.text = tableCell.customerName
+                cell2.customerCampaignTitle.text = tableCell.customerCampaignTitle
+                cell2.customerDistanceToMe.text = tableCell.customerDistanceToMe
             
-            ////////////
-            cell2.customerName.text = tableCell.customerName
-            cell2.customerCampaignTitle.text = tableCell.customerCampaignTitle
-            cell2.customerDistanceToMe.text = tableCell.customerDistanceToMe
-//            cell2.customerThumbnail.image = UIImage(named:"profile_pic")!
-            
+            })
             if(tableCell.preCustomerImage != nil){
                 
                 DispatchQueue.main.async(execute: { () -> Void in
+                    autoreleasepool { () -> () in
+                        
+                        cell2.customerThumbnail.image = tableCell.preCustomerImage
                     
-                    cell2.customerThumbnail.image = tableCell.preCustomerImage
-                    
+                    }
                 })
                 
-            }else{
-                
-                
-                LoadPicture().proLoad(view: cell2.customerThumbnail, picModel: tableCell.customerImage!) { resImage in
-                    
-                    cell2.customerThumbnail.image = resImage
-                    
-                    self.customerHomeTableCells[indexPath.row].preCustomerImage = resImage
-                    
-                }
-
-                
             }
+//            else{
+//
+//                
+//                LoadPicture().proLoad(view: cell2.customerThumbnail, picModel: tableCell.customerImage!) { resImage in
+//                    
+//                    cell2.customerThumbnail.image = resImage
+//                    
+//                    self.customerHomeTableCells[indexPath.row].preCustomerImage = resImage
+//                    
+//                }
+//
+//                
+//            }
             
-            cell2.customerCampaignCoin.text = tableCell.customerCoinValue
-            cell2.customerCampaignDiscount.text = tableCell.customerDiscountValue
-            cell2.customerCategoryThumbnail.image = tableCell.customerCategoryIcon
-            cell2.coinThumbnail.image = tableCell.customerCoinIcon
-            cell2.discountThumbnail.image = tableCell.customerDiscountIcon
-            ////////////
+            DispatchQueue.main.async(execute: { () -> Void in
+                
+                cell2.customerCampaignCoin.text = tableCell.customerCoinValue
+                cell2.customerCampaignDiscount.text = tableCell.customerDiscountValue
+                cell2.customerCategoryThumbnail.image = tableCell.customerCategoryIcon
+                cell2.coinThumbnail.image = tableCell.customerCoinIcon
+                cell2.discountThumbnail.image = tableCell.customerDiscountIcon
+                ////////////
             
-            cell2.setLast()
+                cell2.viewH.constant = self.view.frame.width * 7 / 32
+                
+                cell2.setLast(screenWidth: self.view.frame.width)
+            })
+            
+            cell2.heroModifiers = [.fade, .scale(0.5)]
             
             return cell2
             
@@ -468,7 +526,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         if tableView == rightTable{
             if(AlarmViewController.mode){
                 
-                return 70
+                return self.view.frame.width * 7 / 32
                 
             }else{
                 
@@ -477,18 +535,20 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                     return 0
                     
                 }
-                return 150
+                return self.view.frame.width * CGFloat(0.46875)
             }
             
         }else{
             
-            return 150
+            return self.view.frame.width * CGFloat(0.46875)
         }
     }
     
     
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 44
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        CellAnimator.animateCell(cell: cell, withTransform: CellAnimator.TransformFlip, andDuration: 0.3)
+        
     }
     
     
@@ -496,54 +556,11 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         if(tableView == rightTable){
             
-//            customerHomeTableCells[indexPath.row]
-            
-            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                let vc = (self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController"))! as! DetailViewController
-                
-                self.addChildViewController(vc)
-                
-                vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-                
-                self.container.addSubview(vc.view)
-                
-                vc.didMove(toParentViewController: self)
-                
-                vc.setup(data: self.customerHomeTableCells[indexPath.row] , isPopup: false , rect: nil)
-                
-                self.navigationBar.alpha = 0
-                
-                self.rightTable.alpha = 0
-                
-                self.leftTable.alpha = 0
-                
-            }, completion: nil)
+            rightTable.deselectRow(at: indexPath, animated: true)
             
         }else {
             
-//            customerHomeTableCells[(indexPath.row * 2) + 1]
-            
-            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                let vc = (self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController"))! as! DetailViewController
-                
-                self.addChildViewController(vc)
-                
-                vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-                
-                self.container.addSubview(vc.view)
-                
-                vc.didMove(toParentViewController: self)
-                
-                vc.setup(data: self.customerHomeTableCells[(indexPath.row * 2) + 1] , isPopup: false , rect: nil)
-                
-                self.navigationBar.alpha = 0
-                
-                self.rightTable.alpha = 0
-                
-                self.leftTable.alpha = 0
-                
-            }, completion: nil)
-            
+            leftTable.deselectRow(at: indexPath, animated: true)
             
         }
         
@@ -566,11 +583,16 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
     }
 
+    
     var lazyLoaded : Int = 0
     
+    let loading : UIActivityIndicatorView = UIActivityIndicatorView()
+    
     func loadHomeTable(){
+    
+        loading.startAnimating()
         
-        DispatchQueue.global(qos: .userInitiated).async {
+//        DispatchQueue.global(qos: .userInteractive).async {
             //create customer Home Table Cell from web service :)
             let image : UIImage = UIImage(named:"mal")!
 
@@ -589,79 +611,58 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 
                 for obj in (GlobalFields.BEACON_LIST_DATAS?[self.lazyLoaded...end])! {
                     
-                    if(count == 9){
-                        
-                        self.lazyLoaded += 10
-                        
-                        print("%%%%%%%%%%%%%%% count %%%%%%%%%%%%%%%%")
-                        print(self.customerHomeTableCells.count)
-                        
-                        self.rightTable.reloadData()
-                        
-                        self.leftTable.reloadData()
-                        
-                        return
-                        
-                    }
+                    let catIcon : UIImage? = UIImage.init(named: "Icon-60")
                     
-                    var tempCode = obj.url_icon?.url
+                    let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100), customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount ?? "%0", customerDiscountIcon: image, tell: obj.customer_tell ?? "" ,address: obj.customer_address ?? "" , text: obj.text ?? "" ,workTime: obj.customer_work_time ?? "" ,website: obj.cusomer_web ?? "" ,customerBigImages: obj.url_pic)
                     
-                    tempCode?.append((obj.url_icon?.code!)!)
+                    a.preCustomerImage = UIImage.init(named: "default")
                     
-                    let result: String? = self.isThereThisPicInDB(code: (tempCode?.md5())!)
-                    
-                    var catIcon : UIImage? = nil
-                    
-                    for cat in GlobalFields.CATEGORIES_LIST_DATAS! {
+                    if(a.customerImage?.url != nil){
                         
-                        if(cat.category_code == obj.category_id){
+                        LoadPicture().proLoad(view: nil , picModel: a.customerImage!) {
                             
-                            LoadPicture().proLoad(view: nil,picModel: cat.url_icon!){ resImage in
+                            resImage in
+                            
+                            a.preCustomerImage = resImage
+                            
+                            for cust in self.customerHomeTableCells{
                                 
-                                catIcon = resImage
-                                
-                                var c1 : CGColor = UIColor(hex: "f5f7f8").cgColor
-                                var c2 : CGColor = UIColor(hex: "7c1f72").cgColor
-                                
-                                let colorsString = cat.color_code?.characters.split(separator: "-").map(String.init)
-                                
-                                if(colorsString != nil && colorsString?[0] != nil && colorsString?[1] != nil){
+                                if( a.customerImage?.url == cust.customerImage?.url ){
                                     
-                                    c1 = UIColor(hex: (colorsString?[0])!).cgColor
+                                    if( a.customerImage?.code == cust.customerImage?.code ){
+                                        
+                                        cust.preCustomerImage = resImage
+                                        
+                                        break
                                     
-                                    c2 = UIColor(hex: (colorsString?[1])!).cgColor
-                                    
-                                }
-                                
-                                catIcon = self.setTintGradient(image: catIcon!, c: [c1,c2])
-                                
-                                //////
-                                
-                                print(String(describing: obj.coin))
-                                
-                                if(result == nil){
-                                    let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100), customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount ?? "%0", customerDiscountIcon: image, tell: obj.customer_tell ?? "" ,address: obj.customer_address ?? "" , text: obj.text ?? "" ,workTime: obj.customer_work_time ?? "" ,website: obj.cusomer_web ?? "" ,customerBigImages: obj.url_pic)
-                                    
-                                    self.customerHomeTableCells.append(a)
-                                    
-                                    
-                                }else{
-                                    let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount ?? "%0", customerDiscountIcon: image, tell: obj.customer_tell ?? "" ,address: obj.customer_address ?? "" , text: obj.text ?? "" ,workTime: obj.customer_work_time ?? "" ,website: obj.cusomer_web ?? "" ,customerBigImages: obj.url_pic)
-                                    
-                                    self.customerHomeTableCells.append(a)
-                                    
+                                    }
                                     
                                 }
-                                
-                                //////
                                 
                             }
                             
                         }
                         
+                        
                     }
                     
+                    self.customerHomeTableCells.append(a)
+                    
                     count += 1
+                    
+                    if(count == 9){
+                        
+                        self.lazyLoaded += 10
+                        
+                        self.loading.stopAnimating()
+                        
+                        print("%%%%%%%%%%%%%%% count %%%%%%%%%%%%%%%%")
+                        print(self.customerHomeTableCells.count)
+
+                        
+                        break
+                        
+                    }
                     
                 }
                 
@@ -673,7 +674,29 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             self.rightTable.reloadData()
             
             self.leftTable.reloadData()
+            
+            self.loading.stopAnimating()
+        DispatchQueue.global(qos: .userInitiated).async {
+
+            self.userRefreshControl.endRefreshing()
+            
         }
+
+    }
+    
+    func findCategory(catID : String!) -> CategoryListData?{
+        
+        for c in GlobalFields.CATEGORIES_LIST_DATAS! {
+            
+            if(c.category_code == catID){
+                
+                return c
+                
+            }
+            
+        }
+        
+        return nil
         
     }
     
@@ -681,12 +704,12 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if(scrollView == rightTable){
             leftTable.contentOffset = rightTable.contentOffset
-            let  height = scrollView.frame.size.height
-            let contentYoffset = scrollView.contentOffset.y
-            let distanceFromBottom = scrollView.contentSize.height - contentYoffset
-            if distanceFromBottom == height {
-                loadHomeTable()
-            }
+//            let  height = scrollView.frame.size.height
+//            let contentYoffset = scrollView.contentOffset.y
+//            let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+//            if distanceFromBottom == height {
+//                loadHomeTable()
+//            }
         }else if(scrollView == leftTable){
             rightTable.contentOffset = leftTable.contentOffset
         }
@@ -1313,6 +1336,10 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         }
 
         GlobalFields.BEACON_LIST_DATAS = result
+        
+        customerHomeTableCells.removeAll()
+        
+        lazyLoaded = 0
   
         loadHomeTable()
         
@@ -1372,6 +1399,10 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         GlobalFields.BEACON_LIST_DATAS = result
         
+        customerHomeTableCells.removeAll()
+        
+        lazyLoaded = 0
+        
         loadHomeTable()
         
         self.rightTable.reloadData()
@@ -1430,6 +1461,10 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         }
         
         GlobalFields.BEACON_LIST_DATAS = result
+        
+        customerHomeTableCells.removeAll()
+        
+        lazyLoaded = 0
         
         loadHomeTable()
         
@@ -1500,6 +1535,10 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         }
         
         GlobalFields.BEACON_LIST_DATAS = result
+        
+        customerHomeTableCells.removeAll()
+        
+        lazyLoaded = 0
         
         loadHomeTable()
         
@@ -1719,82 +1758,67 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
     }
 
+    var pinsImage : [String : UIImage] = [String : UIImage]()
     
     @IBAction func map(_ sender: Any) {
+
         
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "MapViewController"))! as! MapViewController
-            
-            self.addChildViewController(vc)
-            
-            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-            
-            var counter = 0
-            
-            vc.pinsImage.removeAll()
+        pinsImage.removeAll()
+        
+        loading.startAnimating()
+        
+        DispatchQueue.global(qos: .userInteractive).async {
             
             for c in GlobalFields.CATEGORIES_LIST_DATAS! {
                 
                 if(c.url_icon_map?.url != nil){
+                    
+                    LoadPicture().proLoad(view: nil, picModel: c.url_icon_map!){resImage in
+                        
+                        self.pinsImage[c.category_code!] = resImage
          
-                    vc.pinsImage[c.category_code!] = c.url_icon_map
+                        if( self.pinsImage.count == GlobalFields.CATEGORIES_LIST_DATAS!.count){
                             
-                    counter += 1
+                            self.loading.stopAnimating()
+                            
+                            self.performSegue(withIdentifier: "homeMapSegue", sender: "")
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+        }
 
-                }
-                
-            }
-            
-            var b : Bool = true
-            
-            while b {
-                
-                sleep(1)
-                
-                if(counter == GlobalFields.CATEGORIES_LIST_DATAS!.count){
-                    
-                    self.container.addSubview(vc.view)
-                    
-                    vc.didMove(toParentViewController: self)
-                    
-                    self.navigationBar.alpha = 0
-                    
-                    self.rightTable.alpha = 0
-                    
-                    self.leftTable.alpha = 0
-                    
-                    b = false
-                    
-                }
-                
-            }
-            
-            
-//            self.container.addSubview(vc.view)
-//
-//            vc.didMove(toParentViewController: self)
-//
-//            self.navigationBar.alpha = 0
-//
-//            self.rightTable.alpha = 0
-//            
-//            self.leftTable.alpha = 0
-            
-        }, completion: nil)
-        
-        
     }
     
     
     
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if(segue.identifier == "rightCellDetailSegue"){
+            (segue.destination as! DetailViewController).setup(data: customerHomeTableCells[(self.rightTable.indexPath(for: (sender as! IndexHomeTableViewCell))?.row)!], isPopup: false, rect: nil)
+            
+        }else if(segue.identifier == "leftCellDetailSegue"){
+            
+            (segue.destination as! DetailViewController).setup(data: customerHomeTableCells[(self.leftTable.indexPath(for: (sender as! IndexHomeTableViewCell))?.row)! * 2 + 1], isPopup: false, rect: nil)
+            
+        }else if(segue.identifier == "homeMapSegue"){
+            
+            (segue.destination as! MapViewController).pinsImage = pinsImage
+            
+        }
+        
     }
-    */
+    
+    
+
 
 }

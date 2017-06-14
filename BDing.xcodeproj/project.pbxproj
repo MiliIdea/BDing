@@ -272,9 +272,9 @@
 		11E747191E7806EF002AEEFD /* BeaconListRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E747181E7806EF002AEEFD /* BeaconListRequestModel.swift */; };
 		11FDEBB31EAC92C1002E999E /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FDEBB21EAC92C1002E999E /* Reachability.swift */; };
 		11FDEBB51EACB625002E999E /* GetBeaconRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FDEBB41EACB625002E999E /* GetBeaconRequestModel.swift */; };
-		22BE245405874685B1DB8BE5 /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED65191AE6B9F9004DA954 /* Pods_BDing.framework */; };
 		5C65055DE2496E5B5DF9FCA5 /* Pods_BDingUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBFBC709538EF38D5F97E397 /* Pods_BDingUITests.framework */; };
 		9B590B220CE391E6E3DF01F6 /* Pods_BDingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB1DEBF668C472A761E76D2D /* Pods_BDingTests.framework */; };
+		D434F0B1D1621138363993CE /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED65191AE6B9F9004DA954 /* Pods_BDing.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -685,7 +685,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22BE245405874685B1DB8BE5 /* Pods_BDing.framework in Frameworks */,
+				D434F0B1D1621138363993CE /* Pods_BDing.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

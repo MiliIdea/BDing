@@ -922,15 +922,9 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
             
             nextVc.color2 = color.color2
             
-            LoadPicture().proLoad(view: nextVc.subCategoryIcon, picModel: (subC?.image)!){ resImage in
-                
-                nextVc.subCategoryIcon.image = resImage.imageWithColor(tintColor: UIColor.white)
-                
-                nextVc.subCategoryIcon.contentMode = UIViewContentMode.scaleAspectFit
-            }
+            nextVc.catIconPicModel = subC?.image
             
-            
-            nextVc.subCategoryName.text = subC?.name
+            nextVc.nameTitle = (subC?.name)!
             
             if(subC != nil){
                 
@@ -978,10 +972,6 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                             if ( obj?.code == "200" ){
                                 
                                 
-                                print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: self.sections[self.getSectionIndex(row: row)].categoryCode, SUBCATEGORY: nil).getParams())
-                                
-                                print(obj?.data)
-                                
                                 if(obj?.data == nil){
                                     
                                     //TODO
@@ -996,7 +986,27 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                                         
                                         let image : UIImage = UIImage(named:"amlak")!
                                         for i in (obj?.data!)! {
-                                            let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:nil ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: i.discount!, customerDiscountIcon: image, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic)
+                                            LoadPicture().proLoad(view: nil , picModel: i.url_icon!){ resImage in
+                                                
+                                                for c in nextVc.customerHomeTableCells {
+                                                    
+                                                    if(c.customerImage?.url == i.url_icon?.url){
+                                                     
+                                                        if(c.customerImage?.code == i.url_icon?.code){
+                                                            
+                                                            c.preCustomerImage = resImage
+                                                            
+                                                            nextVc.table.reloadData()
+                                                            
+                                                        }
+                                                        
+                                                    }
+                                                    
+                                                }
+                                                
+                                            }
+
+                                            let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:UIImage.init(named: "default") ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: i.discount!, customerDiscountIcon: image, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic)
                                             nextVc.customerHomeTableCells.append(a)
                                             
                                         }
@@ -1050,9 +1060,28 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                                         
                                         let image : UIImage = UIImage(named:"amlak")!
                                         for i in (obj?.data!)! {
-                                            let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:nil ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: i.discount!, customerDiscountIcon: image, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic)
-                                            nextVc.customerHomeTableCells.append(a)
+                                            LoadPicture().proLoad(view: nil , picModel: i.url_icon!){ resImage in
+                                                
+                                                for c in nextVc.customerHomeTableCells {
+                                                    
+                                                    if(c.customerImage?.url == i.url_icon?.url){
+                                                        
+                                                        if(c.customerImage?.code == i.url_icon?.code){
+                                                            
+                                                            c.preCustomerImage = resImage
+                                                            
+                                                            nextVc.table.reloadData()
+                                                            
+                                                        }
+                                                        
+                                                    }
+                                                    
+                                                }
+                                                
+                                            }
                                             
+                                            let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:UIImage.init(named: "default") ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: i.discount!, customerDiscountIcon: image, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic)
+                                            nextVc.customerHomeTableCells.append(a)
                                             
                                         }
                                         

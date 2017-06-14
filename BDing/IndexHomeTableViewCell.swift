@@ -72,10 +72,10 @@ class IndexHomeTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        MyFont().setMediumFont(view: customerCampaignTitle, mySize: 12)
-        MyFont().setWebFont(view: customerName, mySize: 9)
-        MyFont().setWebFont(view: customerDistanceToMe, mySize: 12)
-        MyFont().setWebFont(view: customerCampaignDiscount, mySize: 12)
+        MyFont().setMediumFont(view: customerCampaignTitle, mySize: 13)
+        MyFont().setWebFont(view: customerName, mySize: 10)
+        MyFont().setWebFont(view: customerDistanceToMe, mySize: 13)
+        MyFont().setWebFont(view: customerCampaignDiscount, mySize: 13)
         MyFont().setMediumFont(view: customerCampaignCoin, mySize: 14)
         customerThumbnail.layer.zPosition = 1
         
@@ -95,9 +95,11 @@ class IndexHomeTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func setFirst(){
+    func setFirst(screenWidth : CGFloat){
         
 //        viewW.constant = self.frame.width
+        
+        self.viewH.constant = screenWidth * 7.0 / CGFloat(32.0)
         
         imgH.constant = viewH.constant
         imgW.constant = viewW.constant/3.5
@@ -132,18 +134,16 @@ class IndexHomeTableViewCell: UITableViewCell {
         
     }
     
-    func setLast(){
+    func setLast(screenWidth : CGFloat){
         
         print(viewW.constant)
         
         print(self.boarderView.frame.width)
         
-//        viewW.constant = self.boarderView.frame.width
+        self.viewH.constant = screenWidth * CGFloat(0.46875)
         
-//        viewW.constant = self.frame.width
-        
-        imgH.constant = viewH.constant * 1.3
-//        imgW.constant = viewW.constant/2
+//        imgH.constant = viewH.constant * 1.3
+        imgH.constant = viewH.constant / 1.8
         imgW.constant = self.frame.width
         customerThumbnail.contentMode = UIViewContentMode.scaleAspectFill
         titleTop.constant = imgH.constant + 8

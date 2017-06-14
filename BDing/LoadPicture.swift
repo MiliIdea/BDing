@@ -58,6 +58,8 @@ class LoadPicture {
             
             view?.addSubview(loading)
             
+            loading.hidesWhenStopped = true
+            
             loading.frame.origin.x = (view?.frame.width)! / 2
             
             loading.frame.origin.y = (view?.frame.height)! / 2

@@ -35,6 +35,9 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.automaticallyAdjustsScrollViewInsets = false
+        
+        IndexHomeTable.contentInset = UIEdgeInsets.zero
         
         IndexHomeTable.dataSource = self
         IndexHomeTable.delegate = self
@@ -94,7 +97,7 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         
         cell?.customerThumbnail.layer.mask = shape
         
-        cell?.setFirst()
+        cell?.setFirst(screenWidth: self.view.frame.width)
         
         if(SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: tableCell.uuidMajorMinorMD5!)?.value(forKey: "isSeen") as! Bool == true){
             
@@ -116,6 +119,10 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         return 1
     }
 
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return self.view.frame.width * 7 / 32
+    }
+
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -126,20 +133,21 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         }else{
             
             
+            self.IndexHomeTable.deselectRow(at: indexPath, animated: true)
+            
             let vc = (self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController"))! as! DetailViewController
             
             UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                 
-                
                 self.addChildViewController(vc)
+                
+                vc.setup(data: self.customerHomeTableCells[indexPath.row] ,isPopup:  true , rect: CGRect(x:0,y: 0,width: self.popupView.frame.size.width, height: self.popupView.frame.size.height))
                 
                 vc.view.frame = CGRect(x:0,y: 0,width: self.popupView.frame.size.width, height: self.popupView.frame.size.height)
                 
                 self.popupView.addSubview(vc.view)
                 
                 vc.didMove(toParentViewController: self)
-                
-                vc.setup(data: self.customerHomeTableCells[indexPath.row] ,isPopup:  true , rect: CGRect(x:0,y: 0,width: self.popupView.frame.size.width, height: self.popupView.frame.size.height))
                 
                 self.navigationBar.alpha = 0
                 
@@ -172,6 +180,12 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         }
         
         
+        
+    }
+   
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
         
     }
     
@@ -369,26 +383,7 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
     }
     
     @IBAction func changeView(_ sender: Any) {
-        
-//        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-//        let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CategoryPageViewController"))! as! CategoryPageViewController
-//        
-//        vc.parentView = "IndexHomeViewController"
-//            
-//        self.addChildViewController(vc)
-//        
-//        vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-//        
-////        self.container.addSubview(vc.view)
-//            
-//        self.IndexHomeTable.addSubview(vc.view)
-//        
-//        vc.didMove(toParentViewController: self)
-//
-//        self.navigationBar.alpha = 0
-//        
-//        self.IndexHomeTable.alpha = 0
-//        }, completion: nil)
+
     }
     
 

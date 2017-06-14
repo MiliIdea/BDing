@@ -122,6 +122,14 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         // Do any additional setup after loading the view.
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        Notifys().notif(message: "با تکمیل فیلد ایمیل کد فعال سازی برای ایمیل شما ارسال می شود!"){alarm in
+            
+            self.present(alarm, animated: true, completion: nil)
+            
+        }
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
     {
         
@@ -306,6 +314,12 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
             
             print("alo alo man jujuam ... he he")
             
+            Notifys().notif(message: "پسورد با تکرار پسورد یکسان نمی باشد!"){alarm in
+             
+                self.present(alarm, animated: true, completion: nil)
+                
+            }
+            
             return
             
         }
@@ -313,6 +327,11 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         if((password.text?.characters.count)! < 6){
             
             print("alo alo un jujue")
+            Notifys().notif(message: "پسورد کمتر از شش کاراکتر می باشد!"){alarm in
+                
+                self.present(alarm, animated: true, completion: nil)
+                
+            }
             
             return
             
@@ -322,9 +341,16 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
             
             print("email doros nis!!!")
             
+            Notifys().notif(message: "ایمیل صحیح نیست!"){alarm in
+                
+                self.present(alarm, animated: true, completion: nil)
+                
+            }
+            
             return
             
         }
+        
         
         var gender2 : String = self.gender.text!
         

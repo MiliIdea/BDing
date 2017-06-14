@@ -36,6 +36,8 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
     
     @IBOutlet weak var subCategoryName: UITextView!
     
+    var catIconPicModel : PicModel? = nil
+    
     var heightOfSemiCircular: CGFloat = 0.0
     
     var offsetOfsemiCircular: CGFloat = 0.0
@@ -49,6 +51,8 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
     var color1 : CGColor? = nil
     
     var color2 : CGColor? = nil
+    
+    var nameTitle : String = ""
     
     var cache: NSCache<AnyObject, AnyObject> = NSCache()
     
@@ -128,6 +132,15 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         
         MyFont().setBoldFont(view: subCategoryName, mySize: 14)
         
+        self.subCategoryName.text = self.nameTitle
+        
+        LoadPicture().proLoad(view: self.subCategoryIcon, picModel: (catIconPicModel)!){ resImage in
+            
+            self.subCategoryIcon.image = resImage.imageWithColor(tintColor: UIColor.white)
+            
+            self.subCategoryIcon.contentMode = UIViewContentMode.scaleAspectFit
+        }
+
         
         scrollViewDidScroll(self.scrollView)
     
@@ -135,6 +148,8 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         
         
     }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -180,37 +195,17 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         cell.customerName.text = tableCell.customerName
         cell.customerCampaignTitle.text = tableCell.customerCampaignTitle
         cell.customerDistanceToMe.text = tableCell.customerDistanceToMe
-//        cell.customerThumbnail.image = UIImage(named:"profile_pic")!
-        
-        //if its not in db load this
-        
         if(tableCell.preCustomerImage == nil){
-            
-            LoadPicture().proLoad(view: cell.customerThumbnail, picModel: tableCell.customerImage!){ resImage in
-                
-                self.customerHomeTableCells[indexPath.row].preCustomerImage = resImage
-                
-                cell.customerThumbnail.image = resImage
-                
-            }
-            
-        }else{
-            
-            cell.customerThumbnail.image = tableCell.preCustomerImage
-            
-            cell.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFit
-            
+            cell.customerThumbnail.image = UIImage(named:"default")!
         }
-        
-        
-        
+        cell.customerThumbnail.image = tableCell.preCustomerImage
+        cell.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFit
         cell.customerCampaignCoin.text = tableCell.customerCoinValue
         cell.customerCampaignDiscount.text = tableCell.customerDiscountValue
         cell.customerCategoryThumbnail.image = tableCell.customerCategoryIcon
         cell.coinThumbnail.image = tableCell.customerCoinIcon
         cell.discountThumbnail.image = tableCell.customerDiscountIcon
-        
-        cell.setFirst()
+        cell.setFirst(screenWidth: self.view.frame.width)
         
         return cell
         
@@ -218,7 +213,7 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        return 70
+        return self.view.frame.width * 7 / 32
         
     }
     
@@ -287,35 +282,8 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-//            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController"))! as! DetailViewController
-//
-//            self.addChildViewController(vc)
-//            
-//            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-//            
-//            self.container.addSubview(vc.view)
-//            
-//            vc.didMove(toParentViewController: self)
             
-            // add data
-            
-//            let data = self.customerHomeTableCells[indexPath.row]
-//            
-//            vc.setup(data: data , isPopup: false , rect: nil)
-//            
-//            vc.color1 = self.color1
-//            
-//            vc.color2 = self.color2
-//            
-//            vc.subCategoryName = self.subCategoryName.text
-//            
-//            vc.subCategoryIcon = self.subCategoryIcon.image
-//            
-//            vc.customerHomeTableCellsOfCategoryPage = self.customerHomeTableCells
-
-//            self.navigationBar.alpha = 0
-//            
-//            self.table.alpha = 0
+            self.table.deselectRow(at: indexPath, animated: true)
             
         }, completion: nil)
     }

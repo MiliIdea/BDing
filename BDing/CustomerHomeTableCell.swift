@@ -18,7 +18,7 @@ class CustomerHomeTableCell: NSObject {
     
     var customerName: String
     
-    var customerCategoryIcon: UIImage
+    var customerCategoryIcon: UIImage?
     
     var customerDistanceToMe: String
     
@@ -49,7 +49,7 @@ class CustomerHomeTableCell: NSObject {
     var uuidMajorMinorMD5 : String?
 
     
-    init(uuidMajorMinorMD5 : String? ,preCustomerImage : UIImage?,customerImage : PicModel?,customerCampaignTitle : String,customerName : String,customerCategoryIcon : UIImage,customerDistanceToMe : String,customerCoinValue : String,customerCoinIcon : UIImage,customerDiscountValue : String,customerDiscountIcon : UIImage ,tell : String , address : String , text : String , workTime : String , website : String , customerBigImages : [PicModel]?){
+    init(uuidMajorMinorMD5 : String? ,preCustomerImage : UIImage?,customerImage : PicModel?,customerCampaignTitle : String,customerName : String,customerCategoryIcon : UIImage?,customerDistanceToMe : String,customerCoinValue : String,customerCoinIcon : UIImage,customerDiscountValue : String,customerDiscountIcon : UIImage ,tell : String , address : String , text : String , workTime : String , website : String , customerBigImages : [PicModel]?){
         
         self.preCustomerImage = preCustomerImage
         

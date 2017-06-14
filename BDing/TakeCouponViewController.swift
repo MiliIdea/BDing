@@ -31,7 +31,7 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
         table.dataSource = self
         table.delegate = self
 
-
+        self.automaticallyAdjustsScrollViewInsets = false
         // Do any additional setup after loading the view.
     }
 

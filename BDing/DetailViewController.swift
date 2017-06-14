@@ -124,161 +124,14 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
         if(rect != nil){
             
-            self.view.frame = rect!
-            
             self.rect = rect
             
         }
         
         cell = data
         
-        self.categoryName.text = data.customerCampaignTitle
-        
-        brandName.text = data.customerName
-        
-        coin.text = data.customerCoinValue
-        
-        distance.text = data.customerDistanceToMe
-        
-        discount.text = data.customerDiscountValue
-        
-        textView.text = data.text
-        
-        nowIsOpen.text = "baz ast"
-        
-        timeOfWork.text = data.workTime
-        
-        address.text = data.address
-        
-        phone.setTitle(data.tell, for: UIControlState.normal)
-        
-        webSiteAddress.setTitle(data.website, for: UIControlState.normal)
-        
-        brandIcon.image = data.customerCategoryIcon
-        
-        backgroundPic = data.customerBigImages?[0]
-        
-        var im: UIImage? = loadImage(picModel: backgroundPic!)
-        
-        if(im != nil){
-            
-            backgroundPicView.image = im
-            
-            
-        }else{
-            
-            request("http://"+(backgroundPic?.url)! ,method: .post ,parameters: BeaconPicRequestModel(CODE: backgroundPic?.code, FILE_TYPE: backgroundPic?.file_type).getParams(), encoding : JSONEncoding.default).responseJSON { response in
-                
-                if let image = response.result.value {
-                    
-                    let obj = PicDataModel.init(json: image as! JSON)
-                    
-                    if(obj?.data != nil){
-                        
-                        let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
-                        
-                        var coding: String = (self.backgroundPic?.url)!
-                        
-                        coding.append((self.backgroundPic?.code)!)
-                        
-                        SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
-                        
-                        self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                        
-                        var pic = UIImage(data: imageData as! Data)
-                        
-                        self.backgroundPicView.image = pic
-                        
-                        self.backgroundPicView.contentMode = UIViewContentMode.scaleAspectFill
-                        
-                    }
-                    
-                }
-            }
-            
-        }
-
-        
-        // set now is open
-        
-        let date = Date()
-        let calendar = Calendar.current
-        
-        let hour = calendar.component(.hour, from: date)
-        let minutes = calendar.component(.minute, from: date)
-        
-//        print("hours = \(hour):\(minutes):\(seconds)")
-//        
-//        print(cell?.workTime)
-        
-        var isOpen : Bool = false
-        
-        for s in (cell?.workTime?.characters.split(separator: "|"))!{
-            
-            let times: [String.CharacterView] = s.split(separator: "-")
-            
-            print(String(s))
-            
-            let h1 = String(times[0].split(separator: ":")[0])
-            
-            var m1 = "0"
-            
-            if(times[0].split(separator: ":").count > 1){
-                
-                m1 = String(times[0].split(separator: ":")[1])
-                
-            }
-            
-            let h2 = String(times[1].split(separator: ":")[0])
-            
-            var m2 = "0"
-            
-            if(times[1].split(separator: ":").count > 1){
-                
-                m2 = String(times[1].split(separator: ":")[1])
-                
-            }
-            
-            let time1 : Int = (Int(h1)! * 60) + Int(m1)!
-            
-            let time2 : Int = (Int(h2)! * 60) + Int(m2)!
-            
-            let mainTime : Int = (Int(hour) * 60) + Int(minutes)
-            
-            print(time1)
-            print(time2)
-            print(mainTime)
-            
-            if((mainTime < time1 || mainTime > time2) && isOpen == false){
-                
-                self.nowIsOpen.textColor = UIColor.red
-                
-                self.nowIsOpen.text = "بسته است"
-                
-            }else if(time2 - mainTime < 60){
-                
-                self.nowIsOpen.textColor = UIColor.yellow
-                
-                self.nowIsOpen.text = String(time2 - mainTime).appending(" دقیقه دیگر بسته می شود")
-                
-                isOpen = true
-                
-            }else{
-                
-                self.nowIsOpen.textColor = UIColor.green
-                
-                self.nowIsOpen.text = "باز است"
-                
-                isOpen = true
-                
-            }
-            
-            
-        }
-        
         self.isPopup = isPopup
-  
-        self.scrollViewDidScroll(self.scrollView)
+        
     }
     
     
@@ -360,6 +213,137 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         self.scrollView.addSubview(self.viewInScrollView)
         
         self.scrollViewDidScroll(self.scrollView)
+        
+        
+        ///////////////////////////////////////////
+        
+        if(rect != nil){
+            
+            self.view.frame = rect!
+            
+        }
+        
+        let data = cell!
+        
+        self.categoryName.text = data.customerCampaignTitle
+        
+        brandName.text = data.customerName
+        
+        coin.text = data.customerCoinValue
+        
+        distance.text = data.customerDistanceToMe
+        
+        discount.text = data.customerDiscountValue
+        
+        textView.text = data.text
+        
+        nowIsOpen.text = "baz ast"
+        
+        timeOfWork.text = data.workTime
+        
+        address.text = data.address
+        
+        phone.setTitle(data.tell, for: UIControlState.normal)
+        
+        webSiteAddress.setTitle(data.website, for: UIControlState.normal)
+        
+        brandIcon.image = data.customerCategoryIcon
+        
+        backgroundPic = data.customerBigImages?[0]
+        
+        LoadPicture().proLoad(view: backgroundPicView, picModel: backgroundPic!){ resImage in
+         
+            self.backgroundPicView.image = resImage
+            
+            self.backgroundPicView.contentMode = UIViewContentMode.scaleAspectFill
+            
+            self.scrollViewDidScroll(self.scrollView)
+            
+        }
+        
+        
+        // set now is open
+        
+        let date = Date()
+        let calendar = Calendar.current
+        
+        let hour = calendar.component(.hour, from: date)
+        let minutes = calendar.component(.minute, from: date)
+        
+        //        print("hours = \(hour):\(minutes):\(seconds)")
+        //
+        //        print(cell?.workTime)
+        
+        var isOpen : Bool = false
+        
+        for s in (cell?.workTime?.characters.split(separator: "|"))!{
+            
+            let times: [String.CharacterView] = s.split(separator: "-")
+            
+            print(String(s))
+            
+            let h1 = String(times[0].split(separator: ":")[0])
+            
+            var m1 = "0"
+            
+            if(times[0].split(separator: ":").count > 1){
+                
+                m1 = String(times[0].split(separator: ":")[1])
+                
+            }
+            
+            let h2 = String(times[1].split(separator: ":")[0])
+            
+            var m2 = "0"
+            
+            if(times[1].split(separator: ":").count > 1){
+                
+                m2 = String(times[1].split(separator: ":")[1])
+                
+            }
+            
+            let time1 : Int = (Int(h1)! * 60) + Int(m1)!
+            
+            let time2 : Int = (Int(h2)! * 60) + Int(m2)!
+            
+            let mainTime : Int = (Int(hour) * 60) + Int(minutes)
+            
+            print(time1)
+            print(time2)
+            print(mainTime)
+            
+            if((mainTime < time1 || mainTime > time2) && isOpen == false){
+                
+                self.nowIsOpen.textColor = UIColor.red
+                
+                self.nowIsOpen.text = "بسته است"
+                
+            }else if(time2 - mainTime < 60){
+                
+                self.nowIsOpen.textColor = UIColor.yellow
+                
+                self.nowIsOpen.text = String(time2 - mainTime).appending(" دقیقه دیگر بسته می شود")
+                
+                isOpen = true
+                
+            }else{
+                
+                self.nowIsOpen.textColor = UIColor.green
+                
+                self.nowIsOpen.text = "باز است"
+                
+                isOpen = true
+                
+            }
+            
+            
+        }
+        
+        self.scrollViewDidScroll(self.scrollView)
+        
+        
+        ///////////////////////////////////////////
+        
     }
     
     
@@ -596,34 +580,28 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     @IBAction func backButton(_ sender: Any) {
         
         if(self.parent is IndexHomeViewController){
+           
+            self.progressBarView.alpha = 0
+           
+            (self.parent as! IndexHomeViewController).navigationBar.alpha = 1
             
-            let vc = self.parent as! IndexHomeViewController
+            UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                
+                (self.parent as! IndexHomeViewController).popupView.alpha = 0
+                
+                self.view.alpha = 0
+                
+            }){ completion in
+                
+                self.removeFromParentViewController()
+                
+            }
             
-            vc.deletSubView()
-            
-        }else if(self.parent is CategoryPageViewController){
-            
-//            let vc = self.parent as! CategoryPageViewController
-//            
-//            vc.deletSubView(cells: customerHomeTableCellsOfCategoryPage , color1 : color1! , color2 : color2! , subCName: subCategoryName! , subCIcon : subCategoryIcon!)
-
-            _ = self.navigationController?.popViewController(animated: true)
-            
-        }else if(self.parent is AlarmViewController){
-            
-            let vc = self.parent as! AlarmViewController
-            
-            vc.deletSubView()
-            
-        }else if(self.parent is MapViewController){
-            
-            let vc = self.parent as! MapViewController
-            
-            vc.deletSubView()
+            return
             
         }
         
-        
+        _ = self.navigationController?.popViewController(animated: true)
         
     }
     
@@ -751,57 +729,57 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     
     
     
-    
-    
-    
-    func loadImage(picModel: PicModel) -> UIImage?{
-        
-        var tempCode = picModel.url
-        
-        tempCode?.append((picModel.code)!)
-        
-        let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
-        
-        if(result != nil){
-            
-            if self.cache.object(forKey: tempCode?.md5() as AnyObject) != nil {
-                
-                return UIImage(data: self.cache.object(forKey: tempCode?.md5() as AnyObject) as! Data)!
-                
-            }else{
-                
-                let imageData = NSData(base64Encoded: result!, options: .ignoreUnknownCharacters)
-                
-                self.cache.setObject(imageData!, forKey: tempCode?.md5() as AnyObject)
-                
-                return UIImage(data: imageData as! Data)!
-                
-            }
-            
-        }else{
-            
-            return nil
-            
-        }
-        
-    }
-    
-    
-    func isThereThisPicInDB (code: String) -> String?{
-        
-        for i in SaveAndLoadModel().load(entity: "IMAGE")!{
-            
-            if(i.value(forKey: "imageCode") as! String == code){
-                
-                return i.value(forKey: "imageData") as! String
-                
-            }
-            
-        }
-        
-        return nil
-        
-    }
+//    
+//    
+//    
+//    func loadImage(picModel: PicModel) -> UIImage?{
+//        
+//        var tempCode = picModel.url
+//        
+//        tempCode?.append((picModel.code)!)
+//        
+//        let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
+//        
+//        if(result != nil){
+//            
+//            if self.cache.object(forKey: tempCode?.md5() as AnyObject) != nil {
+//                
+//                return UIImage(data: self.cache.object(forKey: tempCode?.md5() as AnyObject) as! Data)!
+//                
+//            }else{
+//                
+//                let imageData = NSData(base64Encoded: result!, options: .ignoreUnknownCharacters)
+//                
+//                self.cache.setObject(imageData!, forKey: tempCode?.md5() as AnyObject)
+//                
+//                return UIImage(data: imageData as! Data)!
+//                
+//            }
+//            
+//        }else{
+//            
+//            return nil
+//            
+//        }
+//        
+//    }
+//    
+//    
+//    func isThereThisPicInDB (code: String) -> String?{
+//        
+//        for i in SaveAndLoadModel().load(entity: "IMAGE")!{
+//            
+//            if(i.value(forKey: "imageCode") as! String == code){
+//                
+//                return i.value(forKey: "imageData") as! String
+//                
+//            }
+//            
+//        }
+//        
+//        return nil
+//        
+//    }
     
     @IBAction func call(_ sender: Any) {
         

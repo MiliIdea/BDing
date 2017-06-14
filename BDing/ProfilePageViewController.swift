@@ -692,6 +692,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     func requestForMyCoupon(nextVc : MyCouponViewController){
         
+        print(MyCouponRequestModel.init().getParams())
+        
         request(URLs.getMyCoupon , method: .post , parameters: MyCouponRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
             
@@ -705,6 +707,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                     UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                         
                         nextVc.coupons = MyCouponListResponseModel.init(json: JSON as! JSON)?.data
+                        
+                        nextVc.couponsPrePics = [UIImage].init(reserveCapacity: nextVc.coupons!.count)
                         
                         nextVc.table.reloadData()
                         

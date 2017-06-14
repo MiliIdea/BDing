@@ -256,6 +256,8 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
                 let obj = SignInResponseModel.init(json: JSON as! JSON)
                 
                 if ( obj.code == "200" ){
+                
+                    print("JSON -----------SIGNIN---------->>>> " )
                     
                     print(obj.token ?? "null")
                     
@@ -330,6 +332,8 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
                 let obj = ProfileResponseModel.init(json: JSON as! JSON)
                 
                 if ( obj?.code == "200" ){
+                
+                    print("JSON ----------PROFILE----------->>>> ")
                     
                     GlobalFields.PROFILEDATA = obj?.data
                     
@@ -364,26 +368,25 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         
         lat = String(currentLocation.coordinate.latitude)
         
-        long = String(51.4212297)
-        
-        lat = String(35.6329044)
+//        long = String(51.4212297)
+//        
+//        lat = String(35.6329044)
         
         print("lat and long")
         print(lat)
         print(long)
         
-        print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams())
-        
         request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
-            print(response)
             
             if let JSON = response.result.value {
                 
-                print("JSON ----------BEACON----------->>>> " ,JSON)
+                print("JSON ----------BEACON----------->>>> " )
                 
                 let obj = BeaconListResponseModel.init(json: JSON as! JSON)
                 
                 if ( obj?.code == "200" ){
+                    
+                    print("JSON ----------BEACON----------->>>> " )
                     
                     GlobalFields.BEACON_LIST_DATAS = obj?.data
                     
@@ -409,6 +412,8 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
                 let obj = CategoryListResponseModel.init(json: JSON as! JSON)
                 
                 if ( obj?.code == "200" ){
+                
+                    print("JSON ----------Category----------->>>> " )
                     
                     GlobalFields.CATEGORIES_LIST_DATAS = obj?.data
                     
@@ -432,6 +437,8 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
                 let obj = PayUuidResponseModel.init(json: JSON as! JSON)
                 
                 if ( obj?.code == "200" ){
+                
+                    print("JSON ----------PAY UUID----------->>>> ")
                     
                     GlobalFields.PAY_UUIDS = obj?.result
                     

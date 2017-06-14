@@ -17,11 +17,13 @@ class PayHistoryViewController: UIViewController ,UITableViewDelegate ,UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.table.register(UINib(nibName: "PayHistoryTableViewCell", bundle: nil), forCellReuseIdentifier: "historyCell")
+        self.automaticallyAdjustsScrollViewInsets = false
+        table.contentInset = UIEdgeInsets.zero
         
+        self.table.register(UINib(nibName: "PayHistoryTableViewCell", bundle: nil), forCellReuseIdentifier: "historyCell")
+
         table.dataSource = self
         table.delegate = self
-
 
         // Do any additional setup after loading the view.
     }
