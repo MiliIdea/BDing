@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CellAnimator
+
 
 class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITableViewDelegate ,UITableViewDataSource{
 
@@ -217,6 +219,12 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        CellAnimator.animateCell(cell: cell, withTransform: CellAnimator.TransformFlip, andDuration: 0.3)
+        
+    }
+    
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
@@ -240,10 +248,8 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         if(self.table.contentOffset.y / 2 < (offsetOfsemiCircular + heightOfSemiCircular) - self.navigationBar.frame.height + self.navigationBar.frame.origin.y){
             
             self.scrollView.contentOffset.y = self.table.contentOffset.y / 2
-            
-//            self.table.frame.size.height += self.scrollView.contentOffset.y
-            
-            self.table.frame.size.height = self.view.frame.size.height - self.table.frame.origin.y - (self.tabBarController?.tabBar.frame.height)!
+
+//            self.table.frame.size.height = self.view.frame.size.height - self.bottomView.frame.origin.y - self.table.frame.origin.y - (self.tabBarController?.tabBar.frame.height)!
             
         }else{
             
@@ -265,6 +271,7 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         }
         
         
+        self.table.frame.size.height = self.view.frame.size.height - self.bottomView.frame.origin.y - self.table.frame.origin.y - (self.tabBarController?.tabBar.frame.height)! + self.scrollView.contentOffset.y
         
         navigationBar.alpha = 1 - myPercentage
         

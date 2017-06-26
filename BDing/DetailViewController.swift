@@ -314,13 +314,13 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
             
             if((mainTime < time1 || mainTime > time2) && isOpen == false){
                 
-                self.nowIsOpen.textColor = UIColor.red
+                self.nowIsOpen.textColor = UIColor.init(hex: "ff3d00")
                 
                 self.nowIsOpen.text = "بسته است"
                 
             }else if(time2 - mainTime < 60){
                 
-                self.nowIsOpen.textColor = UIColor.yellow
+                self.nowIsOpen.textColor = UIColor.init(hex: "fbc02d")
                 
                 self.nowIsOpen.text = String(time2 - mainTime).appending(" دقیقه دیگر بسته می شود")
                 
@@ -328,7 +328,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                 
             }else{
                 
-                self.nowIsOpen.textColor = UIColor.green
+                self.nowIsOpen.textColor = UIColor.init(hex: "00c853")
                 
                 self.nowIsOpen.text = "باز است"
                 
@@ -436,6 +436,8 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                         let d = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5)!)
                         
                         SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5!)! , newItem: ["uuid" : d?.value(forKey: "uuid") , "major" : d?.value(forKey: "major") , "minor" : d?.value(forKey: "minor") , "id" : d?.value(forKey: "id") , "isSeen" : true , "seenTime" : d?.value(forKey: "seenTime") , "beaconDataJSON" : d?.value(forKey: "beaconDataJSON") ,"isRemoved" : d?.value(forKey: "isRemoved")])
+                        
+                        
                         
                         self.updateBadgeVlue()
                         
@@ -589,11 +591,21 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                 
                 (self.parent as! IndexHomeViewController).popupView.alpha = 0
                 
+                (self.parent as! IndexHomeViewController).blurView.alpha = 0
+                
                 self.view.alpha = 0
                 
             }){ completion in
                 
+                (self.parent as! IndexHomeViewController).deletSubView()
+                
+                self.timer.invalidate()
+                
+                self.view.removeFromSuperview()
+                
                 self.removeFromParentViewController()
+                
+                
                 
             }
             

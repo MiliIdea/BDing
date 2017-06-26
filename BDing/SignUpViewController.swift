@@ -391,6 +391,14 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
                     
 //                    self.present(nextViewController, animated:true, completion:nil)
                     
+                }else if(SignUpResponseModel.init(json: JSON as! JSON).code == "501"){
+                    
+                    Notifys().notif(message: "قبلا ثبت نام کرده اید!"){alarm in
+                        
+                        self.present(alarm, animated: true, completion: nil)
+                        
+                    }
+                    
                 }
                 
             }

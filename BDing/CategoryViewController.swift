@@ -949,14 +949,18 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                 
                 lat = String(currentLocation.coordinate.latitude)
                 
-                long = String(51.411739)
-                
-                lat = String(35.625465)
+                if(lat == "0" && long == "0"){
+                    
+                    long = String(51.4212297)
+                    
+                    lat = String(35.6329044)
+                    
+                }
                 
                 
                 if(subC?.all_track == true){
                     
-                    request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: sections[getSectionIndex(row: self.tableViewCategory.indexPath(for: (sender as! CategoryTableViewCell2))!.row)].categoryCode, SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                    request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: sections[getSectionIndex(row: self.tableViewCategory.indexPath(for: (sender as! CategoryTableViewCell2))!.row)].categoryCode, SUBCATEGORY: nil).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
                         print()
                         
                         if let JSON = response.result.value {
@@ -1006,7 +1010,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                                                 
                                             }
 
-                                            let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:UIImage.init(named: "default") ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: i.discount!, customerDiscountIcon: image, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic)
+                                            let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:UIImage.init(named: "default") ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: i.discount!, customerDiscountIcon: image, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time ?? "" , website: i.cusomer_web!,customerBigImages: i.url_pic)
                                             nextVc.customerHomeTableCells.append(a)
                                             
                                         }
@@ -1026,7 +1030,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                     
                 }else{
                     
-                    request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: (subC?.subCategoryCode)!).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                    request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: (subC?.subCategoryCode)!).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
                         print()
                         
                         if let JSON = response.result.value {
@@ -1041,7 +1045,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                             
                             if ( obj?.code == "200" ){
                                 
-                                print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: subC?.subCategoryCode).getParams())
+                                print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: subC?.subCategoryCode).getParams(allSearch : true))
                                 
                                 print(obj?.data)
                                 

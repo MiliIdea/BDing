@@ -23,7 +23,7 @@ class PayListData : Decodable{
         
         self.date = "date" <~~ json
         
-        self.title_pay = "title_pay" <~~ json
+        self.title_pay = "title" <~~ json
         
     }
     

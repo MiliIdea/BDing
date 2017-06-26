@@ -71,7 +71,7 @@ class CustomerHomeTableCell: NSObject {
         
         self.customerCampaignTitle = customerCampaignTitle
         
-        self.customerDiscountValue = customerDiscountValue
+        self.customerDiscountValue = "تا" + customerDiscountValue
         
         self.tell = tell
         

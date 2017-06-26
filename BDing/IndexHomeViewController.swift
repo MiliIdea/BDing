@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import CoreBluetooth
+import CellAnimator
 
 
 class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableViewDataSource {
@@ -25,6 +26,7 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
     
     @IBOutlet weak var deleteAllButton: UIBarButtonItem!
     
+    @IBOutlet weak var blurView: UIVisualEffectView!
     
     var customerHomeTableCells = [CustomerHomeTableCell]()
     
@@ -44,8 +46,9 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         
         popupView.alpha = 0
 
+        self.IndexHomeTable.register(UINib(nibName: "IndexHomeTableViewCell", bundle: nil), forCellReuseIdentifier: "indexHomeTableCellID")
         
-        
+        loadHomeTable()
         // Do any additional setup after loading the view.
     }
     
@@ -55,6 +58,8 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         self.updateBadgeVlue()
         
         loadHomeTable()
+        
+        self.IndexHomeTable.reloadData()
         
     }
     
@@ -67,18 +72,20 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.IndexHomeTable.dequeueReusableCell(withIdentifier: "indexHomeTableCellIdentifier" , for: indexPath) as? IndexHomeTableViewCell
+        let cell = self.IndexHomeTable.dequeueReusableCell(withIdentifier: "indexHomeTableCellID" , for: indexPath) as? IndexHomeTableViewCell
         let tableCell = customerHomeTableCells[indexPath.row]
         
         cell?.customerName.text = tableCell.customerName
         cell?.customerCampaignTitle.text = tableCell.customerCampaignTitle
         cell?.customerDistanceToMe.text = tableCell.customerDistanceToMe
         
-        cell?.customerThumbnail.image = UIImage(named:"profile_pic")!
+        cell?.customerThumbnail.image = UIImage(named:"default")!
         
         LoadPicture().proLoad(view: (cell?.customerThumbnail)!,picModel: tableCell.customerImage!){ resImage in
             
             cell?.customerThumbnail.image = resImage
+            cell?.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFill
+            cell?.setFirst(screenWidth: self.view.frame.width)
             
         }
         
@@ -107,6 +114,10 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         
         self.updateBadgeVlue()
         
+//        cell?.selectionStyle = .gray
+        
+        cell?.multipleSelectionBackgroundView = (cell?.selectionView)! as UIView
+        
         return cell!
     }
     
@@ -115,19 +126,25 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
     }
   
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        CellAnimator.animateCell(cell: cell, withTransform: CellAnimator.TransformFlip, andDuration: 0.3)
+        
+    }
+    
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.view.frame.width * 7 / 32
+        return self.view.frame.width * 8.5 / 32.0
     }
 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if(isDeleteMode == true){
-            
             
             
         }else{
@@ -152,6 +169,8 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
                 self.navigationBar.alpha = 0
                 
                 vc.view.alpha = 1
+                
+                self.blurView.alpha = 1
                 
                 self.popupView.alpha = 1
                 
@@ -182,6 +201,7 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         
         
     }
+    
    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -280,8 +300,10 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
                     
                 }else{
                     
-                    print(jsonData)
-                    
+                    print(jsonData ?? "")
+                    print()
+                    print(bData.value(forKey: "seenTime") ?? "")
+                    print(Date())
                     self.customerHomeTableCells.append(self.getCustomerHomeTableCellAsJson(jsonData: convertToDictionary(text: jsonData!)!,uuidMajorMinorMD5: s)!)
                     
                     self.IndexHomeTable.reloadData()
@@ -388,19 +410,33 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
     
 
     func deletSubView(){
+        
+//        let vc = (self.storyboard?.instantiateViewController(withIdentifier: "IndexHomeViewController"))! as! IndexHomeViewController
+        
         UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-        let vc = (self.storyboard?.instantiateViewController(withIdentifier: "IndexHomeViewController"))! as UIViewController
         
-        self.addChildViewController(vc)
         
-        vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-        
-        self.container.addSubview(vc.view)
+//        self.addChildViewController(vc)
+//            
+//        vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
+//        
+//        self.container.addSubview(vc.view)
             
         self.popupView.alpha = 0
         
-        vc.didMove(toParentViewController: self)
-        }, completion: nil)
+//        vc.didMove(toParentViewController: self)
+            
+        self.blurView.alpha = 0
+            
+        }){completion in
+         
+//            vc.IndexHomeTable.reloadData()
+            
+            self.loadHomeTable()
+            
+            self.IndexHomeTable.reloadData()
+            
+        }
         
     }
     
@@ -413,7 +449,9 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         if(isDeleteMode == true){
             
             IndexHomeTable.allowsMultipleSelectionDuringEditing = true
+            
             IndexHomeTable.setEditing(true, animated: true)
+            
             
             binButtonView.title = "انصراف"
             deleteAllButton.title = "حذف"

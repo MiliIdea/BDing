@@ -128,7 +128,7 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
             
 //            self.view.addSubview(vc.view)
             
-        UIView.transition(with: self.view, duration: 3, options: UIViewAnimationOptions.transitionCurlDown ,animations: {self.view.addSubview(vc.view)}, completion: nil)
+        UIView.transition(with: self.view, duration: 0.4 , options: UIViewAnimationOptions.curveEaseIn ,animations: {self.view.addSubview(vc.view)}, completion: nil)
             
             vc.didMove(toParentViewController: self)
             

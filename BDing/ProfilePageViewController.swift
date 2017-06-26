@@ -10,6 +10,7 @@ import UIKit
 import CoreLocation
 import CoreBluetooth
 import DLRadioButton
+import DynamicColor
 
 
 class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelegate, UIScrollViewDelegate , UINavigationControllerDelegate , CLLocationManagerDelegate{
@@ -20,6 +21,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     @IBOutlet weak var botViewInScrollView: UIView!
     
+    @IBOutlet weak var settingButton: UIButton!
     
     @IBOutlet weak var viewInScrollView: UIView!
     
@@ -672,6 +674,29 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
             
         }
         
+        let buttonImage = UIImage(named: "setting 18")
+        
+        settingButton.setImage(buttonImage?.withRenderingMode(.alwaysTemplate), for: .normal)
+        
+        var originalColor = DynamicColor(cgColor : UIColor.init(averageColorFrom: self.backgroundProfilePic.image).inverted().cgColor)
+        
+        
+        if(((originalColor.redComponent * 299) + (originalColor.greenComponent * 587) + (originalColor.blueComponent * 114)) / 1000 > 0.5){
+            
+            originalColor = UIColor.white
+            
+        }else{
+            
+            originalColor = UIColor.black
+            
+        }
+        
+        
+        let blackColor = DynamicColor.init(hexString: "#000000")
+        
+        settingButton.tintColor = originalColor.mixedRGB(withColor: blackColor, weight: 1-myPercentage)
+        
+        
         navigationBar.alpha = 1 - myPercentage
         
         semicircularView.frame.origin.y = offsetOfsemiCircular + (heightOfSemiCircular - (heightOfSemiCircular * (myPercentage)))
@@ -1072,6 +1097,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         self.inputContainerView.layer.zPosition = 1
         
+        self.inputTextField.text = ""
+        
         self.blurView.alpha = 0.3
         
         self.blurView.layer.zPosition = 1
@@ -1087,6 +1114,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         self.blurView.alpha = 0
         
         self.inputGenderViewContainer.alpha = 0
+        
+        self.view.endEditing(true)
         
     }
     

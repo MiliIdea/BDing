@@ -1317,6 +1317,15 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <visualEffectView opaque="NO" clipsSubviews="YES" alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k0N-30-eZQ">
+                                <rect key="frame" x="0.0" y="20" width="320" height="499"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="P3o-oA-0Aj">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="499"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qzh-Lf-9Bx" customClass="DCBorderedView" customModule="BDing" customModuleProvider="target">
                                 <rect key="frame" x="16" y="44" width="288" height="447"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -1336,6 +1345,7 @@
                     <connections>
                         <outlet property="IndexHomeTable" destination="2qE-Xa-Zhz" id="8qU-wf-9lE"/>
                         <outlet property="binButtonView" destination="G4E-pZ-gic" id="r7l-EL-VcA"/>
+                        <outlet property="blurView" destination="k0N-30-eZQ" id="xdq-Kp-mqS"/>
                         <outlet property="container" destination="tfa-jd-h8m" id="NbS-lh-lpF"/>
                         <outlet property="deleteAllButton" destination="LDz-Na-2QE" id="Nbe-BT-FeF"/>
                         <outlet property="navigationBar" destination="31Y-Lx-KNa" id="fFn-pZ-iMc"/>
@@ -1860,15 +1870,7 @@
                                 <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
-                                    <navigationItem id="IfY-HX-IyM">
-                                        <barButtonItem key="rightBarButtonItem" image="ic_view_list_48pt" id="iZu-4o-03Q">
-                                            <inset key="imageInsets" minX="13" minY="5" maxX="0.0" maxY="5"/>
-                                            <color key="tintColor" red="0.22529774920000001" green="0.22529774920000001" blue="0.22529774920000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <connections>
-                                                <action selector="playResizeTables:" destination="08H-Xd-nHE" id="r1R-rr-xdQ"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
+                                    <navigationItem id="IfY-HX-IyM"/>
                                 </items>
                             </navigationBar>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NI1-hh-Zfx">
@@ -1880,19 +1882,27 @@
                                 </connections>
                             </button>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Mq-4H-ioM">
-                                <rect key="frame" x="60" y="30" width="35" height="24"/>
+                                <rect key="frame" x="60" y="30" width="45" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="sort 18-1"/>
                                 <connections>
                                     <action selector="popupSort:" destination="08H-Xd-nHE" eventType="touchUpInside" id="kx6-pU-t8q"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4AL-z1-gOS">
-                                <rect key="frame" x="221" y="29" width="27" height="24"/>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4AL-z1-gOS">
+                                <rect key="frame" x="224" y="29" width="24" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="ic_map_48pt"/>
                                 <connections>
                                     <action selector="map:" destination="08H-Xd-nHE" eventType="touchUpInside" id="1UF-DU-tSn"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mqT-X6-6cH">
+                                <rect key="frame" x="275" y="29" width="24" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="mode one"/>
+                                <connections>
+                                    <action selector="playResizeTables:" destination="08H-Xd-nHE" eventType="touchUpInside" id="FCa-nF-dwv"/>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="109" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="S0g-bF-I1c">
@@ -2050,7 +2060,6 @@
                                         </constraints>
                                         <connections>
                                             <outlet property="boarderView" destination="chW-wa-q0m" id="fu7-tg-IxB"/>
-                                            <outlet property="categoryThumbnailTop" destination="c6b-jw-Ld7" id="59y-yX-YTA"/>
                                             <outlet property="categoryThumbnailTr" destination="Afa-hd-fbu" id="tnN-vn-w7n"/>
                                             <outlet property="categoryThumbnailW" destination="Zxz-y1-aAg" id="JZI-Kj-PlZ"/>
                                             <outlet property="coinDiscountB" destination="i8N-3E-feC" id="cFj-CN-bXx"/>
@@ -2073,7 +2082,6 @@
                                             <outlet property="discountTr" destination="Ex8-aG-hOJ" id="OHy-cP-f8W"/>
                                             <outlet property="discountW" destination="eTF-ef-pBC" id="3Vf-zd-ScL"/>
                                             <outlet property="discountsB" destination="c1n-z0-aHe" id="8vk-2K-LM6"/>
-                                            <outlet property="distanceIconTop" destination="93J-1D-T1T" id="RGO-SE-qGh"/>
                                             <outlet property="distanceIconTr" destination="ihh-4z-YdU" id="MfH-dP-wd8"/>
                                             <outlet property="distanceIconW" destination="zdX-QW-ape" id="J4t-th-9vT"/>
                                             <outlet property="distanceTr" destination="Jvs-CL-hsO" id="IED-dz-zDO"/>
@@ -2258,7 +2266,6 @@
                                         </constraints>
                                         <connections>
                                             <outlet property="boarderView" destination="oav-K9-Yff" id="Pxv-Qq-Eew"/>
-                                            <outlet property="categoryThumbnailTop" destination="xVK-9Q-Hmu" id="BfD-8R-d3e"/>
                                             <outlet property="categoryThumbnailTr" destination="dhB-Kx-zw4" id="AYr-S2-oE6"/>
                                             <outlet property="categoryThumbnailW" destination="zLY-Kd-HrK" id="CaV-Na-S7Z"/>
                                             <outlet property="coinDiscountB" destination="yc7-RL-SjQ" id="62Y-7h-vdE"/>
@@ -2281,7 +2288,6 @@
                                             <outlet property="discountTr" destination="hGR-5r-7FY" id="VG6-Qo-prs"/>
                                             <outlet property="discountW" destination="Sed-Zd-hhd" id="DhY-Qy-qmj"/>
                                             <outlet property="discountsB" destination="MCH-lm-H7q" id="NqG-gd-sP2"/>
-                                            <outlet property="distanceIconTop" destination="w2C-mG-rW7" id="8Sw-d5-kvj"/>
                                             <outlet property="distanceIconTr" destination="mvf-04-ht7" id="g3o-DV-w3k"/>
                                             <outlet property="distanceIconW" destination="WYn-so-o6X" id="Gru-ou-cIU"/>
                                             <outlet property="distanceTr" destination="3zQ-dG-4qy" id="V0B-fQ-oYt"/>
@@ -2461,6 +2467,7 @@
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="blurView" destination="duJ-8m-M8j" id="Hyf-bN-aKI"/>
+                        <outlet property="changeModeButton" destination="mqT-X6-6cH" id="N2e-bg-jsq"/>
                         <outlet property="clearButton" destination="auo-oR-x7W" id="ruK-Rd-P54"/>
                         <outlet property="collectionView" destination="E4m-b8-eOC" id="OVI-HP-WwW"/>
                         <outlet property="container" destination="0X1-IE-Of4" id="elo-Tk-GVh"/>
@@ -3687,7 +3694,6 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xK4-Rh-6jS">
                                 <rect key="frame" x="14" y="26" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <state key="normal" backgroundImage="setting 18"/>
                                 <connections>
                                     <segue destination="2KG-GV-pjc" kind="show" id="Hda-Hj-FZJ"/>
                                 </connections>
@@ -3859,7 +3865,7 @@
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="پرداخت با دینگ" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9c3-oP-aOH">
                                         <rect key="frame" x="157.5" y="12" width="103.5" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -3881,6 +3887,7 @@
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Shm-C9-2XO">
                                         <rect key="frame" x="15" y="184.5" width="46" height="33"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="15"/>
                                         <state key="normal" title="تایید"/>
                                         <connections>
                                             <action selector="confirmPay:" destination="WPM-gG-B9a" eventType="touchUpInside" id="O3O-JJ-t0S"/>
@@ -3889,6 +3896,7 @@
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gxx-CF-ymI">
                                         <rect key="frame" x="77" y="184.5" width="46" height="33"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="15"/>
                                         <state key="normal" title="لغو">
                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -3903,7 +3911,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="برگرلند" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jEk-me-ofh">
                                                 <rect key="frame" x="55" y="9.5" width="178" height="18"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -3929,12 +3937,21 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="دینگ پرداختی خود را وارد کنید." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zFV-AZ-Hlg">
-                                        <rect key="frame" x="133" y="97" width="136" height="18"/>
+                                        <rect key="frame" x="125" y="97" width="136" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="10"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1WT-D6-RDS" customClass="SVGView" customModule="Macaw">
+                                        <rect key="frame" x="267" y="101" width="10" height="10"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="fileName" value="ding2"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="stringColor" value="#00c853"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
@@ -3998,6 +4015,7 @@
                         <outlet property="reportLabel" destination="bE7-Ig-KN6" id="79g-nG-j60"/>
                         <outlet property="scrollViewProfile" destination="c5c-LM-VgN" id="tBU-dR-ITp"/>
                         <outlet property="semicircularView" destination="Ag9-oD-PaQ" id="NHI-Ab-XdK"/>
+                        <outlet property="settingButton" destination="xK4-Rh-6jS" id="aNs-Pu-lC9"/>
                         <outlet property="takeCoupon" destination="GkH-kl-yBz" id="7dL-oz-MMv"/>
                         <outlet property="topView" destination="iaX-XE-N9v" id="pvF-Xz-4ue"/>
                         <outlet property="viewInScrollView" destination="uge-Ye-unV" id="Z4d-6I-jBi"/>
@@ -4856,7 +4874,7 @@
             <objects>
                 <navigationController autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="c4P-iO-cQK" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout"/>
-                    <tabBarItem key="tabBarItem" tag="1" title="پیام ها" image="ic_notifications_48pt" badgeValue="5" id="Mhh-wA-eeW">
+                    <tabBarItem key="tabBarItem" tag="1" title="پیام ها" image="ic_notifications_48pt" badgeValue="0" id="Mhh-wA-eeW">
                         <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-3"/>
                     </tabBarItem>
@@ -4899,11 +4917,11 @@
         <image name="location" width="18" height="18"/>
         <image name="mal" width="150" height="150"/>
         <image name="maleIcon" width="30" height="30"/>
+        <image name="mode one" width="25" height="21"/>
         <image name="profile_pic" width="111" height="111"/>
         <image name="pushak" width="150" height="150"/>
         <image name="ruydad" width="150" height="150"/>
         <image name="sale 18" width="36" height="36"/>
-        <image name="setting 18" width="18" height="18"/>
         <image name="share 18" width="18" height="18"/>
         <image name="sort 18-1" width="18" height="18"/>
         <image name="tabliqat" width="150" height="150"/>
@@ -4913,7 +4931,7 @@
         <image name="web 18" width="18" height="18"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="rbM-1n-5st"/>
+        <segue reference="8EY-Oj-LGx"/>
         <segue reference="uE8-QC-ho6"/>
         <segue reference="gaH-hZ-POq"/>
         <segue reference="c2r-xI-204"/>

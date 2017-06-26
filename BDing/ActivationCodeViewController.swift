@@ -459,7 +459,7 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
         
         lat = String(35.6329044)
         
-        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: nil, SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: nil, SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
             print()
             
             if let JSON = response.result.value {

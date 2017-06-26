@@ -26,6 +26,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     @IBOutlet weak var leftOrginalWidth: NSLayoutConstraint!
     
+    @IBOutlet weak var changeModeButton: UIButton!
+    
     
   
     @IBOutlet var container: UIView!
@@ -167,6 +169,9 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         leftTable.delegate = self
 //        leftTable.register(UITableViewCell.self, forCellReuseIdentifier: "leftCell")
         
+        self.rightTable.register(UINib(nibName: "IndexHomeTableViewCell", bundle: nil), forCellReuseIdentifier: "indexHomeTableCellID")
+        
+        self.leftTable.register(UINib(nibName: "IndexHomeTableViewCell", bundle: nil), forCellReuseIdentifier: "indexHomeTableCellID")
         
         
         if(AlarmViewController.mode){
@@ -246,8 +251,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
-    
+
     
     @IBAction func playResizeTables(_ sender: Any) {
         
@@ -256,6 +260,11 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
 
             if !AlarmViewController.mode {
+                
+                self.changeModeButton.setImage(UIImage.init(named: "mode one"), for: .normal)
+                
+                
+                
                 for c in 1...self.rightTable.numberOfRows(inSection: 0) {
                     
                     if ((c-1) % 2 != 0) {
@@ -287,6 +296,9 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             
             if AlarmViewController.mode {
+                
+                self.changeModeButton.setImage(UIImage.init(named: "mode two"), for: .normal)
+                
                 
                 //resizing table single
 //                self.leftWidth.constant = -(self.rightTable.superview?.frame.width)!/2+4
@@ -323,29 +335,15 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 
                     self.rightTable.contentOffset.y = 0
                     self.leftTable.contentOffset.y = 0
-                    
-//                }else{
-//                    
-//                    
-//                    self.leftTable.contentOffset = CGPoint(x: 0, y: CGFloat((self.leftTable.indexPathsForVisibleRows?.first?.row)!) * ((self.leftTable.visibleCells.first?.frame.height)! * 1.3))
-//                    
-//                    
-//                    self.rightTable.contentOffset = self.leftTable.contentOffset
-//                    
-//                }
                 
                 //resizing table double
-                self.leftWidth.constant = -16
-
-//                self.rightTable.frame.size.width = self.leftTable.frame.width
-//                self.rightWidth.constant =  self.leftTable.frame.width
-
+                self.leftWidth.constant = -16 + 2
                 
                 self.rightTable.frame.size.width = self.view.frame.width / 2
                 
                 self.leftTable.frame.size.width = self.view.frame.width / 2
                 
-                self.rightWidth.constant =  self.leftTable.frame.width
+                self.rightWidth.constant =  self.leftTable.frame.width + 2
                 
                 self.leftOrginalWidth.constant = self.view.frame.width / 2
                 
@@ -388,7 +386,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
             print(" =======>>>>>> ",indexPath.row)
             
-            let cell = self.rightTable.dequeueReusableCell(withIdentifier: "rightCell" , for: indexPath) as! IndexHomeTableViewCell
+            let cell = self.rightTable.dequeueReusableCell(withIdentifier: "indexHomeTableCellID" , for: indexPath) as! IndexHomeTableViewCell
             
             let tableCell = customerHomeTableCells[indexPath.row]
             
@@ -449,7 +447,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 cell.discountThumbnail.image = tableCell.customerDiscountIcon
                 //////////
                 if(AlarmViewController.mode){
-                    cell.viewH.constant = self.view.frame.width * 7 / 32
+                    cell.viewH.constant = self.view.frame.width * 8.5 / 32
                     cell.setFirst(screenWidth: self.view.frame.width)
                 }else{
                     cell.setLast(screenWidth: self.view.frame.width)
@@ -462,7 +460,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
         }else if tableView == leftTable{
             
-            let cell2 = self.leftTable.dequeueReusableCell(withIdentifier: "leftCell" , for: indexPath) as! IndexHomeTableViewCell
+            let cell2 = self.leftTable.dequeueReusableCell(withIdentifier: "indexHomeTableCellID" , for: indexPath) as! IndexHomeTableViewCell
             
             let tableCell = customerHomeTableCells[indexPath.row * 2 + 1]
             
@@ -507,7 +505,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 cell2.discountThumbnail.image = tableCell.customerDiscountIcon
                 ////////////
             
-                cell2.viewH.constant = self.view.frame.width * 7 / 32
+                cell2.viewH.constant = self.view.frame.width * 8.5 / 32
                 
                 cell2.setLast(screenWidth: self.view.frame.width)
             })
@@ -526,7 +524,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         if tableView == rightTable{
             if(AlarmViewController.mode){
                 
-                return self.view.frame.width * 7 / 32
+                return self.view.frame.width * 8.5 / 32
                 
             }else{
                 
@@ -558,9 +556,14 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             rightTable.deselectRow(at: indexPath, animated: true)
             
+            performSegue(withIdentifier: "rightCellDetailSegue", sender: rightTable.cellForRow(at: indexPath))
+            
+            
         }else {
             
             leftTable.deselectRow(at: indexPath, animated: true)
+            
+            performSegue(withIdentifier: "leftCellDetailSegue", sender: leftTable.cellForRow(at: indexPath))
             
         }
         
@@ -676,7 +679,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             self.leftTable.reloadData()
             
             self.loading.stopAnimating()
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .userInteractive).async {
 
             self.userRefreshControl.endRefreshing()
             
@@ -985,9 +988,13 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         lat = String(currentLocation.coordinate.latitude)
         
-        long = String(51.4212297)
-        
-        lat = String(35.6329044)
+        if(lat == "0" && long == "0"){
+            
+            long = String(51.4212297)
+            
+            lat = String(35.6329044)
+            
+        }
         
         var categoryList:[String] = [String]()
         
@@ -1003,10 +1010,10 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
 
         self.lastSearch?.text = self.searchTextField.text!
         
-        print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: searchTextField.text, CATEGORY: String(describing: categoryList), SUBCATEGORY: nil).getParams())
+        print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: searchTextField.text, CATEGORY: String(describing: categoryList), SUBCATEGORY: nil).getParams(allSearch : true))
         
         
-        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: searchTextField.text, CATEGORY: String(describing: categoryList), SUBCATEGORY: nil).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: searchTextField.text, CATEGORY: String(describing: categoryList), SUBCATEGORY: nil).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
             print()
             
             if let JSON = response.result.value {
@@ -1024,6 +1031,10 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                         self.isSearched[i] = (self.lastSearch?.isSelected[i])!
                         
                     }
+                    
+                    self.lazyLoaded = 0
+                    
+                    self.customerHomeTableCells.removeAll()
                     
                     self.loadHomeTable()
                     
@@ -1805,7 +1816,6 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         // Pass the selected object to the new view controller.
         if(segue.identifier == "rightCellDetailSegue"){
             (segue.destination as! DetailViewController).setup(data: customerHomeTableCells[(self.rightTable.indexPath(for: (sender as! IndexHomeTableViewCell))?.row)!], isPopup: false, rect: nil)
-            
         }else if(segue.identifier == "leftCellDetailSegue"){
             
             (segue.destination as! DetailViewController).setup(data: customerHomeTableCells[(self.leftTable.indexPath(for: (sender as! IndexHomeTableViewCell))?.row)! * 2 + 1], isPopup: false, rect: nil)

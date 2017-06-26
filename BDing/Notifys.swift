@@ -24,17 +24,22 @@ class Notifys {
         
         alert.setValue(attributedString, forKey: "attributedMessage")
         
-        //                        let attributedString2 = NSAttributedString(string: "باشه", attributes: [
-        //                            NSFontAttributeName : UIFont.init(name: "IRANYekanMobileFaNum", size: 12)!
-        //                            ])
+        let attributedString2 = NSAttributedString(string: "باشه", attributes: [
+            NSFontAttributeName : UIFont.init(name: "IRANYekanMobileFaNum", size: 12)!
+            ])
         
-        let ac : UIAlertAction = UIAlertAction.init(title: "باشه", style: .cancel, handler: nil)
-        
-        //                        ac.setValue(attributedString2, forKey: "title")
+        let ac : UIAlertAction = UIAlertAction.init(title: "باشه", style: .cancel){(alert: UIAlertAction!) in
+            guard let l = (alert.value(forKey: "__representer") as AnyObject).value(forKey: "label") as? UILabel else { return }
+            l.attributedText = attributedString2
+            
+        }
         
         alert.addAction(ac)
         
         completion(alert)
+        
+        guard let label = (ac.value(forKey: "__representer") as AnyObject).value(forKey: "label") as? UILabel else { return }
+        label.attributedText = attributedString2
         
         //////////
         

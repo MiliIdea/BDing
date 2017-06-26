@@ -59,9 +59,17 @@ class BeaconListRequestModel {
     
     var SUBCATEGORY: String? = ""
     
-    func getParams() -> [String: Any]{
+    func getParams(allSearch : Bool) -> [String: Any]{
         
-        return ["user": USERID , "token": TOKEN  , "hash": HASH , "lat": LAT , "long": LONG , "redius": REDIUS , "search": SEARCH , "category": CATEGORY , "subcategory": SUBCATEGORY , "allsearch" : "true"]
+        if(allSearch == true){
+            
+            return ["user": USERID , "token": TOKEN  , "hash": HASH , "lat": LAT , "long": LONG , "redius": REDIUS , "search": SEARCH , "category": CATEGORY , "subcategory": SUBCATEGORY , "allsearch" : "true"]
+            
+        }else{
+            
+            return ["user": USERID , "token": TOKEN  , "hash": HASH , "lat": LAT , "long": LONG , "redius": REDIUS , "search": SEARCH , "category": CATEGORY , "subcategory": SUBCATEGORY , "allsearch" : "false"]
+            
+        }
         
     }
     

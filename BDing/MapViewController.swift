@@ -151,11 +151,11 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
                         
                         if(result == nil){
                             
-                            self.performSegue(withIdentifier: "mapDetailSegue", sender: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic))
+                            self.performSegue(withIdentifier: "mapDetailSegue", sender: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount! + "تا", customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic))
                             
                         }else{
                             
-                            self.performSegue(withIdentifier: "mapDetailSegue", sender: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: result ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount!, customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic))
+                            self.performSegue(withIdentifier: "mapDetailSegue", sender: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: result ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount! + "تا", customerDiscountIcon: image, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic))
                             
                         }
 
@@ -336,7 +336,7 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
                     
                     self.coin.text = i.coin ?? "0"
                     
-                    self.discount.text = i.discount
+                    self.discount.text = i.discount! + "تا"
                     
                     self.distance.text = String(describing: round((i.distance ?? 0) * 100) / 100)
                     
