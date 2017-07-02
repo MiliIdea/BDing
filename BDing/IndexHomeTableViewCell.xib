@@ -8,6 +8,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="IRANYekanLightMobile(FaNum).ttf">
+            <string>IRANYekanMobileFaNum-Light</string>
+        </array>
         <array key="IRANYekanRegularMobile(FaNum).ttf">
             <string>IRANYekanMobileFaNum</string>
         </array>
@@ -34,7 +37,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="پالادیوم" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AFr-N3-WTc">
-                                <rect key="frame" x="13" y="30.5" width="177" height="15"/>
+                                <rect key="frame" x="13" y="31" width="177" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="177" id="4UL-Kx-HiQ"/>
                                     <constraint firstAttribute="height" constant="15" id="wMv-AI-ggv"/>
@@ -44,7 +47,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mal" translatesAutoresizingMaskIntoConstraints="NO" id="eH3-66-pSB">
-                                <rect key="frame" x="192" y="30.5" width="15" height="15"/>
+                                <rect key="frame" x="192" y="31" width="15" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="15" id="PXO-ES-OZu"/>
                                     <constraint firstAttribute="height" constant="15" id="x8N-QK-6i5"/>
@@ -57,25 +60,25 @@
                                     <constraint firstAttribute="width" constant="14" id="Asz-nn-LDv"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="۱.۴ کیلومتر" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CX7-5S-H8K">
-                                <rect key="frame" x="163" y="57" width="35" height="15"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="۱.۴" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CX7-5S-H8K">
+                                <rect key="frame" x="173" y="57" width="25" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="bGo-Qc-hwK"/>
-                                    <constraint firstAttribute="width" constant="35" id="egi-Xa-SXE"/>
+                                    <constraint firstAttribute="width" constant="25" id="egi-Xa-SXE"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="7"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sale 18" translatesAutoresizingMaskIntoConstraints="NO" id="dUn-8a-8JG">
-                                <rect key="frame" x="128" y="57" width="13" height="15"/>
+                                <rect key="frame" x="119" y="57" width="13" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="13" id="Pal-PT-rcT"/>
                                     <constraint firstAttribute="height" constant="15" id="RAB-8t-4dH"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="٪۳۰" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="69L-rN-p0d">
-                                <rect key="frame" x="92" y="57" width="37" height="15"/>
+                                <rect key="frame" x="81" y="57" width="37" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="37" id="D64-o6-QIw"/>
                                     <constraint firstAttribute="height" constant="15" id="mQi-4q-hFJ"/>
@@ -115,6 +118,15 @@
                                 <rect key="frame" x="2" y="5" width="19" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="کیلومتر" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hyn-AM-eB2">
+                                <rect key="frame" x="140" y="57" width="31" height="15"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="31" id="QOx-bl-buk"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="IRANYekanMobileFaNum-Light" family="IRANYekanMobile(FaNum)" pointSize="9"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -126,18 +138,20 @@
                             <constraint firstItem="vfr-tL-Nms" firstAttribute="leading" secondItem="cBh-Ph-if6" secondAttribute="leading" constant="15" id="HAa-H5-5Br"/>
                             <constraint firstItem="vfr-tL-Nms" firstAttribute="bottom" secondItem="IOq-RR-Vsa" secondAttribute="bottom" id="HXe-nH-p6z"/>
                             <constraint firstItem="69L-rN-p0d" firstAttribute="bottom" secondItem="dUn-8a-8JG" secondAttribute="bottom" id="HY4-n3-14d"/>
+                            <constraint firstItem="hyn-AM-eB2" firstAttribute="centerY" secondItem="CX7-5S-H8K" secondAttribute="centerY" constant="0.5" id="LgT-Xq-cbc"/>
                             <constraint firstItem="CX7-5S-H8K" firstAttribute="bottom" secondItem="tZ0-Ek-Nb8" secondAttribute="bottom" id="Nxq-pj-eRH"/>
                             <constraint firstAttribute="trailing" secondItem="YED-ov-Cuy" secondAttribute="trailing" constant="98" id="ODu-ab-X7W"/>
                             <constraint firstItem="dUn-8a-8JG" firstAttribute="bottom" secondItem="CX7-5S-H8K" secondAttribute="bottom" id="Q95-Jv-Eyy"/>
                             <constraint firstItem="hZ9-wC-hue" firstAttribute="top" secondItem="cBh-Ph-if6" secondAttribute="top" id="Zgy-6B-dQ2"/>
                             <constraint firstItem="IOq-RR-Vsa" firstAttribute="leading" secondItem="cBh-Ph-if6" secondAttribute="leading" constant="27" id="azM-2t-b5S"/>
                             <constraint firstAttribute="trailing" secondItem="tZ0-Ek-Nb8" secondAttribute="trailing" constant="94" id="cYe-ww-k2n"/>
+                            <constraint firstItem="CX7-5S-H8K" firstAttribute="leading" secondItem="hyn-AM-eB2" secondAttribute="trailing" constant="2" id="d8I-H2-fn1"/>
                             <constraint firstAttribute="width" constant="305" id="eTI-QT-XRH"/>
                             <constraint firstItem="IOq-RR-Vsa" firstAttribute="bottom" secondItem="69L-rN-p0d" secondAttribute="bottom" id="f0U-vl-ECY"/>
                             <constraint firstItem="AFr-N3-WTc" firstAttribute="bottom" secondItem="eH3-66-pSB" secondAttribute="bottom" id="fik-7T-zdK"/>
-                            <constraint firstAttribute="trailing" secondItem="dUn-8a-8JG" secondAttribute="trailing" constant="164" id="jLd-sr-FbK"/>
+                            <constraint firstAttribute="trailing" secondItem="dUn-8a-8JG" secondAttribute="trailing" constant="173" id="jLd-sr-FbK"/>
                             <constraint firstAttribute="bottom" secondItem="eH3-66-pSB" secondAttribute="bottom" constant="31.5" id="nD3-j7-F3h"/>
-                            <constraint firstAttribute="trailing" secondItem="69L-rN-p0d" secondAttribute="trailing" constant="176" id="oph-dW-EJt"/>
+                            <constraint firstAttribute="trailing" secondItem="69L-rN-p0d" secondAttribute="trailing" constant="187" id="oph-dW-EJt"/>
                             <constraint firstAttribute="bottom" secondItem="tZ0-Ek-Nb8" secondAttribute="bottom" constant="5" id="vt0-CE-bgP"/>
                             <constraint firstAttribute="trailing" secondItem="eH3-66-pSB" secondAttribute="trailing" constant="98" id="yPc-w5-shi"/>
                         </constraints>

@@ -58,7 +58,6 @@
 		<string>bluetooth-central</string>
 		<string>fetch</string>
 		<string>location</string>
-		<string>newsstand-content</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

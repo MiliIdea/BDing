@@ -116,11 +116,6 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
         
         self.addChildViewController(vc)
         
-//        vc.view.frame = CGRect(x:self.view.frame.width / 2,y: self.view.frame.height / 2,width: 0, height: 0)
-        
-        
-//        UIView.animate(withDuration: 3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-        
             
             vc.view.frame = CGRect(x:0,y: 0,width: self.view.frame.size.width, height: self.view.frame.size.height)
             

@@ -72,7 +72,7 @@ class IndexHomeTableViewCell: UITableViewCell {
         // Initialization code
         MyFont().setMediumFont(view: customerCampaignTitle, mySize: 14)
         MyFont().setWebFont(view: customerName, mySize: 11)
-        MyFont().setWebFont(view: customerDistanceToMe, mySize: 14)
+        MyFont().setWebFont(view: customerDistanceToMe, mySize: 13)
         MyFont().setWebFont(view: customerCampaignDiscount, mySize: 14)
         MyFont().setMediumFont(view: customerCampaignCoin, mySize: 16)
         customerThumbnail.layer.zPosition = 1
@@ -112,7 +112,7 @@ class IndexHomeTableViewCell: UITableViewCell {
         
         distanceIconTr.constant = categoryThumbnailTr.constant
         distanceTr.constant = distanceIconTr.constant + distanceIconW.constant
-        discountIconTr.constant = distanceTr.constant + distanceW.constant + 12
+        discountIconTr.constant = distanceTr.constant + distanceW.constant + 40
         discountTr.constant = discountIconTr.constant + discountIconW.constant
         coinIconLe.constant = 8
         coinLe.constant = coinIconLe.constant + coinIconW.constant

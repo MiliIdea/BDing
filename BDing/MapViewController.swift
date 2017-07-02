@@ -9,6 +9,8 @@
 import UIKit
 import CoreLocation
 import MapKit
+import HDAugmentedReality
+
 
 class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManagerDelegate {
     
@@ -45,6 +47,8 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
     var currentLocation: CLLocation = CLLocation()
     
     var pins : [MKPointAnnotation] = [MKPointAnnotation]()
+    var images : [UIImage] = [UIImage]()
+    
     
     var aspect = 1.0
     var isBigger: Bool = false
@@ -103,6 +107,7 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
             annoation.subtitle = obj.category_title
             
             pins.append(annoation)
+//            images.append(pinsImage.valueForKeyPath(keyPath: obj.category_id!) as! UIImage)
             
         }
         
@@ -113,6 +118,16 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
             
         }
         
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        for obj in GlobalFields.BEACON_LIST_DATAS! {
+        
+            images.append(pinsImage.valueForKeyPath(keyPath: obj.category_id!) as? UIImage ?? UIImage.init(named: "mapPin")!)
+            
+        }
         
     }
     
@@ -458,4 +473,74 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
         
     }
 
+    
+    var arViewController: ARViewController!
+    
+    @IBAction func showARController(_ sender: Any) {
+        
+        arViewController = ARViewController()
+        arViewController.dataSource = self
+        
+        arViewController.trackingManager.userDistanceFilter = 25
+        arViewController.trackingManager.reloadDistanceFilter = 75
+        var annots : [ARAnnotation] = [ARAnnotation]()
+        
+        var count = 0
+        
+        for p in pins {
+            
+            if(count > 5){
+                annots.append(Place.init(location: CLLocation.init(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude), name: p.title ?? "", image: images[pins.index(of: p)!], identifier: "id"))
+                
+            }else{
+                annots.append(Place.init(location: CLLocation.init(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude), name: p.title ?? "", image: nil, identifier: "id"))
+                
+            }
+            count += 1
+            
+        }
+        
+        
+        
+        arViewController.setAnnotations(annots)
+        
+        arViewController.uiOptions.closeButtonEnabled = true
+        
+        self.present(arViewController, animated: true, completion: nil)
+        
+        
+    }
+    
+//    func showInfoView(forPlace place: Place) {
+//        let alert = UIAlertController(title: place.placeName , message: place.infoText, preferredStyle: UIAlertControllerStyle.alert)
+//        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+//        
+//        arViewController.present(alert, animated: true, completion: nil)
+//    }
+    
+}
+
+
+
+extension MapViewController: ARDataSource {
+    func ar(_ arViewController: ARViewController, viewForAnnotation: ARAnnotation) -> ARAnnotationView {
+        let annotationView = AnnotationView()
+        annotationView.annotation = viewForAnnotation
+        annotationView.delegate = self
+        annotationView.frame = CGRect(x: 0, y: 0, width: 100, height: 70)
+        
+        return annotationView
+    }
+}
+
+extension MapViewController: AnnotationViewDelegate {
+    func didTouch(annotationView: AnnotationView) {
+        if let annotation = annotationView.annotation as? Place {
+            let placesLoader = PlacesLoader()
+//            placesLoader.loadDetailInformation(forPlace: annotation) { resultDict, error in
+//                
+//            }
+            
+        }
+    }
 }
