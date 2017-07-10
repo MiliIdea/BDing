@@ -279,8 +279,8 @@
 		11FDEBB31EAC92C1002E999E /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FDEBB21EAC92C1002E999E /* Reachability.swift */; };
 		11FDEBB51EACB625002E999E /* GetBeaconRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FDEBB41EACB625002E999E /* GetBeaconRequestModel.swift */; };
 		11FE15F01EF51AB000B8AC38 /* ding2.svg in Resources */ = {isa = PBXBuildFile; fileRef = 11FE15EF1EF51AB000B8AC38 /* ding2.svg */; };
-		15B3600F19683358C8A09732 /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED65191AE6B9F9004DA954 /* Pods_BDing.framework */; };
 		5C65055DE2496E5B5DF9FCA5 /* Pods_BDingUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBFBC709538EF38D5F97E397 /* Pods_BDingUITests.framework */; };
+		965A8A4ABA40653C08EC641A /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED65191AE6B9F9004DA954 /* Pods_BDing.framework */; };
 		9B590B220CE391E6E3DF01F6 /* Pods_BDingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB1DEBF668C472A761E76D2D /* Pods_BDingTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -700,7 +700,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				15B3600F19683358C8A09732 /* Pods_BDing.framework in Frameworks */,
+				965A8A4ABA40653C08EC641A /* Pods_BDing.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2267,7 +2267,7 @@
 				INFOPLIST_FILE = BDing/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Mili.BDing;
+				PRODUCT_BUNDLE_IDENTIFIER = ios.bding.ir;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -2282,7 +2282,7 @@
 				INFOPLIST_FILE = BDing/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Mili.BDing;
+				PRODUCT_BUNDLE_IDENTIFIER = ios.bding.ir;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};

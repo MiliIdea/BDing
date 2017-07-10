@@ -71,7 +71,7 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="hala ba ma..." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xjP-mQ-bc3">
                         <rect key="frame" x="112" y="13" width="132" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="17"/>
+                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>

@@ -156,7 +156,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         imagePicker.delegate = self
         
-        MyFont().setFontForAllView(view: self.view)
+        MyFont().setFontForAllView(view: self.view , elseView: payContainer)
         
         for subView in inputBoarderView.subviews {
             if (subView is UILabel){
@@ -167,7 +167,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         }
         
         MyFont().setMediumFont(view: name, mySize: 14)
-        MyFont().setMediumFont(view: coinValue, mySize: 13)
+        MyFont().setBoldFont(view: coinValue, mySize: 19)
         MyFont().setMediumFont(view: reportLabel, mySize: 10)
         MyFont().setMediumFont(view: payWithTolls, mySize: 13)
         MyFont().setMediumFont(view: takeCoupon, mySize: 13)
@@ -470,18 +470,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         coinValue.text = GlobalFields.PROFILEDATA?.all_coin
         
-        var s : String? = GlobalFields.PROFILEDATA?.name
-        
-        
-        if(GlobalFields.PROFILEDATA?.family != nil){
-            
-            s?.append(" ")
-            
-            s?.append((GlobalFields.PROFILEDATA?.family)!)
-            
-        }
-        
-        
+        let s : String? = GlobalFields.PROFILEDATA?.social_name
         
         name.text = s
         
@@ -495,11 +484,23 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         self.name.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: fixedH))
 
+        name.frame.origin.x = self.view.frame.width / 2 - name.frame.width / 2
+        
+        nameStartXY.x = name.frame.origin.x
         
         nameStartWH.x = name.frame.width
 
         nameStartWH.y = name.frame.height
+        
+        let w = coinIcon.frame.width + coinValue.frame.width + 5
 
+        coinIcon.frame.origin.x = self.view.frame.width / 2 - w / 2
+        
+        coinValue.frame.origin.x = coinIcon.frame.origin.x + coinIcon.frame.width + 5
+        
+        coinIconStartXY.x = self.view.frame.width / 2 - w / 2
+        
+        coinValueStartXY.x = self.view.frame.width / 2 - w / 2  + coinIcon.frame.width + 5
 
         scrollViewDidScroll(self.scrollViewProfile)
     }
@@ -623,13 +624,17 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         cvgWH.y = coinValueStartWH.y * 0.5
         
-        cigWH.x = coinIconStartWH.x * 0.5
+//        cigWH.x = coinIconStartWH.x * 0.5
         
-        cigWH.y = coinIconStartWH.y * 0.5
+        cigWH.x = cvgWH.y
+        
+//        cigWH.y = coinIconStartWH.y * 0.5
+
+        cigWH.y = cvgWH.y
         
         ngXY.x = pgXY.x - ngWH.x - 4
         
-        ngXY.y = pgXY.y
+        ngXY.y = pgXY.y + 2
         
         cvgXY.x = pgXY.x - cvgWH.x
         
@@ -637,7 +642,19 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         cigXY.x = cvgXY.x - cigWH.x - 3
         
-        cigXY.y = cvgXY.y 
+        cigXY.y = cvgXY.y + 3
+        
+        if(pgXY.x - ngWH.x - 4 > cigXY.x){
+            
+            ngXY.x = cigXY.x + 1
+            
+        }else{
+            
+            cigXY.x = ngXY.x - 1
+            
+            cvgXY.x = cigXY.x + cigWH.x + 3
+            
+        }
         
         fontNameSG.x = startNameFontSize
         
@@ -731,9 +748,13 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                     
                     UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                         
-                        nextVc.coupons = MyCouponListResponseModel.init(json: JSON as! JSON)?.data
-                        
-                        nextVc.couponsPrePics = [UIImage].init(reserveCapacity: nextVc.coupons!.count)
+                        if(MyCouponListResponseModel.init(json: JSON as! JSON)?.data != nil){
+                            
+                            nextVc.coupons = MyCouponListResponseModel.init(json: JSON as! JSON)?.data
+                            
+                            nextVc.couponsPrePics = [UIImage].init(reserveCapacity: (MyCouponListResponseModel.init(json: JSON as! JSON)?.data?.count)!)
+                            
+                        }
                         
                         nextVc.table.reloadData()
                         
@@ -1411,7 +1432,11 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     
     @IBAction func confirmPay(_ sender: Any) {
-        
+        if((self.inputPayTextField.text != nil) || self.inputPayTextField.text == ""){
+            
+            return
+            
+        }
         if(Int(self.inputPayTextField.text!)! > Int((GlobalFields.PROFILEDATA?.all_coin)!)!){
             //mablaq bishtar az wallet ast
             return

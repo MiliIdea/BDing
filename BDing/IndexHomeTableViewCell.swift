@@ -70,62 +70,69 @@ class IndexHomeTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        MyFont().setMediumFont(view: customerCampaignTitle, mySize: 14)
-        MyFont().setWebFont(view: customerName, mySize: 11)
-        MyFont().setWebFont(view: customerDistanceToMe, mySize: 13)
-        MyFont().setWebFont(view: customerCampaignDiscount, mySize: 14)
-        MyFont().setMediumFont(view: customerCampaignCoin, mySize: 16)
-        customerThumbnail.layer.zPosition = 1
-        
+        DispatchQueue.main.async(execute: { () -> Void in
+        MyFont().setMediumFont(view: self.customerCampaignTitle, mySize: 14)
+        MyFont().setWebFont(view: self.customerName, mySize: 11)
+        MyFont().setWebFont(view: self.customerDistanceToMe, mySize: 11)
+        MyFont().setWebFont(view: self.customerCampaignDiscount, mySize: 14)
+        MyFont().setMediumFont(view: self.customerCampaignCoin, mySize: 16)
+        self.customerThumbnail.layer.zPosition = 1
+        self.imageView?.frame.size.height = self.boarderView.frame.height
         self.contentView.layer.shadowColor = UIColor.black.cgColor
         self.contentView.layer.shadowOpacity = 0.25
         self.contentView.layer.shadowOffset = CGSize(width: -1, height: 1)
         self.contentView.layer.shadowRadius = 3
-        
-//        viewW.constant = self.frame.width
-        
+        self.shouldIndentWhileEditing = false
+        })
         
     }
     
     
     override func setSelected(_ selected: Bool, animated: Bool) {
+        let color = self.boarderView.backgroundColor
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
-
+        self.boarderView.backgroundColor = color
+        self.contentView.layer.shadowColor = UIColor.black.cgColor
+        self.contentView.layer.shadowOpacity = 0.25
+        self.contentView.layer.shadowOffset = CGSize(width: -1, height: 1)
+        self.contentView.layer.shadowRadius = 3
+        
     }
     
     func setFirst(screenWidth : CGFloat){
-        
+//        DispatchQueue.main.async(execute: { () -> Void in
         self.viewH.constant = screenWidth * 8.5 / CGFloat(32.0) - 8
         
         self.viewW.constant = screenWidth - 16.0
         
-        imgH.constant = viewH.constant
-        imgW.constant = viewW.constant/3.5
+        self.imageView?.frame.size.height = self.viewH.constant
+        self.imgH.constant = self.viewH.constant
+        self.imgW.constant = self.viewW.constant/3.5
+        
+        self.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFill
+        self.titleTop.constant = 5
+        self.titleTr.constant = self.imgW.constant + 8
+        self.categoryThumbnailTr.constant = self.titleTr.constant
+        self.nameTr.constant = self.categoryThumbnailTr.constant + self.categoryThumbnailW.constant + 2
+        
+        self.distanceIconTr.constant = self.categoryThumbnailTr.constant
+        self.distanceTr.constant = self.distanceIconTr.constant + self.distanceIconW.constant
+        self.discountIconTr.constant = self.distanceTr.constant + self.distanceW.constant + 40
+        self.discountTr.constant = self.discountIconTr.constant + self.discountIconW.constant
+        self.coinIconLe.constant = 8
+        self.coinLe.constant = self.coinIconLe.constant + self.coinIconW.constant
+        self.categoryThumbnailB.constant = self.viewH.constant / 2 - self.distanceIconW.constant / 2
         
         
-        customerThumbnail.contentMode = UIViewContentMode.scaleAspectFill
-        titleTop.constant = 5
-        titleTr.constant = imgW.constant + 8
-        categoryThumbnailTr.constant = titleTr.constant
-        nameTr.constant = categoryThumbnailTr.constant + categoryThumbnailW.constant + 2
-        
-        distanceIconTr.constant = categoryThumbnailTr.constant
-        distanceTr.constant = distanceIconTr.constant + distanceIconW.constant
-        discountIconTr.constant = distanceTr.constant + distanceW.constant + 40
-        discountTr.constant = discountIconTr.constant + discountIconW.constant
-        coinIconLe.constant = 8
-        coinLe.constant = coinIconLe.constant + coinIconW.constant
-        categoryThumbnailB.constant = viewH.constant / 2 - distanceIconW.constant / 2
-        
-        
-        nameCategoryBL.constant = 0
-        coinsB.constant = 0
-        coinDiscountB.constant = 0
-        discountsB.constant = 0
-        distancesB.constant = 0
-        discountDistanceB.constant = 0
-        customerThumbnail.frame.origin.y = 0
+        self.nameCategoryBL.constant = 0
+        self.coinsB.constant = 0
+        self.coinDiscountB.constant = 0
+        self.discountsB.constant = 0
+        self.distancesB.constant = 0
+        self.discountDistanceB.constant = 0
+        self.customerThumbnail.frame.origin.y = 0
+//        })
         
     }
     
@@ -152,7 +159,7 @@ class IndexHomeTableViewCell: UITableViewCell {
         distanceIconTr.constant = categoryThumbnailTr.constant
         distanceTr.constant = distanceIconTr.constant + distanceIconW.constant
 
-        discountIconTr.constant = viewW.constant / 2 - (discountIconW.constant + discountW.constant)/3
+        discountIconTr.constant = viewW.constant / 2 - (discountIconW.constant + discountW.constant)/3 + 15
 
         discountTr.constant = discountIconTr.constant + discountIconW.constant
         coinIconLe.constant = 8
@@ -166,5 +173,6 @@ class IndexHomeTableViewCell: UITableViewCell {
         discountDistanceB.constant = 0
         
     }
-
+    
+    
 }

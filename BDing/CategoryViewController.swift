@@ -88,15 +88,11 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
         
         super.viewDidAppear(animated)
             
-        self.loadCategoryTable()
-            
-        self.tableViewCategory.reloadData()
-            
-        loading.stopAnimating()
-        
-//        loadCategoryTableTwo()
-        
+//        self.loadCategoryTable()
+//        
 //        self.tableViewCategory.reloadData()
+//        
+//        loading.stopAnimating()
 
     }
     
@@ -137,6 +133,12 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
         loading.hidesWhenStopped = true
        
         self.cache = NSCache()
+        
+        self.loadCategoryTable()
+        
+        self.tableViewCategory.reloadData()
+        
+        loading.stopAnimating()
         // Do any additional setup after loading the view.
     }
     
@@ -908,119 +910,156 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
         
         if(segue.identifier == "categorySubcategorySegue"){
             
-            let nextVc = segue.destination as! CategoryPageViewController
+            loadSubCategories(segue: segue , sender : sender)
             
-            let row = self.tableViewCategory.indexPath(for: (sender as! CategoryTableViewCell2))!.row
+        }
+        
+        
+    }
+    
+    
+    
+    func loadSubCategories(segue: UIStoryboardSegue, sender: Any?){
+        
+        let nextVc = segue.destination as! CategoryPageViewController
+        
+        let row = self.tableViewCategory.indexPath(for: (sender as! CategoryTableViewCell2))!.row
+        
+        let subC = getClickedSubCategory(index: self.tableViewCategory.indexPath(for: (sender as! CategoryTableViewCell2))!)
+        
+        print(self.getSectionIndex(row: row))
+        
+        let color = self.sections[self.getSectionIndex(row: row)]
+        
+        nextVc.color1 = color.color1
+        
+        nextVc.color2 = color.color2
+        
+        nextVc.catIconPicModel = subC?.image
+        
+        nextVc.nameTitle = (subC?.name)!
+        
+        nextVc.loading.startAnimating()
+        
+        if(subC != nil){
             
-            let subC = getClickedSubCategory(index: self.tableViewCategory.indexPath(for: (sender as! CategoryTableViewCell2))!)
+            var lat: String
             
-            print(self.getSectionIndex(row: row))
+            var long: String
             
-            let color = self.sections[self.getSectionIndex(row: row)]
+            let locManager = CLLocationManager()
             
-            nextVc.color1 = color.color1
+            locManager.requestWhenInUseAuthorization()
             
-            nextVc.color2 = color.color2
+            var currentLocation = CLLocation()
             
-            nextVc.catIconPicModel = subC?.image
-            
-            nextVc.nameTitle = (subC?.name)!
-            
-            if(subC != nil){
+            if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
+                CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorized){
                 
-                var lat: String
+                currentLocation = locManager.location!
                 
-                var long: String
+            }
+            
+            long = String(currentLocation.coordinate.longitude)
+            
+            lat = String(currentLocation.coordinate.latitude)
+            
+            if(lat == "0" && long == "0"){
                 
-                let locManager = CLLocationManager()
+                long = String(51.4212297)
                 
-                locManager.requestWhenInUseAuthorization()
+                lat = String(35.6329044)
                 
-                var currentLocation = CLLocation()
+            }
+            
+            
+            if(subC?.all_track == true){
                 
-                if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
-                    CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorized){
+                request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: sections[getSectionIndex(row: self.tableViewCategory.indexPath(for: (sender as! CategoryTableViewCell2))!.row)].categoryCode, SUBCATEGORY: nil).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
+                    print()
                     
-                    currentLocation = locManager.location!
-                    
-                }
-                
-                long = String(currentLocation.coordinate.longitude)
-                
-                lat = String(currentLocation.coordinate.latitude)
-                
-                if(lat == "0" && long == "0"){
-                    
-                    long = String(51.4212297)
-                    
-                    lat = String(35.6329044)
-                    
-                }
-                
-                
-                if(subC?.all_track == true){
-                    
-                    request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: sections[getSectionIndex(row: self.tableViewCategory.indexPath(for: (sender as! CategoryTableViewCell2))!.row)].categoryCode, SUBCATEGORY: nil).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
-                        print()
+                    if let JSON = response.result.value {
                         
-                        if let JSON = response.result.value {
+                        print("JSON ----------LOAD SUBCATEGORY----------->>>> ")
+                        
+                        let obj = BeaconListResponseModel.init(json: JSON as! JSON)
+                        
+                        print(JSON)
+                        
+                        print("=++++++++++++++++=")
+                        
+                        if ( obj?.code == "200" ){
                             
-                            print("JSON ----------LOAD SUBCATEGORY----------->>>> ")
                             
-                            let obj = BeaconListResponseModel.init(json: JSON as! JSON)
-                            
-                            print(JSON)
-                            
-                            print("=++++++++++++++++=")
-                            
-                            if ( obj?.code == "200" ){
+                            if(obj?.data == nil){
                                 
+                                //TODO
+                                print("dar in lat long beacon nadarim!")
                                 
-                                if(obj?.data == nil){
+                            }else{
+                                //bayad bere tu liste category
+                                UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                                     
-                                    //TODO
-                                    print("dar in lat long beacon nadarim!")
                                     
-                                }else{
-                                    //bayad bere tu liste category
-                                    UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                                    print(obj?.data)
+                                    
+                                    let image : UIImage = UIImage(named:"amlak")!
+                                    
+                                    let locManager = CLLocationManager()
+                                    
+                                    locManager.requestAlwaysAuthorization()
+                                    
+                                    var currentLocation = CLLocation()
+                                    
+                                    if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways ||
+                                        CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
                                         
+                                        currentLocation = locManager.location!
                                         
-                                        print(obj?.data)
-                                        
-                                        let image : UIImage = UIImage(named:"amlak")!
-                                        for i in (obj?.data!)! {
-                                            LoadPicture().proLoad(view: nil , picModel: i.url_icon!){ resImage in
+                                    }
+                                    
+                                    for i in (obj?.data!)! {
+                                        LoadPicture().proLoad(view: nil , picModel: i.url_icon!){ resImage in
+                                            
+                                            for c in nextVc.customerHomeTableCells {
                                                 
-                                                for c in nextVc.customerHomeTableCells {
+                                                if(c.customerImage?.url == i.url_icon?.url){
                                                     
-                                                    if(c.customerImage?.url == i.url_icon?.url){
-                                                     
-                                                        if(c.customerImage?.code == i.url_icon?.code){
-                                                            
-                                                            c.preCustomerImage = resImage
-                                                            
-                                                            nextVc.table.reloadData()
-                                                            
-                                                        }
+                                                    if(c.customerImage?.code == i.url_icon?.code){
+                                                        
+                                                        c.preCustomerImage = resImage
+                                                        
+                                                        //                                                            nextVc.table.reloadData()
                                                         
                                                     }
                                                     
                                                 }
                                                 
                                             }
-
-                                            let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:UIImage.init(named: "default") ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: i.discount!, customerDiscountIcon: image, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time ?? "" , website: i.cusomer_web!,customerBigImages: i.url_pic)
-                                            nextVc.customerHomeTableCells.append(a)
                                             
                                         }
                                         
-                                        nextVc.table.reloadData()
+                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:UIImage.init(named: "default") ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0", customerDiscountValue: i.discount!, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time ?? "" , website: i.cusomer_web!,customerBigImages: i.url_pic , categoryID: i.category_id)
                                         
-                                    }, completion: nil)
+                                        if(currentLocation.coordinate.latitude != 0){
+                                            
+                                            let dis = String(format: "%.2f", currentLocation.distance(from: CLLocation.init(latitude: (Double(i.lat!))!, longitude: (Double(i.long!))!))/1000)
+                                            
+                                            i.distance = Double(dis)
+                                            a.customerDistanceToMe = dis
+                                            
+                                        }
+                                        
+                                        nextVc.customerHomeTableCells.append(a)
+                                        
+                                    }
                                     
+                                    nextVc.table.reloadData()
                                     
-                                }
+                                    nextVc.loading.stopAnimating()
+                                    
+                                }, completion: nil)
+                                
                                 
                             }
                             
@@ -1028,55 +1067,57 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                         
                     }
                     
-                }else{
+                }
+                
+            }else{
+                
+                request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: (subC?.subCategoryCode)!).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
+                    print()
                     
-                    request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: (subC?.subCategoryCode)!).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
-                        print()
+                    if let JSON = response.result.value {
                         
-                        if let JSON = response.result.value {
+                        print("JSON ----------LOAD SUBCATEGORY----------->>>> ")
+                        
+                        let obj = BeaconListResponseModel.init(json: JSON as! JSON)
+                        
+                        print(JSON)
+                        
+                        print("=++++++++++++++++=")
+                        
+                        if ( obj?.code == "200" ){
                             
-                            print("JSON ----------LOAD SUBCATEGORY----------->>>> ")
+                            print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: subC?.subCategoryCode).getParams(allSearch : true))
                             
-                            let obj = BeaconListResponseModel.init(json: JSON as! JSON)
+                            print(obj?.data)
                             
-                            print(JSON)
-                            
-                            print("=++++++++++++++++=")
-                            
-                            if ( obj?.code == "200" ){
+                            if(obj?.data == nil){
                                 
-                                print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: subC?.subCategoryCode).getParams(allSearch : true))
+                                //TODO
+                                print("dar in lat long beacon nadarim!")
                                 
-                                print(obj?.data)
-                                
-                                if(obj?.data == nil){
+                            }else{
+                                //bayad bere tu liste category
+                                UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                                     
-                                    //TODO
-                                    print("dar in lat long beacon nadarim!")
+                                    nextVc.parentView = "CategoryViewController"
                                     
-                                }else{
-                                    //bayad bere tu liste category
-                                    UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                                        
-                                        nextVc.parentView = "CategoryViewController"
-                                        
-                                        print(obj?.data)
-                                        
-                                        let image : UIImage = UIImage(named:"amlak")!
-                                        for i in (obj?.data!)! {
-                                            LoadPicture().proLoad(view: nil , picModel: i.url_icon!){ resImage in
+                                    print(obj?.data)
+                                    
+                                    let image : UIImage = UIImage(named:"amlak")!
+                                    for i in (obj?.data!)! {
+                                        LoadPicture().proLoad(view: nil , picModel: i.url_icon!){ resImage in
+                                            
+                                            for c in nextVc.customerHomeTableCells {
                                                 
-                                                for c in nextVc.customerHomeTableCells {
+                                                if(c.customerImage?.url == i.url_icon?.url){
                                                     
-                                                    if(c.customerImage?.url == i.url_icon?.url){
+                                                    if(c.customerImage?.code == i.url_icon?.code){
                                                         
-                                                        if(c.customerImage?.code == i.url_icon?.code){
-                                                            
-                                                            c.preCustomerImage = resImage
-                                                            
-                                                            nextVc.table.reloadData()
-                                                            
-                                                        }
+                                                        c.preCustomerImage = resImage
+                                                        
+                                                        nextVc.table.reloadData()
+                                                        
+                                                        nextVc.loading.stopAnimating()
                                                         
                                                     }
                                                     
@@ -1084,17 +1125,19 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                                                 
                                             }
                                             
-                                            let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:UIImage.init(named: "default") ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: i.discount!, customerDiscountIcon: image, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic)
-                                            nextVc.customerHomeTableCells.append(a)
-                                            
                                         }
                                         
-                                        nextVc.table.reloadData()
+                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:UIImage.init(named: "default") ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0", customerDiscountValue: i.discount!, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic, categoryID: i.category_id)
+                                        nextVc.customerHomeTableCells.append(a)
                                         
-                                    }, completion: nil)
+                                    }
                                     
+                                    nextVc.table.reloadData()
                                     
-                                }
+                                    nextVc.loading.stopAnimating()
+                                    
+                                }, completion: nil)
+                                
                                 
                             }
                             
@@ -1108,9 +1151,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
             
         }
         
-        
     }
-    
     
     
     

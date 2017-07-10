@@ -46,6 +46,10 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     @IBOutlet weak var clearButton: UIButton!
     
+    @IBOutlet weak var mapButton: UIButton!
+    
+    @IBOutlet weak var searchButtonView: UIButton!
+    
     // SORT 
     
     @IBOutlet weak var sortView: UIView!
@@ -218,11 +222,25 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         leftTable.heroModifiers = [.cascade]
         
-        // Do any additional setup after loading the view.
+//        newest("")
+
+        changeColorOfSort(i: 2)
+        
+        
+        searchButtonView.setImage(searchButtonView.currentImage?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(.alwaysOriginal), for: .normal)
+        
+        sortButton.setImage(sortButton.currentImage?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(.alwaysOriginal), for: .normal)
+        
+        mapButton.setImage(mapButton.currentImage?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(.alwaysOriginal), for: .normal)
+        
+        changeModeButton.setImage(changeModeButton.currentImage?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(.alwaysOriginal), for: .normal)
+        
     }
 
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        (UIApplication.shared.delegate as! AppDelegate).locationManager.startRangingBeacons(in: (UIApplication.shared.delegate as! AppDelegate).beaconRegion)
         
         if(self.customerHomeTableCells.count == 0){
            
@@ -261,8 +279,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
 
             if !AlarmViewController.mode {
                 
-                self.changeModeButton.setImage(UIImage.init(named: "mode one"), for: .normal)
-                
+                self.changeModeButton.setImage(UIImage.init(named: "mode one")?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(.alwaysOriginal), for: .normal)
                 
                 
                 for c in 1...self.rightTable.numberOfRows(inSection: 0) {
@@ -297,7 +314,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             if AlarmViewController.mode {
                 
-                self.changeModeButton.setImage(UIImage.init(named: "mode two"), for: .normal)
+                self.changeModeButton.setImage(UIImage.init(named: "mode two")?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(.alwaysOriginal), for: .normal)
                 
                 
                 //resizing table single
@@ -420,20 +437,21 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 })
                 
             }else{
-                
-                let cat = findCategory(catID: GlobalFields.BEACON_LIST_DATAS?[indexPath.row].category_id)
-                
-                if(cat != nil){
+                if((GlobalFields.BEACON_LIST_DATAS?.count)! - 1 >= indexPath.row ){
+                    let cat = findCategory(catID: tableCell.categoryID)
                     
-                    LoadPicture().proLoad(view: cell.customerCategoryThumbnail, picModel: (cat?.url_icon)!) { resImage in
+                    if(cat != nil){
                         
-                        cell.customerCategoryThumbnail.image = resImage
+                        LoadPicture().proLoad(view: cell.customerCategoryThumbnail, picModel: (cat?.url_icon)!) { resImage in
+                            
+                            cell.customerCategoryThumbnail.image = resImage
+                            
+                            self.customerHomeTableCells[indexPath.row].customerCategoryIcon = resImage
+                            
+                        }
                         
-                        self.customerHomeTableCells[indexPath.row].customerCategoryIcon = resImage
                         
                     }
-                    
-                    
                 }
             }
             
@@ -455,7 +473,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             })
             
             cell.heroModifiers = [.fade, .scale(0.5)]
-            
+            cell.selectionStyle = .none
             return cell
             
         }else if tableView == leftTable{
@@ -511,12 +529,28 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             })
             
             cell2.heroModifiers = [.fade, .scale(0.5)]
-            
+            cell2.selectionStyle = .none
             return cell2
             
         }
         
         return UITableViewCell()
+        
+    }
+    
+    func findCategory(catID : String!) -> CategoryListData?{
+        
+        for c in GlobalFields.CATEGORIES_LIST_DATAS! {
+            
+            if(c.category_code == catID){
+                
+                return c
+                
+            }
+            
+        }
+        
+        return nil
         
     }
     
@@ -551,6 +585,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+       
         
         if(tableView == rightTable){
             
@@ -598,8 +634,20 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
 //        DispatchQueue.global(qos: .userInteractive).async {
             //create customer Home Table Cell from web service :)
             let image : UIImage = UIImage(named:"mal")!
-
+        
+        let locManager = CLLocationManager()
+        
+        locManager.requestAlwaysAuthorization()
+        
+        var currentLocation = CLLocation()
+        
+        if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways ||
+            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
             
+            currentLocation = locManager.location!
+            
+        }
+        
             if(GlobalFields.BEACON_LIST_DATAS != nil){
                 
                 var count = 0
@@ -614,9 +662,16 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 
                 for obj in (GlobalFields.BEACON_LIST_DATAS?[self.lazyLoaded...end])! {
                     
-                    let catIcon : UIImage? = UIImage.init(named: "Icon-60")
+                    let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100), customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount ?? "%0", tell: obj.customer_tell ?? "" ,address: obj.customer_address ?? "" , text: obj.text ?? "" ,workTime: obj.customer_work_time ?? "" ,website: obj.cusomer_web ?? "" ,customerBigImages: obj.url_pic, categoryID: obj.category_id)
                     
-                    let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100), customerCoinValue: obj.coin ?? "0" , customerCoinIcon: image, customerDiscountValue: obj.discount ?? "%0", customerDiscountIcon: image, tell: obj.customer_tell ?? "" ,address: obj.customer_address ?? "" , text: obj.text ?? "" ,workTime: obj.customer_work_time ?? "" ,website: obj.cusomer_web ?? "" ,customerBigImages: obj.url_pic)
+                    if(currentLocation.coordinate.latitude != 0){
+                        
+                        let dis = String(format: "%.2f", currentLocation.distance(from: CLLocation.init(latitude: (Double(obj.lat!))!, longitude: (Double(obj.long!))!))/1000)
+                        
+                        obj.distance = Double(dis)
+                        a.customerDistanceToMe = dis
+                        
+                    }
                     
                     a.preCustomerImage = UIImage.init(named: "default")
                     
@@ -649,8 +704,9 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                         
                     }
                     
-                    self.customerHomeTableCells.append(a)
-                    
+                    if(customerHomeTableCells.count != GlobalFields.BEACON_LIST_DATAS?.count){
+                        self.customerHomeTableCells.append(a)
+                    }
                     count += 1
                     
                     if(count == 9){
@@ -680,29 +736,12 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             self.loading.stopAnimating()
         DispatchQueue.global(qos: .userInteractive).async {
-
-            self.userRefreshControl.endRefreshing()
-            
-        }
-
-    }
-    
-    func findCategory(catID : String!) -> CategoryListData?{
-        
-        for c in GlobalFields.CATEGORIES_LIST_DATAS! {
-            
-            if(c.category_code == catID){
-                
-                return c
-                
+            DispatchQueue.main.async {
+                self.userRefreshControl.endRefreshing()
             }
-            
         }
-        
-        return nil
-        
+
     }
-    
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if(scrollView == rightTable){
@@ -916,6 +955,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         collectionView.reloadData()
         
+        searchTextField.text = ""
+        
         if(isNewSeach(ls: lastSearch?.isSelected) == true){
             
             doSearchButton.normalBackgroundColor = UIColor(hex: "4bb272")
@@ -966,6 +1007,10 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     
     @IBAction func doingSearch(_ sender: Any) {
+    
+        loading.startAnimating()
+        
+        self.view.isUserInteractionEnabled = false
         
         var lat: String
         
@@ -1021,6 +1066,10 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 print("JSON ----------BEACON----------->>>> ")
                 
                 let obj = BeaconListResponseModel.init(json: JSON as! JSON)
+                
+                self.loading.stopAnimating()
+                
+                self.view.isUserInteractionEnabled = true
                 
                 if ( obj?.code == "200" ){
                     
@@ -1233,6 +1282,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             cell.image.image = setTintGradient(image: cell.image.image!, c: [UIColor.white.cgColor ,UIColor.white.cgColor])
             
         }
+        
+        
         
         return cell
     }
@@ -1515,7 +1566,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             let d2 = max.start_date!
             
-            if(d1 > d2){
+            if(d1 < d2){
                 
                 max = datas[i]
                 index = i
@@ -1578,7 +1629,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 
             }
             
-            if(Double(datas[i].distance!) < Double(max.distance!)){
+            
+            if(datas[i].distance! < max.distance!){
                 
                 max = datas[i]
                 index = i
@@ -1604,7 +1656,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             self.sortView.frame.size.height = 180
             
-            self.blurView.alpha = 1
+            self.blurView.alpha = 0.85
             
             self.mostPopularButton.frame.size.height = 30
             
@@ -1645,7 +1697,13 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             self.maxCoinButton.frame.size.height = 0
             
-        }, completion : nil )
+        }){ completion in
+         
+            self.loading.stopAnimating()
+            
+            self.view.isUserInteractionEnabled = true
+            
+        }
         
     }
     
@@ -1673,7 +1731,13 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     @IBAction func sortMaxCoin(_ sender: Any) {
         
+        loading.startAnimating()
+        
+        self.view.isUserInteractionEnabled = false
+        
         maxCoinSort()
+        
+        changeColorOfSort(i : 1)
         
         hiddenSortView()
         
@@ -1681,7 +1745,13 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     @IBAction func nearest(_ sender: Any) {
         
+        loading.startAnimating()
+        
+        self.view.isUserInteractionEnabled = false
+        
         maxNearSort()
+        
+        changeColorOfSort(i : 3)
         
         hiddenSortView()
         
@@ -1689,7 +1759,13 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     @IBAction func mostPopular(_ sender: Any) {
         
+        loading.startAnimating()
+        
+        self.view.isUserInteractionEnabled = false
+        
         mostPopular()
+        
+        changeColorOfSort(i : 4)
         
         hiddenSortView()
         
@@ -1697,13 +1773,75 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
 
     @IBAction func newest(_ sender: Any) {
         
+        loading.startAnimating()
+        
+        self.view.isUserInteractionEnabled = false
+        
         newest()
+        
+        changeColorOfSort(i : 2)
         
         hiddenSortView()
         
     }
     
+    func changeColorOfSort(i : Int){
+        
+        maxCoinButton.backgroundColor = UIColor.white
+        
+        maxCoinButton.setTitleColor(UIColor.black, for: .normal)
+        
+        newestButton.backgroundColor = UIColor.white
+        
+        newestButton.setTitleColor(UIColor.black, for: .normal)
+        
+        nearestButton.backgroundColor = UIColor.white
+        
+        nearestButton.setTitleColor(UIColor.black, for: .normal)
+        
+        mostPopularButton.backgroundColor = UIColor.white
+        
+        mostPopularButton.setTitleColor(UIColor.black, for: .normal)
+        
+        switch i {
+        case 1:
+            
+            maxCoinButton.backgroundColor = UIColor.init(hex: "2196f3")
+            
+            maxCoinButton.setTitleColor(UIColor.white, for: .normal)
+            
+            break
+            
+        case 2:
+            
+            newestButton.backgroundColor = UIColor.init(hex: "2196f3")
+            
+            newestButton.setTitleColor(UIColor.white, for: .normal)
+            
+            break
+        
+        case 3:
+            
+            nearestButton.backgroundColor = UIColor.init(hex: "2196f3")
+            
+            nearestButton.setTitleColor(UIColor.white, for: .normal)
+            
+            break
+            
+        case 4:
+            
+            mostPopularButton.backgroundColor = UIColor.init(hex: "2196f3")
+            
+            mostPopularButton.setTitleColor(UIColor.white, for: .normal)
+            
+            break
+            
+        default:
+            break
+        }
     
+        
+    }
     
     
     ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1778,6 +1916,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         loading.startAnimating()
         
+        self.view.isUserInteractionEnabled = false
+        
         DispatchQueue.global(qos: .userInteractive).async {
             
             for c in GlobalFields.CATEGORIES_LIST_DATAS! {
@@ -1793,7 +1933,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                             self.loading.stopAnimating()
                             
                             self.performSegue(withIdentifier: "homeMapSegue", sender: "")
-                            
+                
+                            self.view.isUserInteractionEnabled = true
                         }
                         
                     }

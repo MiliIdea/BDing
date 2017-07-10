@@ -41,6 +41,8 @@ class SignInPageTwoViewController: UIViewController {
     
     var profileBool : Bool = false
     
+    var loginBool : Bool = false
+    
     var user : String = ""
     
     var animationView : LOTAnimationView?
@@ -147,33 +149,10 @@ class SignInPageTwoViewController: UIViewController {
                     
                     print(SaveAndLoadModel().load(entity: "USER")?.count ?? "nothing!")
                     
-                    var recycle : Bool = true
+                    self.loginBool = true
                     
-                    DispatchQueue.global(qos: .userInitiated).async {
-                        
-                        while (recycle) {
-                            
-                            if(self.profileBool && self.beaconBool && self.catBool){
-                                
-                                recycle = false
-                            }
-                            
-                        }
-                        
-                        DispatchQueue.main.async {
-                           
-                            if(recycle == false){
-                                
-                                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                                
-                                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController") as! UITabBarController
-                                
-                                self.present(nextViewController, animated:true, completion:nil)
-                                
-                            }
-                            
-                        }
-                    }
+                    self.goNextView()
+                    
                     
                 }else{
                     
@@ -210,6 +189,8 @@ class SignInPageTwoViewController: UIViewController {
                     GlobalFields.PROFILEDATA = obj?.data
                     
                     self.profileBool = true
+                    
+                    self.goNextView()
                     
                 }
                 
@@ -267,6 +248,8 @@ class SignInPageTwoViewController: UIViewController {
                     
                     self.beaconBool = true
                     
+                    self.goNextView()
+                    
                 }
                 
             }
@@ -290,6 +273,8 @@ class SignInPageTwoViewController: UIViewController {
                     GlobalFields.CATEGORIES_LIST_DATAS = obj?.data
                    
                     self.catBool = true
+                    
+                    self.goNextView()
                     
                 }
                 
@@ -320,6 +305,20 @@ class SignInPageTwoViewController: UIViewController {
         
         
         
+        
+    }
+    
+    func goNextView(){
+        
+        if(self.profileBool && self.beaconBool && self.catBool && self.loginBool){
+            
+            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+            
+            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController") as! UITabBarController
+            
+            self.present(nextViewController, animated:true, completion:nil)
+            
+        }
         
     }
     

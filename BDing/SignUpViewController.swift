@@ -50,10 +50,10 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         for subView in scrollViewSubView.subviews {
             MyFont().setMediumFont(view: subView, mySize: 13)
         }
-        MyFont().setMediumFont(view: noticeText, mySize: 9)
-        MyFont().setMediumFont(view: activate3, mySize: 9)
-        MyFont().setMediumFont(view: activate1, mySize: 9)
-        MyFont().setMediumFont(view: termsLink, mySize: 9)
+        MyFont().setMediumFont(view: noticeText, mySize: 11)
+        MyFont().setMediumFont(view: activate3, mySize: 11)
+        MyFont().setMediumFont(view: activate1, mySize: 11)
+        MyFont().setMediumFont(view: termsLink, mySize: 11)
         
         
         signUpScrollView.addSubview(scrollViewSubView)
@@ -117,7 +117,17 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         
         email.tag = 0
         
-
+        
+        
+        self.activate1.frame.size.width = self.activate1.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: activate1.frame.height)).width
+        self.termsLink.frame.size.width = self.termsLink.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: termsLink.frame.height)).width
+        self.activate3.frame.size.width = self.activate3.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: activate3.frame.height)).width
+        
+        activate1.frame.origin.x = noticeText.frame.origin.x + noticeText.frame.width - activate1.frame.width
+        
+        termsLink.frame.origin.x = activate1.frame.origin.x - termsLink.frame.width - 1
+        
+        activate3.frame.origin.x = termsLink.frame.origin.x - activate3.frame.width - 1
         
         // Do any additional setup after loading the view.
     }
@@ -408,6 +418,11 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         
     }
     
+    @IBAction func linkingTerms(_ sender: Any) {
+        
+        UIApplication.shared.openURL(NSURL(string: "http://bding.ir/fa/terms")! as URL)
+        
+    }
 
     
     /*

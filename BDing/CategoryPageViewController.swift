@@ -43,6 +43,7 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
     var heightOfSemiCircular: CGFloat = 0.0
     
     var offsetOfsemiCircular: CGFloat = 0.0
+    
     //num of pattern images in background
     let xNum = 4
     
@@ -57,6 +58,8 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
     var nameTitle : String = ""
     
     var cache: NSCache<AnyObject, AnyObject> = NSCache()
+    
+    let loading : UIActivityIndicatorView = UIActivityIndicatorView()
     
     //==================================================================//
     
@@ -110,6 +113,10 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         
         table.isScrollEnabled = false
         
+        table.rowHeight = self.view.frame.width * 8.5 / 32
+        
+        self.table.register(UINib(nibName: "IndexHomeTableViewCell", bundle: nil), forCellReuseIdentifier: "indexHomeTableCellID")
+        
         let sizeOfFooter: CGFloat = 55
         
         let heightOfTable = CGFloat(customerHomeTableCells.count * 70) - (self.view.frame.height - table.frame.origin.y - sizeOfFooter)/2
@@ -148,9 +155,34 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
     
         setGradientLayer()
         
+        if(table != nil){
+            
+            loading.frame(forAlignmentRect: (table?.frame)!)
+            
+            loading.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+            
+            table?.addSubview(loading)
+            
+            loading.hidesWhenStopped = true
+            
+            loading.frame.origin.x = (view?.frame.width)! / 2
+            
+            loading.frame.origin.y = (view?.frame.height)! / 2
+            
+        }
+        
+        loading.startAnimating()
+        
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        
+        self.table.delegate = self
+        self.scrollView.delegate = self
+        scrollViewDidScroll(scrollView)
+        
+    }
     
 
     override func didReceiveMemoryWarning() {
@@ -174,7 +206,6 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         
         backgroundView.layer.insertSublayer(gradientLayer, at: 0)
         
-//        navigationBar.layer.insertSublayer(gradientLayer, at: 0)
         
     }
     
@@ -190,7 +221,7 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = self.table.dequeueReusableCell(withIdentifier: "categoryCell" , for: indexPath) as! IndexHomeTableViewCell
+        let cell = self.table.dequeueReusableCell(withIdentifier: "indexHomeTableCellID" , for: indexPath) as! IndexHomeTableViewCell
         
         let tableCell = customerHomeTableCells[indexPath.row]
         
@@ -200,11 +231,47 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         if(tableCell.preCustomerImage == nil){
             cell.customerThumbnail.image = UIImage(named:"default")!
         }
-        cell.customerThumbnail.image = tableCell.preCustomerImage
+        DispatchQueue.main.async(execute: { () -> Void in
+            autoreleasepool { () -> () in
+            
+                cell.customerThumbnail.image = tableCell.preCustomerImage
+            
+            }
+        })
         cell.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFit
         cell.customerCampaignCoin.text = tableCell.customerCoinValue
         cell.customerCampaignDiscount.text = tableCell.customerDiscountValue
-        cell.customerCategoryThumbnail.image = tableCell.customerCategoryIcon
+        
+        ///////cat icon
+        if(tableCell.customerCategoryIcon != nil){
+            
+            DispatchQueue.main.async(execute: { () -> Void in
+                autoreleasepool { () -> () in
+                    
+                    cell.customerCategoryThumbnail.image = tableCell.customerCategoryIcon
+                    
+                }
+            })
+            
+        }else{
+            if((GlobalFields.BEACON_LIST_DATAS?.count)! - 1 >= indexPath.row ){
+                let cat = findCategory(catID: tableCell.categoryID)
+                
+                if(cat != nil){
+                    
+                    LoadPicture().proLoad(view: cell.customerCategoryThumbnail, picModel: (cat?.url_icon)!) { resImage in
+                        
+                        cell.customerCategoryThumbnail.image = resImage
+                        
+                        self.customerHomeTableCells[indexPath.row].customerCategoryIcon = resImage
+                        
+                    }
+                    
+                    
+                }
+            }
+        }
+        
         cell.coinThumbnail.image = tableCell.customerCoinIcon
         cell.discountThumbnail.image = tableCell.customerDiscountIcon
         cell.setFirst(screenWidth: self.view.frame.width)
@@ -213,16 +280,39 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func findCategory(catID : String!) -> CategoryListData?{
         
-        return self.view.frame.width * 7 / 32
+        for c in GlobalFields.CATEGORIES_LIST_DATAS! {
+            
+            if(c.category_code == catID){
+                
+                return c
+                
+            }
+            
+        }
+        
+        return nil
         
     }
+
+    
+    
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        
+//        return self.view.frame.width * 8.5 / 32
+//        
+//    }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         CellAnimator.animateCell(cell: cell, withTransform: CellAnimator.TransformFlip, andDuration: 0.3)
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.table.delegate = nil
+        self.scrollView.delegate = nil
     }
     
     
@@ -248,46 +338,40 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         if(self.table.contentOffset.y / 2 < (offsetOfsemiCircular + heightOfSemiCircular) - self.navigationBar.frame.height + self.navigationBar.frame.origin.y){
             
             self.scrollView.contentOffset.y = self.table.contentOffset.y / 2
-
-//            self.table.frame.size.height = self.view.frame.size.height - self.bottomView.frame.origin.y - self.table.frame.origin.y - (self.tabBarController?.tabBar.frame.height)!
             
         }else{
             
             myPercentage = 0
+            
+            self.scrollView.contentOffset.y = offsetOfsemiCircular
         
         }
-        
-        
-//        if(myPercentage < 0){
-//            
-//            myPercentage = 0
-//            
-//        }
+
         
         if(myPercentage > 1){
             
             myPercentage = 1
             
         }
+ 
+        self.table.frame.size.height = self.view.frame.size.height - self.bottomView.frame.origin.y - self.table.frame.origin.y - 1.4 * (self.tabBarController?.tabBar.frame.height)! + self.scrollView.contentOffset.y
+            
         
-        
-        self.table.frame.size.height = self.view.frame.size.height - self.bottomView.frame.origin.y - self.table.frame.origin.y - (self.tabBarController?.tabBar.frame.height)! + self.scrollView.contentOffset.y
         
         navigationBar.alpha = 1 - myPercentage
         
         semicircularView.frame.origin.y = offsetOfsemiCircular + (heightOfSemiCircular - (heightOfSemiCircular * (myPercentage)))
         
         semicircularView.frame.size.height = heightOfSemiCircular * (myPercentage)
-            
-        
-        
-//        bottomView.frame.origin.y = offsetOfsemiCircular + heightOfSemiCircular
         
     }
     
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        performSegue(withIdentifier: "subCategoryDetailSegue", sender: table.cellForRow(at: indexPath))
+        
         UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
             
             self.table.deselectRow(at: indexPath, animated: true)
@@ -311,60 +395,9 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         
     }
     
-    
-    
-//    func deletSubView(cells: [CustomerHomeTableCell] , color1 : CGColor , color2 : CGColor , subCName : String , subCIcon : UIImage){
-//        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-//            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CategoryPageViewController"))! as! CategoryPageViewController
-//            
-//            self.addChildViewController(vc)
-//            
-//            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-//            
-//            self.container.addSubview(vc.view)
-//            
-//            vc.didMove(toParentViewController: self)
-//            
-//            vc.customerHomeTableCells = cells
-//            
-//            vc.setGradientLayer(color1: color1, color2: color2)
-//            
-//            vc.subCategoryName.text = subCName
-//            
-//            vc.subCategoryIcon.image = subCIcon
-//            
-//        }, completion: nil)
-//        
-//    }
-    
-    
-//    func presentIndex(){
-//        
-//        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-//            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CategoryViewController"))! as! CategoryViewController
-//            
-//            self.addChildViewController(vc)
-//            
-//            vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-//            
-//            self.container.addSubview(vc.view)
-//            
-//            vc.didMove(toParentViewController: self)
-//        }, completion: nil)
-//    }
 
     @IBAction func backButton(_ sender: Any) {
-        
-//        if(self.parent is CategoryViewController){
-//         
-//            let vc = self.parent as! CategoryViewController
-//            
-//            vc.deletSubView()
-//            
-//        }else{
-//            presentIndex()
-//        }
-        
+
         _ = navigationController?.popViewController(animated: true)
         
     }

@@ -38,6 +38,8 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
     
     var profileBool : Bool = false
     
+    var loginBool : Bool = false
+    
     var animationView : LOTAnimationView?
     
     var timeIsZero : Bool = false
@@ -135,6 +137,26 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                 code.append((self.view.viewWithTag(i) as! UITextField).text!)
                 
             }
+            
+            animationView = LOTAnimationView(name: "finall")
+            
+            animationView?.frame.size.height = 50
+            
+            animationView?.frame.size.width = 50
+            
+            animationView?.frame.origin.y = self.view.frame.height / 2 - 25
+            
+            animationView?.frame.origin.x = self.view.frame.width / 2 - 25
+            
+            animationView?.contentMode = UIViewContentMode.scaleAspectFit
+            
+            animationView?.alpha = 1
+            
+            self.view.addSubview(animationView!)
+            
+            animationView?.loopAnimation = true
+            
+            animationView?.play()
             
             request(URLs.activationCode , method: .post , parameters: ActivationCodeRequestModel(USERNAME: userName, CODE: code).getParams(), encoding: JSONEncoding.default).responseJSON { response in
                 print()
@@ -312,28 +334,6 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
         
         self.view.endEditing(true)
         
-        animationView = LOTAnimationView(name: "finall")
-        
-        animationView?.frame.size.height = 50
-        
-        animationView?.frame.size.width = 50
-        
-        animationView?.frame.origin.y = self.view.frame.height / 2 - 25
-        
-        animationView?.frame.origin.x = self.view.frame.width / 2 - 25
-        
-        animationView?.contentMode = UIViewContentMode.scaleAspectFit
-        
-        animationView?.alpha = 1
-        
-        self.view.addSubview(animationView!)
-        
-        animationView?.animationSpeed = 4
-        
-        animationView?.loopAnimation = true
-        
-        animationView?.play()
-        
         request(URLs.signInUrl , method: .post , parameters: s.getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
             
@@ -359,33 +359,10 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                     
                     print(SaveAndLoadModel().load(entity: "USER")?.count ?? "nothing!")
                     
-                    var recycle : Bool = true
+                    self.loginBool = true
                     
-                    DispatchQueue.global(qos: .userInitiated).async {
-                        
-                        while (recycle) {
-                            
-                            if(self.profileBool && self.beaconBool && self.catBool){
-                                
-                                recycle = false
-                            }
-                            
-                        }
-                        
-                        DispatchQueue.main.async {
-                            
-                            if(recycle == false){
-                                
-                                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                                
-                                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController") as! UITabBarController
-                                
-                                self.present(nextViewController, animated:true, completion:nil)
-                                
-                            }
-                            
-                        }
-                    }
+                    self.goNextView()
+                    
                     
                 }else{
                     
@@ -404,7 +381,19 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
     }
         
     
-    
+    func goNextView(){
+        
+        if(self.profileBool && self.beaconBool && self.catBool && self.loginBool){
+            
+            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+            
+            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController") as! UITabBarController
+            
+            self.present(nextViewController, animated:true, completion:nil)
+            
+        }
+        
+    }
     
     
     func loadTabView() {
@@ -426,6 +415,7 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                     
                     GlobalFields.PROFILEDATA = obj?.data
                     
+                    self.goNextView()
                 }
                 
             }
@@ -474,6 +464,8 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                     
                     self.beaconBool = true
                     
+                    self.goNextView()
+                    
                 }
                 
             }
@@ -497,6 +489,8 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                     GlobalFields.CATEGORIES_LIST_DATAS = obj?.data
                     
                     self.catBool = true
+                    
+                    self.goNextView()
                     
                 }
                 

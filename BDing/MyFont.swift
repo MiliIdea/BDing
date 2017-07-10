@@ -14,19 +14,23 @@ class MyFont: NSObject {
     
     
     
-    func setFontForAllView(view : UIView){
+    func setFontForAllView(view : UIView , elseView : UIView? = nil){
         
         for v in view.subviews{
             
-            self.setWebFont(view: v, mySize: 11)
-            
-            if(v.subviews.count != 0){
-                
-                self.setFontForAllView(view: v)
-                
-            }else{
+            if(v != elseView){
                 
                 self.setWebFont(view: v, mySize: 11)
+                
+                if(v.subviews.count != 0){
+                    
+                    self.setFontForAllView(view: v)
+                    
+                }else{
+                    
+                    self.setWebFont(view: v, mySize: 11)
+                    
+                }
                 
             }
             

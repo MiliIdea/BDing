@@ -61,7 +61,7 @@ class BeaconListData : Decodable{
     
     required init?(json: JSON) {
         
-        self.customer_work_time = "customer_work_time" <~~ json
+        self.customer_work_time = "customer_work_time" <~~ json ?? ""
             
         self.customer_tell = "customer_tell" <~~ json
             

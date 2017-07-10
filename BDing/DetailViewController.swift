@@ -292,6 +292,14 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                 
             }
             
+            if(times.count < 2){
+                
+                self.nowIsOpen.text = ""
+                
+                continue
+                
+            }
+            
             let h2 = String(times[1].split(separator: ":")[0])
             
             var m2 = "0"
@@ -339,23 +347,31 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
             
         }
         
+        self.brandName.frame.size.width = self.brandName.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: brandName.frame.height)).width
+        
+        let w = brandName.frame.width + brandIcon.frame.width + 1
+        
+        brandName.frame.origin.x = self.view.frame.width / 2 - w / 2
+        
+        brandIcon.frame.origin.x = brandName.frame.origin.x + brandName.frame.width + 2
+        
         self.scrollViewDidScroll(self.scrollView)
         
         
         ///////////////////////////////////////////
         
     }
-    
+    var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
     
     override func viewDidAppear(_ animated: Bool) {
         if(isPopup == true){
             
             self.progressBarView.alpha = 1
-            
-            DispatchQueue.main.async {
-             
-                self.timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(DetailViewController.setProgressBar), userInfo: nil, repeats: true)
-            
+
+            DispatchQueue.global(qos: .userInteractive).async {
+                DispatchQueue.main.async {
+                self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(DetailViewController.setProgressBar), userInfo: nil, repeats: true)
+                }
             }
             
         }else{
@@ -371,89 +387,91 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     
     func setProgressBar() {
         
-        if(SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5)!)?.value(forKey: "isSeen") as! Bool == true){
-            
-            timer.invalidate()
-            
-            return
-            
-        }
-        
-        if counter >= 1 {
-            
-            timer.invalidate()
-
-            //inja bayad set coin she agar read shode bud countero bayad az qabl 1esh konam
-            
-            print(SetCoinRequestModel(CODE: self.cell?.customerImage?.code).getParams())
-            
-            request(URLs.setCoin , method: .post , parameters: SetCoinRequestModel(CODE: self.cell?.customerImage?.code).getParams(), encoding: JSONEncoding.default).responseJSON { response in
-                print()
+        DispatchQueue.main.async {
+            if(SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5)!)?.value(forKey: "isSeen") as! Bool == true){
                 
-                if let JSON = response.result.value {
+                self.timer.invalidate()
+                
+                return
+                
+            }
+            
+            if self.counter >= 1 {
+                
+                self.timer.invalidate()
+                
+                //inja bayad set coin she agar read shode bud countero bayad az qabl 1esh konam
+                
+                print(SetCoinRequestModel(CODE: self.cell?.customerImage?.code).getParams())
+                
+                request(URLs.setCoin , method: .post , parameters: SetCoinRequestModel(CODE: self.cell?.customerImage?.code).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                    print()
                     
-                    print("JSON ----------setCoin----------->>>> " , JSON)
-                    
-                    let obj = SetCoinResponseModel.init(json: JSON as! JSON)
-                    
-                    if ( obj?.code == "200" ){
+                    if let JSON = response.result.value {
                         
-                        self.progressBarView.tintColor = UIColor.green
+                        print("JSON ----------setCoin----------->>>> " , JSON)
                         
-                        self.progressBarView.backgroundColor = UIColor.green
+                        let obj = SetCoinResponseModel.init(json: JSON as! JSON)
                         
-                        GlobalFields.PROFILEDATA?.all_coin = obj?.data?.user_coin
-                        
-                        // popup that won 20 coin
-                        
-                        // set this beacon as a readed
-                        
-                        let d = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5)!)
-                        
-                        SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5!)! , newItem: ["uuid" : d?.value(forKey: "uuid") , "major" : d?.value(forKey: "major") , "minor" : d?.value(forKey: "minor") , "id" : d?.value(forKey: "id") , "isSeen" : true , "seenTime" : d?.value(forKey: "seenTime") , "beaconDataJSON" : d?.value(forKey: "beaconDataJSON") ,"isRemoved" : d?.value(forKey: "isRemoved")])
-                        
-                        self.updateBadgeVlue()
-                        
-                        Notifys().notif(message: "تبریک! دینگ این پیام را دریافت کردید."){ alert in
+                        if ( obj?.code == "200" ){
                             
-                            self.present(alert, animated: true, completion: nil)
+                            self.progressBarView.tintColor = UIColor.green
+                            
+                            self.progressBarView.backgroundColor = UIColor.green
+                            
+                            GlobalFields.PROFILEDATA?.all_coin = obj?.data?.user_coin
+                            
+                            // popup that won 20 coin
+                            
+                            // set this beacon as a readed
+                            
+                            let d = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5)!)
+                            
+                            SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5!)! , newItem: ["uuid" : d?.value(forKey: "uuid") , "major" : d?.value(forKey: "major") , "minor" : d?.value(forKey: "minor") , "id" : d?.value(forKey: "id") , "isSeen" : true , "seenTime" : d?.value(forKey: "seenTime") , "beaconDataJSON" : d?.value(forKey: "beaconDataJSON") ,"isRemoved" : d?.value(forKey: "isRemoved")])
+                            
+                            self.updateBadgeVlue()
+                            
+                            Notifys().notif(message: "تبریک! دینگ این پیام را دریافت کردید."){ alert in
+                                
+                                self.present(alert, animated: true, completion: nil)
+                                
+                            }
+                            
+                            
+                        }else if ( obj?.code == "700" ){
+                            
+                            self.progressBarView.tintColor = UIColor.red
+                            
+                            self.progressBarView.backgroundColor = UIColor.red
+                            
+                            Notifys().notif(message: "در ۱۲ ساعت گذشته دینگ این پیام را دریافت کرده اید"){ alert in
+                                
+                                self.present(alert, animated: true, completion: nil)
+                                
+                            }
+                            
+                            let d = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5)!)
+                            
+                            SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5!)! , newItem: ["uuid" : d?.value(forKey: "uuid") , "major" : d?.value(forKey: "major") , "minor" : d?.value(forKey: "minor") , "id" : d?.value(forKey: "id") , "isSeen" : true , "seenTime" : d?.value(forKey: "seenTime") , "beaconDataJSON" : d?.value(forKey: "beaconDataJSON") ,"isRemoved" : d?.value(forKey: "isRemoved")])
+                            
+                            
+                            
+                            self.updateBadgeVlue()
                             
                         }
-                        
-                        
-                    }else if ( obj?.code == "700" ){
-                        
-                        self.progressBarView.tintColor = UIColor.red
-                        
-                        self.progressBarView.backgroundColor = UIColor.red
-                        
-                        Notifys().notif(message: "در ۱۲ ساعت گذشته دینگ این پیام را دریافت کرده اید"){ alert in
-                            
-                            self.present(alert, animated: true, completion: nil)
-                            
-                        }
-                        
-                        let d = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5)!)
-                        
-                        SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5!)! , newItem: ["uuid" : d?.value(forKey: "uuid") , "major" : d?.value(forKey: "major") , "minor" : d?.value(forKey: "minor") , "id" : d?.value(forKey: "id") , "isSeen" : true , "seenTime" : d?.value(forKey: "seenTime") , "beaconDataJSON" : d?.value(forKey: "beaconDataJSON") ,"isRemoved" : d?.value(forKey: "isRemoved")])
-                        
-                        
-                        
-                        self.updateBadgeVlue()
                         
                     }
                     
                 }
                 
+                
+                return
             }
+            // increment the counter
+            self.counter += 0.001
             
-            
-            return
+            self.progressBarView.progress = self.counter
         }
-        // increment the counter
-        counter += 0.01
-        
-        progressBarView.progress = counter
         
     }
     
@@ -821,7 +839,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     
     @IBAction func share(_ sender: Any) {
         
-        let myShare = self.textView.text
+        let myShare = "الان این تخفیف فوق العاده رو روی اپلیکیشن BDING پیدا کردم، اگر تو هم همچین تخفیف هایی میخوای اپلیکیشن رو دانلود کن! \n" + self.textView.text
         
         let image: UIImage = backgroundPicView.image!
         

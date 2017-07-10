@@ -56,6 +56,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
         if((SaveAndLoadModel().load(entity: "USER")?.count)! > 0){
          locationManager.startRangingBeacons(in: beaconRegion)
         }
+        
+        
         return true
     }
 
@@ -78,8 +80,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
             locationManager.startRangingBeacons(in: beaconRegion)
             
             locationManager.startMonitoringSignificantLocationChanges()
-            
-//            locationManager.startUpdatingLocation()
             
             locationManager.allowsBackgroundLocationUpdates = true
             

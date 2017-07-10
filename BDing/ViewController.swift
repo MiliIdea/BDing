@@ -24,6 +24,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
     
     @IBOutlet weak var sabtButton: UIButton!
     
+    @IBOutlet weak var loadingBackView: UIView!
     var pageViewController: UIPageViewController!
     
     var pageImages: Array<String> = []
@@ -40,6 +41,8 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
     
     var profileBool : Bool = false
     
+    var loginBool : Bool = false
+    
     var animationView : LOTAnimationView?
     
     //---------------------------------------------------------------------------------------------------//
@@ -50,14 +53,14 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         
         signInPressing()
         
-        self.pageImages = ["1", "2", "4", "3"]
+        self.pageImages = ["1", "2", "3", "4"]
         
-        self.bigTitles = ["سکه های رایگان","تخفیف یا خرید رایگان","اطلاعات بموقع!","بلوتوث های روشن"]
+        self.bigTitles = ["اطلاعات به موقع","کسب امتیاز","تخفیف یا خرید رایگان","بلوتوث ها روشن!"]
         
-        self.smallTitles = [" .در شهر گشت و گذار کنید و سکه بگیرید"
-            ,"با سکه‌های خود کوپن‌های تخفیف بگیرید یا با سکه‌ها خرید کنید."
-            ,"فرقی نمی‌کند کجای شهر هستید، شما در هر مکان اطلاعات مورد نیاز همانجا را خواهید داشت."
-            ,"برای یک شروع هیجان‌انگیز آماده‌ای؟ بلوتوث دستگاه رو روشن کن."]
+        self.smallTitles = ["فرقی نمی کنه کجای شهری. تو هر مکان اطلاعات مورد نیاز همونجا رو خواهی داشت"
+            ,"به کمپین های دور و برت یه سر بزن و دینگ (امتیاز) بگیر"
+            ,"تخفیف های دور و برتو  با امتیازهات مال خودت کن"
+            ,"برای یک شروع هیجان انگیز آماده ای؟ بلوتوث دستگاه رو روشن کن"]
         
        
         
@@ -196,11 +199,17 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         
         animationView?.alpha = 1
         
+//        self.view.addSubview(loadingBackView)
+        
         self.view.addSubview(animationView!)
         
         animationView?.layer.zPosition = 1
         
         animationView?.loopAnimation = true
+        
+        loadingBackView.layer.zPosition = 1
+        
+        loadingBackView.alpha = 1
         
         animationView?.play()
         
@@ -214,6 +223,8 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         if((SaveAndLoadModel().load(entity: "USER")?.count)! <= 0){
             
             animationView?.pause()
+            
+            loadingBackView.alpha = 0
             
             animationView?.alpha = 0
             
@@ -273,35 +284,15 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
                     
                     print(SaveAndLoadModel().load(entity: "USER")?.count ?? "nothing!")
                     
-                    var recycle : Bool = true
                     
-                    DispatchQueue.global(qos: .userInitiated).async {
-                        
-                        while (recycle) {
-                            
-                            if(self.profileBool && self.beaconBool && self.catBool){
-                                
-                                recycle = false
-                            }
-                            
-                        }
-                        
-                        DispatchQueue.main.async {
-                            
-                            if(recycle == false){
-                                
-                                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                                
-                                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController") as! UITabBarController
-                                
-                                self.present(nextViewController, animated:true, completion:nil)
-                                
-                            }
-                            
-                        }
-                    }
+                    self.loginBool = true
+                    
+                    self.goNextView()
+                    
                     
                 }else{
+                    
+                    self.loadingBackView.alpha = 0
                     
                     self.animationView?.pause()
                     
@@ -315,6 +306,20 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
             
         }
 
+        
+    }
+    
+    func goNextView(){
+        
+        if(self.profileBool && self.beaconBool && self.catBool && self.loginBool){
+            
+            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+            
+            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController") as! UITabBarController
+            
+            self.present(nextViewController, animated:true, completion:nil)
+            
+        }
         
     }
     
@@ -338,6 +343,8 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
                     GlobalFields.PROFILEDATA = obj?.data
                     
                     self.profileBool = true
+                    
+                    self.goNextView()
                     
                 }
                 
@@ -396,9 +403,30 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
                     
                     print("JSON ----------BEACON----------->>>> " , JSON)
                     
+                    let locManager = CLLocationManager()
+                    
+                    locManager.requestAlwaysAuthorization()
+                    
+                    var currentLocation = CLLocation()
+                    
+                    if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways ||
+                        CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
+                        
+                        currentLocation = locManager.location!
+                        
+                    }
+                    
+                    for o in (obj?.data)! {
+                        
+                        o.distance = currentLocation.distance(from: CLLocation.init(latitude: (Double(o.lat!))!, longitude: (Double(o.long!))!))/1000
+                        
+                    }
+                    
                     GlobalFields.BEACON_LIST_DATAS = obj?.data
                     
                     self.beaconBool = true
+                    
+                    self.goNextView()
                     
                 }
                 
@@ -426,6 +454,8 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
                     GlobalFields.CATEGORIES_LIST_DATAS = obj?.data
                     
                     self.catBool = true
+                    
+                    self.goNextView()
                     
                 }
                 
