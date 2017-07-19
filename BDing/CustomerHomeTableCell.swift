@@ -47,9 +47,11 @@ class CustomerHomeTableCell: NSObject {
     var website : String?
     
     var uuidMajorMinorMD5 : String?
+    
+    var beaconCode : String!
 
     
-    init(uuidMajorMinorMD5 : String? ,preCustomerImage : UIImage?,customerImage : PicModel?,customerCampaignTitle : String,customerName : String,customerCategoryIcon : UIImage?,customerDistanceToMe : String,customerCoinValue : String,customerDiscountValue : String,tell : String , address : String , text : String , workTime : String , website : String , customerBigImages : [PicModel]? , categoryID : String?){
+    init(uuidMajorMinorMD5 : String? ,preCustomerImage : UIImage?,customerImage : PicModel?,customerCampaignTitle : String,customerName : String,customerCategoryIcon : UIImage?,customerDistanceToMe : String,customerCoinValue : String,customerDiscountValue : String,tell : String , address : String , text : String , workTime : String , website : String , customerBigImages : [PicModel]? , categoryID : String? , beaconCode : String!){
         
         self.categoryID = categoryID
         
@@ -86,6 +88,8 @@ class CustomerHomeTableCell: NSObject {
         self.website = website
         
         self.uuidMajorMinorMD5 = uuidMajorMinorMD5
+        
+        self.beaconCode = beaconCode
         
     }
     

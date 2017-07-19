@@ -48,5 +48,7 @@ class URLs {
     
     static let getPayUuids = server + "beacon/uuidpaylist"
     
+    static let popup = server + "beacon/popup"
+    
 }
 

@@ -10,6 +10,7 @@ import UIKit
 import DynamicColor
 import CoreImage
 import ChameleonFramework
+import CoreLocation
 
 class DetailViewController: UIViewController , UIScrollViewDelegate {
     
@@ -358,7 +359,33 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         self.scrollViewDidScroll(self.scrollView)
         
         
-        ///////////////////////////////////////////
+        if(!isPopup){
+            
+            ////////////////////REQUEST POPUP///////////////////////
+            var lat: String
+            
+            var long: String
+            
+            let locManager = CLLocationManager()
+            
+            locManager.requestWhenInUseAuthorization()
+            
+            var currentLocation = CLLocation()
+            
+            if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
+                CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorized){
+                
+                currentLocation = locManager.location!
+                
+            }
+            
+            long = String(currentLocation.coordinate.longitude)
+            
+            lat = String(currentLocation.coordinate.latitude)
+            request(URLs.popup , method: .post , parameters: PopupRequestModel.init(code: self.cell?.beaconCode , lat: lat, long: long).getParams(), encoding: JSONEncoding.default)
+            
+        }
+        
         
     }
     var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?

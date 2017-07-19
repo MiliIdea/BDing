@@ -81,7 +81,7 @@ class SignUpRequestModel {
     var HASH: String!
     
     func getParams() -> [String: Any]{
-        return ["username": USERNAME , "password": PASSWORD , "type":TYPE , "hash": HASH , "key": KEY , "gender": GENDER , "bdate": BDATE , "fullname": FULLNAME , "email" : EMAIL, "social_name" : SOCIALNAME]
+        return ["username": USERNAME , "password": PASSWORD , "type":TYPE , "hash": HASH , "key": KEY , "gender": GENDER , "bdate": BDATE , "fullname": FULLNAME , "email" : EMAIL, "social_name" : SOCIALNAME , "name" : NAME , "family" : FAMILYNAME]
         
     }
     

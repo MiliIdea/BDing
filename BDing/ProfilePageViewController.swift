@@ -23,6 +23,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     @IBOutlet weak var settingButton: UIButton!
     
+    @IBOutlet weak var messageButton: UIButton!
+    
     @IBOutlet weak var viewInScrollView: UIView!
     
     @IBOutlet weak var topView: UIView!
@@ -368,7 +370,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         scrollViewDidScroll(self.scrollViewProfile)
     
-        if(Int((GlobalFields.PROFILEDATA?.all_coin)!)! >= 150){
+        if(Int((GlobalFields.PROFILEDATA?.all_coin)!)! >= 5000 && checkProfileGift() == true){
             
             self.closeReport("")
             
@@ -693,7 +695,11 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         let buttonImage = UIImage(named: "setting 18")
         
+        let buttonImage2 = UIImage(named: "messageIcon")
+        
         settingButton.setImage(buttonImage?.withRenderingMode(.alwaysTemplate), for: .normal)
+        
+        messageButton.setImage(buttonImage2?.withRenderingMode(.alwaysTemplate), for: .normal)
         
         var originalColor = DynamicColor(cgColor : UIColor.init(averageColorFrom: self.backgroundProfilePic.image).inverted().cgColor)
         
@@ -712,6 +718,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         let blackColor = DynamicColor.init(hexString: "#000000")
         
         settingButton.tintColor = originalColor.mixedRGB(withColor: blackColor, weight: 1-myPercentage)
+        
+        messageButton.tintColor = originalColor.mixedRGB(withColor: blackColor, weight: 1-myPercentage)
         
         
         navigationBar.alpha = 1 - myPercentage
@@ -937,17 +945,41 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         if(self.inputTitle.text == "نام"){
             
+            if(self.inputTextField.text == ""){
+                
+                return
+                
+            }
+            
             rm = UserUpdateRequestModel.init(NAME: self.inputTextField.text, FAMILY: nil, ATTRNAME: nil, ATTRDATA: nil)
             
         }else if(self.inputTitle.text == "نام خانوادگی"){
+            
+            if(self.inputTextField.text == ""){
+                
+                return
+                
+            }
             
             rm = UserUpdateRequestModel.init(NAME: nil, FAMILY: self.inputTextField.text, ATTRNAME: nil, ATTRDATA: nil)
             
         }else if(self.inputTitle.text == "موبایل"){
             
+            if(self.inputTextField.text == ""){
+                
+                return
+                
+            }
+            
             rm = UserUpdateRequestModel.init(NAME: nil, FAMILY: nil, ATTRNAME: "mobile", ATTRDATA: self.inputTextField.text)
             
         }else if(self.inputTitle.text == "ایمیل"){
+            
+            if(self.inputTextField.text == ""){
+                
+                return
+                
+            }
             
             rm = UserUpdateRequestModel.init(NAME: nil, FAMILY: nil, ATTRNAME: "email", ATTRDATA: self.inputTextField.text)
             
@@ -964,6 +996,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
             }
             
         }
+        
+        var before : Bool = self.checkProfileGift()
         
         request(URLs.userUpdate , method: .post , parameters: rm?.getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
@@ -1019,16 +1053,56 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         
                     }
                     
+                    if(before == false && self.checkProfileGift() == true){
+                        
+                        GlobalFields.PROFILEDATA?.all_coin = String(Int((GlobalFields.PROFILEDATA?.all_coin)!)! + 5000)
+                        
+                        self.myCoinsValueLabel.text = GlobalFields.PROFILEDATA?.all_coin
+                        
+                        self.viewDidAppear(true)
+                        
+                        self.closeReport("")
+                        
+                        Notifys().notif(message: "تبریک! برنده ی ۵۰۰۰ دینگ تکمیل اطلاعات اختیاری شدی."){ alarm in
+                            
+                            self.present(alarm, animated: true, completion: nil)
+                            
+                        }
+                        
+                    }
+                    
                 }
                 
             }
             
         }
         
+        
+        
         //
         disAppearInputView()
         
     }
+    
+    func checkProfileGift() -> Bool{
+        
+        if(GlobalFields.PROFILEDATA?.gender == "" ||
+           GlobalFields.PROFILEDATA?.email == "" ||
+            GlobalFields.PROFILEDATA?.mobile == "" ||
+            GlobalFields.PROFILEDATA?.family == "" ||
+            GlobalFields.PROFILEDATA?.name == "" ||
+            GlobalFields.PROFILEDATA?.birthdate == ""){
+            
+            return false
+        }else{
+            
+            return true
+            
+        }
+        
+        
+    }
+    
     
     @IBAction func canselInput(_ sender: Any) {
        
@@ -1244,7 +1318,11 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         SaveAndLoadModel().deleteAllObjectIn(entityName: "USER")
         
+        var coding: String = ("http://"+(GlobalFields.PROFILEDATA?.url_pic)!)
         
+        coding.append("ProfilePic")
+        
+        SaveAndLoadModel().deleteSpecificItemIn(entityName: "IMAGE", keyAttribute: "imageCode", item: coding.md5())
         
     }
 
@@ -1432,7 +1510,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     
     @IBAction func confirmPay(_ sender: Any) {
-        if((self.inputPayTextField.text != nil) || self.inputPayTextField.text == ""){
+        if((self.inputPayTextField.text == nil) || self.inputPayTextField.text == ""){
             
             return
             
@@ -1461,6 +1539,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         self.present(alert, animated: true, completion: nil)
                         
                     }
+                    
+                    self.scrollViewDidScroll(self.scrollViewProfile)
                     
                     self.view.endEditing(true)
                     
@@ -1525,26 +1605,28 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     @IBAction func closeReport(_ sender: Any) {
 
-        
-        UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-   
-            self.reportLabel.frame.size.height = 0
+        if(self.reportLabel.alpha == 1){
             
-            self.closeReportButton.frame.size.height = 0
-            
-            self.reportLabel.alpha = 0
-            
-            self.closeReportButton.alpha = 0
-            
-            for v in self.botViewInScrollView.subviews{
+            UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                 
-                v.frame.origin.y -= 40
+                self.reportLabel.frame.size.height = 0
                 
-            }
+                self.closeReportButton.frame.size.height = 0
+                
+                self.reportLabel.alpha = 0
+                
+                self.closeReportButton.alpha = 0
+                
+                for v in self.botViewInScrollView.subviews{
+                    
+                    v.frame.origin.y -= 40
+                    
+                }
+                
+                
+            }, completion: nil)
             
-            
-        }, completion: nil)
-        
+        }
         
     }
     

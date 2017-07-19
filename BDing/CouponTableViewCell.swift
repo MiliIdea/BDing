@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Macaw
 
 class CouponTableViewCell: UITableViewCell {
 
@@ -19,6 +20,7 @@ class CouponTableViewCell: UITableViewCell {
     
     @IBOutlet weak var detailLabel: UILabel!
     
+    @IBOutlet weak var dingView: SVGView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

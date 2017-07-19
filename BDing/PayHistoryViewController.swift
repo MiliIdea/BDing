@@ -12,10 +12,16 @@ class PayHistoryViewController: UIViewController ,UITableViewDelegate ,UITableVi
     
     @IBOutlet weak var table: UITableView!
     
+    @IBOutlet weak var loading: UIActivityIndicatorView!
+    
     var payHistory: [PayListData] = [PayListData]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loading.hidesWhenStopped = true;
+        loading.activityIndicatorViewStyle  = UIActivityIndicatorViewStyle.gray;
+        loading.startAnimating()
         
         self.automaticallyAdjustsScrollViewInsets = false
         table.contentInset = UIEdgeInsets.zero
@@ -65,6 +71,9 @@ class PayHistoryViewController: UIViewController ,UITableViewDelegate ,UITableVi
         
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        loading.stopAnimating()
+    }
     
     @IBAction func backButton(_ sender: Any) {
         

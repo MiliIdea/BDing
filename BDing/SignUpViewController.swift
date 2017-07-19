@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Lottie
 
 class SignUpViewController: UIViewController , UITextFieldDelegate {
     
@@ -35,11 +35,17 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
     
     @IBOutlet weak var email: UITextField!
     
+    @IBOutlet weak var bdate: UITextField!
+    
     @IBOutlet weak var expandedBox: UIView!
     
     @IBOutlet weak var userName: UITextField!
     
     @IBOutlet weak var confirmationPass: UITextField!
+    
+    var animationView : LOTAnimationView?
+    
+    var BDateData : String?
     
     let dropDown = DropDown()
     
@@ -59,6 +65,8 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         signUpScrollView.addSubview(scrollViewSubView)
         
         signUpScrollView.contentSize = scrollViewSubView.frame.size
+        
+        signUpScrollView.contentSize.height += 10
         
         self.addDoneButtonOnKeyboard()
         
@@ -109,6 +117,8 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         
         email.delegate = self
         
+        bdate.delegate = self
+        
         name.tag = 0
         
         familyName.tag = 0
@@ -117,7 +127,7 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         
         email.tag = 0
         
-        
+        bdate.tag = 0
         
         self.activate1.frame.size.width = self.activate1.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: activate1.frame.height)).width
         self.termsLink.frame.size.width = self.termsLink.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: termsLink.frame.height)).width
@@ -182,8 +192,12 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
             email.becomeFirstResponder()
             email.window?.makeKeyAndVisible()
             
-//        case email:
-//            print("inja bas confirm kone!")
+        case email:
+            
+            bdate.window?.makeKeyAndVisible()
+            self.bdateClicked("")
+            break
+
             
         default:
             textField.resignFirstResponder()
@@ -374,9 +388,29 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
             
         }
         
-        let m = SignUpRequestModel(USERNAME: mobile.text, PASSWORD: password.text, SOCIALNAME: userName.text, GENDER: gender2, BDATE: nil, NAME: name.text, FAMILYNAME: familyName.text, EMAIL: email.text)
+        let m = SignUpRequestModel(USERNAME: mobile.text, PASSWORD: password.text, SOCIALNAME: userName.text, GENDER: gender2, BDATE: BDateData, NAME: name.text, FAMILYNAME: familyName.text, EMAIL: email.text)
         
         print(m.getParams())
+        
+        animationView = LOTAnimationView(name: "finall")
+        
+        animationView?.frame.size.height = 50
+        
+        animationView?.frame.size.width = 50
+        
+        animationView?.frame.origin.y = self.view.frame.height / 2 - 25
+        
+        animationView?.frame.origin.x = self.view.frame.width / 2 - 25
+        
+        animationView?.contentMode = UIViewContentMode.scaleAspectFit
+        
+        animationView?.alpha = 1
+        
+        self.view.addSubview(animationView!)
+        
+        animationView?.loopAnimation = true
+        
+        animationView?.play()
         
         request(URLs.signUpUrl , method: .post , parameters: m.getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
@@ -403,6 +437,10 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
                     
                 }else if(SignUpResponseModel.init(json: JSON as! JSON).code == "501"){
                     
+                    self.animationView?.pause()
+                    
+                    self.animationView?.alpha = 0
+                    
                     Notifys().notif(message: "قبلا ثبت نام کرده اید!"){alarm in
                         
                         self.present(alarm, animated: true, completion: nil)
@@ -424,6 +462,41 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         
     }
 
+    @IBAction func bdateClicked(_ sender: Any) {
+        self.view.endEditing(true)
+        let datePick = DatePickerDialog()
+        datePick.show(title: "DatePicker", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", datePickerMode: .date) {
+            (date) -> Void in
+            
+            datePick.datePicker.calendar = NSCalendar(identifier: NSCalendar.Identifier.gregorian) as Calendar!
+            
+            let formatter = DateFormatter()
+            
+            formatter.dateFormat = "dd/MM/yyyy"
+            
+            formatter.calendar = Calendar(identifier: .gregorian)
+            
+            print(formatter.string(from: datePick.datePicker.date))
+            
+            self.BDateData = formatter.string(from: datePick.datePicker.date)
+            
+            formatter.calendar = Calendar(identifier: .persian)
+            
+            formatter.dateFormat = "yyyy/MM/dd"
+            
+            print(formatter.string(from: datePick.datePicker.date))
+            
+            self.bdate.text = formatter.string(from: datePick.datePicker.date)
+            
+            UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                
+                self.signUpScrollView.contentOffset.y = 0
+                
+            }, completion:nil)
+        }
+        
+        
+    }
     
     /*
     // MARK: - Navigation

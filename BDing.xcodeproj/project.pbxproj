@@ -39,6 +39,7 @@
 		1132A4F61EDEE59300E0B2CF /* PayWithCoinsRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1132A4F51EDEE59300E0B2CF /* PayWithCoinsRequestModel.swift */; };
 		1132A4F81EDEEE9100E0B2CF /* PayUuidsRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1132A4F71EDEEE9100E0B2CF /* PayUuidsRequestModel.swift */; };
 		1132A4FA1EDEF13E00E0B2CF /* PayUuidResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1132A4F91EDEF13E00E0B2CF /* PayUuidResponseModel.swift */; };
+		113B0DF01F163FA900C177F7 /* DatePickerDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113B0DEF1F163FA900C177F7 /* DatePickerDialog.swift */; };
 		113D9B9D1EDC35F400E99103 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D9B9C1EDC35F400E99103 /* SettingViewController.swift */; };
 		113F069A1E792CE700E7D74F /* GlobalFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F06991E792CE700E7D74F /* GlobalFields.swift */; };
 		113F069F1E793DFA00E7D74F /* BeaconPicRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F069E1E793DFA00E7D74F /* BeaconPicRequestModel.swift */; };
@@ -56,6 +57,7 @@
 		113F927A1E70019D005CC419 /* SignUpRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F92791E70019D005CC419 /* SignUpRequestModel.swift */; };
 		1140F3291EE669FD00894EA7 /* finall.json in Resources */ = {isa = PBXBuildFile; fileRef = 1140F3281EE669FD00894EA7 /* finall.json */; };
 		1140F32B1EE67CD000894EA7 /* Notifys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140F32A1EE67CD000894EA7 /* Notifys.swift */; };
+		114A4F901F1B735200500C98 /* SendMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114A4F8F1F1B735200500C98 /* SendMessageViewController.swift */; };
 		114C25C21ED2BF1B00C980F3 /* SetCoinResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C25C11ED2BF1B00C980F3 /* SetCoinResponseModel.swift */; };
 		114C25C41ED2BFA700C980F3 /* CoinDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C25C31ED2BFA700C980F3 /* CoinDataModel.swift */; };
 		114C640D1EC6ED0600B23525 /* ActivationCodeRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C640C1EC6ED0600B23525 /* ActivationCodeRequestModel.swift */; };
@@ -276,11 +278,12 @@
 		11E747151E77E5A8002AEEFD /* ProfileResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E747141E77E5A8002AEEFD /* ProfileResponseModel.swift */; };
 		11E747171E77EA16002AEEFD /* ProfileData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E747161E77EA16002AEEFD /* ProfileData.swift */; };
 		11E747191E7806EF002AEEFD /* BeaconListRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E747181E7806EF002AEEFD /* BeaconListRequestModel.swift */; };
+		11FA8EC81F1C8BCD00DF589B /* PopupRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA8EC71F1C8BCD00DF589B /* PopupRequestModel.swift */; };
 		11FDEBB31EAC92C1002E999E /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FDEBB21EAC92C1002E999E /* Reachability.swift */; };
 		11FDEBB51EACB625002E999E /* GetBeaconRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FDEBB41EACB625002E999E /* GetBeaconRequestModel.swift */; };
 		11FE15F01EF51AB000B8AC38 /* ding2.svg in Resources */ = {isa = PBXBuildFile; fileRef = 11FE15EF1EF51AB000B8AC38 /* ding2.svg */; };
+		4D5FB47FDD39DE9EBB93554F /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED65191AE6B9F9004DA954 /* Pods_BDing.framework */; };
 		5C65055DE2496E5B5DF9FCA5 /* Pods_BDingUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBFBC709538EF38D5F97E397 /* Pods_BDingUITests.framework */; };
-		965A8A4ABA40653C08EC641A /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED65191AE6B9F9004DA954 /* Pods_BDing.framework */; };
 		9B590B220CE391E6E3DF01F6 /* Pods_BDingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB1DEBF668C472A761E76D2D /* Pods_BDingTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -422,6 +425,7 @@
 		1132A4F51EDEE59300E0B2CF /* PayWithCoinsRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayWithCoinsRequestModel.swift; sourceTree = "<group>"; };
 		1132A4F71EDEEE9100E0B2CF /* PayUuidsRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayUuidsRequestModel.swift; sourceTree = "<group>"; };
 		1132A4F91EDEF13E00E0B2CF /* PayUuidResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayUuidResponseModel.swift; sourceTree = "<group>"; };
+		113B0DEF1F163FA900C177F7 /* DatePickerDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerDialog.swift; sourceTree = "<group>"; };
 		113D9B9C1EDC35F400E99103 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		113F06991E792CE700E7D74F /* GlobalFields.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalFields.swift; sourceTree = "<group>"; };
 		113F069E1E793DFA00E7D74F /* BeaconPicRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconPicRequestModel.swift; sourceTree = "<group>"; };
@@ -440,6 +444,7 @@
 		113F92791E70019D005CC419 /* SignUpRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpRequestModel.swift; sourceTree = "<group>"; };
 		1140F3281EE669FD00894EA7 /* finall.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = finall.json; sourceTree = "<group>"; };
 		1140F32A1EE67CD000894EA7 /* Notifys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifys.swift; sourceTree = "<group>"; };
+		114A4F8F1F1B735200500C98 /* SendMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMessageViewController.swift; sourceTree = "<group>"; };
 		114C25C11ED2BF1B00C980F3 /* SetCoinResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetCoinResponseModel.swift; sourceTree = "<group>"; };
 		114C25C31ED2BFA700C980F3 /* CoinDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDataModel.swift; sourceTree = "<group>"; };
 		114C640C1EC6ED0600B23525 /* ActivationCodeRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivationCodeRequestModel.swift; sourceTree = "<group>"; };
@@ -680,6 +685,7 @@
 		11E747141E77E5A8002AEEFD /* ProfileResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileResponseModel.swift; sourceTree = "<group>"; };
 		11E747161E77EA16002AEEFD /* ProfileData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileData.swift; sourceTree = "<group>"; };
 		11E747181E7806EF002AEEFD /* BeaconListRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconListRequestModel.swift; sourceTree = "<group>"; };
+		11FA8EC71F1C8BCD00DF589B /* PopupRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupRequestModel.swift; sourceTree = "<group>"; };
 		11FDEBB21EAC92C1002E999E /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		11FDEBB41EACB625002E999E /* GetBeaconRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetBeaconRequestModel.swift; sourceTree = "<group>"; };
 		11FE15EF1EF51AB000B8AC38 /* ding2.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ding2.svg; sourceTree = "<group>"; };
@@ -700,7 +706,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				965A8A4ABA40653C08EC641A /* Pods_BDing.framework in Frameworks */,
+				4D5FB47FDD39DE9EBB93554F /* Pods_BDing.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1040,6 +1046,7 @@
 				115442BE1EDD47E800E5F3A4 /* ChangePasswordRequestModel.swift */,
 				1132A4F51EDEE59300E0B2CF /* PayWithCoinsRequestModel.swift */,
 				1132A4F71EDEEE9100E0B2CF /* PayUuidsRequestModel.swift */,
+				11FA8EC71F1C8BCD00DF589B /* PopupRequestModel.swift */,
 			);
 			name = RquestModels;
 			sourceTree = "<group>";
@@ -1217,12 +1224,14 @@
 				11187B541E98F215009110E2 /* DetailViewController.swift */,
 				110EB5381E9A404F00431534 /* TabBarController.swift */,
 				11D427A21E66B100009F3763 /* ProfilePageViewController.swift */,
+				113B0DEF1F163FA900C177F7 /* DatePickerDialog.swift */,
 				115A30CA1EAE2801003A9104 /* MyCouponViewController.swift */,
 				111BB16D1EB082F600AD202D /* TakeCouponViewController.swift */,
 				111BB16F1EB0831B00AD202D /* PayHistoryViewController.swift */,
 				11307D321ED45BBC0003ED7A /* CouponPopupViewController.swift */,
 				11307D341ED5C8900003ED7A /* AboutUsViewController.swift */,
 				113D9B9C1EDC35F400E99103 /* SettingViewController.swift */,
+				114A4F8F1F1B735200500C98 /* SendMessageViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -2005,6 +2014,7 @@
 				11D4287A1E66BFA2009F3763 /* ChaCha20+Foundation.swift in Sources */,
 				1179DDD81E7687D200BE7DED /* AFError.swift in Sources */,
 				1179DDE71E7687D200BE7DED /* SessionManager.swift in Sources */,
+				114A4F901F1B735200500C98 /* SendMessageViewController.swift in Sources */,
 				113F06B61E7966A900E7D74F /* UIImage+AlamofireImage.swift in Sources */,
 				11D428AB1E66BFA2009F3763 /* DCPlaceholderTextView.swift in Sources */,
 				1132A4FA1EDEF13E00E0B2CF /* PayUuidResponseModel.swift in Sources */,
@@ -2056,6 +2066,7 @@
 				11D428781E66BFA2009F3763 /* AES+Foundation.swift in Sources */,
 				1199BC321EC099BD0006E545 /* MyColors.swift in Sources */,
 				11D428961E66BFA2009F3763 /* String+Extension.swift in Sources */,
+				11FA8EC81F1C8BCD00DF589B /* PopupRequestModel.swift in Sources */,
 				110EB5391E9A404F00431534 /* TabBarController.swift in Sources */,
 				114F5D791EB5D23800FAEB6B /* FilterCollectionViewCell.swift in Sources */,
 				11D428BF1E66BFA3009F3763 /* CAMediaTimingFunction+AdditionalEquations.m in Sources */,
@@ -2096,6 +2107,7 @@
 				11D428C61E66BFA3009F3763 /* DesignableButton.swift in Sources */,
 				113F06AD1E7966A900E7D74F /* AFIError.swift in Sources */,
 				11D428C41E66BFA3009F3763 /* AutoTextView.swift in Sources */,
+				113B0DF01F163FA900C177F7 /* DatePickerDialog.swift in Sources */,
 				11D428681E66BFA2009F3763 /* CFB.swift in Sources */,
 				117671DE1EB0B98B00F8D41F /* PayListRequestModel.swift in Sources */,
 				11D428BC1E66BFA3009F3763 /* CAAnimation+Blocks.m in Sources */,

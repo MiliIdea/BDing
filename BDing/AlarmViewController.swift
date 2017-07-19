@@ -662,7 +662,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 
                 for obj in (GlobalFields.BEACON_LIST_DATAS?[self.lazyLoaded...end])! {
                     
-                    let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100), customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount ?? "%0", tell: obj.customer_tell ?? "" ,address: obj.customer_address ?? "" , text: obj.text ?? "" ,workTime: obj.customer_work_time ?? "" ,website: obj.cusomer_web ?? "" ,customerBigImages: obj.url_pic, categoryID: obj.category_id)
+                    let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100), customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount ?? "%0", tell: obj.customer_tell ?? "" ,address: obj.customer_address ?? "" , text: obj.text ?? "" ,workTime: obj.customer_work_time ?? "" ,website: obj.cusomer_web ?? "" ,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code)
                     
                     if(currentLocation.coordinate.latitude != 0){
                         

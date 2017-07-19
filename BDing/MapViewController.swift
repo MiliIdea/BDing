@@ -166,11 +166,11 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
                         
                         if(result == nil){
                             
-                            self.performSegue(withIdentifier: "mapDetailSegue", sender: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerDiscountValue: obj.discount! + "تا", tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic, categoryID: obj.category_id))
+                            self.performSegue(withIdentifier: "mapDetailSegue", sender: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerDiscountValue: obj.discount! + "تا", tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code))
                             
                         }else{
                             
-                            self.performSegue(withIdentifier: "mapDetailSegue", sender: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: result ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount! + "تا", tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic, categoryID: obj.category_id))
+                            self.performSegue(withIdentifier: "mapDetailSegue", sender: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: result ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount! + "تا", tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code))
                             
                         }
 
@@ -476,7 +476,7 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
     
     var arViewController: ARViewController!
     
-    @IBAction func showARController(_ sender: Any) {
+    @IBAction func showARButtonPressed(_ sender: Any) {
         
         arViewController = ARViewController()
         arViewController.dataSource = self
@@ -508,6 +508,9 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
         
         self.present(arViewController, animated: true, completion: nil)
         
+        
+    }
+    @IBAction func showARController(_ sender: Any) {
         
     }
     

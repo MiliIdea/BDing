@@ -14,6 +14,8 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
     
     @IBOutlet weak var navigation: UINavigationBar!
     
+    @IBOutlet weak var loading: UIActivityIndicatorView!
+    
     var coupons : [MyCouponListData]? = [MyCouponListData]()
     
     var couponsPrePics : [UIImage?]? = nil
@@ -23,6 +25,10 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loading.hidesWhenStopped = true;
+        loading.activityIndicatorViewStyle  = UIActivityIndicatorViewStyle.gray;
+        loading.startAnimating()
 
         self.automaticallyAdjustsScrollViewInsets = false
         table.contentInset = UIEdgeInsets.zero
@@ -60,6 +66,9 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
         return coupons!.count
     }
 
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        loading.stopAnimating()
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "couponCell", for: indexPath) as! CouponTableViewCell
@@ -71,6 +80,10 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
         cell.discountLabel.text = data.discount
         
         cell.detailLabel.text = data.coupon_code
+        
+        cell.dingView.alpha = 0
+        
+        cell.detailLabel.frame.origin.x = cell.dingView.frame.origin.x + cell.dingView.frame.width - cell.detailLabel.frame.width
         
         if((couponsPrePics?.count)! < indexPath.row + 1 || couponsPrePics?[indexPath.row] == nil){
             

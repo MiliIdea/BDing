@@ -222,50 +222,16 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                 
             }else{
                 
-                var im: UIImage? = loadImage(picModel: dataCell2.image!)
-                
-                if(im != nil){
+                LoadPicture().proLoad(view: cell2?.iconView, picModel: dataCell2.image!){ resImage in
+                 
+                    dataCell2.preImage = resImage
                     
-                    im = im?.imageWithColor(tintColor: UIColor.white)
-                    
-                    dataCell2.preImage = im
-                    
-                    cell2?.iconView.image = im
+                    cell2?.iconView.image = resImage
                     
                     cell2?.iconView.contentMode = UIViewContentMode.scaleAspectFit
                     
-                }else{
-                    
-                    request("http://"+(dataCell2.image?.url)! ,method: .post ,parameters: BeaconPicRequestModel(CODE: dataCell2.image?.code, FILE_TYPE: dataCell2.image?.file_type).getParams(), encoding : JSONEncoding.default).responseJSON { response in
-                        
-                        if let image = response.result.value {
-                            
-                            let obj = PicDataModel.init(json: image as! JSON)
-                            
-                            let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
-                            
-                            var coding: String = (dataCell2.image?.url)!
-                            
-                            coding.append((dataCell2.image?.code)!)
-                            
-                            SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
-                            
-                            self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                            
-                            var pic = UIImage(data: imageData as! Data)
-                            
-                            pic = pic?.imageWithColor(tintColor: UIColor.white)
-                            
-                            dataCell2.preImage = pic
-                            
-                            cell2?.iconView.image = pic
-                            
-                            cell2?.iconView.contentMode = UIViewContentMode.scaleAspectFit
-                            
-                        }
-                    }
-                    
                 }
+                
                 
             }
             
@@ -339,75 +305,26 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                 
             }else {
                 
-                let im : UIImage? = loadImage(picModel: sections[getSectionIndex(row: indexPath.row)].image!)
-                
-                if(im != nil){
+                if (sections[getSectionIndex(row: indexPath.row)].image?.url != nil){
                     
-                    let myL = CALayer()
-                    
-                    let myI = im?.imageWithColor(tintColor: UIColor.white)
-                    
-                    self.sections[self.getSectionIndex(row: indexPath.row)].preImage = myI
-                    
-                    let rect = myCell!.imageViewCell1.bounds
-                    
-                    myL.frame = CGRect(x: rect.minX + rect.width * 0.25, y: rect.minY + rect.height * 0.25, width: rect.width * 0.5, height: rect.height * 0.5)
-                    
-                    myL.contents = myI?.cgImage
-                    
-                    myCell?.imageViewCell1.layer.addSublayer(myL)
-                    
-                    myCell?.imageViewCell1.contentMode = UIViewContentMode.scaleAspectFit
-                    
-                } else if (sections[getSectionIndex(row: indexPath.row)].image?.url != nil){
-                    
-                    var tempCode = sections[getSectionIndex(row: indexPath.row)].image?.url
-                    
-                    tempCode?.append((sections[getSectionIndex(row: indexPath.row)].image?.code)!)
-                    
-                    let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
-                    
-                    if(result == nil){
+                    LoadPicture().proLoad(view: myCell!.imageViewCell1, picModel: (sections[getSectionIndex(row: indexPath.row)].image)!){resImage in
                         
-                        request("http://"+(sections[getSectionIndex(row: indexPath.row)].image?.url)! ,method: .post ,parameters: BeaconPicRequestModel(CODE: sections[getSectionIndex(row: indexPath.row)].image?.code, FILE_TYPE: sections[getSectionIndex(row: indexPath.row)].image?.file_type).getParams(), encoding : JSONEncoding.default).responseJSON { response in
-                            
-                            if let image = response.result.value {
-                                
-                                let obj = PicDataModel.init(json: image as! JSON)
-                                
-                                let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
-                                
-                                var coding: String = (self.sections[self.getSectionIndex(row: indexPath.row)].image?.url)!
-                                
-                                coding.append((self.sections[self.getSectionIndex(row: indexPath.row)].image?.code)!)
-                                
-                                SaveAndLoadModel().save(entityName: "IMAGE", datas: ["imageCode": coding.md5() , "imageData": obj?.data!])
-                                
-                                self.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
-                                
-                                //                                         set image layer
-                                
-                                let myLayer = CALayer()
-                                
-                                let pic = UIImage(data: imageData as! Data)
-                                
-                                let myImage = pic?.imageWithColor(tintColor: UIColor.white)
-                                
-                                self.sections[self.getSectionIndex(row: indexPath.row)].preImage = myImage
-                                
-                                let rect = myCell!.imageViewCell1.bounds
-                                
-                                myLayer.frame = CGRect(x: rect.minX + rect.width * 0.25, y: rect.minY + rect.height * 0.25, width: rect.width * 0.5, height: rect.height * 0.5)
-                                
-                                myLayer.contents = myImage?.cgImage
-                                
-                                myCell?.imageViewCell1.layer.addSublayer(myLayer)
-                                
-                                myCell?.imageViewCell1.contentMode = UIViewContentMode.scaleAspectFit
-                                
-                            }
-                            
-                        }
+                        let myLayer = CALayer()
+                        
+                        let myImage = resImage.imageWithColor(tintColor: UIColor.white)
+                        
+                        self.sections[self.getSectionIndex(row: indexPath.row)].preImage = myImage
+                        
+                        let rect = myCell!.imageViewCell1.bounds
+                        
+                        myLayer.frame = CGRect(x: rect.minX + rect.width * 0.25, y: rect.minY + rect.height * 0.25, width: rect.width * 0.5, height: rect.height * 0.5)
+                        
+                        myLayer.contents = myImage.cgImage
+                        
+                        myCell?.imageViewCell1.layer.addSublayer(myLayer)
+                        
+                        myCell?.imageViewCell1.contentMode = UIViewContentMode.scaleAspectFit
+                        
                     }
                 }
             }
@@ -422,38 +339,38 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
     }
 
     
-    
-    func loadImage(picModel: PicModel) -> UIImage?{
-        
-        var tempCode = picModel.url
-        
-        tempCode?.append((picModel.code)!)
-        
-        let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
-        
-        if(result != nil){
-            
-            if self.cache.object(forKey: tempCode?.md5() as AnyObject) != nil {
-                
-                return UIImage(data: self.cache.object(forKey: tempCode?.md5() as AnyObject) as! Data)!
-                
-            }else{
-        
-                let imageData = NSData(base64Encoded: result!, options: .ignoreUnknownCharacters)
-                
-                self.cache.setObject(imageData!, forKey: tempCode?.md5() as AnyObject)
-                
-                return UIImage(data: imageData as! Data)!
-                
-            }
-        
-        }else{
-            
-            return nil
-            
-        }
-    
-    }
+//    
+//    func loadImage(picModel: PicModel) -> UIImage?{
+//        
+//        var tempCode = picModel.url
+//        
+//        tempCode?.append((picModel.code)!)
+//        
+//        let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
+//        
+//        if(result != nil){
+//            
+//            if self.cache.object(forKey: tempCode?.md5() as AnyObject) != nil {
+//                
+//                return UIImage(data: self.cache.object(forKey: tempCode?.md5() as AnyObject) as! Data)!
+//                
+//            }else{
+//        
+//                let imageData = NSData(base64Encoded: result!, options: .ignoreUnknownCharacters)
+//                
+//                self.cache.setObject(imageData!, forKey: tempCode?.md5() as AnyObject)
+//                
+//                return UIImage(data: imageData as! Data)!
+//                
+//            }
+//        
+//        }else{
+//            
+//            return nil
+//            
+//        }
+//    
+//    }
     
 
     
@@ -1039,7 +956,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                                             
                                         }
                                         
-                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:UIImage.init(named: "default") ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0", customerDiscountValue: i.discount!, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time ?? "" , website: i.cusomer_web!,customerBigImages: i.url_pic , categoryID: i.category_id)
+                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:UIImage.init(named: "default") ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0", customerDiscountValue: i.discount!, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time ?? "" , website: i.cusomer_web!,customerBigImages: i.url_pic , categoryID: i.category_id, beaconCode : i.beacon_code)
                                         
                                         if(currentLocation.coordinate.latitude != 0){
                                             
@@ -1127,7 +1044,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                                             
                                         }
                                         
-                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:UIImage.init(named: "default") ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0", customerDiscountValue: i.discount!, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic, categoryID: i.category_id)
+                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:UIImage.init(named: "default") ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0", customerDiscountValue: i.discount!, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic, categoryID: i.category_id, beaconCode : i.beacon_code)
                                         nextVc.customerHomeTableCells.append(a)
                                         
                                     }

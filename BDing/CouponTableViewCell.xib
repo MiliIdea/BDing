@@ -76,17 +76,26 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="hala ba ma..." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v3T-kO-fRW">
-                        <rect key="frame" x="112" y="37" width="132" height="21"/>
+                        <rect key="frame" x="96" y="37" width="132" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="13"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5TB-Hl-dtl" customClass="SVGView" customModule="Macaw">
+                        <rect key="frame" x="230" y="43" width="10" height="10"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="fileName" value="ding"/>
+                        </userDefinedRuntimeAttributes>
+                    </view>
                 </subviews>
             </tableViewCellContentView>
             <connections>
                 <outlet property="couponImage" destination="Uqh-I8-9Cy" id="eL3-sB-YxN"/>
                 <outlet property="detailLabel" destination="v3T-kO-fRW" id="cxr-33-4KH"/>
+                <outlet property="dingView" destination="5TB-Hl-dtl" id="MFi-XJ-Bxw"/>
                 <outlet property="discountLabel" destination="w7Q-wX-mPK" id="ZuM-ks-aRz"/>
                 <outlet property="titleLabel" destination="xjP-mQ-bc3" id="op9-cM-xgZ"/>
             </connections>

@@ -23,7 +23,6 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
         
         loading.hidesWhenStopped = true;
         loading.activityIndicatorViewStyle  = UIActivityIndicatorViewStyle.gray;
-        
         loading.startAnimating()
         
         self.table.register(UINib(nibName: "CouponTableViewCell", bundle: nil), forCellReuseIdentifier: "couponCell")
@@ -65,6 +64,12 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
         
         cell.detailLabel.text = coupons?[indexPath.row].coin
         
+        if(cell.detailLabel.text == "" || cell.detailLabel.text == nil){
+            
+            cell.detailLabel.text = "0"
+            
+        }
+        
         cell.discountLabel.text = coupons?[indexPath.row].discount
         
         LoadPicture().proLoad(view: cell.couponImage,picType: "coupon" , picModel: (coupons?[indexPath.row].url_pic)!){ resImage in
@@ -78,6 +83,10 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return self.view.frame.width * 7 / 32
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        loading.stopAnimating()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
