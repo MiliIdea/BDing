@@ -91,7 +91,7 @@
                                 <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" alpha="0.10000000000000001" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="intro_logo" translatesAutoresizingMaskIntoConstraints="NO" id="3nY-MY-jT6">
+                                    <imageView userInteractionEnabled="NO" alpha="0.10000000000000001" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Splash" translatesAutoresizingMaskIntoConstraints="NO" id="3nY-MY-jT6">
                                         <rect key="frame" x="55" y="121" width="211" height="209"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </imageView>
@@ -2016,7 +2016,7 @@
                                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     </imageView>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="سکه" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MlM-bp-d5Q">
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="دینگ" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MlM-bp-d5Q">
                                                                         <rect key="frame" x="46" y="9" width="34" height="21"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="9"/>
@@ -4333,6 +4333,7 @@
     </scenes>
     <resources>
         <image name="Semicircular" width="1192" height="73"/>
+        <image name="Splash" width="531" height="501"/>
         <image name="arrow-right 18" width="18" height="18"/>
         <image name="bdingtitlelogo" width="109" height="19"/>
         <image name="default" width="500" height="400"/>
@@ -4377,9 +4378,9 @@
         <image name="web 18" width="18" height="18"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="AaG-9h-TNg"/>
-        <segue reference="uE8-QC-ho6"/>
+        <segue reference="frM-lF-7vc"/>
         <segue reference="gaH-hZ-POq"/>
+        <segue reference="uE8-QC-ho6"/>
         <segue reference="c2r-xI-204"/>
     </inferredMetricsTieBreakers>
 </document>

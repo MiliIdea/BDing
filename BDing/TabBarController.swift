@@ -112,6 +112,12 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
         
         self.tabBar.items?[1].badgeValue = String(count)
         
+        if(count == 0){
+            
+            self.tabBar.items?[1].badgeValue = nil
+            
+        }
+        
     }
 
 }

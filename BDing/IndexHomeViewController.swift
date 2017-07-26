@@ -517,6 +517,12 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         
         self.tabBarController?.tabBar.items?[1].badgeValue = String(count)
         
+        if(count == 0){
+            
+            self.tabBarController?.tabBar.items?[1].badgeValue  = nil
+            
+        }
+        
     }
     
     @IBAction func changeView(_ sender: Any) {

@@ -279,7 +279,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         var im : UIImage? = nil
         
         if(loadProfilePicAsDB() == nil){
-            print(GlobalFields.PROFILEDATA?.url_pic)
+            
             request("http://"+(GlobalFields.PROFILEDATA?.url_pic)! , method: .post , parameters: ProfileRequestModel().getParams(), encoding: JSONEncoding.default).responseJSON { response in
                 print()
                 
@@ -296,11 +296,11 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         
                         im = UIImage(data: imageData as! Data)!
                         
+                        self.profilePicButton.setBackgroundImage(im?.af_imageAspectScaled(toFill: self.profilePicButton.frame.size), for: .normal)
+                        
                         self.profilePicButton.contentMode = UIViewContentMode.scaleAspectFill
                         
-                        self.profilePicButton.setBackgroundImage(im, for: .normal)
-                        
-                        self.backgroundProfilePic.image = im
+                        self.backgroundProfilePic.image = im?.af_imageAspectScaled(toFill: self.backgroundProfilePic.frame.size)
                         
                         self.backgroundProfilePic.contentMode = UIViewContentMode.scaleAspectFill
                         
@@ -323,11 +323,11 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
             
             let im : UIImage = loadProfilePicAsDB()!
             
+            self.profilePicButton.setBackgroundImage(im.af_imageAspectScaled(toFill: self.profilePicButton.frame.size), for: .normal)
+            
             self.profilePicButton.contentMode = UIViewContentMode.scaleAspectFill
             
-            self.profilePicButton.setBackgroundImage(im, for: .normal)
-            
-            self.backgroundProfilePic.image = im
+            self.backgroundProfilePic.image = im.af_imageAspectScaled(toFill: self.backgroundProfilePic.frame.size)
             
             self.backgroundProfilePic.contentMode = UIViewContentMode.scaleAspectFill
             
@@ -599,6 +599,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         psWH.y = profilePicEdge
         
         myAnimateWithScroll(view: profilePicButton, goalXY: pgXY, startXY: psXY, goalWH: pgWH, startWH: psWH , fontSG: pgXY)
+        
+        self.profilePicButton.contentMode = UIViewContentMode.scaleAspectFill
         
         // Name and Coin
         
@@ -1278,9 +1280,9 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         
                         self.profilePicButton.contentMode = UIViewContentMode.scaleAspectFill
                         
-                        self.profilePicButton.setBackgroundImage(pickedImage, for: .normal)
+                        self.profilePicButton.setBackgroundImage(pickedImage.af_imageAspectScaled(toFill: self.profilePicButton.frame.size), for: .normal)
                         
-                        self.backgroundProfilePic.image = pickedImage
+                        self.backgroundProfilePic.image = pickedImage.af_imageAspectScaled(toFill: self.backgroundProfilePic.frame.size)
                         
                         self.backgroundProfilePic.contentMode = UIViewContentMode.scaleAspectFill
                         

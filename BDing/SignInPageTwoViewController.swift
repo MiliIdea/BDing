@@ -125,7 +125,9 @@ class SignInPageTwoViewController: UIViewController {
         animationView?.play()
         
         request(URLs.signInUrl , method: .post , parameters: s.getParams(), encoding: JSONEncoding.default).responseJSON { response in
-            print()
+            print(response)
+            print(String(describing: response.debugDescription))
+            print(String(describing: response.description))
             
             if let JSON = response.result.value {
                 

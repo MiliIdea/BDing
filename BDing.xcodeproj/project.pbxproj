@@ -282,8 +282,8 @@
 		11FDEBB31EAC92C1002E999E /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FDEBB21EAC92C1002E999E /* Reachability.swift */; };
 		11FDEBB51EACB625002E999E /* GetBeaconRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FDEBB41EACB625002E999E /* GetBeaconRequestModel.swift */; };
 		11FE15F01EF51AB000B8AC38 /* ding2.svg in Resources */ = {isa = PBXBuildFile; fileRef = 11FE15EF1EF51AB000B8AC38 /* ding2.svg */; };
-		4D5FB47FDD39DE9EBB93554F /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED65191AE6B9F9004DA954 /* Pods_BDing.framework */; };
 		5C65055DE2496E5B5DF9FCA5 /* Pods_BDingUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBFBC709538EF38D5F97E397 /* Pods_BDingUITests.framework */; };
+		8B599DBCAF3A44B1E938AF36 /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED65191AE6B9F9004DA954 /* Pods_BDing.framework */; };
 		9B590B220CE391E6E3DF01F6 /* Pods_BDingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB1DEBF668C472A761E76D2D /* Pods_BDingTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -706,7 +706,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D5FB47FDD39DE9EBB93554F /* Pods_BDing.framework in Frameworks */,
+				8B599DBCAF3A44B1E938AF36 /* Pods_BDing.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

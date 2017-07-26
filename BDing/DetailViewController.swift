@@ -432,7 +432,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                 print(SetCoinRequestModel(CODE: self.cell?.customerImage?.code).getParams())
                 
                 request(URLs.setCoin , method: .post , parameters: SetCoinRequestModel(CODE: self.cell?.customerImage?.code).getParams(), encoding: JSONEncoding.default).responseJSON { response in
-                    print()
+                    print(response)
                     
                     if let JSON = response.result.value {
                         
@@ -866,7 +866,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     
     @IBAction func share(_ sender: Any) {
         
-        let myShare = "الان این تخفیف فوق العاده رو روی اپلیکیشن BDING پیدا کردم، اگر تو هم همچین تخفیف هایی میخوای اپلیکیشن رو دانلود کن! \n" + self.textView.text
+        let myShare = "الان این تخفیف فوق العاده رو روی اپلیکیشن BDING پیدا کردم، اگر تو هم همچین تخفیف هایی میخوای اپلیکیشن رو دانلود کن! \n" + self.textView.text + "\nنسخه اندروید نرم افزار بی دینگ \nhttps://play.google.com/store/apps/details?id=bding.ir.mycity \nنسخه ios \nhttps://itunes.apple.com/us/app/bding/id1246371771?mt=8 \n\nwww.bding.ir\n"
         
         let image: UIImage = backgroundPicView.image!
         

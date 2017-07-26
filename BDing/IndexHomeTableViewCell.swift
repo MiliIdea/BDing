@@ -113,6 +113,7 @@ class IndexHomeTableViewCell: UITableViewCell {
         self.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFill
         self.titleTop.constant = 5
         self.titleTr.constant = self.imgW.constant + 8
+        self.titleW.constant = self.viewW.constant - imgW.constant - 5
         self.categoryThumbnailTr.constant = self.titleTr.constant
         self.nameTr.constant = self.categoryThumbnailTr.constant + self.categoryThumbnailW.constant + 2
         
@@ -151,8 +152,10 @@ class IndexHomeTableViewCell: UITableViewCell {
         imgW.constant = self.frame.width
         
         customerThumbnail.contentMode = UIViewContentMode.scaleAspectFill
+        self.titleW.constant = self.viewW.constant - self.titleTr.constant - 5
         titleTop.constant = imgH.constant + 8
         titleTr.constant = 10
+        self.titleW.constant = self.viewW.constant - self.titleTr.constant - 10
         categoryThumbnailTr.constant = titleTr.constant
         nameTr.constant = categoryThumbnailTr.constant + categoryThumbnailW.constant + 2
         categoryThumbnailB.constant = (viewH.constant - imgH.constant) / 2 - categoryThumbnailW.constant / 2

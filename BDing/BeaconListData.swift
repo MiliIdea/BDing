@@ -107,7 +107,6 @@ class BeaconListData : Decodable{
         
         self.beacon_code = "beacon_code" <~~ json
         
-        
     }
     
 }

@@ -412,6 +412,8 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         
         animationView?.play()
         
+        self.view.isUserInteractionEnabled = false
+        
         request(URLs.signUpUrl , method: .post , parameters: m.getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
             
@@ -422,6 +424,8 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
                 if(SignUpResponseModel.init(json: JSON as! JSON).code == "200"){
                     
                     let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                    
+                    self.view.isUserInteractionEnabled = true
                     
                     let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ActivationCodeViewController") as! ActivationCodeViewController
                     
@@ -438,6 +442,8 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
                 }else if(SignUpResponseModel.init(json: JSON as! JSON).code == "501"){
                     
                     self.animationView?.pause()
+                    
+                    self.view.isUserInteractionEnabled = true
                     
                     self.animationView?.alpha = 0
                     

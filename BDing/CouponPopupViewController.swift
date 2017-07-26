@@ -152,7 +152,7 @@ class CouponPopupViewController: UIViewController {
     
     @IBAction func share(_ sender: Any) {
         
-        let myShare = "الان این تخفیف فوق العاده رو روی اپلیکیشن BDING پیدا کردم، اگر تو هم همچین تخفیف هایی میخوای اپلیکیشن رو دانلود کن! \n" + self.couponDescription.text
+        let myShare = "الان این تخفیف فوق العاده رو روی اپلیکیشن BDING پیدا کردم، اگر تو هم همچین تخفیف هایی میخوای اپلیکیشن رو دانلود کن! \n" + self.couponDescription.text + "\nنسخه اندروید نرم افزار بی دینگ \nhttps://play.google.com/store/apps/details?id=bding.ir.mycity \nنسخه ios \nhttps://itunes.apple.com/us/app/bding/id1246371771?mt=8 \n\nwww.bding.ir\n"
         
         let image: UIImage = self.couponImage.image!
         

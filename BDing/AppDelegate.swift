@@ -110,12 +110,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        let notification = UILocalNotification()
-        notification.fireDate = Date()
-        notification.alertBody = "WillTerminate!"
-        notification.alertAction = "ok"
-        notification.soundName = UILocalNotificationDefaultSoundName
-        UIApplication.shared.presentLocalNotificationNow(notification)
         
         locationManager.startMonitoringSignificantLocationChanges()
         
@@ -152,9 +146,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
             checkDB2(beacon: b, beacon2_db: SaveAndLoadModel().load(entity: "BEACON")!)
             
         }
-        
-        print("ranging")
-        
         
     }
 
