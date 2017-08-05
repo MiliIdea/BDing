@@ -59,10 +59,12 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
             i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "455a64") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: CGFloat(8))!], for: .selected)
             i.image =  i.image?.imageWithColor(tintColor: UIColor.init(hex: "bdbdbd")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
             i.selectedImage = i.image?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+            i.imageInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
+            
             
         }
         
-        updateBadgeVlue()
+        updateBadgeValue()
         
     }
     
@@ -96,13 +98,13 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
     }
     
 
-    func updateBadgeVlue(){
+    func updateBadgeValue(){
         
         var count = 0
         
         for obj in db.load(entity: "BEACON")! {
             
-            if(obj.value(forKey: "isRemoved") as! Bool == false && obj.value(forKey: "isSeen") as! Bool == false){
+            if(obj.value(forKey: "isRemoved") as! Bool == false && obj.value(forKey: "isSeen") as! Bool == false && obj.value(forKey: "beaconDataJSON") != nil ){
                 
                 count += 1
                 

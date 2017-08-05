@@ -236,6 +236,10 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
         discount.text = data.customerDiscountValue
         
+        if(discount.text == "0" || discount.text == "تا" || discount.text == "" || discount.text == "تا0"){
+            discount.text = "-"
+        }
+        
         textView.text = data.text
         
         nowIsOpen.text = "baz ast"
@@ -508,7 +512,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
         for obj in SaveAndLoadModel().load(entity: "BEACON")! {
             
-            if(obj.value(forKey: "isRemoved") as! Bool == false && obj.value(forKey: "isSeen") as! Bool == false){
+            if(obj.value(forKey: "isRemoved") as! Bool == false && obj.value(forKey: "isSeen") as! Bool == false && obj.value(forKey: "beaconDataJSON") != nil){
                 
                 count += 1
                 
@@ -516,8 +520,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
             
         }
         
-        self.tabBarController?.tabBar.items?[1].badgeValue = String(count)
-        
+        self.tabBarController?.tabBar.items?[1].badgeValue = String(count)        
     }
     
     
@@ -783,61 +786,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
         
     }
-    
-    
-    
-//    
-//    
-//    
-//    func loadImage(picModel: PicModel) -> UIImage?{
-//        
-//        var tempCode = picModel.url
-//        
-//        tempCode?.append((picModel.code)!)
-//        
-//        let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
-//        
-//        if(result != nil){
-//            
-//            if self.cache.object(forKey: tempCode?.md5() as AnyObject) != nil {
-//                
-//                return UIImage(data: self.cache.object(forKey: tempCode?.md5() as AnyObject) as! Data)!
-//                
-//            }else{
-//                
-//                let imageData = NSData(base64Encoded: result!, options: .ignoreUnknownCharacters)
-//                
-//                self.cache.setObject(imageData!, forKey: tempCode?.md5() as AnyObject)
-//                
-//                return UIImage(data: imageData as! Data)!
-//                
-//            }
-//            
-//        }else{
-//            
-//            return nil
-//            
-//        }
-//        
-//    }
-//    
-//    
-//    func isThereThisPicInDB (code: String) -> String?{
-//        
-//        for i in SaveAndLoadModel().load(entity: "IMAGE")!{
-//            
-//            if(i.value(forKey: "imageCode") as! String == code){
-//                
-//                return i.value(forKey: "imageData") as! String
-//                
-//            }
-//            
-//        }
-//        
-//        return nil
-//        
-//    }
-    
+ 
     @IBAction func call(_ sender: Any) {
         
         guard let number = URL(string: "telprompt://" + (phone.titleLabel?.text)!) else { return }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Lottie
 
 class SettingViewController: UIViewController , UIPickerViewDataSource, UIPickerViewDelegate , UITextFieldDelegate{
     
@@ -167,9 +168,33 @@ class SettingViewController: UIViewController , UIPickerViewDataSource, UIPicker
         
     }
     
+    var animationView : LOTAnimationView = LOTAnimationView.init()
+    
     @IBAction func confirmNewPass(_ sender: Any) {
         
         if(newPass.text == reNewPass.text){
+            
+            animationView = LOTAnimationView(name: "finall")
+            
+            animationView.frame.size.height = 50
+            
+            animationView.frame.size.width = 50
+            
+            animationView.frame.origin.y = self.view.frame.height / 2 - 25
+            
+            animationView.frame.origin.x = self.view.frame.width / 2 - 25
+            
+            animationView.contentMode = UIViewContentMode.scaleAspectFit
+            
+            animationView.alpha = 1
+            
+            self.view.addSubview(animationView)
+            
+            animationView.loopAnimation = true
+            
+            animationView.play()
+            
+            self.view.isUserInteractionEnabled = false
             
             request(URLs.changePassword , method: .post , parameters: ChangePasswordRequestModel.init(NEW_PASS: newPass.text, OLD_PASS: oldPass.text).getParams(), encoding: JSONEncoding.default).responseJSON { response in
                 print()
@@ -178,7 +203,11 @@ class SettingViewController: UIViewController , UIPickerViewDataSource, UIPicker
                 
                 if let JSON = response.result.value {
                     
+                    self.animationView.pause()
                     
+                    self.animationView.alpha = 0
+                    
+                    self.view.isUserInteractionEnabled = true
                     
                     print("JSON ----------SET NEW PASS----------->>>> " ,JSON)
                     //create my coupon response model

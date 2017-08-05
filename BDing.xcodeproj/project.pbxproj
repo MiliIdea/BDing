@@ -283,7 +283,7 @@
 		11FDEBB51EACB625002E999E /* GetBeaconRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FDEBB41EACB625002E999E /* GetBeaconRequestModel.swift */; };
 		11FE15F01EF51AB000B8AC38 /* ding2.svg in Resources */ = {isa = PBXBuildFile; fileRef = 11FE15EF1EF51AB000B8AC38 /* ding2.svg */; };
 		5C65055DE2496E5B5DF9FCA5 /* Pods_BDingUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBFBC709538EF38D5F97E397 /* Pods_BDingUITests.framework */; };
-		8B599DBCAF3A44B1E938AF36 /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED65191AE6B9F9004DA954 /* Pods_BDing.framework */; };
+		66306A8021E2EAE9D40747A6 /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED65191AE6B9F9004DA954 /* Pods_BDing.framework */; };
 		9B590B220CE391E6E3DF01F6 /* Pods_BDingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB1DEBF668C472A761E76D2D /* Pods_BDingTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -458,6 +458,8 @@
 		114F5D771EB5D23800FAEB6B /* FilterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterCollectionViewCell.swift; sourceTree = "<group>"; };
 		114F5D781EB5D23800FAEB6B /* FilterCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterCollectionViewCell.xib; sourceTree = "<group>"; };
 		115442BE1EDD47E800E5F3A4 /* ChangePasswordRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordRequestModel.swift; sourceTree = "<group>"; };
+		115689A21F30A70600673052 /* Pods_BDing.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_BDing.framework; path = "Pods/../build/Release-iphoneos/Pods_BDing.framework"; sourceTree = "<group>"; };
+		115689A41F30AB1900673052 /* Pods_BDing.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_BDing.framework; path = "Pods/../build/Release-iphoneos/Pods_BDing.framework"; sourceTree = "<group>"; };
 		115A30C61EAE25AF003A9104 /* CouponTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponTableViewCell.swift; sourceTree = "<group>"; };
 		115A30C71EAE25AF003A9104 /* CouponTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CouponTableViewCell.xib; sourceTree = "<group>"; };
 		115A30CA1EAE2801003A9104 /* MyCouponViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCouponViewController.swift; sourceTree = "<group>"; };
@@ -706,7 +708,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B599DBCAF3A44B1E938AF36 /* Pods_BDing.framework in Frameworks */,
+				66306A8021E2EAE9D40747A6 /* Pods_BDing.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -732,6 +734,8 @@
 		110B9DB11EC183E900F9BD02 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				115689A41F30AB1900673052 /* Pods_BDing.framework */,
+				115689A21F30A70600673052 /* Pods_BDing.framework */,
 				11B0BF651EC19415002867CB /* Lottie.framework */,
 				111FEFE41EC18B6F0020A2E5 /* Pods-BDing-frameworks.sh */,
 				110B9DB21EC183E900F9BD02 /* lottie-ios */,
@@ -2276,6 +2280,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = HFEU9M2B72;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Release-iphoneos",
+				);
 				INFOPLIST_FILE = BDing/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2291,6 +2299,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = HFEU9M2B72;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Release-iphoneos",
+				);
 				INFOPLIST_FILE = BDing/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

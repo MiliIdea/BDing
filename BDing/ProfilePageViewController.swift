@@ -11,7 +11,7 @@ import CoreLocation
 import CoreBluetooth
 import DLRadioButton
 import DynamicColor
-
+import Lottie
 
 class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelegate, UIScrollViewDelegate , UINavigationControllerDelegate , CLLocationManagerDelegate{
     
@@ -505,6 +505,18 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         coinValueStartXY.x = self.view.frame.width / 2 - w / 2  + coinIcon.frame.width + 5
 
         scrollViewDidScroll(self.scrollViewProfile)
+        
+//        for i in (self.tabBarController?.tabBar.items!)! {
+//            
+//            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "bdbdbd") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: CGFloat(8))!], for: .normal)
+//            //bdbdbd unselected color
+//            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "455a64") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: CGFloat(8))!], for: .selected)
+//            i.image =  i.image?.imageWithColor(tintColor: UIColor.init(hex: "bdbdbd")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+//            i.selectedImage = i.image?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+//            i.imageInsets = UIEdgeInsets.init(top: 6, left: 6, bottom: 6, right: 6)
+//            
+//            
+//        }
     }
     
 
@@ -731,6 +743,10 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         semicircularView.frame.size.height = heightOfSemiCircular * (myPercentage)
 
         profilePicButton.layer.cornerRadius = profilePicButton.frame.height * 0.5
+        
+        animationView.frame.origin.y = self.profilePicButton.frame.height / 2 - 15
+        
+        animationView.frame.origin.x = self.profilePicButton.frame.width / 2 - 15
 
     
     }
@@ -1216,6 +1232,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
     }
     
+    var animationView : LOTAnimationView = LOTAnimationView.init()
     
     @IBAction func setProfilePic(_ sender: Any) {
         
@@ -1267,6 +1284,26 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
             
+            animationView = LOTAnimationView(name: "finall")
+            
+            animationView.frame.size.height = 30
+            
+            animationView.frame.size.width = 30
+            
+            animationView.frame.origin.y = self.profilePicButton.frame.height / 2 - 15
+            
+            animationView.frame.origin.x = self.profilePicButton.frame.width / 2 - 15
+            
+            animationView.contentMode = UIViewContentMode.scaleAspectFit
+            
+            animationView.alpha = 1
+            
+            self.profilePicButton.addSubview(animationView)
+            
+            animationView.loopAnimation = true
+            
+            animationView.play()
+            
             request(URLs.userUpdate , method: .post , parameters: UserUpdateRequestModel.init(NAME: nil, FAMILY: nil, ATTRNAME: "pic", ATTRDATA: UIImagePNGRepresentation(pickedImage)!.base64EncodedString()).getParams(), encoding: JSONEncoding.default).responseJSON { response in
                 print()
                 
@@ -1277,6 +1314,10 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                     let obj = ProfileResponseModel.init(json: JSON as! JSON)
                     
                     if ( obj?.code == "200" ){
+                        
+                        self.animationView.pause()
+                        
+                        self.animationView.alpha = 0
                         
                         self.profilePicButton.contentMode = UIViewContentMode.scaleAspectFill
                         

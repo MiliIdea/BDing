@@ -135,6 +135,22 @@ class IndexHomeTableViewCell: UITableViewCell {
         self.customerThumbnail.frame.origin.y = 0
 //        })
         
+        if(customerCampaignDiscount.text == "0" || customerCampaignDiscount.text == "تا" || customerCampaignDiscount.text == "" || customerCampaignDiscount.text == "تا0"){
+            customerCampaignDiscount.alpha = 0
+            discountThumbnail.alpha = 0
+        }else{
+            customerCampaignDiscount.alpha = 1
+            discountThumbnail.alpha = 1
+        }
+        
+        if(customerCampaignCoin.text == "0" || customerCampaignCoin.text == ""){
+            customerCampaignCoin.alpha = 0
+            coinThumbnail.alpha = 0
+        }else{
+            customerCampaignCoin.alpha = 1
+            coinThumbnail.alpha = 1
+        }
+        
     }
     
     func setLast(screenWidth : CGFloat){
@@ -174,6 +190,22 @@ class IndexHomeTableViewCell: UITableViewCell {
         discountsB.constant = 0
         distancesB.constant = 0
         discountDistanceB.constant = 0
+        
+        if(customerCampaignDiscount.text == "0" || customerCampaignDiscount.text == "تا" || customerCampaignDiscount.text == ""){
+            customerCampaignDiscount.alpha = 0
+            discountThumbnail.alpha = 0
+        }else{
+            customerCampaignDiscount.alpha = 1
+            discountThumbnail.alpha = 1
+        }
+        
+        if(customerCampaignCoin.text == "0" || customerCampaignCoin.text == ""){
+            customerCampaignCoin.alpha = 0
+            coinThumbnail.alpha = 0
+        }else{
+            customerCampaignCoin.alpha = 1
+            coinThumbnail.alpha = 1
+        }
         
     }
     

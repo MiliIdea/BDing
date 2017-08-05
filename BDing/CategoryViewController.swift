@@ -82,7 +82,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
 
     @IBOutlet weak var loading: UIActivityIndicatorView!
     
-    
+    var windowHeight : CGFloat = 0
     
     override func viewDidAppear(_ animated: Bool) {
         
@@ -101,6 +101,8 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        windowHeight = self.view.frame.height
         
         tableViewCategory.dataSource = self
         
@@ -193,9 +195,11 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
             
             cell2?.labelViewCell2.text = dataCell2.name
             
-            let myImage2 = UIImage(named:"profile_pic")?.imageWithColor(tintColor: UIColor.white)
+            let myImage2 = UIImage(named:"Icon")?.imageWithColor(tintColor: UIColor.white)
             
             cell2?.iconView.image = myImage2
+            
+            cell2?.boarderView.frame.size.height = (cell2?.frame.height)!
             
             cell2?.setLayers(image: myImage2!)
             
@@ -207,7 +211,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                 print(getExpandedSection())
                 
                 setCurve(isLast: true, cell: cell2!)
-                
+
             }else{
                 
                 setCurve(isLast: false, cell: cell2!)
@@ -250,12 +254,6 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
             myCell?.imageViewToggle.tintColor = UIColor.lightGray
             
             myCell?.labelViewCell1.text = sections[getSectionIndex(row: indexPath.row)].name
-            
-//            myCell!.imageViewCell1.layer.zPosition = 2
-//            
-//            myCell!.imageViewCell1.frame.origin.y = 0
-//            
-//            myCell!.imageViewCell1.frame.size.height = 61
             
             DispatchQueue.main.async(execute: { () -> Void in
             myCell!.imageViewCell1.layer.addSublayer(self.setGradientLayer(myView: myCell!.imageViewCell1, color1: self.sections[self.getSectionIndex(row: indexPath.row)].color1 , color2: self.sections[self.getSectionIndex(row: indexPath.row)].color2))
@@ -337,52 +335,17 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
 
         
     }
-
-    
-//    
-//    func loadImage(picModel: PicModel) -> UIImage?{
-//        
-//        var tempCode = picModel.url
-//        
-//        tempCode?.append((picModel.code)!)
-//        
-//        let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
-//        
-//        if(result != nil){
-//            
-//            if self.cache.object(forKey: tempCode?.md5() as AnyObject) != nil {
-//                
-//                return UIImage(data: self.cache.object(forKey: tempCode?.md5() as AnyObject) as! Data)!
-//                
-//            }else{
-//        
-//                let imageData = NSData(base64Encoded: result!, options: .ignoreUnknownCharacters)
-//                
-//                self.cache.setObject(imageData!, forKey: tempCode?.md5() as AnyObject)
-//                
-//                return UIImage(data: imageData as! Data)!
-//                
-//            }
-//        
-//        }else{
-//            
-//            return nil
-//            
-//        }
-//    
-//    }
-    
-
+ 
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-        if(getExpandedSection() != -1 && indexPath.row > getExpandedSection() && indexPath.row < (getExpandedSection() + sections[getExpandedSection()].items.count) ){
-         
-            return UIScreen.main.bounds.height / 8 - 10
+        if(getExpandedSection() != -1 && indexPath.row > getExpandedSection() && indexPath.row <= (getExpandedSection() + sections[getExpandedSection()].items.count) ){
+            
+            return windowHeight / 8 - 10
             
         }else{
             
-            return UIScreen.main.bounds.height / 8
+            return windowHeight / 8
             
         }
         

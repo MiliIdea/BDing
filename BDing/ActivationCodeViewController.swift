@@ -383,7 +383,7 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
     
     func goNextView(){
         
-        if(self.profileBool && self.beaconBool && self.catBool && self.loginBool){
+        if(self.profileBool && !self.beaconBool && self.catBool && self.loginBool){
             
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             
@@ -449,28 +449,28 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
         
         lat = String(35.6329044)
         
-        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: nil, SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
-            print()
-            
-            if let JSON = response.result.value {
-                
-                print("JSON ----------BEACON----------->>>> ")
-                
-                let obj = BeaconListResponseModel.init(json: JSON as! JSON)
-                
-                if ( obj?.code == "200" ){
-                    
-                    GlobalFields.BEACON_LIST_DATAS = obj?.data
-                    
-                    self.beaconBool = true
-                    
-                    self.goNextView()
-                    
-                }
-                
-            }
-            
-        }
+//        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: nil, SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
+//            print()
+//            
+//            if let JSON = response.result.value {
+//                
+//                print("JSON ----------BEACON----------->>>> ")
+//                
+//                let obj = BeaconListResponseModel.init(json: JSON as! JSON)
+//                
+//                if ( obj?.code == "200" ){
+//                    
+//                    GlobalFields.BEACON_LIST_DATAS = obj?.data
+//                    
+//                    self.beaconBool = true
+//                    
+//                    self.goNextView()
+//                    
+//                }
+//                
+//            }
+//            
+//        }
         
         //get category
         

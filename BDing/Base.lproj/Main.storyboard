@@ -701,7 +701,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="(۱:۵۷)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="brC-eC-Ali">
                                 <rect key="frame" x="173" y="288" width="42" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="9"/>
                                 <color key="textColor" red="0.47319738389999999" green="0.58981982639999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -715,7 +715,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BGW-8U-7kx">
                                 <rect key="frame" x="214" y="288" width="93" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="9"/>
                                 <state key="normal" title="ارسال مجدد کد فعالسازی">
                                     <color key="titleColor" red="0.47319738389999999" green="0.58981982639999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
@@ -841,7 +841,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="IRANSansWeb-Light" family="IRANSansWeb" pointSize="15"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="miV-07-3mJ">
                                 <rect key="frame" x="16" y="202" width="288" height="1"/>
@@ -1042,14 +1042,14 @@
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="بازیابی رمزعبور" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SLv-Uy-ZZi">
                                         <rect key="frame" x="55" y="8" width="223" height="33"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="تلفن خود را وارد نمایید." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IHh-XS-VzF">
                                         <rect key="frame" x="55" y="39" width="223" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="14"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1057,7 +1057,7 @@
                                         <rect key="frame" x="9" y="76" width="269" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="15"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6QD-24-b5q">
@@ -1071,6 +1071,7 @@
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Agn-Cs-cWH">
                                         <rect key="frame" x="15" y="130" width="46" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="15"/>
                                         <state key="normal" title="تایید"/>
                                         <connections>
                                             <action selector="sendForgotUsername:" destination="xYF-6m-YiO" eventType="touchUpInside" id="sei-QQ-SeV"/>
@@ -1079,6 +1080,7 @@
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gjh-GU-cIx">
                                         <rect key="frame" x="77" y="130" width="46" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="15"/>
                                         <state key="normal" title="لغو">
                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1136,7 +1138,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2qE-Xa-Zhz">
-                                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                        <rect key="frame" x="0.0" y="64" width="320" height="456"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="backgroundColor" white="0.91907393930000003" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableView>
@@ -1208,7 +1210,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rrE-iN-7xe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6456" y="637"/>
+            <point key="canvasLocation" x="6455.625" y="636.97183098591552"/>
         </scene>
         <!--Category Page View Controller-->
         <scene sceneID="skP-xj-eD1">
@@ -1428,26 +1430,26 @@
                                             <outlet property="loading" destination="CmU-xI-WJ6" id="DH3-ar-40i"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell2" rowHeight="61" id="9E2-xE-t0h" customClass="CategoryTableViewCell2" customModule="BDing" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="98" width="320" height="61"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell2" rowHeight="60" id="9E2-xE-t0h" customClass="CategoryTableViewCell2" customModule="BDing" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="98" width="320" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9E2-xE-t0h" id="j3O-Ih-4Fg">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3X5-Er-uMl">
-                                                    <rect key="frame" x="6" y="-1.5" width="304" height="59.5"/>
+                                                    <rect key="frame" x="6" y="0.0" width="303.5" height="60"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="خوشمزه ها" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JRE-Pe-E4j">
-                                                            <rect key="frame" x="144" y="15" width="96" height="23.5"/>
+                                                            <rect key="frame" x="143.5" y="18" width="96" height="23.5"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Kn-16-t9d" customClass="DCCircleView" customModule="BDing" customModuleProvider="target">
-                                                            <rect key="frame" x="253.5" y="9" width="36" height="33.5"/>
+                                                            <rect key="frame" x="253" y="12.5" width="35.5" height="34.5"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES"/>
                                                             <color key="backgroundColor" red="0.69655577850355332" green="0.69655577850355332" blue="0.69655577850355332" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                             <userDefinedRuntimeAttributes>
@@ -1457,11 +1459,11 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </view>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="default" translatesAutoresizingMaskIntoConstraints="NO" id="ztd-f7-5V2">
-                                                            <rect key="frame" x="259" y="14" width="24.5" height="23.5"/>
+                                                            <rect key="frame" x="258" y="16.5" width="25" height="24"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES"/>
                                                         </imageView>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="174" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MrA-ew-gnU">
-                                                            <rect key="frame" x="11.5" y="15" width="30.5" height="23.5"/>
+                                                            <rect key="frame" x="11" y="17" width="31" height="23.5"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -1801,7 +1803,7 @@
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="6Je-j6-tHW">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </mapView>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FQe-ea-0Jy">
                                 <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -1820,14 +1822,6 @@
                                 <state key="normal" image="arrow-right 18"/>
                                 <connections>
                                     <action selector="backButton:" destination="nja-RF-iGT" eventType="touchUpInside" id="tIW-9f-EPc"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dba-U9-8kB">
-                                <rect key="frame" x="16" y="28" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="ic_language_48pt"/>
-                                <connections>
-                                    <action selector="showARButtonPressed:" destination="nja-RF-iGT" eventType="touchUpInside" id="XIW-5u-aYo"/>
                                 </connections>
                             </button>
                             <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BHL-M5-D8u" customClass="DCBorderedView" customModule="BDing" customModuleProvider="target">
@@ -4242,7 +4236,6 @@
                 <navigationController autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="Q3L-Tv-EyX" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <tabBarItem key="tabBarItem" title="من" image="ic_person_48pt" id="tA7-dd-F1q">
-                        <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-3"/>
                     </tabBarItem>
                     <toolbarItems/>
@@ -4265,7 +4258,6 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="ICS-F3-1NL" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="2" title="دسته بندی ها" image="ic_view_list_48pt" id="tBT-fn-ZBJ">
-                        <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-3"/>
                     </tabBarItem>
                     <toolbarItems/>
@@ -4287,7 +4279,6 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="cCv-Dp-Ley" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="3" title="خانه" image="ic_home_48pt" id="51E-6H-DDg">
-                        <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-3"/>
                     </tabBarItem>
                     <toolbarItems/>
@@ -4313,7 +4304,6 @@
                 <navigationController autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="c4P-iO-cQK" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" tag="1" title="پیام ها" image="ic_notifications_48pt" badgeValue="0" id="Mhh-wA-eeW">
-                        <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-3"/>
                     </tabBarItem>
                     <toolbarItems/>
@@ -4347,7 +4337,6 @@
         <image name="ic_close" width="24" height="24"/>
         <image name="ic_home_48pt" width="48" height="48"/>
         <image name="ic_keyboard_arrow_down_18pt" width="18" height="18"/>
-        <image name="ic_language_48pt" width="48" height="48"/>
         <image name="ic_launcher" width="96" height="96"/>
         <image name="ic_map_48pt" width="48" height="48"/>
         <image name="ic_notifications_48pt" width="48" height="48"/>
@@ -4378,9 +4367,9 @@
         <image name="web 18" width="18" height="18"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="frM-lF-7vc"/>
-        <segue reference="gaH-hZ-POq"/>
-        <segue reference="uE8-QC-ho6"/>
-        <segue reference="c2r-xI-204"/>
+        <segue reference="AaG-9h-TNg"/>
+        <segue reference="gtI-9i-NcA"/>
+        <segue reference="kvE-Sj-Bz5"/>
+        <segue reference="gfq-hU-8Nf"/>
     </inferredMetricsTieBreakers>
 </document>

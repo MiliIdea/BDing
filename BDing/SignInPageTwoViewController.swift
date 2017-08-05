@@ -234,29 +234,29 @@ class SignInPageTwoViewController: UIViewController {
         print("lat and long")
         print(lat)
         print(long)
-    
-        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
-            print()
-            
-            if let JSON = response.result.value {
-                
-                print("JSON ----------BEACON----------->>>> " , JSON)
-
-                let obj = BeaconListResponseModel.init(json: JSON as! JSON)
-                
-                if ( obj?.code == "200" ){
-                    
-                    GlobalFields.BEACON_LIST_DATAS = obj?.data
-                    
-                    self.beaconBool = true
-                    
-                    self.goNextView()
-                    
-                }
-                
-            }
-            
-        }
+//    
+//        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
+//            print()
+//            
+//            if let JSON = response.result.value {
+//                
+//                print("JSON ----------BEACON----------->>>> " , JSON)
+//
+//                let obj = BeaconListResponseModel.init(json: JSON as! JSON)
+//                
+//                if ( obj?.code == "200" ){
+//                    
+//                    GlobalFields.BEACON_LIST_DATAS = obj?.data
+//                    
+//                    self.beaconBool = true
+//                    
+//                    self.goNextView()
+//                    
+//                }
+//                
+//            }
+//            
+//        }
         
         //get category
         
@@ -312,7 +312,7 @@ class SignInPageTwoViewController: UIViewController {
     
     func goNextView(){
         
-        if(self.profileBool && self.beaconBool && self.catBool && self.loginBool){
+        if(self.profileBool && !self.beaconBool && self.catBool && self.loginBool){
             
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             
@@ -355,6 +355,25 @@ class SignInPageTwoViewController: UIViewController {
     
     @IBAction func sendForgotUsername(_ sender: Any) {
         
+        animationView = LOTAnimationView(name: "finall")
+        
+        animationView?.frame.size.height = 50
+        
+        animationView?.frame.size.width = 50
+        
+        animationView?.frame.origin.y = self.view.frame.height / 2 - 25
+        
+        animationView?.frame.origin.x = self.view.frame.width / 2 - 25
+        
+        animationView?.contentMode = UIViewContentMode.scaleAspectFit
+        
+        animationView?.alpha = 1
+        
+        self.view.addSubview(animationView!)
+        
+        animationView?.loopAnimation = true
+        
+        animationView?.play()
         
         request(URLs.forgotPassword , method: .post , parameters: ForgotpasswordRequestModel(USERNAME: userNameForgot.text).getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
@@ -370,6 +389,10 @@ class SignInPageTwoViewController: UIViewController {
                     self.view.endEditing(true)
                     
                     self.cansel("")
+                    
+                    self.animationView?.pause()
+                    
+                    self.animationView?.alpha = 0
                     
                 }
                 

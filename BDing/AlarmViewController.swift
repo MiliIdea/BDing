@@ -105,8 +105,6 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        MyFont().setFontForAllView(view: view)
-
         sortView.alpha = 0
         
         searchIsPressed = false
@@ -136,12 +134,36 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         self.clearButton.alpha = 0
         self.blurView.alpha = 0
         
+        if(view != nil){
+            
+            loading.frame(forAlignmentRect: (view?.frame)!)
+            
+            loading.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+            
+            view?.addSubview(loading)
+            
+            loading.hidesWhenStopped = true
+            
+            loading.frame.origin.x = (view?.frame.width)! / 2
+            
+            loading.frame.origin.y = (view?.frame.height)! / 2
+            
+        }
+        
+        loading.startAnimating()
+        doingSearch("first")
+        
+    }
+    
+    func firstLoad(){
+        MyFont().setFontForAllView(view: view)
+        
         var temp:[Bool] = [Bool]()
         
         for i in 0...(GlobalFields.CATEGORIES_LIST_DATAS?.count)! - 1 {
             
             temp.insert(false, at: i)
-    
+            
         }
         
         lastSearch = LastSearchStruct.init(isSelected: temp)
@@ -162,16 +184,16 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         collectionView.dataSource = self
         collectionView.delegate = self
-
+        
         
         ///======////
         rightTable.dataSource = self
         rightTable.delegate = self
-//        rightTable.register(UITableViewCell.self, forCellReuseIdentifier: "rightCell")
+        //        rightTable.register(UITableViewCell.self, forCellReuseIdentifier: "rightCell")
         
         leftTable.dataSource = self
         leftTable.delegate = self
-//        leftTable.register(UITableViewCell.self, forCellReuseIdentifier: "leftCell")
+        //        leftTable.register(UITableViewCell.self, forCellReuseIdentifier: "leftCell")
         
         self.rightTable.register(UINib(nibName: "IndexHomeTableViewCell", bundle: nil), forCellReuseIdentifier: "indexHomeTableCellID")
         
@@ -196,36 +218,18 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         self.searchTextField.addTarget(self, action: #selector(AlarmViewController.searchFieldChange), for: UIControlEvents.editingChanged)
         
-        if(view != nil){
-            
-            loading.frame(forAlignmentRect: (view?.frame)!)
-            
-            loading.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-            
-            view?.addSubview(loading)
-            
-            loading.hidesWhenStopped = true
-            
-            loading.frame.origin.x = (view?.frame.width)! / 2
-            
-            loading.frame.origin.y = (view?.frame.height)! / 2
-            
-        }
         
         userRefreshControl.triggerVerticalOffset = 100
         
         userRefreshControl.addTarget(self, action: #selector(AlarmViewController.loadHomeTable), for: UIControlEvents.valueChanged)
         
         self.rightTable.bottomRefreshControl = userRefreshControl
-     
+        
         rightTable.heroModifiers = [.cascade]
         
         leftTable.heroModifiers = [.cascade]
         
-//        newest("")
-
         changeColorOfSort(i: 2)
-        
         
         searchButtonView.setImage(searchButtonView.currentImage?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(.alwaysOriginal), for: .normal)
         
@@ -234,7 +238,6 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         mapButton.setImage(mapButton.currentImage?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(.alwaysOriginal), for: .normal)
         
         changeModeButton.setImage(changeModeButton.currentImage?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(.alwaysOriginal), for: .normal)
-        
     }
 
     
@@ -251,6 +254,17 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             self.leftTable.reloadData()
             
         }
+//        for i in (self.tabBarController?.tabBar.items!)! {
+//            
+//            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "bdbdbd") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: CGFloat(8))!], for: .normal)
+//            //bdbdbd unselected color
+//            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "455a64") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: CGFloat(8))!], for: .selected)
+//            i.image =  i.image?.imageWithColor(tintColor: UIColor.init(hex: "bdbdbd")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+//            i.selectedImage = i.image?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+//            i.imageInsets = UIEdgeInsets.init(top: 6, left: 6, bottom: 6, right: 6)
+//            
+//            
+//        }
     }
     
     
@@ -1043,14 +1057,16 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         var categoryList:[String] = [String]()
         
-        for j in 0...(self.isSearched.count - 1) {
-            
-            if(self.lastSearch?.isSelected[j] == true){
+        if(self.isSearched.count > 0){
+            for j in 0...(self.isSearched.count - 1) {
                 
-                categoryList.append((GlobalFields.CATEGORIES_LIST_DATAS?[j].category_code)!)
+                if(self.lastSearch?.isSelected[j] == true){
+                    
+                    categoryList.append((GlobalFields.CATEGORIES_LIST_DATAS?[j].category_code)!)
+                    
+                }
                 
             }
-            
         }
 
         self.lastSearch?.text = self.searchTextField.text!
@@ -1075,9 +1091,13 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                     
                     GlobalFields.BEACON_LIST_DATAS = obj?.data
                     
-                    for i in 0...(self.isSearched.count - 1) {
+                    if(self.isSearched.count > 0){
                         
-                        self.isSearched[i] = (self.lastSearch?.isSelected[i])!
+                        for i in 0...(self.isSearched.count - 1) {
+                            
+                            self.isSearched[i] = (self.lastSearch?.isSelected[i])!
+                            
+                        }
                         
                     }
                     
@@ -1114,6 +1134,29 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                         
                     }
                     
+                    if(sender is String){
+                        
+                        if((sender as! String) == "first"){
+                            self.sortView.alpha = 0
+                            
+                            self.searchIsPressed = false
+                            
+                            self.searchOrigin = self.doSearchButton.frame.origin.y
+                            self.searchView.frame.size.height = 0
+                            self.collectionView.frame.size.height = 0
+                            self.collectionView.alpha = 0
+                            self.doSearchButton.alpha = 0
+                            self.searchTextField.alpha = 0
+                            self.clearButton.alpha = 0
+                            self.blurView.alpha = 0
+                            self.firstLoad()
+                            self.hiddenSearchView()
+                            
+                            
+                        }
+                        
+                    }
+                    
                 }
                 
             }
@@ -1126,6 +1169,12 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     
     func isNewSeach(ls:[Bool]?) -> Bool{
+        
+        if(ls == nil){
+            
+            return false
+            
+        }
         
         for i in 0...(ls?.count)!-1 {
             

@@ -311,7 +311,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
     
     func goNextView(){
         
-        if(self.profileBool && self.beaconBool && self.catBool && self.loginBool){
+        if(self.profileBool && !self.beaconBool && self.catBool && self.loginBool){
             
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             
@@ -391,48 +391,48 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         
         print()
         
-        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
-            
-            if let JSON = response.result.value {
-                
-                print("JSON ----------BEACON----------->>>> " )
-                
-                let obj = BeaconListResponseModel.init(json: JSON as! JSON)
-                
-                if ( obj?.code == "200" ){
-                    
-                    print("JSON ----------BEACON----------->>>> " , JSON)
-                    
-                    let locManager = CLLocationManager()
-                    
-                    locManager.requestAlwaysAuthorization()
-                    
-                    var currentLocation = CLLocation()
-                    
-                    if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways ||
-                        CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
-                        
-                        currentLocation = locManager.location!
-                        
-                    }
-                    
-                    for o in (obj?.data)! {
-                        
-                        o.distance = currentLocation.distance(from: CLLocation.init(latitude: (Double(o.lat!))!, longitude: (Double(o.long!))!))/1000
-                        
-                    }
-                    
-                    GlobalFields.BEACON_LIST_DATAS = obj?.data
-                    
-                    self.beaconBool = true
-                    
-                    self.goNextView()
-                    
-                }
-                
-            }
-            
-        }
+//        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
+//            
+//            if let JSON = response.result.value {
+//                
+//                print("JSON ----------BEACON----------->>>> " )
+//                
+//                let obj = BeaconListResponseModel.init(json: JSON as! JSON)
+//                
+//                if ( obj?.code == "200" ){
+//                    
+//                    print("JSON ----------BEACON----------->>>> " , JSON)
+//                    
+//                    let locManager = CLLocationManager()
+//                    
+//                    locManager.requestAlwaysAuthorization()
+//                    
+//                    var currentLocation = CLLocation()
+//                    
+//                    if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways ||
+//                        CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
+//                        
+//                        currentLocation = locManager.location!
+//                        
+//                    }
+//                    
+//                    for o in (obj?.data)! {
+//                        
+//                        o.distance = currentLocation.distance(from: CLLocation.init(latitude: (Double(o.lat!))!, longitude: (Double(o.long!))!))/1000
+//                        
+//                    }
+//                    
+//                    GlobalFields.BEACON_LIST_DATAS = obj?.data
+//                    
+//                    self.beaconBool = true
+//                    
+//                    self.goNextView()
+//                    
+//                }
+//                
+//            }
+//            
+//        }
         
         //get category
         

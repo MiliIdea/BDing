@@ -81,6 +81,17 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             IndexHomeTable.reloadData()
             
         }
+//        for i in (self.tabBarController?.tabBar.items!)! {
+//            
+//            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "bdbdbd") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: CGFloat(8))!], for: .normal)
+//            //bdbdbd unselected color
+//            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "455a64") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: CGFloat(8))!], for: .selected)
+//            i.image =  i.image?.imageWithColor(tintColor: UIColor.init(hex: "bdbdbd")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+//            i.selectedImage = i.image?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+//            i.imageInsets = UIEdgeInsets.init(top: 6, left: 6, bottom: 6, right: 6)
+//            
+//            
+//        }
                 
     }
     
@@ -101,12 +112,24 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         cell?.customerDistanceToMe.text = tableCell.customerDistanceToMe
         cell?.customerThumbnail.image = UIImage(named:"default")!
 
-        LoadPicture().proLoad(view: (cell?.customerThumbnail)!,picModel: tableCell.customerImage!){ resImage in
-            autoreleasepool { () -> () in
-                cell?.customerThumbnail.image = resImage
-                cell?.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFill
-                cell?.setFirst(screenWidth: self.view.frame.width)
+        if(tableCell.preCustomerImage != nil){
+
+            cell?.customerThumbnail.image = tableCell.preCustomerImage
+            cell?.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFill
+            cell?.setFirst(screenWidth: self.view.frame.width)
+            
+        }else{
+        
+            LoadPicture().proLoad(view: (cell?.customerThumbnail)!,picModel: tableCell.customerImage!){ resImage in
+                autoreleasepool { () -> () in
+                    cell?.customerThumbnail.image = resImage
+                    cell?.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFill
+                    tableCell.preCustomerImage = resImage
+                    cell?.setFirst(screenWidth: self.view.frame.width)
+                }
             }
+
+            
         }
         
         cell?.customerCampaignCoin.text = tableCell.customerCoinValue
@@ -130,6 +153,10 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             
             cell?.boarderView.backgroundColor = UIColor.init(hex: "eceff1")
             
+        }else{
+            
+            cell?.boarderView.backgroundColor = UIColor.init(hex: "ffffff")
+            
         }
         
         ///////cat icon
@@ -144,21 +171,25 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             })
             
         }else{
-            if((GlobalFields.BEACON_LIST_DATAS?.count)! - 1 >= indexPath.row ){
-                let cat = findCategory(catID: tableCell.categoryID)
+            if(GlobalFields.BEACON_LIST_DATAS != nil){
                 
-                if(cat != nil){
+                if((GlobalFields.BEACON_LIST_DATAS?.count)! - 1 >= indexPath.row ){
+                    let cat = findCategory(catID: tableCell.categoryID)
                     
-                    LoadPicture().proLoad(view: cell?.customerCategoryThumbnail, picModel: (cat?.url_icon)!) { resImage in
+                    if(cat != nil){
                         
-                        cell?.customerCategoryThumbnail.image = resImage
+                        LoadPicture().proLoad(view: cell?.customerCategoryThumbnail, picModel: (cat?.url_icon)!) { resImage in
+                            
+                            cell?.customerCategoryThumbnail.image = resImage
+                            
+                            self.customerHomeTableCells[indexPath.row].customerCategoryIcon = resImage
+                            
+                        }
                         
-                        self.customerHomeTableCells[indexPath.row].customerCategoryIcon = resImage
                         
                     }
-                    
-                    
                 }
+                
             }
         }
         
@@ -522,6 +553,7 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             self.tabBarController?.tabBar.items?[1].badgeValue  = nil
             
         }
+
         
     }
     
@@ -532,27 +564,14 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
 
     func deletSubView(){
         
-//        let vc = (self.storyboard?.instantiateViewController(withIdentifier: "IndexHomeViewController"))! as! IndexHomeViewController
-        
         UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
         
-        
-//        self.addChildViewController(vc)
-//            
-//        vc.view.frame = CGRect(x:0,y: 0,width: self.container.frame.size.width, height: self.container.frame.size.height);
-//        
-//        self.container.addSubview(vc.view)
-            
         self.popupView.alpha = 0
-        
-//        vc.didMove(toParentViewController: self)
             
         self.blurView.alpha = 0
             
         }){completion in
          
-//            vc.IndexHomeTable.reloadData()
-            
             self.loadHomeTable()
             
             self.IndexHomeTable.reloadData()
@@ -564,6 +583,12 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
     var isDeleteMode: Bool = false
     
     @IBAction func deletePressed(_ sender: Any) {
+        
+        if(self.customerHomeTableCells.count == 0){
+            
+            return
+            
+        }
         
         isDeleteMode = !isDeleteMode
         

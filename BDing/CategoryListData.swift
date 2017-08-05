@@ -18,6 +18,8 @@ class CategoryListData : Decodable{
     
     var order : String?
     
+    var count : String?
+    
     var item : [SubCategoryData]?
     
     var url_icon : PicModel?
@@ -36,6 +38,8 @@ class CategoryListData : Decodable{
         self.color_code = "color_code" <~~ json
             
         self.order = "order" <~~ json
+        
+        self.count = "count" <~~ json
             
         self.item = "item" <~~ json
         

@@ -46,7 +46,7 @@ class SubCategoryData : Decodable{
         self.url_icon_m = "url_icon_m" <~~ json
         
         self.count = "count" <~~ json
-        
+
         self.all_track = "all_track" <~~ json
         
     }
