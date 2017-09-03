@@ -60,6 +60,8 @@ class BeaconListData : Decodable{
     
     var beacon_code : String?
     
+    var campaign_code : String?
+    
     
     required init?(json: JSON) {
         
@@ -106,6 +108,8 @@ class BeaconListData : Decodable{
         self.url_pic = "url_pic" <~~ json
         
         self.beacon_code = "beacon_code" <~~ json
+        
+        self.campaign_code = "campaign_code" <~~ json
         
     }
     

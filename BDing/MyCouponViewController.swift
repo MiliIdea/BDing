@@ -33,11 +33,10 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
         self.automaticallyAdjustsScrollViewInsets = false
         table.contentInset = UIEdgeInsets.zero
         
-        self.table.register(UINib(nibName: "CouponTableViewCell", bundle: nil), forCellReuseIdentifier: "couponCell")
+        self.table.register(UINib(nibName: "MyCouponTableViewCell", bundle: nil), forCellReuseIdentifier: "myCouponCell")
         
         table.dataSource = self
         table.delegate = self
-        
         
         self.cache = NSCache()
         
@@ -71,23 +70,31 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "couponCell", for: indexPath) as! CouponTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "myCouponCell", for: indexPath) as! MyCouponTableViewCell
 
         let data : MyCouponListData = (coupons?[indexPath.row])!
         
         cell.titleLabel.text = data.title
         
-        cell.discountLabel.text = data.discount
-        
         cell.detailLabel.text = data.coupon_code
         
-        cell.dingView.alpha = 0
+        cell.couponImage.superview?.frame.size.width = (cell.couponImage.superview?.frame.height)!
+
+        cell.tikView.frame.size.width = (cell.tikView.frame.height)
         
-        cell.detailLabel.frame.origin.x = cell.dingView.frame.origin.x + cell.dingView.frame.width - cell.detailLabel.frame.width
+        if(data.count_used == "0"){
+            
+            cell.tikView.alpha = 0
+            
+        }else{
+            
+            cell.titleLabel.textColor = UIColor(hexString: "2196f3")
+            
+        }
         
         if((couponsPrePics?.count)! < indexPath.row + 1 || couponsPrePics?[indexPath.row] == nil){
             
-            LoadPicture().proLoad(view : cell.couponImage,picType: "coupon", picModel: data.url_pic!){ resImage in
+            LoadPicture().proLoad(view : cell.couponImage,picType: "coupon", picModel: data.url_pic2!){ resImage in
              
                 if((self.couponsPrePics?.count)! < (self.coupons?.count)!){
                     
@@ -124,6 +131,9 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        if(self.coupons?[indexPath.row].count_used != "0"){
+            return
+        }
         
         let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CouponPopupViewController"))! as! CouponPopupViewController
         
@@ -159,7 +169,7 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.view.frame.width * 7 / 32
+        return self.view.frame.width * 70 / 320
     }
 
     @IBAction func backButton(_ sender: Any) {

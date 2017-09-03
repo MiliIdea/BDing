@@ -257,12 +257,32 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         
         self.view.endEditing(true)
         
+        if(Reachability().connectedToNetwork() == false){
+            
+            self.loadingBackView.alpha = 0
+            
+            self.animationView?.pause()
+            
+            self.animationView?.alpha = 0
+            
+            self.view.endEditing(false)
+            
+            Notifys().notif(message: "عدم اتصال به اینترنت! دوباره تلاش کنید."){ alarm in
+                
+                self.present(alarm , animated : true , completion : nil)
+                
+            }
+            
+            return
+            
+        }
+        
         request(URLs.signInUrl , method: .post , parameters: s.getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
             
             if let JSON = response.result.value {
                 
-                print("JSON -----------SIGNIN---------->>>> " )
+                print("JSON -----------SIGNIN---------->>>> " ,JSON)
                 
                 let obj = SignInResponseModel.init(json: JSON as! JSON)
                 
@@ -289,6 +309,13 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
                     
                     self.goNextView()
                     
+                }else if(obj.code == "9000"){
+                    
+                    Notifys().notif(message: obj.msg ?? "pls update your app", button1Title: "دانلود", button2Title: "خروج"){ alarm in
+                        
+                        self.present(alarm , animated : true , completion : nil)
+                        
+                    }
                     
                 }else{
                     
@@ -338,7 +365,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
                 
                 if ( obj?.code == "200" ){
                 
-                    print("JSON ----------PROFILE----------->>>> ")
+                    print("JSON ----------PROFILE----------->>>> " , JSON)
                     
                     GlobalFields.PROFILEDATA = obj?.data
                     
@@ -391,49 +418,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         
         print()
         
-//        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
-//            
-//            if let JSON = response.result.value {
-//                
-//                print("JSON ----------BEACON----------->>>> " )
-//                
-//                let obj = BeaconListResponseModel.init(json: JSON as! JSON)
-//                
-//                if ( obj?.code == "200" ){
-//                    
-//                    print("JSON ----------BEACON----------->>>> " , JSON)
-//                    
-//                    let locManager = CLLocationManager()
-//                    
-//                    locManager.requestAlwaysAuthorization()
-//                    
-//                    var currentLocation = CLLocation()
-//                    
-//                    if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways ||
-//                        CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
-//                        
-//                        currentLocation = locManager.location!
-//                        
-//                    }
-//                    
-//                    for o in (obj?.data)! {
-//                        
-//                        o.distance = currentLocation.distance(from: CLLocation.init(latitude: (Double(o.lat!))!, longitude: (Double(o.long!))!))/1000
-//                        
-//                    }
-//                    
-//                    GlobalFields.BEACON_LIST_DATAS = obj?.data
-//                    
-//                    self.beaconBool = true
-//                    
-//                    self.goNextView()
-//                    
-//                }
-//                
-//            }
-//            
-//        }
-        
+
         //get category
         
         print(CategoryRequestModel().getParams())

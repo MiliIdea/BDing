@@ -278,7 +278,27 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         var im : UIImage? = nil
         
+        animationView = LOTAnimationView(name: "finall")
+        
+        animationView.frame.size.height = 30
+        
+        animationView.frame.size.width = 30
+        
+        animationView.frame.origin.y = self.profilePicButton.frame.height / 2 - 15
+        
+        animationView.frame.origin.x = self.profilePicButton.frame.width / 2 - 15
+        
+        animationView.contentMode = UIViewContentMode.scaleAspectFit
+        
+        animationView.alpha = 1
+        
+        self.profilePicButton.addSubview(animationView)
+        
+        animationView.loopAnimation = true
+        
         if(loadProfilePicAsDB() == nil){
+            
+            animationView.play()
             
             request("http://"+(GlobalFields.PROFILEDATA?.url_pic)! , method: .post , parameters: ProfileRequestModel().getParams(), encoding: JSONEncoding.default).responseJSON { response in
                 print()
@@ -312,6 +332,10 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         
                         LoadPicture.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
                         
+                        
+                        self.animationView.pause()
+                        
+                        self.animationView.alpha = 0
                         
                     }
                     
@@ -370,11 +394,6 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         scrollViewDidScroll(self.scrollViewProfile)
     
-        if(Int((GlobalFields.PROFILEDATA?.all_coin)!)! >= 5000 && checkProfileGift() == true){
-            
-            self.closeReport("")
-            
-        }
         
     }
     
@@ -504,19 +523,15 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         coinValueStartXY.x = self.view.frame.width / 2 - w / 2  + coinIcon.frame.width + 5
 
+        if(GlobalFields.PROFILEDATA?.get_coin == "yes"){
+
+            self.closeReport("")
+            
+        }
+        
         scrollViewDidScroll(self.scrollViewProfile)
         
-//        for i in (self.tabBarController?.tabBar.items!)! {
-//            
-//            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "bdbdbd") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: CGFloat(8))!], for: .normal)
-//            //bdbdbd unselected color
-//            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "455a64") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: CGFloat(8))!], for: .selected)
-//            i.image =  i.image?.imageWithColor(tintColor: UIColor.init(hex: "bdbdbd")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
-//            i.selectedImage = i.image?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
-//            i.imageInsets = UIEdgeInsets.init(top: 6, left: 6, bottom: 6, right: 6)
-//            
-//            
-//        }
+
     }
     
 
@@ -780,6 +795,18 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                             
                             nextVc.couponsPrePics = [UIImage].init(reserveCapacity: (MyCouponListResponseModel.init(json: JSON as! JSON)?.data?.count)!)
                             
+                            nextVc.loading.stopAnimating()
+                            
+                            if(nextVc.coupons == nil || nextVc.coupons?.count == 0){
+                                
+                                nextVc.table.alpha = 0
+                                
+                            }else{
+                                
+                                nextVc.table.alpha = 1
+                                
+                            }
+                            
                         }
                         
                         nextVc.table.reloadData()
@@ -821,6 +848,16 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                     
                     nextVc.table.reloadData()
                     
+                    if(nextVc.coupons == nil || nextVc.coupons?.count == 0){
+                        
+                        nextVc.table.alpha = 0
+                        
+                    }else{
+                        
+                        nextVc.table.alpha = 1
+                        
+                    }
+                    
                     
                 }
                 
@@ -855,6 +892,16 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                             nextVc.payHistory = (PayListResponseModel.init(json: JSON as! JSON)?.data)!
                             
                             nextVc.table.reloadData()
+                            
+                        }
+                        
+                        if(nextVc.payHistory.count == 0){
+                            
+                            nextVc.table.alpha = 0
+                            
+                        }else{
+                            
+                            nextVc.table.alpha = 1
                             
                         }
                         
@@ -1015,7 +1062,6 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
             
         }
         
-        var before : Bool = self.checkProfileGift()
         
         request(URLs.userUpdate , method: .post , parameters: rm?.getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
@@ -1071,9 +1117,11 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         
                     }
                     
-                    if(before == false && self.checkProfileGift() == true){
+                    if(obj?.data?.all_coin != GlobalFields.PROFILEDATA?.all_coin && obj?.data?.get_coin == "yes"){
                         
-                        GlobalFields.PROFILEDATA?.all_coin = String(Int((GlobalFields.PROFILEDATA?.all_coin)!)! + 5000)
+                        GlobalFields.PROFILEDATA?.all_coin  = obj?.data?.all_coin
+                        
+                        GlobalFields.PROFILEDATA?.get_coin = obj?.data?.get_coin
                         
                         self.myCoinsValueLabel.text = GlobalFields.PROFILEDATA?.all_coin
                         
@@ -1086,6 +1134,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                             self.present(alarm, animated: true, completion: nil)
                             
                         }
+                        
+                    }else{
                         
                     }
                     
@@ -1101,25 +1151,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         disAppearInputView()
         
     }
-    
-    func checkProfileGift() -> Bool{
-        
-        if(GlobalFields.PROFILEDATA?.gender == "" ||
-           GlobalFields.PROFILEDATA?.email == "" ||
-            GlobalFields.PROFILEDATA?.mobile == "" ||
-            GlobalFields.PROFILEDATA?.family == "" ||
-            GlobalFields.PROFILEDATA?.name == "" ||
-            GlobalFields.PROFILEDATA?.birthdate == ""){
-            
-            return false
-        }else{
-            
-            return true
-            
-        }
-        
-        
-    }
+
     
     
     @IBAction func canselInput(_ sender: Any) {
@@ -1161,7 +1193,25 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                     
                     self.BirthDayButton.setTitle(formatter.string(from: self.datePicker.date), for: UIControlState.normal)
                     
-                    
+                    if(obj?.data?.all_coin != GlobalFields.PROFILEDATA?.all_coin && obj?.data?.get_coin == "yes"){
+                        
+                        GlobalFields.PROFILEDATA?.all_coin  = obj?.data?.all_coin
+                        
+                        GlobalFields.PROFILEDATA?.get_coin = obj?.data?.get_coin
+                        
+                        self.myCoinsValueLabel.text = GlobalFields.PROFILEDATA?.all_coin
+                        
+                        self.viewDidAppear(true)
+                        
+                        self.closeReport("")
+                        
+                        Notifys().notif(message: "تبریک! برنده ی ۵۰۰۰ دینگ تکمیل اطلاعات اختیاری شدی."){ alarm in
+                            
+                            self.present(alarm, animated: true, completion: nil)
+                            
+                        }
+                        
+                    }
                     
                 }
                 
@@ -1284,24 +1334,6 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
             
-            animationView = LOTAnimationView(name: "finall")
-            
-            animationView.frame.size.height = 30
-            
-            animationView.frame.size.width = 30
-            
-            animationView.frame.origin.y = self.profilePicButton.frame.height / 2 - 15
-            
-            animationView.frame.origin.x = self.profilePicButton.frame.width / 2 - 15
-            
-            animationView.contentMode = UIViewContentMode.scaleAspectFit
-            
-            animationView.alpha = 1
-            
-            self.profilePicButton.addSubview(animationView)
-            
-            animationView.loopAnimation = true
-            
             animationView.play()
             
             request(URLs.userUpdate , method: .post , parameters: UserUpdateRequestModel.init(NAME: nil, FAMILY: nil, ATTRNAME: "pic", ATTRDATA: UIImagePNGRepresentation(pickedImage)!.base64EncodedString()).getParams(), encoding: JSONEncoding.default).responseJSON { response in
@@ -1340,8 +1372,6 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         LoadPicture.cache.setObject(imageData!, forKey: coding.md5() as AnyObject)
                         
                         
-                        
-                        
                     }
                     
                 }
@@ -1370,29 +1400,15 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     }
 
     @IBAction func goAboutUs(_ sender: Any) {
-        
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            let vc = (self.storyboard?.instantiateViewController(withIdentifier: "AboutUsViewController"))! as! AboutUsViewController
-            
-            self.addChildViewController(vc)
-            
-            vc.view.frame = CGRect(x:0,y: 0,width: self.view.frame.size.width, height: self.view.frame.size.height);
-            
-            vc.view.tag = 125
-            
-            self.view.addSubview(vc.view)
-            
-            vc.didMove(toParentViewController: self)
-            
-            
-            
-        }, completion: nil)
+
+        UIApplication.shared.openURL(NSURL(string: "http://bding.ir/fa/shoplist") as! URL)
         
     }
     
 
     @IBAction func goFAQ(_ sender: Any) {
     
+        
     
     }
     
@@ -1429,6 +1445,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     }
     
     
+    let loading : UIActivityIndicatorView = UIActivityIndicatorView()
     
     @IBAction func doPayWithTolls(_ sender: Any) {
         
@@ -1445,7 +1462,11 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         for payUuids in GlobalFields.PAY_UUIDS!{
             
-            let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: payUuids)! as UUID, identifier: "Bding")
+            print(payUuids.lowercased())
+            
+            print(NSUUID(uuidString: payUuids.lowercased())!)
+            
+            let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: payUuids.lowercased())! as UUID, identifier: "Bding")
             
             locationManager.startRangingBeacons(in: region)
             
@@ -1453,8 +1474,19 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         locationManager.distanceFilter = 1
         
+        loading.frame(forAlignmentRect: (view?.frame)!)
         
+        loading.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         
+        payWithTolls?.addSubview(loading)
+        
+        loading.hidesWhenStopped = true
+        
+        loading.frame.origin.x = (payWithTolls?.frame.width)! / 6
+        
+        loading.frame.origin.y = (payWithTolls?.frame.height)! / 2
+        
+        loading.startAnimating()
         
     }
     
@@ -1474,6 +1506,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         if(beacons.count == 0){
             
+            loading.stopAnimating()
+            
             Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
                 
                 self.present(alarm, animated: true, completion: nil)
@@ -1486,6 +1520,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
             
         }
         
+        var isFindPay : Bool = false
+        
         for b in beacons {
             
             let beaconString = String(describing: b.proximityUUID)
@@ -1496,7 +1532,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                 
             }
             
-            if(GlobalFields.PAY_UUIDS?.contains(beaconString.lowercased()))!{
+            if(GlobalFields.PAY_UUIDS?.contains(beaconString))!{
                 
                 var payUrlString : String = ""
                 
@@ -1522,7 +1558,11 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         print("JSON ----------GET PAY TITLE----------->>>> " ,JSON)
                         //create my coupon response model
                         
+                        self.loading.stopAnimating()
+                        
                         if( PayTitleResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                            
+                            isFindPay = true
                             
                             UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                                 
@@ -1530,7 +1570,21 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                                 
                                 self.payBeacon = b
                                 
-                            }, completion: nil)
+                            }){ res in
+                                
+                                if(isFindPay == false){
+                                    
+                                    self.loading.stopAnimating()
+                                    
+                                    Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
+                                        
+                                        self.present(alarm, animated: true, completion: nil)
+                                        
+                                    }
+                                    
+                                }
+                                
+                            }
                             
                             
                         }
@@ -1545,9 +1599,22 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
             }
             
         }
+        
+        if(isFindPay == false && beacons.count == 0){
             
+            loading.stopAnimating()
+            
+            Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
+                
+                self.present(alarm, animated: true, completion: nil)
+                
+            }
+            
+        }
+        
         locationManager.stopRangingBeacons(in: region)
 
+        
         
     }
     

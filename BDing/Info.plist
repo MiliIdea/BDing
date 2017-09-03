@@ -21,7 +21,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.5</string>
 	<key>CFBundleVersion</key>
-	<string>4</string>
+	<string>7</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
@@ -36,9 +36,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>edit profile picture</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>detect beacons around you!</string>
+	<string></string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>detect beacons around you!</string>
+	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>edit profile picture</string>
 	<key>UIAppFonts</key>

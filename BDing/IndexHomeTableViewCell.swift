@@ -70,20 +70,20 @@ class IndexHomeTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        DispatchQueue.main.async(execute: { () -> Void in
+//        DispatchQueue.main.async(execute: { () -> Void in
         MyFont().setMediumFont(view: self.customerCampaignTitle, mySize: 14)
         MyFont().setWebFont(view: self.customerName, mySize: 11)
         MyFont().setWebFont(view: self.customerDistanceToMe, mySize: 11)
         MyFont().setWebFont(view: self.customerCampaignDiscount, mySize: 14)
         MyFont().setMediumFont(view: self.customerCampaignCoin, mySize: 16)
         self.customerThumbnail.layer.zPosition = 1
-        self.imageView?.frame.size.height = self.boarderView.frame.height
+//        self.imageView?.frame.size.height = self.boarderView.frame.height
         self.contentView.layer.shadowColor = UIColor.black.cgColor
         self.contentView.layer.shadowOpacity = 0.25
         self.contentView.layer.shadowOffset = CGSize(width: -1, height: 1)
         self.contentView.layer.shadowRadius = 3
         self.shouldIndentWhileEditing = false
-        })
+//        })
         
     }
     
@@ -102,9 +102,15 @@ class IndexHomeTableViewCell: UITableViewCell {
     
     func setFirst(screenWidth : CGFloat){
 //        DispatchQueue.main.async(execute: { () -> Void in
+        
+        self.boarderView.frame.size.height = screenWidth * 8.5 / CGFloat(32.0) - 8
+        
+        self.boarderView.frame.size.width = screenWidth - 16.0
+        
         self.viewH.constant = screenWidth * 8.5 / CGFloat(32.0) - 8
         
         self.viewW.constant = screenWidth - 16.0
+        
         
         self.imageView?.frame.size.height = self.viewH.constant
         self.imgH.constant = self.viewH.constant

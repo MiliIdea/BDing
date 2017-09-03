@@ -154,7 +154,13 @@ class SignInPageTwoViewController: UIViewController {
                     self.loginBool = true
                     
                     self.goNextView()
+                }else if(obj.code == "9000"){
                     
+                    Notifys().notif(message: obj.msg ?? "pls update your app", button1Title: "دانلود", button2Title: "خروج"){ alarm in
+                     
+                        self.present(alarm , animated : true , completion : nil)
+                        
+                    }
                     
                 }else{
                     
@@ -163,6 +169,12 @@ class SignInPageTwoViewController: UIViewController {
                     self.animationView?.alpha = 0
                     
                     self.view.endEditing(false)
+                    
+                    Notifys().notif(message: obj.msg ?? "شماره تلفن یا رمز عبور اشتباه می باشد!"){ alarm in
+                        
+                        self.present(alarm, animated: true, completion: nil)
+                        
+                    }
                     
                 }
                 
@@ -334,7 +346,9 @@ class SignInPageTwoViewController: UIViewController {
             
             self.blurView.alpha = 0.3
             
-            self.forgotPopUpView.alpha = 1 
+            self.forgotPopUpView.alpha = 1
+            
+            self.userNameForgot.text = self.user
             
         },completion : nil)
         
@@ -394,7 +408,30 @@ class SignInPageTwoViewController: UIViewController {
                     
                     self.animationView?.alpha = 0
                     
+                    Notifys().notif(message: "رمز عبور جدید شما برایتان ارسال شد!"){ alarm in
+                        
+                        self.present(alarm, animated: true, completion: nil)
+                        
+                    }
+                
+                }else{
+                    
+                    self.view.endEditing(true)
+                    
+                    self.cansel("")
+                    
+                    self.animationView?.pause()
+                    
+                    self.animationView?.alpha = 0
+                    
+                    Notifys().notif(message: "نام کاربری شما یافت نشد!"){ alarm in
+                        
+                        self.present(alarm, animated: true, completion: nil)
+                        
+                    }
+                    
                 }
+                
                 
             }
             

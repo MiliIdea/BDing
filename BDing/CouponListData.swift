@@ -28,6 +28,10 @@ class CouponListData : Decodable{
     
     var url_pic : PicModel?
     
+    var url_pic1 : PicModel?
+    
+    var url_pic2 : PicModel?
+    
     var description : String?
     
     var site : String?
@@ -35,6 +39,8 @@ class CouponListData : Decodable{
     var tel : String?
     
     var address : String?
+    
+    var color : String?
     
     
     required init?(json: JSON) {
@@ -57,6 +63,10 @@ class CouponListData : Decodable{
         
         self.url_pic = "url_pic" <~~ json
         
+        self.url_pic1 = "url_pic1" <~~ json
+        
+        self.url_pic2 = "url_pic2" <~~ json
+        
         self.description = "description" <~~ json
         
         self.site = "site" <~~ json
@@ -64,6 +74,8 @@ class CouponListData : Decodable{
         self.tel = "tel" <~~ json
         
         self.address = "address" <~~ json
+        
+        self.color = "color" <~~ json
         
     }
     

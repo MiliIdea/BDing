@@ -16,6 +16,8 @@ class SignInResponseModel : Decodable{
     
     var userID : String?
     
+    var msg : String?
+    
     required init(json: JSON) {
         
         self.code = "code" <~~ json
@@ -23,6 +25,8 @@ class SignInResponseModel : Decodable{
         self.token = "token" <~~ json
         
         self.userID = "user" <~~ json
+        
+        self.msg = "msg" <~~ json
     }
     
 }

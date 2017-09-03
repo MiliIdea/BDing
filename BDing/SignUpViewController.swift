@@ -139,15 +139,17 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         
         activate3.frame.origin.x = termsLink.frame.origin.x - activate3.frame.width - 1
         
+        expanding("")
+        
         // Do any additional setup after loading the view.
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        Notifys().notif(message: "با تکمیل فیلد ایمیل کد فعال سازی برای ایمیل شما ارسال می شود!"){alarm in
-            
-            self.present(alarm, animated: true, completion: nil)
-            
-        }
+//        Notifys().notif(message: "با تکمیل فیلد ایمیل کد فعال سازی برای ایمیل شما ارسال می شود!",button1Title : "دانلود" ,button2Title : "دانلود"){alarm in
+//            
+//            self.present(alarm, animated: true, completion: nil)
+//            
+//        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
@@ -328,7 +330,11 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         
     }
     
-    
+//    func isValidPassword(candidate: String) -> Bool {
+//        let passwordRegex = "^[a-zA-Z]{1}[a-zA-Z\d_]{3,13}[a-zA-Z\d]{1}$"
+//        
+//        return NSPredicate(format: "SELF MATCHES %@", passwordRegex).evaluate(with: candidate)
+//    }
     
     @IBAction func register(_ sender: Any) {
         //, MOBILE : mobile.text
@@ -374,6 +380,18 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
             return
             
         }
+        
+//        if(!isValidPassword(candidate: password.text!)){
+//            
+//            Notifys().notif(message: "not valid dude"){alarm in
+//                
+//                self.present(alarm, animated: true, completion: nil)
+//                
+//            }
+//            
+//            return
+//            
+//        }
         
         
         var gender2 : String = self.gender.text!
@@ -447,7 +465,21 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
                     
                     self.animationView?.alpha = 0
                     
-                    Notifys().notif(message: "قبلا ثبت نام کرده اید!"){alarm in
+                    Notifys().notif(message: SignUpResponseModel.init(json: JSON as! JSON).msg ?? "قبلا ثبت نام کرده اید!"){alarm in
+                        
+                        self.present(alarm, animated: true, completion: nil)
+                        
+                    }
+                    
+                }else {
+                    
+                    self.animationView?.pause()
+                    
+                    self.view.isUserInteractionEnabled = true
+                    
+                    self.animationView?.alpha = 0
+                    
+                    Notifys().notif(message: SignUpResponseModel.init(json: JSON as! JSON).msg){alarm in
                         
                         self.present(alarm, animated: true, completion: nil)
                         

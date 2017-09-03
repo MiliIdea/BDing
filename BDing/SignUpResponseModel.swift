@@ -12,8 +12,14 @@ class SignUpResponseModel : Decodable{
     
     var code : String?
     
+    var msg : String?
+    
     required init(json: JSON) {
+        
         self.code = "code" <~~ json
+        
+        self.msg = "msg" <~~ json
+        
     }
     
 }

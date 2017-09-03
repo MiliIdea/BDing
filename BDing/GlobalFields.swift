@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import CoreLocation
+
 
 class GlobalFields {
     
@@ -19,5 +21,23 @@ class GlobalFields {
     static var PAY_UUIDS: [String]? = nil
     
     static var BEACON_RANG : Int = 2000
+    
+    static var FAQs : [FAQData] = [FAQData]()
+    
+    struct indoorPoint {
+        
+        var x : Double
+        
+        var y : Double
+        
+        var z : Double
+        
+    }
+    
+    static var indoorPoints : [indoorPoint] = [indoorPoint]()
+    
+    static var indoorCoordinates : [CLLocationCoordinate2D] = [CLLocationCoordinate2D]()
+    
+    static let mainCoordinate : CLLocationCoordinate2D = .init(latitude: 35.770669, longitude: 51.467387)
     
 }

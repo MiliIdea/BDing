@@ -107,7 +107,7 @@ class SaveAndLoadModel {
         
         do {
             try moc?.save()
-            print("saved!")
+//            print("saved!")
         } catch let error as NSError  {
             print("Could not save \(error), \(error.userInfo)")
         } catch {
@@ -142,7 +142,7 @@ class SaveAndLoadModel {
         
         do {
             try moc?.save()
-            print("saved!")
+//            print("saved!")
         } catch let error as NSError  {
             print("Could not save \(error), \(error.userInfo)")
         } catch {
@@ -173,7 +173,7 @@ class SaveAndLoadModel {
         
         do {
             try moc?.save()
-            print("saved!")
+//            print("saved!")
         } catch let error as NSError  {
             print("Could not save \(error), \(error.userInfo)")
         } catch {

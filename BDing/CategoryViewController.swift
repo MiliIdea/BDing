@@ -228,11 +228,19 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                 
                 LoadPicture().proLoad(view: cell2?.iconView, picModel: dataCell2.image!){ resImage in
                  
-                    dataCell2.preImage = resImage
-                    
-                    cell2?.iconView.image = resImage
-                    
-                    cell2?.iconView.contentMode = UIViewContentMode.scaleAspectFit
+                    if(self.getExpandedSection() != -1){
+                       
+                        if(self.sections.count - 1 >= self.getExpandedSection() && self.sections[self.getExpandedSection()].items.count >= indexPath.row - self.getExpandedSection()-1){
+                            
+                            self.sections[self.getExpandedSection()].items[indexPath.row - self.getExpandedSection()-1].preImage = resImage
+                            
+                            cell2?.iconView.image = resImage
+                            
+                            cell2?.iconView.contentMode = UIViewContentMode.scaleAspectFit
+                            
+                        }
+                        
+                    }
                     
                 }
                 
@@ -477,10 +485,10 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                 
                 if(indexOfDeleted < self.getSectionIndex(row: indexPath.row)){
                     
-                    tableView.contentOffset.y = 70 * CGFloat(self.getSectionIndex(row: (indexPath.row - countOfDeleted)))
+                    tableView.contentOffset.y = (self.windowHeight / 8) * CGFloat(self.getSectionIndex(row: (indexPath.row - countOfDeleted)))
                     
                 }else{
-                    tableView.contentOffset.y = 70 * CGFloat(self.getSectionIndex(row: (indexPath.row)))
+                    tableView.contentOffset.y = (self.windowHeight / 8) * CGFloat(self.getSectionIndex(row: (indexPath.row)))
                     
                 }
                 
@@ -607,31 +615,31 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
     
     func setCurve(isLast: Bool,cell: CategoryTableViewCell2){
         
-        if(isLast == true){
-        
-            let maskPath = UIBezierPath(roundedRect: cell.boarderView.bounds, byRoundingCorners: [.bottomLeft, .bottomRight],cornerRadii: CGSize(width: 8.0, height: 8.0))
-            
-            let shape = CAShapeLayer()
-            
-            shape.path = maskPath.cgPath
-            
-            shape.borderWidth = 0
-            
-            cell.boarderView.layer.mask = shape
-            
-        }else{
-            
-            let maskPath = UIBezierPath(roundedRect: cell.boarderView.bounds, byRoundingCorners: [.bottomLeft, .bottomRight],cornerRadii: CGSize(width: 0, height: 0))
-            
-            let shape = CAShapeLayer()
-            
-            shape.path = maskPath.cgPath
-            
-            shape.borderWidth = 0
-            
-            cell.boarderView.layer.mask = shape
-            
-        }
+//        if(isLast == true){
+//        
+//            let maskPath = UIBezierPath(roundedRect: cell.boarderView.bounds, byRoundingCorners: [.bottomLeft, .bottomRight],cornerRadii: CGSize(width: 8.0, height: 8.0))
+//            
+//            let shape = CAShapeLayer()
+//            
+//            shape.path = maskPath.cgPath
+//            
+//            shape.borderWidth = 0
+//            
+//            cell.boarderView.layer.mask = shape
+//            
+//        }else{
+//            
+//            let maskPath = UIBezierPath(roundedRect: cell.boarderView.bounds, byRoundingCorners: [.bottomLeft, .bottomRight],cornerRadii: CGSize(width: 0, height: 0))
+//            
+//            let shape = CAShapeLayer()
+//            
+//            shape.path = maskPath.cgPath
+//            
+//            shape.borderWidth = 0
+//            
+//            cell.boarderView.layer.mask = shape
+//            
+//        }
         
     }
     
@@ -815,7 +823,11 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
         
         nextVc.color2 = color.color2
         
-        nextVc.catIconPicModel = subC?.image
+        if(subC?.image != nil){
+            
+            nextVc.catIconPicModel = subC?.image
+            
+        }
         
         nextVc.nameTitle = (subC?.name)!
         
@@ -875,15 +887,23 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                                 
                                 //TODO
                                 print("dar in lat long beacon nadarim!")
+                                nextVc.table.alpha = 0
+                                
+                                nextVc.loading.stopAnimating()
+                                
+                                nextVc.loading.alpha = 0
                                 
                             }else{
                                 //bayad bere tu liste category
+                                
+                                nextVc.table.alpha = 1
+                                
                                 UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                                     
                                     
-                                    print(obj?.data)
-                                    
-                                    let image : UIImage = UIImage(named:"amlak")!
+                                    print(obj?.data ?? "")
+//
+//                                    let image : UIImage = UIImage(named:"amlak")!
                                     
                                     let locManager = CLLocationManager()
                                     
@@ -899,27 +919,27 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                                     }
                                     
                                     for i in (obj?.data!)! {
-                                        LoadPicture().proLoad(view: nil , picModel: i.url_icon!){ resImage in
-                                            
-                                            for c in nextVc.customerHomeTableCells {
-                                                
-                                                if(c.customerImage?.url == i.url_icon?.url){
-                                                    
-                                                    if(c.customerImage?.code == i.url_icon?.code){
-                                                        
-                                                        c.preCustomerImage = resImage
-                                                        
-                                                        //                                                            nextVc.table.reloadData()
-                                                        
-                                                    }
-                                                    
-                                                }
-                                                
-                                            }
-                                            
-                                        }
+//                                        LoadPicture().proLoad(view: nil , picModel: i.url_icon!){ resImage in
+//                                            
+//                                            for c in nextVc.customerHomeTableCells {
+//                                                
+//                                                if(c.customerImage?.url == i.url_icon?.url){
+//                                                    
+//                                                    if(c.customerImage?.code == i.url_icon?.code){
+//                                                        
+//                                                        c.preCustomerImage = resImage
+//                                                        
+//                                                        //                                                            nextVc.table.reloadData()
+//                                                        
+//                                                    }
+//                                                    
+//                                                }
+//                                                
+//                                            }
+//                                            
+//                                        }
                                         
-                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:UIImage.init(named: "default") ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0", customerDiscountValue: i.discount!, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time ?? "" , website: i.cusomer_web!,customerBigImages: i.url_pic , categoryID: i.category_id, beaconCode : i.beacon_code)
+                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0", customerDiscountValue: i.discount!, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time ?? "" , website: i.cusomer_web!,customerBigImages: i.url_pic , categoryID: i.category_id, beaconCode : i.beacon_code , campaignCode : i.campaign_code)
                                         
                                         if(currentLocation.coordinate.latitude != 0){
                                             
@@ -960,54 +980,36 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                         
                         let obj = BeaconListResponseModel.init(json: JSON as! JSON)
                         
-                        print(JSON)
-                        
-                        print("=++++++++++++++++=")
+//                        print(JSON)
+//                        
+//                        print("=++++++++++++++++=")
                         
                         if ( obj?.code == "200" ){
                             
-                            print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: subC?.subCategoryCode).getParams(allSearch : true))
-                            
-                            print(obj?.data)
+//                            print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: subC?.subCategoryCode).getParams(allSearch : true))
+//                            
+//                            print(obj?.data)
                             
                             if(obj?.data == nil){
                                 
                                 //TODO
                                 print("dar in lat long beacon nadarim!")
                                 
+                                nextVc.table.alpha = 0
+                                
+                                nextVc.loading.stopAnimating()
+                                
+                                nextVc.loading.alpha = 0
+                                
                             }else{
                                 //bayad bere tu liste category
                                 UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                                     
                                     nextVc.parentView = "CategoryViewController"
-                                    
-                                    print(obj?.data)
-                                    
-                                    let image : UIImage = UIImage(named:"amlak")!
+     
                                     for i in (obj?.data!)! {
-                                        LoadPicture().proLoad(view: nil , picModel: i.url_icon!){ resImage in
-                                            
-                                            for c in nextVc.customerHomeTableCells {
-                                                
-                                                if(c.customerImage?.url == i.url_icon?.url){
-                                                    
-                                                    if(c.customerImage?.code == i.url_icon?.code){
-                                                        
-                                                        c.preCustomerImage = resImage
-                                                        
-                                                        nextVc.table.reloadData()
-                                                        
-                                                        nextVc.loading.stopAnimating()
-                                                        
-                                                    }
-                                                    
-                                                }
-                                                
-                                            }
-                                            
-                                        }
                                         
-                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage:UIImage.init(named: "default") ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: image, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0", customerDiscountValue: i.discount!, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic, categoryID: i.category_id, beaconCode : i.beacon_code)
+                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0", customerDiscountValue: i.discount!, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic, categoryID: i.category_id, beaconCode : i.beacon_code , campaignCode : i.campaign_code)
                                         nextVc.customerHomeTableCells.append(a)
                                         
                                     }

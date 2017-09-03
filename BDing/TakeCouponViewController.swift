@@ -29,6 +29,7 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
         
         table.dataSource = self
         table.delegate = self
+        
 
         self.automaticallyAdjustsScrollViewInsets = false
         // Do any additional setup after loading the view.
@@ -60,21 +61,13 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "couponCell", for: indexPath) as! CouponTableViewCell
         
-        cell.titleLabel.text = coupons?[indexPath.row].title
-        
-        cell.detailLabel.text = coupons?[indexPath.row].coin
-        
-        if(cell.detailLabel.text == "" || cell.detailLabel.text == nil){
-            
-            cell.detailLabel.text = "0"
-            
-        }
-        
-        cell.discountLabel.text = coupons?[indexPath.row].discount
+        cell.dingLabel.text = coupons?[indexPath.row].coin
         
         LoadPicture().proLoad(view: cell.couponImage,picType: "coupon" , picModel: (coupons?[indexPath.row].url_pic)!){ resImage in
             
             cell.couponImage.image = resImage
+            
+            cell.couponImage.contentMode = UIViewContentMode.scaleAspectFill
             
         }
         
@@ -82,7 +75,7 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.view.frame.width * 7 / 32
+        return self.view.frame.width * 426 / 1418
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

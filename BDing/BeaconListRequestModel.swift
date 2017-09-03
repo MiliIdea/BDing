@@ -63,11 +63,11 @@ class BeaconListRequestModel {
         
         if(allSearch == true){
             
-            return ["user": USERID , "token": TOKEN  , "hash": HASH , "lat": LAT , "long": LONG , "redius": REDIUS , "search": SEARCH , "category": CATEGORY , "subcategory": SUBCATEGORY , "allsearch" : "true"]
+            return ["user": USERID , "token": TOKEN  , "hash": HASH , "lat": LAT , "long": LONG , "radius": REDIUS , "search": SEARCH , "category": CATEGORY , "subcategory": SUBCATEGORY , "allsearch" : "true"]
             
         }else{
             
-            return ["user": USERID , "token": TOKEN  , "hash": HASH , "lat": LAT , "long": LONG , "redius": REDIUS , "search": SEARCH , "category": CATEGORY , "subcategory": SUBCATEGORY , "allsearch" : "false"]
+            return ["user": USERID , "token": TOKEN  , "hash": HASH , "lat": LAT , "long": LONG , "radius": REDIUS , "search": SEARCH , "category": CATEGORY , "subcategory": SUBCATEGORY , "allsearch" : "false"]
             
         }
         

@@ -32,24 +32,20 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
     
     var customerHomeTableCells = [CustomerHomeTableCell]()
     
-//    let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: "8F69043E-9623-4F35-B553-FDAA27995EF3")! as UUID, identifier: "Bding")
-//    
-//    var locationManager: CLLocationManager!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.automaticallyAdjustsScrollViewInsets = false
         
-        IndexHomeTable.contentInset = UIEdgeInsets.zero
+        self.IndexHomeTable.register(UINib(nibName: "IndexHomeTableViewCell", bundle: nil), forCellReuseIdentifier: "indexHomeTableCellID")
         
+        IndexHomeTable.contentInset = UIEdgeInsets.zero
+        IndexHomeTable.rowHeight = self.view.frame.width * 8.5 / 32.0
         IndexHomeTable.dataSource = self
         IndexHomeTable.delegate = self
         IndexHomeTable.rowHeight = self.view.frame.width * 8.5 / 32.0
         popupView.alpha = 0
 
-        self.IndexHomeTable.register(UINib(nibName: "IndexHomeTableViewCell", bundle: nil), forCellReuseIdentifier: "indexHomeTableCellID")
-        
         loadHomeTable()
         
         self.updateBadgeVlue()
@@ -81,17 +77,6 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             IndexHomeTable.reloadData()
             
         }
-//        for i in (self.tabBarController?.tabBar.items!)! {
-//            
-//            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "bdbdbd") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: CGFloat(8))!], for: .normal)
-//            //bdbdbd unselected color
-//            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "455a64") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: CGFloat(8))!], for: .selected)
-//            i.image =  i.image?.imageWithColor(tintColor: UIColor.init(hex: "bdbdbd")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
-//            i.selectedImage = i.image?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
-//            i.imageInsets = UIEdgeInsets.init(top: 6, left: 6, bottom: 6, right: 6)
-//            
-//            
-//        }
                 
     }
     
@@ -116,16 +101,15 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
 
             cell?.customerThumbnail.image = tableCell.preCustomerImage
             cell?.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFill
-            cell?.setFirst(screenWidth: self.view.frame.width)
-            
+
         }else{
-        
+            
             LoadPicture().proLoad(view: (cell?.customerThumbnail)!,picModel: tableCell.customerImage!){ resImage in
+
                 autoreleasepool { () -> () in
                     cell?.customerThumbnail.image = resImage
                     cell?.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFill
                     tableCell.preCustomerImage = resImage
-                    cell?.setFirst(screenWidth: self.view.frame.width)
                 }
             }
 
@@ -137,17 +121,6 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         cell?.customerCategoryThumbnail.image = tableCell.customerCategoryIcon
         cell?.coinThumbnail.image = tableCell.customerCoinIcon
         cell?.discountThumbnail.image = tableCell.customerDiscountIcon
-        cell?.customerThumbnail.frame.size.height = (cell?.boarderView.frame.height)!
-        cell?.customerThumbnail.frame.origin.y = (cell?.boarderView.frame.origin.y)!
-        let maskPath = UIBezierPath(roundedRect: (cell?.customerThumbnail.bounds)!, byRoundingCorners: [.bottomRight, .topRight], cornerRadii: CGSize(width: 8.0, height: 8.0))
-        
-        let shape = CAShapeLayer()
-        
-        shape.path = maskPath.cgPath
-        
-        cell?.customerThumbnail.layer.mask = shape
-        
-        cell?.setFirst(screenWidth: self.view.frame.width)
         
         if(SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: tableCell.uuidMajorMinorMD5!)?.value(forKey: "isSeen") as! Bool == true){
             
@@ -193,13 +166,11 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             }
         }
         
-        cell?.customerThumbnail.frame.size.height = (self.view.frame.width * 8.5 / 32.0)
-        cell?.imgH.constant = (self.view.frame.width * 8.5 / 32.0)
         self.updateBadgeVlue()
         
-//        cell?.selectionStyle = .gray
-        
         cell?.multipleSelectionBackgroundView = (cell?.selectionView)! as UIView
+        
+        cell?.setFirst(screenWidth: self.view.frame.width)
         
         return cell!
     }
@@ -227,9 +198,11 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        CellAnimator.animateCell(cell: cell, withTransform: CellAnimator.TransformFlip, andDuration: 0.3)
-        (cell as! IndexHomeTableViewCell).customerThumbnail.frame.size.height = (self.view.frame.width * 8.5 / 32.0)
-        (cell as! IndexHomeTableViewCell).imgH.constant = (self.view.frame.width * 8.5 / 32.0)
+//        (cell as! IndexHomeTableViewCell).setFirst(screenWidth: self.view.frame.width)
+        
+//        CellAnimator.animateCell(cell: cell, withTransform: CellAnimator.TransformFlip, andDuration: 0.3)
+//        (cell as! IndexHomeTableViewCell).customerThumbnail.frame.size.height = (self.view.frame.width * 8.5 / 32.0)
+//        (cell as! IndexHomeTableViewCell).imgH.constant = (self.view.frame.width * 8.5 / 32.0)
         
     }
     
@@ -238,9 +211,9 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         return 1
     }
 
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return self.view.frame.width * 8.5 / 32.0
-//    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return self.view.frame.width * 8.5 / 32.0
+    }
 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -404,6 +377,10 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
                                 self.customerHomeTableCells.append(self.getCustomerHomeTableCellAsJson(jsonData: JSON as! JSON,uuidMajorMinorMD5: s)!)
                                 
                                 self.IndexHomeTable.reloadData()
+                            }else if ( obj?.code == "204" ){
+                                
+                                db.deleteSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s)
+                                
                             }
                             
                         }
@@ -425,6 +402,17 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
                 }
                 
             }
+            
+        }
+        
+        
+        if(customerHomeTableCells.count == 0){
+            
+            IndexHomeTable.alpha = 0
+            
+        }else{
+            
+            IndexHomeTable.alpha = 1
             
         }
         
@@ -484,7 +472,7 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             }
             
             if(result == nil){
-                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: uuidMajorMinorMD5 ,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount!, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code)
+                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: uuidMajorMinorMD5 ,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount!, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code , campaignCode : obj.campaign_code)
                 
                 if(currentLocation.coordinate.latitude != 0){
                     
@@ -497,7 +485,7 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
                 
                 return a
             }else{
-                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: uuidMajorMinorMD5 ,preCustomerImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerDiscountValue: obj.discount!, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code)
+                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: uuidMajorMinorMD5 ,preCustomerImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerDiscountValue: obj.discount!, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code , campaignCode : obj.campaign_code)
                 
                 if(currentLocation.coordinate.latitude != 0){
                     
@@ -626,12 +614,30 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             
             isDeleteMode = false
             
+            IndexHomeTable.allowsMultipleSelectionDuringEditing = false
+            IndexHomeTable.setEditing(false, animated: true)
+            
+            binButtonView.image = UIImage.init(named: "trash 18")?.imageWithColor(tintColor: UIColor.init(hex: "455a64"))
+            binButtonView.tintColor = UIColor.init(hex: "455a64")
+            
+            binButtonView.title = nil
+            deleteAllButton.tintColor = UIColor.init(hex: "455a64")
             deleteAllButton.title = "پیام ها"
+            deleteAllButton.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "IRANYekanMobileFaNum-Bold", size: 13)!], for: .normal)
+            
+        }else{
             
             IndexHomeTable.allowsMultipleSelectionDuringEditing = false
             IndexHomeTable.setEditing(false, animated: true)
             
+            binButtonView.image = UIImage.init(named: "trash 18")?.imageWithColor(tintColor: UIColor.init(hex: "455a64"))
+            binButtonView.tintColor = UIColor.init(hex: "455a64")
             
+            binButtonView.title = nil
+            deleteAllButton.tintColor = UIColor.init(hex: "455a64")
+            deleteAllButton.title = "پیام ها"
+            deleteAllButton.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "IRANYekanMobileFaNum-Bold", size: 13)!], for: .normal)
+            isDeleteMode = !isDeleteMode
             
         }
         

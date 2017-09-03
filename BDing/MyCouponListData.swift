@@ -22,6 +22,10 @@ class MyCouponListData : Decodable{
     
     var url_pic : PicModel?
     
+    var url_pic1 : PicModel?
+    
+    var url_pic2 : PicModel?
+    
     var coupon_text : String?
     
     var count_used : String?
@@ -42,6 +46,8 @@ class MyCouponListData : Decodable{
     
     var tel : String?
     
+    var color : String?
+    
     
     
     required init?(json: JSON) {
@@ -57,6 +63,10 @@ class MyCouponListData : Decodable{
         self.expire_date_service = "expire_date_service" <~~ json
         
         self.url_pic = "url_pic" <~~ json
+        
+        self.url_pic1 = "url_pic1" <~~ json
+        
+        self.url_pic2 = "url_pic2" <~~ json
 
         self.coupon_text = "coupon_text" <~~ json
 
@@ -77,6 +87,8 @@ class MyCouponListData : Decodable{
         self.start_date = "start_date" <~~ json
         
         self.tel = "tel" <~~ json
+        
+        self.color = "color" <~~ json
         
     }
     

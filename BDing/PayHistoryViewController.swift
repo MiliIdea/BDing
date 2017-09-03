@@ -30,6 +30,7 @@ class PayHistoryViewController: UIViewController ,UITableViewDelegate ,UITableVi
 
         table.dataSource = self
         table.delegate = self
+        
 
         // Do any additional setup after loading the view.
     }
@@ -58,9 +59,21 @@ class PayHistoryViewController: UIViewController ,UITableViewDelegate ,UITableVi
         
         cell.title.text = payHistory[indexPath.row].title_pay
         
-        cell.detail.text = payHistory[indexPath.row].date
+        let formatter = DateFormatter()
         
-        cell.price.text = payHistory[indexPath.row].price
+        formatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        
+        formatter.calendar = Calendar(identifier: .gregorian)
+        
+        let d1 = formatter.date(from: (payHistory[indexPath.row].date)!)
+        
+        formatter.dateFormat = "yy/MM/dd"
+        
+        formatter.calendar = Calendar(identifier: .persian)
+        
+        cell.detail.text = formatter.string(from: d1!)
+        
+        cell.price.text = payHistory[indexPath.row].price!
  
         return cell
     }

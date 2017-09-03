@@ -15,6 +15,8 @@ class SetCoinResponseModel : Decodable{
     
     var data : CoinDataModel?
     
+    var msg : String?
+    
     
     required init?(json: JSON) {
         
@@ -22,7 +24,7 @@ class SetCoinResponseModel : Decodable{
         
         self.data = "data" <~~ json
         
-        
+        self.msg = "msg" <~~ json
     }
     
 }

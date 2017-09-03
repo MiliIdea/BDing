@@ -116,21 +116,21 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         self.doSearchButton.alpha = 0
         self.searchTextField.alpha = 0
         
-        var s: String? = GlobalFields.PROFILEDATA?.name
+//        var s: String? = GlobalFields.PROFILEDATA?.name
         
-        let s2: String? = " دنبال چی میگردی"
+        let s2: String? = "دنبال چی می گردی؟ کجا می خوای بری؟"
+//        
+//        if(s == nil){
+//            
+//            s = ""
+//            
+//        }else{
+//            
+//            s2?.appending(" ")
+//            
+//        }
         
-        if(s == nil){
-            
-            s = ""
-            
-        }else{
-            
-            s2?.appending(" ")
-            
-        }
-        
-        self.searchTextField.placeholder = s2?.appending(s!)
+        self.searchTextField.placeholder = s2
         self.clearButton.alpha = 0
         self.blurView.alpha = 0
         
@@ -459,7 +459,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                         LoadPicture().proLoad(view: cell.customerCategoryThumbnail, picModel: (cat?.url_icon)!) { resImage in
                             
                             cell.customerCategoryThumbnail.image = resImage
-                            
+
                             self.customerHomeTableCells[indexPath.row].customerCategoryIcon = resImage
                             
                         }
@@ -593,7 +593,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        CellAnimator.animateCell(cell: cell, withTransform: CellAnimator.TransformFlip, andDuration: 0.3)
+//        CellAnimator.animateCell(cell: cell, withTransform: CellAnimator.TransformFlip, andDuration: 0.3)
         
     }
     
@@ -674,9 +674,15 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                     
                 }
                 
+                if((GlobalFields.BEACON_LIST_DATAS?.count)! <= lazyLoaded){
+                    
+                    lazyLoaded = (GlobalFields.BEACON_LIST_DATAS?.count)! - 1
+                    
+                }
+                
                 for obj in (GlobalFields.BEACON_LIST_DATAS?[self.lazyLoaded...end])! {
                     
-                    let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100), customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount ?? "%0", tell: obj.customer_tell ?? "" ,address: obj.customer_address ?? "" , text: obj.text ?? "" ,workTime: obj.customer_work_time ?? "" ,website: obj.cusomer_web ?? "" ,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code)
+                    let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100), customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount ?? "%0", tell: obj.customer_tell ?? "" ,address: obj.customer_address ?? "" , text: obj.text ?? "" ,workTime: obj.customer_work_time ?? "" ,website: obj.cusomer_web ?? "" ,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code , campaignCode : obj.campaign_code)
                     
                     if(currentLocation.coordinate.latitude != 0){
                         
@@ -705,6 +711,11 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                                         
                                         cust.preCustomerImage = resImage
                                         
+                                        if(self.rightTable != nil && self.rightTable.cellForRow(at: .init(row: self.customerHomeTableCells.index(of: cust)!, section: 0)) != nil  ){
+                                            (self.rightTable.cellForRow(at: .init(row: self.customerHomeTableCells.index(of: cust)!, section: 0)) as! IndexHomeTableViewCell).customerThumbnail.image = resImage
+                                            
+                                        }
+                                        
                                         break
                                     
                                     }
@@ -725,7 +736,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                     
                     if(count == 9){
                         
-                        self.lazyLoaded += 10
+                        self.lazyLoaded += 9
                         
                         self.loading.stopAnimating()
                         
@@ -1152,6 +1163,16 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                             self.firstLoad()
                             self.hiddenSearchView()
                             
+                            
+                        }
+                        
+                    }
+                    
+                    if(obj?.data == nil || obj?.data?.count == 0){
+                        
+                        Notifys().notif(message: "هیچ موردی یافت نشد!"){ alarm in
+                            
+                            self.present(alarm, animated: true, completion: nil)
                             
                         }
                         

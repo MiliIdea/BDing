@@ -14,13 +14,15 @@ class CouponListResponseModel : Decodable{
     
     var data : [CouponListData]?
     
-    
+    var msg : String?
     
     required init?(json: JSON) {
         
         self.code = "code" <~~ json
         
         self.data = "data" <~~ json
+        
+        self.msg = "msg" <~~ json
         
         
     }

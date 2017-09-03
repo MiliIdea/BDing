@@ -12,7 +12,7 @@ class SetCoinRequestModel {
     
 
     
-    init(CODE: String!) {
+    init(CODE: String! , campaign_code : String!) {
         
         self.CODE = CODE
         
@@ -25,6 +25,8 @@ class SetCoinRequestModel {
         self.USERID = m?.value(forKey: "userID") as! String!
         
         self.TOKEN = m?.value(forKey: "token") as! String!
+        
+        self.CAMPAIGN_CODE = campaign_code
         
         var temp = self.TOKEN.md5().md5()
         
@@ -49,9 +51,11 @@ class SetCoinRequestModel {
     
     var MODE: String!
     
+    var CAMPAIGN_CODE : String!
+    
     func getParams() -> [String: Any]{
         
-        return ["user": USERID , "token": TOKEN  , "hash": HASH , "code": CODE , "type": TYPE , "mode": MODE]
+        return ["user": USERID , "token": TOKEN  , "hash": HASH , "code": CODE , "type": TYPE , "mode": MODE , "campaign_code": CAMPAIGN_CODE]
         
     }
     

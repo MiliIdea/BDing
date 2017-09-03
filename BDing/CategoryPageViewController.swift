@@ -161,7 +161,7 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
             
             loading.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
             
-            table?.addSubview(loading)
+            self.view?.addSubview(loading)
             
             loading.hidesWhenStopped = true
             
@@ -169,6 +169,9 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
             
             loading.frame.origin.y = (view?.frame.height)! / 2
             
+            loading.layer.zPosition = 1
+        
+            loading.startAnimating()
         }
         
         loading.startAnimating()
@@ -228,16 +231,25 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
         cell.customerName.text = tableCell.customerName
         cell.customerCampaignTitle.text = tableCell.customerCampaignTitle
         cell.customerDistanceToMe.text = tableCell.customerDistanceToMe
+        cell.customerThumbnail.image = UIImage(named : "default")!
         if(tableCell.preCustomerImage == nil){
-            cell.customerThumbnail.image = UIImage(named:"default")!
+            DispatchQueue.main.async(execute: { () -> Void in
+                autoreleasepool { () -> () in
+                    
+                    LoadPicture().proLoad(view: nil , picModel: tableCell.customerImage!){ resImage in
+                        
+                        self.customerHomeTableCells[indexPath.row].preCustomerImage = resImage
+                        
+                        cell.customerThumbnail.image = resImage
+                        
+                    }
+                    
+                }
+            })
+        }else{
+            cell.customerThumbnail.image = tableCell.preCustomerImage
         }
-        DispatchQueue.main.async(execute: { () -> Void in
-            autoreleasepool { () -> () in
-            
-                cell.customerThumbnail.image = tableCell.preCustomerImage
-            
-            }
-        })
+        
         cell.customerThumbnail.contentMode = UIViewContentMode.scaleAspectFit
         cell.customerCampaignCoin.text = tableCell.customerCoinValue
         cell.customerCampaignDiscount.text = tableCell.customerDiscountValue
@@ -264,6 +276,12 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
                         cell.customerCategoryThumbnail.image = resImage
                         
                         self.customerHomeTableCells[indexPath.row].customerCategoryIcon = resImage
+                        
+                        for c in self.customerHomeTableCells {
+                            
+                            c.customerCategoryIcon = resImage
+                            
+                        }
                         
                     }
                     
@@ -297,16 +315,9 @@ class CategoryPageViewController: UIViewController , UIScrollViewDelegate ,UITab
     }
 
     
-    
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        
-//        return self.view.frame.width * 8.5 / 32
-//        
-//    }
-    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        CellAnimator.animateCell(cell: cell, withTransform: CellAnimator.TransformFlip, andDuration: 0.3)
+//        CellAnimator.animateCell(cell: cell, withTransform: CellAnimator.TransformFlip, andDuration: 0.3)
         
     }
     

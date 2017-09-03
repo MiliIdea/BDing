@@ -50,8 +50,12 @@ class CustomerHomeTableCell: NSObject {
     
     var beaconCode : String!
 
+    var campaignCode : String!
     
-    init(uuidMajorMinorMD5 : String? ,preCustomerImage : UIImage?,customerImage : PicModel?,customerCampaignTitle : String,customerName : String,customerCategoryIcon : UIImage?,customerDistanceToMe : String,customerCoinValue : String,customerDiscountValue : String,tell : String , address : String , text : String , workTime : String , website : String , customerBigImages : [PicModel]? , categoryID : String? , beaconCode : String!){
+    
+    init(uuidMajorMinorMD5 : String? ,preCustomerImage : UIImage?,customerImage : PicModel?,customerCampaignTitle : String,customerName : String,customerCategoryIcon : UIImage?,customerDistanceToMe : String,customerCoinValue : String,customerDiscountValue : String,tell : String , address : String , text : String , workTime : String , website : String , customerBigImages : [PicModel]? , categoryID : String? , beaconCode : String! , campaignCode : String!){
+        
+        self.campaignCode = campaignCode
         
         self.categoryID = categoryID
         

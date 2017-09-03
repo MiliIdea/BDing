@@ -14,7 +14,7 @@ import CoreLocation
 import CoreBluetooth
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegate ,CBPeripheralManagerDelegate{
+class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegate ,CBPeripheralManagerDelegate , UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
     
@@ -25,30 +25,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
     var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     
     let locationManager = CLLocationManager()
-    
-    let bluetoothManager = CBCentralManager()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         locationManager.delegate = self
         
-        locationManager.requestAlwaysAuthorization()
-        
         myBTManager = CBPeripheralManager(delegate: self, queue: nil, options: nil)
         
         if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().delegate = self
             let center = UNUserNotificationCenter.current()
             center.requestAuthorization(options: [.alert, .sound , .badge]) { (granted, error) in
                 // Enable or disable features based on authorization.
+                self.locationManager.requestAlwaysAuthorization()
             }
         } else {
             // Fallback on earlier versions
-        
+//            locationManager.requestAlwaysAuthorization()
         }
         
-        UIApplication.shared.registerUserNotificationSettings(
-            UIUserNotificationSettings(types: .alert, categories: nil))
+//        UIApplication.shared.registerUserNotificationSettings(
+//            UIUserNotificationSettings(types: .alert, categories: nil))
        
         
         beaconRegion.notifyEntryStateOnDisplay = true
@@ -178,31 +176,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                 
                 lat = String(currentLocation.coordinate.latitude)
                 
-                if(lat == "0" && long == "0"){
-                    
-                    long = String(51.4212297)
-                    
-                    lat = String(35.6329044)
-                    
-                }
+//                if(lat == "0" && long == "0"){
+//                    
+//                    long = String(51.4212297)
+//                    
+//                    lat = String(35.6329044)
+//                    
+//                }
                 
-                print("lat and long")
-                print(lat)
-                print(long)
-                
+//                print("lat and long")
+//                print(lat)
+//                print(long)
+//                
                 print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(allSearch : false))
-                
+//
                 print()
                 
-                request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(allSearch : false), encoding: JSONEncoding.default).responseJSON { response in
+                request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: "200", SEARCH: nil, CATEGORY: nil, SUBCATEGORY: nil).getParams(allSearch : false), encoding: JSONEncoding.default).responseJSON { response in
                     
                     if let JSON = response.result.value {
                         
-                        print("JSON ----------BEACON----------->>>> " )
+                        print("JSON ----------BEACON----------->>>> " , JSON)
                         
                         let obj = BeaconListResponseModel.init(json: JSON as! JSON)
                         
-                        if ( obj?.code == "200" ){
+                        if ( obj?.code == "200" && obj?.data != nil){
                             
                             print("JSON ----------BEACON----------->>>> " , JSON)
                             
@@ -212,7 +210,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                                 
                                 let notification = UILocalNotification()
                                 notification.fireDate = Date()
-                                notification.alertBody = "pls turn on your bluetooth! campaign around you detected!"
+                                notification.alertBody = obj?.msg ?? "لطفا بلوتوث خود را روشن کنید کمپینی در اطراف شما پیدا شده!"
                                 notification.alertAction = "ok"
                                 notification.soundName = UILocalNotificationDefaultSoundName
                                 UIApplication.shared.presentLocalNotificationNow(notification)
@@ -303,7 +301,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
     
     
     
-    
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        //If you don't want to show notification when app is open, do something here else and make a return here.
+        //Even you you don't implement this delegate method, you will not see the notification on the specified controller. So, you have to implement this delegate and make sure the below line execute. i.e. completionHandler.
+        
+        completionHandler([.alert,.badge])
+    }
     
     // MARK: - Core Data stack
 
@@ -387,8 +392,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                 
                 isInDB = true
                 
-                if(row.value(forKey: "isSeen") as! Bool == true){
-                    
+                if(row.value(forKey: "seenTime") != nil){
+                
                     let t1 = row.value(forKey: "seenTime") as! Date
                     
                     let t2 = date
@@ -398,11 +403,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                         let s2 = GetBeaconRequestModel(UUID: String(describing : beacon.proximityUUID), MAJOR: String(describing : beacon.major), MINOR: String(describing : beacon.minor))
                         
                         request(URLs.getBeacon , method: .post , parameters: s2.getParams(), encoding: JSONEncoding.default).responseJSON { response in
-                            print()
+//                            print()
                             
                             if let JSON = response.result.value {
                                 
-                                print("JSON -----------FINDBEACON---------->>>> " , JSON)
+//                                print("JSON -----------FINDBEACON---------->>>> " , JSON)
                                 
                                 let obj = BeaconListResponseModel.init(json: JSON as! JSON)
                                 
@@ -422,6 +427,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                                     //                                    }
                                     
                                     return
+                                }else if ( obj?.code == "204" ){
+                                    
+                                    let obj = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s)
+                                    
+                                    SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s , newItem: ["uuid" : obj?.value(forKey: "uuid") , "major" : obj?.value(forKey: "major") , "minor" : obj?.value(forKey: "minor") , "id" : obj?.value(forKey: "id") , "isSeen" : obj?.value(forKey: "isSeen") , "seenTime" : obj?.value(forKey: "seenTime") , "beaconDataJSON" : obj?.value(forKey: "beaconDataJSON") ,"isRemoved" : true])
+                                    
                                 }
                                 
                             }
@@ -432,7 +443,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                     
                     
                 }
-                
+            
             }
             
             //            print(row.value(forKey: "uuid") ?? "nil")
@@ -449,11 +460,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
             let s2 = GetBeaconRequestModel(UUID: String(describing : beacon.proximityUUID), MAJOR: String(describing : beacon.major), MINOR: String(describing : beacon.minor))
             
             request(URLs.getBeacon , method: .post , parameters: s2.getParams(), encoding: JSONEncoding.default).responseJSON { response in
-                print()
+//                print()
                 
                 if let JSON = response.result.value {
                     
-                    print("JSON -----------FINDBEACON---------->>>> " , JSON)
+//                    print("JSON -----------FINDBEACON---------->>>> " , JSON)
                     
                     let obj = BeaconListResponseModel.init(json: JSON as! JSON)
                     
@@ -474,6 +485,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                         
                         
                         return
+                    }else if ( obj?.code == "204" ){
+                        
+//                        SaveAndLoadModel().deleteSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s)
+                        let obj = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s)
+                        
+                        SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s , newItem: ["uuid" : obj?.value(forKey: "uuid") , "major" : obj?.value(forKey: "major") , "minor" : obj?.value(forKey: "minor") , "id" : obj?.value(forKey: "id") , "isSeen" : obj?.value(forKey: "isSeen") , "seenTime" : obj?.value(forKey: "seenTime") , "beaconDataJSON" : obj?.value(forKey: "beaconDataJSON") ,"isRemoved" : true])
+                        
                     }
                     
                 }

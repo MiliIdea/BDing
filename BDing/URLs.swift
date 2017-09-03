@@ -50,5 +50,7 @@ class URLs {
     
     static let popup = server + "beacon/popup"
     
+    static let faq = server + "faq"
+    
 }
 

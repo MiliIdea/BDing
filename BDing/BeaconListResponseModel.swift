@@ -14,6 +14,8 @@ class BeaconListResponseModel : Decodable{
     
     var data : [BeaconListData]?
     
+    var msg : String?
+    
     
     
     required init?(json: JSON) {
@@ -21,6 +23,8 @@ class BeaconListResponseModel : Decodable{
         self.code = "code" <~~ json
         
         self.data = "data" <~~ json
+        
+        self.msg = "msg" <~~ json
         
         
     }

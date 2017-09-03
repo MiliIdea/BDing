@@ -37,7 +37,9 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
     
     @IBOutlet var container: UIView!
     
+    @IBOutlet weak var discountThumbnail: UIImageView!
     
+    @IBOutlet weak var coinThumbnail: UIImageView!
     
     var index : Int = 0
     
@@ -107,7 +109,8 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
             annoation.subtitle = obj.category_title
             
             pins.append(annoation)
-//            images.append(pinsImage.valueForKeyPath(keyPath: obj.category_id!) as! UIImage)
+            
+            
             
         }
         
@@ -166,11 +169,11 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
                         
                         if(result == nil){
                             
-                            self.performSegue(withIdentifier: "mapDetailSegue", sender: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerDiscountValue: obj.discount! + "تا", tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code))
+                            self.performSegue(withIdentifier: "mapDetailSegue", sender: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerDiscountValue: obj.discount!, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code , campaignCode : obj.campaign_code))
                             
                         }else{
                             
-                            self.performSegue(withIdentifier: "mapDetailSegue", sender: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: result ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount! + "تا", tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code))
+                            self.performSegue(withIdentifier: "mapDetailSegue", sender: CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: result ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: catIcon!, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount!, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code , campaignCode : obj.campaign_code))
                             
                         }
 
@@ -351,7 +354,24 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
                     
                     self.coin.text = i.coin ?? "0"
                     
-                    self.discount.text = i.discount! + "تا"
+                    self.discount.text = i.discount!
+                    
+                    if(self.discount.text == "0" || self.discount.text == "تا" || self.discount.text == "" || self.discount.text == "تا0"){
+                        self.discount.alpha = 0
+                        self.discountThumbnail.alpha = 0
+                    }else{
+                        self.discount.alpha = 1
+                        self.discountThumbnail.alpha = 1
+                    }
+                    
+                    if(self.coin.text == "0" || self.coin.text == ""){
+                        self.coin.alpha = 0
+                        self.coinThumbnail.alpha = 0
+                    }else{
+                        self.coin.alpha = 1
+                        self.coinThumbnail.alpha = 1
+                    }
+                    
                     
                     self.distance.text = String(describing: round((i.distance ?? 0) * 100) / 100)
                     
@@ -473,6 +493,7 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
         
     }
 
+
     
     var arViewController: ARViewController!
     
@@ -485,22 +506,56 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
         arViewController.trackingManager.reloadDistanceFilter = 75
         var annots : [ARAnnotation] = [ARAnnotation]()
         
-        var count = 0
+//        var count = 0
+//        
+//        for p in pins {
+//            
+//            if(count > 5){
+//                annots.append(Place.init(location: CLLocation.init(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude), name: p.title ?? "", image: images[pins.index(of: p)!], identifier: "id" , uuid_major_minor: nil))
+//                
+//            }else{
+//                annots.append(Place.init(location: CLLocation.init(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude), name: p.title ?? "", image: nil, identifier: "id" , uuid_major_minor: nil))
+//                
+//            }
+//            count += 1
+//            
+//        }
         
-        for p in pins {
+//        print(CLLocationManager().location?.coordinate.latitude)
+//        print(CLLocationManager().location?.coordinate.longitude)
+        for obj in GlobalFields.BEACON_LIST_DATAS! {
             
-            if(count > 5){
-                annots.append(Place.init(location: CLLocation.init(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude), name: p.title ?? "", image: images[pins.index(of: p)!], identifier: "id"))
+            if(obj.beacon_code != nil){
+               
+                let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: Double(obj.lat!)!, longitude: Double(obj.long!)!)
                 
-            }else{
-                annots.append(Place.init(location: CLLocation.init(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude), name: p.title ?? "", image: nil, identifier: "id"))
+//                print("distance : ",CLLocationManager().location?.distance(from: .init(latitude: location.latitude, longitude: location.longitude)))
+                
+                if((CLLocationManager().location?.distance(from: .init(latitude: location.latitude, longitude: location.longitude)))! < CLLocationDistance.init(5000)){
+                    
+                    annots.append(Place.init(location: CLLocation.init(latitude: location.latitude, longitude: location.longitude), name: obj.title ?? "", image: UIImage.init(named: "pushak"), identifier: "id" , uuid_major_minor: obj.beacon_code?.lowercased()))
+                    
+                }
                 
             }
-            count += 1
             
         }
         
+        var min = annots[0]
         
+        for an in annots {
+            
+            if((CLLocationManager().location?.distance(from: .init(latitude: an.location.coordinate.latitude, longitude: an.location.coordinate.longitude)))! < (CLLocationManager().location?.distance(from: .init(latitude: min.location.coordinate.latitude, longitude: min.location.coordinate.longitude)))!){
+                
+                min = an
+                
+            }
+            
+        }
+        
+        annots.removeAll()
+        
+        annots.append(min)
         
         arViewController.setAnnotations(annots)
         
@@ -510,18 +565,48 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
         
         
     }
-    @IBAction func showARController(_ sender: Any) {
+    
+
+    func calculateCoordinates(){
+        
+        GlobalFields.indoorCoordinates.removeAll()
+        
+        for iP in GlobalFields.indoorPoints {
+            
+            GlobalFields.indoorCoordinates.append(findCoordinate(p: iP))
+            
+        }
         
     }
     
-//    func showInfoView(forPlace place: Place) {
-//        let alert = UIAlertController(title: place.placeName , message: place.infoText, preferredStyle: UIAlertControllerStyle.alert)
-//        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-//        
-//        arViewController.present(alert, animated: true, completion: nil)
-//    }
+    func findCoordinate(p : GlobalFields.indoorPoint) -> CLLocationCoordinate2D {
+        let distRadians = sqrt(p.x * p.x + p.y * p.y) / (6372797.6) // earth radius in meters
+        
+        let lat1 = GlobalFields.mainCoordinate.latitude * M_PI / 180
+        let lon1 = GlobalFields.mainCoordinate.longitude * M_PI / 180
+        
+        let lat2 = asin(sin(lat1) * cos(distRadians) + cos(lat1) * sin(distRadians) * cos(findAzimuthInPoints(p: p)))
+        let lon2 = lon1 + atan2(sin(findAzimuthInPoints(p: p)) * sin(distRadians) * cos(lat1), cos(distRadians) - sin(lat1) * sin(lat2))
+        
+        return CLLocationCoordinate2D(latitude: lat2 * 180 / M_PI, longitude: lon2 * 180 / M_PI)
+    }
+
+    
+    
+    func findAzimuthInPoints(p : GlobalFields.indoorPoint) -> Double{
+        
+        return atan(p.x / p.y)
+        
+    }
+    
+    
+    
     
 }
+
+
+
+
 
 
 

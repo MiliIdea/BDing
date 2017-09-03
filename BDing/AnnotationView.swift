@@ -57,7 +57,8 @@ class AnnotationView: ARAnnotationView {
         
         if let annotation = annotation as? Place {
             titleLabel?.text = annotation.placeName
-            distanceLabel?.text = String(format: "%.2f km", annotation.distanceFromUser / 1000)
+            distanceLabel?.text = String(annotation.distanceFromUser)
+//            distanceLabel?.text = String(annotation.location.coordinate.latitude) + "-" + String(annotation.location.coordinate.longitude)
             
             if(annotation.image == nil){
                 

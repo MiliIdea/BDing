@@ -433,11 +433,9 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                 
                 //inja bayad set coin she agar read shode bud countero bayad az qabl 1esh konam
                 
-                print(SetCoinRequestModel(CODE: self.cell?.customerImage?.code).getParams())
-                
-                request(URLs.setCoin , method: .post , parameters: SetCoinRequestModel(CODE: self.cell?.customerImage?.code).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                request(URLs.setCoin , method: .post , parameters: SetCoinRequestModel(CODE: self.cell?.beaconCode , campaign_code : self.cell?.campaignCode).getParams(), encoding: JSONEncoding.default).responseJSON { response in
                     print(response)
-                    
+//                    customerImage?.code
                     if let JSON = response.result.value {
                         
                         print("JSON ----------setCoin----------->>>> " , JSON)
@@ -458,11 +456,11 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                             
                             let d = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5)!)
                             
-                            SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5!)! , newItem: ["uuid" : d?.value(forKey: "uuid") , "major" : d?.value(forKey: "major") , "minor" : d?.value(forKey: "minor") , "id" : d?.value(forKey: "id") , "isSeen" : true , "seenTime" : d?.value(forKey: "seenTime") , "beaconDataJSON" : d?.value(forKey: "beaconDataJSON") ,"isRemoved" : d?.value(forKey: "isRemoved")])
+                            SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: (self.cell?.uuidMajorMinorMD5!)! , newItem: ["uuid" : d?.value(forKey: "uuid") , "major" : d?.value(forKey: "major") , "minor" : d?.value(forKey: "minor") , "id" : d?.value(forKey: "id") , "isSeen" : true , "seenTime" : Date() , "beaconDataJSON" : d?.value(forKey: "beaconDataJSON") ,"isRemoved" : d?.value(forKey: "isRemoved")])
                             
                             self.updateBadgeVlue()
                             
-                            Notifys().notif(message: "تبریک! دینگ این پیام را دریافت کردید."){ alert in
+                            Notifys().notif(message: obj?.data?.msg ?? "تبریک! دینگ این پیام را دریافت کردید."){ alert in
                                 
                                 self.present(alert, animated: true, completion: nil)
                                 
@@ -475,7 +473,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                             
                             self.progressBarView.backgroundColor = UIColor.red
                             
-                            Notifys().notif(message: "در ۱۲ ساعت گذشته دینگ این پیام را دریافت کرده اید"){ alert in
+                            Notifys().notif(message: obj?.msg ?? "در ۱۲ ساعت گذشته دینگ این پیام را دریافت کرده اید"){ alert in
                                 
                                 self.present(alert, animated: true, completion: nil)
                                 

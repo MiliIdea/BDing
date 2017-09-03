@@ -363,7 +363,11 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                     
                     self.goNextView()
                     
+                }else if(obj.code == "9000"){
                     
+                    
+                    
+                
                 }else{
                     
                     self.animationView?.pause()

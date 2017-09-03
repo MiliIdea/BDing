@@ -25,14 +25,16 @@ import CoreLocation
 import HDAugmentedReality
 
 class Place: ARAnnotation {
-  let placeName: String
-  var image: UIImage?
-
   
-    init(location: CLLocation, name: String, image: UIImage? , identifier : String) {
+    let placeName: String
+    var image: UIImage?
+    
+  
+    init(location: CLLocation, name: String, image: UIImage? , identifier : String , uuid_major_minor : String?) {
     placeName = name
     self.image = image
-    super.init(identifier: identifier , title: name , location: location)!
+        
+    super.init(identifier: identifier , title: name , location: location ,uuid_major_minor: uuid_major_minor)!
     
   }
   

@@ -34,6 +34,8 @@ class SignInRequestModel {
         
         self.HASH =  temp.md5()
         
+        
+        
     }
     
     
@@ -45,9 +47,15 @@ class SignInRequestModel {
     
     var HASH: String!
     
+    var PHONE_TYPE : String! = "iphone"
+    
     func getParams() -> [String: Any]{
         
-        return ["username": USERNAME , "password": PASSWORD , "type":TYPE , "hash": HASH ]
+        print(["username": USERNAME , "password": PASSWORD , "type":TYPE , "hash": HASH ,"version" : ((Bundle.main.infoDictionary?["CFBundleShortVersionString"]) as! String) + "." + (Bundle.main.infoDictionary?["CFBundleVersion"] as! String) , "phone_type" : PHONE_TYPE])
+        
+        print()
+        
+        return ["username": USERNAME , "password": PASSWORD , "type":TYPE , "hash": HASH ,"version" : ((Bundle.main.infoDictionary?["CFBundleShortVersionString"]) as! String) + "." + (Bundle.main.infoDictionary?["CFBundleVersion"] as! String) , "phone_type" : PHONE_TYPE]
         
     }
     

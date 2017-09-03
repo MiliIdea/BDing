@@ -44,6 +44,7 @@ class ProfileData : Decodable{
     
     var social_name : String!
     
+    var get_coin : String?
     
     
     
@@ -82,6 +83,8 @@ class ProfileData : Decodable{
         self.url_pic = "url_pic" <~~ json
         
         self.social_name = "social_name" <~~ json
+        
+        self.get_coin = "get_coin" <~~ json
         
     }
     
