@@ -413,20 +413,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                                 
                                 if ( obj?.code == "200" ){
                                     
-                                    SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s, newItem: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : Date() , "beaconDataJSON" : self.jsonToString(json: JSON as AnyObject) ,"isRemoved" : false])
+                                    let t3 = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s)?.value(forKey: "seenTime") as! Date
                                     
-                                
-                                    let notification = UILocalNotification()
-                                    notification.fireDate = Date()
-                                    notification.alertTitle = obj?.data?[0].customer_title
-                                    notification.alertBody = obj?.data?[0].text
-                                    notification.alertAction = "ok"
-                                    notification.soundName = UILocalNotificationDefaultSoundName
-                                    UIApplication.shared.presentLocalNotificationNow(notification)
+                                    let t4 = Date()
+                                    
+                                    if(self.hoursBetween(date1: t3 as NSDate, date2: t4 as NSDate) > 12){
+                                        
+                                        SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s, newItem: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : Date() , "beaconDataJSON" : self.jsonToString(json: JSON as AnyObject) ,"isRemoved" : false])
+                                    
+                                        
+                                        let notification = UILocalNotification()
+                                        notification.fireDate = Date()
+                                        notification.alertTitle = obj?.data?[0].customer_title
+                                        notification.alertBody = obj?.data?[0].text
+                                        notification.alertAction = "ok"
+                                        notification.soundName = UILocalNotificationDefaultSoundName
+                                        UIApplication.shared.presentLocalNotificationNow(notification)
+                                        
+                                    }
+                                    
                                     
                                     //                                    }
                                     
                                     return
+                                    
                                 }else if ( obj?.code == "204" ){
                                     
                                     let obj = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s)
@@ -470,19 +480,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                     
                     if ( obj?.code == "200" ){
                         
-                        SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s, newItem: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : Date() , "beaconDataJSON" : self.jsonToString(json: JSON as AnyObject) ,"isRemoved" : false])
-                        
-                        
-                        //set notification!!!!!!!!!!!!
-                        
-                        let notification = UILocalNotification()
-                        notification.fireDate = Date()
-                        notification.alertTitle = obj?.data?[0].customer_title
-                        notification.alertBody = obj?.data?[0].text
-                        notification.alertAction = "ok"
-                        notification.soundName = UILocalNotificationDefaultSoundName
-                        UIApplication.shared.presentLocalNotificationNow(notification)
-                        
+                        if(SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s) == nil){
+                            
+                            SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s, newItem: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : Date() , "beaconDataJSON" : self.jsonToString(json: JSON as AnyObject) ,"isRemoved" : false])
+                            
+                            
+                            //set notification!!!!!!!!!!!!
+                            
+                            let notification = UILocalNotification()
+                            notification.fireDate = Date()
+                            notification.alertTitle = obj?.data?[0].customer_title
+                            notification.alertBody = obj?.data?[0].text
+                            notification.alertAction = "ok"
+                            notification.soundName = UILocalNotificationDefaultSoundName
+                            UIApplication.shared.presentLocalNotificationNow(notification)
+                            
+                        }
                         
                         return
                     }else if ( obj?.code == "204" ){
