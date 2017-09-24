@@ -111,6 +111,25 @@ class BeaconListData : Decodable{
         
         self.campaign_code = "campaign_code" <~~ json
         
+        let start : String? = "start_date" <~~ json
+        
+        let formatter = DateFormatter()
+        
+        formatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        
+        formatter.calendar = Calendar(identifier: .gregorian)
+        
+        self.start_date = formatter.date(from: start ?? "2010-09-12 15:30:00")
+        
+        let end : String? = "end_date" <~~ json
+        
+        self.end_date = formatter.date(from: end ?? "2015-09-12 15:30:00")
+        
+        print(formatter.date(from: start ?? "2010-09-12 15:30:00"))
+        print(formatter.date(from: end ?? "2015-09-12 15:30:00"))
+        
+        self.popular = "popular" <~~ json
+        
     }
     
 }

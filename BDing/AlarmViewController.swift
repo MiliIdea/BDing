@@ -14,7 +14,8 @@ import CCBottomRefreshControl
 import Hero
 import CellAnimator
 
-class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDataSource , UICollectionViewDataSource, UICollectionViewDelegate{
+
+class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDataSource , UICollectionViewDataSource, UICollectionViewDelegate , ShowcaseDelegate{
     
     @IBOutlet weak var rightTable: UITableView!
     
@@ -28,6 +29,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     @IBOutlet weak var changeModeButton: UIButton!
     
+    @IBOutlet weak var lowInternetView: UIView!
     
   
     @IBOutlet var container: UIView!
@@ -66,6 +68,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     var isShowSortView : Bool = false
     
+    let showcase = MaterialShowcase()
+    
     ///////////////////////////////
     
     var cache: NSCache<AnyObject, AnyObject> = NSCache()
@@ -101,6 +105,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     var lastSearch : LastSearchStruct? = nil
     
     var userRefreshControl : UIRefreshControl = UIRefreshControl.init()
+    
+    var showcaseCounter : Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -153,7 +159,57 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         loading.startAnimating()
         doingSearch("first")
         
+        showcase.delegate = self
+        
+        let when = DispatchTime.now() + 2
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            
+            
+            self.showcase.setTargetView(tabBar: (self.tabBarController?.tabBar)! , itemIndex: 3) // always required to set targetView
+            self.showcase.primaryText = "خانه"
+            self.showcase.secondaryText = " در این صفحه کمپین ها را ببینید و از جزییات آن با خبر شوید "
+            MyFont().setFontForAllView(view: self.showcase)
+            
+            self.showcase.show(id: "1",completion: {
+                _ in
+                // You can save showcase state here
+                // Later you can check and do not show it again
+                
+                
+                
+            })
+
+            
+        }
+        
     }
+    
+    func dismissed() {
+        
+        print("dismissed")
+        
+        showcaseCounter += 1
+        if(showcaseCounter >= 2){
+            return
+        }
+        let when = DispatchTime.now() + 1
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            
+            
+            self.showcase.setTargetView(view: self.searchButtonView) // always required to set targetView
+            self.showcase.primaryText = "جستجو"
+            self.showcase.secondaryText = " در بین دسته بندی های مختلف و بر اساس نام کمپین یا موقعیت آن جستجو کنید"
+            MyFont().setFontForAllView(view: self.showcase)
+            
+            self.showcase.show(id: "2",completion: {
+                _ in
+            })
+            
+            
+        }
+        
+    }
+
     
     func firstLoad(){
         MyFont().setFontForAllView(view: view)
@@ -754,7 +810,21 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             print("%%%%%%%%%%%%%%% count %%%%%%%%%%%%%%%%")
             print(self.customerHomeTableCells.count)
-            
+        
+//        if(self.customerHomeTableCells.count == 0){
+//            
+//            self.rightTable.alpha = 0
+//            
+//            self.leftTable.alpha = 0
+//            
+//            self.lowInternetView.alpha = 1
+//            
+//            self.loading.alpha = 0
+//            
+//            return
+//            
+//        }
+        
             self.rightTable.reloadData()
             
             self.leftTable.reloadData()
@@ -1083,14 +1153,53 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         self.lastSearch?.text = self.searchTextField.text!
         
         print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: searchTextField.text, CATEGORY: String(describing: categoryList), SUBCATEGORY: nil).getParams(allSearch : true))
+        let manager = SessionManager.default2
         
-        
-        request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: searchTextField.text, CATEGORY: String(describing: categoryList), SUBCATEGORY: nil).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
+        manager.request(URLs.getBeaconList , method: .post , parameters: BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: searchTextField.text, CATEGORY: String(describing: categoryList), SUBCATEGORY: nil).getParams(allSearch : true), encoding: JSONEncoding.default).responseJSON { response in
             print()
+            
+            ///////////////////////////
+            ///////////////////////////
+            ///////////////////////////
+            
+            switch (response.result) {
+            case .failure(let error):
+//                if error._code == NSURLErrorTimedOut {
+                    //HANDLE TIMEOUT HERE
+                    
+                    self.loading.stopAnimating()
+                    
+                    self.rightTable.alpha = 0
+                    
+                    self.leftTable.alpha = 0
+                    
+                    self.lowInternetView.alpha = 1
+                    
+                    self.view.isUserInteractionEnabled = true
+                    
+                    return
+                    
+//                }
+                break
+                
+            default: break
+                
+            }
+            
+            ///////////////////////////
+            ///////////////////////////
+            ///////////////////////////
+            
+            self.rightTable.alpha = 1
+            
+            self.leftTable.alpha = 1
+            
+            self.lowInternetView.alpha = 0
+
             
             if let JSON = response.result.value {
                 
-                print("JSON ----------BEACON----------->>>> ")
+                print("JSON ----------BEACON----------->>>> " , JSON)
                 
                 let obj = BeaconListResponseModel.init(json: JSON as! JSON)
                 
@@ -1634,9 +1743,12 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             let d1 = datas[i].start_date!
             
+            print(i)
+            print(d1)
+            
             let d2 = max.start_date!
             
-            if(d1 < d2){
+            if(d1 > d2){
                 
                 max = datas[i]
                 index = i
@@ -2040,6 +2152,24 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     }
     
     
+    @IBAction func lowInternetAction(_ sender: Any) {
+       
+        
+        self.lowInternetView.alpha = 0
+        
+        self.loading.alpha = 1
+        
+        self.loading.startAnimating()
+        
+        self.view.isUserInteractionEnabled = false
+        
+        doingSearch("first")
+        
+    }
+    
+    
 
 
 }
+
+

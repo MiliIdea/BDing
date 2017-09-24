@@ -21,20 +21,19 @@
  */
 
 import Foundation
+import UIKit
 import CoreLocation
-import HDAugmentedReality
 
 class Place: ARAnnotation {
   
     let placeName: String
-    var image: UIImage?
+    let image: UIImage?
     
   
-    init(location: CLLocation, name: String, image: UIImage? , identifier : String , uuid_major_minor : String?) {
-    placeName = name
-    self.image = image
-        
-    super.init(identifier: identifier , title: name , location: location ,uuid_major_minor: uuid_major_minor)!
+    init(location: CLLocation, name: String, image: UIImage? , identifier : String , uuid_major_minor : String? ,x : Double , y : Double , z : Double) {
+        placeName = name
+        self.image = image
+        super.init(identifier: identifier , title: name , location: location ,uuid_major_minor: uuid_major_minor , x : x , y : y , z : z )!
     
   }
   

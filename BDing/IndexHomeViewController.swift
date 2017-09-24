@@ -59,6 +59,22 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         
         IndexHomeTable.reloadData()
         // Do any additional setup after loading the view.
+        
+        let when = DispatchTime.now() + 0.5
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            
+            let showcase = MaterialShowcase()
+            showcase.setTargetView(tabBar: (self.tabBarController?.tabBar)! , itemIndex: 1) // always required to set targetView
+            showcase.primaryText = "پیام ها"
+            showcase.secondaryText = "کمپین هایی که از نزدیکی آن عبور می کنید را ببینید و با بازدید آن دینگ دریافت کنید"
+            MyFont().setFontForAllView(view: showcase)
+            showcase.show(id: "3" ,completion: {
+                _ in
+                // You can save showcase state here
+                // Later you can check and do not show it again
+            })
+            
+        }
     }
     
     
@@ -323,6 +339,16 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         let db = SaveAndLoadModel()
         
         let beaconsData = db.load(entity: "BEACON")
+        
+        if(customerHomeTableCells.count == 0){
+            
+            IndexHomeTable.alpha = 0
+            
+        }else{
+            
+            IndexHomeTable.alpha = 1
+            
+        }
         
         if(customerHomeTableCells.count == beaconsData!.count){
             

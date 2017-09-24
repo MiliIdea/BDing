@@ -22,6 +22,10 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
     
     var cache: NSCache<AnyObject, AnyObject> = NSCache()
     
+    @IBOutlet weak var lowInternetView: UIView!
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -206,5 +210,100 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
     }
     
     
+    
+    @IBAction func lowInternetAction(_ sender: Any) {
+        requestForMyCoupon()
+    }
+    
+    func requestForMyCoupon(){
+        
+        let nextVc : MyCouponViewController = self
+        
+        nextVc.loading.startAnimating()
+        
+        nextVc.table.alpha = 1
+        
+        nextVc.lowInternetView.alpha = 0
+        
+        print(MyCouponRequestModel.init().getParams())
+        
+        let manager = SessionManager.default2
+        
+        manager.request(URLs.getMyCoupon , method: .post , parameters: MyCouponRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            ///////////////////////////
+            ///////////////////////////
+            ///////////////////////////
+            
+            switch (response.result) {
+            case .failure(let error):
+                if error._code == NSURLErrorTimedOut {
+                    //HANDLE TIMEOUT HERE
+                    
+                    nextVc.loading.stopAnimating()
+                    
+                    nextVc.table.alpha = 0
+                    
+                    nextVc.lowInternetView.alpha = 1
+                    
+                    return
+                    
+                }
+                break
+                
+            default: break
+                
+            }
+            
+            ///////////////////////////
+            ///////////////////////////
+            ///////////////////////////
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------MY COUPON----------->>>> " ,JSON)
+                //create my coupon response model
+                
+                if( MyCouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                    
+                    UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                        
+                        if(MyCouponListResponseModel.init(json: JSON as! JSON)?.data != nil){
+                            
+                            nextVc.coupons = MyCouponListResponseModel.init(json: JSON as! JSON)?.data
+                            
+                            nextVc.couponsPrePics = [UIImage].init(reserveCapacity: (MyCouponListResponseModel.init(json: JSON as! JSON)?.data?.count)!)
+                            
+                            nextVc.loading.stopAnimating()
+                            
+                            if(nextVc.coupons == nil || nextVc.coupons?.count == 0){
+                                
+                                nextVc.table.alpha = 0
+                                
+                            }else{
+                                
+                                nextVc.table.alpha = 1
+                                
+                            }
+                            
+                        }
+                        
+                        nextVc.table.reloadData()
+                        
+                    }, completion: nil)
+                    
+                    
+                }
+                
+                
+                print(JSON)
+                
+            }
+            
+        }
+        
+        
+    }
 
 }

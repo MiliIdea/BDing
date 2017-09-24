@@ -14,6 +14,8 @@ class PayHistoryViewController: UIViewController ,UITableViewDelegate ,UITableVi
     
     @IBOutlet weak var loading: UIActivityIndicatorView!
     
+    @IBOutlet weak var lowInternetView: UIView!
+    
     var payHistory: [PayListData] = [PayListData]()
 
     override func viewDidLoad() {
@@ -94,6 +96,97 @@ class PayHistoryViewController: UIViewController ,UITableViewDelegate ,UITableVi
         
     }
     
+    @IBAction func lowInternetAction(_ sender: Any) {
+        
+        requestForPayHistory()
+        
+    }
     
+    
+    func requestForPayHistory(){
+        
+        let nextVc : PayHistoryViewController = self
+        
+        nextVc.loading.startAnimating()
+        
+        nextVc.table.alpha = 1
+        
+        nextVc.lowInternetView.alpha = 0
+        
+        let manager = SessionManager.default2
+        
+        manager.request(URLs.paylistHistory , method: .post , parameters: PayListRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            ///////////////////////////
+            ///////////////////////////
+            ///////////////////////////
+            
+            switch (response.result) {
+            case .failure(let error):
+                if error._code == NSURLErrorTimedOut {
+                    //HANDLE TIMEOUT HERE
+                    
+                    nextVc.loading.stopAnimating()
+                    
+                    nextVc.table.alpha = 0
+                    
+                    nextVc.lowInternetView.alpha = 1
+                    
+                    return
+                    
+                }
+                break
+                
+            default: break
+                
+            }
+            
+            ///////////////////////////
+            ///////////////////////////
+            ///////////////////////////
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------MY HISTORY----------->>>> ")
+                //create my coupon response model
+                if(PayListResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                    
+                    UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                        
+                        if(PayListResponseModel.init(json: JSON as! JSON)?.data == nil){
+                            
+                            // data nadarim
+                            
+                        }else{
+                            nextVc.payHistory = (PayListResponseModel.init(json: JSON as! JSON)?.data)!
+                            
+                            nextVc.table.reloadData()
+                            
+                        }
+                        
+                        if(nextVc.payHistory.count == 0){
+                            
+                            nextVc.table.alpha = 0
+                            
+                        }else{
+                            
+                            nextVc.table.alpha = 1
+                            
+                        }
+                        
+                    }, completion: nil)
+                    
+                }
+                
+                
+                print(JSON)
+                
+            }
+            
+        }
+        
+        
+    }
     
 }

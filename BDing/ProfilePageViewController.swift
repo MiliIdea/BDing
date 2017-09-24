@@ -13,7 +13,7 @@ import DLRadioButton
 import DynamicColor
 import Lottie
 
-class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelegate, UIScrollViewDelegate , UINavigationControllerDelegate , CLLocationManagerDelegate{
+class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelegate, UIScrollViewDelegate , UINavigationControllerDelegate , CLLocationManagerDelegate , ShowcaseDelegate{
     
     @IBOutlet weak var backgroundProfilePic: UIImageView!
     
@@ -151,6 +151,9 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     var imagePicker = UIImagePickerController()
     
+    let showcase = MaterialShowcase()
+    
+    var showcaseCounter : Int = 0
     
     override func viewDidLoad() {
         
@@ -394,6 +397,54 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         scrollViewDidScroll(self.scrollViewProfile)
     
+        showcase.delegate = self
+        
+        let when = DispatchTime.now() + 0.5
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            
+            
+            self.showcase.setTargetView(view: self.payWithTolls) // always required to set targetView
+            self.showcase.primaryText = "پرداخت با دینگ"
+            self.showcase.secondaryText = "با دینگ هایی که به دست آورده اید از فروشگاه های مجهز به دستگاه پرداخت بی دینگ خرید کنید"
+            MyFont().setFontForAllView(view: self.showcase)
+            
+            self.showcase.show(id : "4",completion: {
+                _ in
+                // You can save showcase state here
+                // Later you can check and do not show it again
+                
+                
+            })
+            
+            
+        }
+        
+        
+    }
+    
+    func dismissed() {
+        
+        print("dismissed")
+        
+        showcaseCounter += 1
+        if(showcaseCounter >= 2){
+            return
+        }
+        let when = DispatchTime.now() + 1
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            
+            
+            self.showcase.setTargetView(view: self.takeCoupon) // always required to set targetView
+            self.showcase.primaryText = "دریافت کوپن"
+            self.showcase.secondaryText = "لیست کوپن ها را ببینید، انتخاب کنید و با دینگ هایتان خرید کنید"
+            MyFont().setFontForAllView(view: self.showcase)
+            
+            self.showcase.show(id: "5",completion: {
+                _ in
+            })
+            
+            
+        }
         
     }
     
@@ -530,7 +581,6 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         }
         
         scrollViewDidScroll(self.scrollViewProfile)
-        
 
     }
     
@@ -598,6 +648,41 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        
+        coinValue.text = GlobalFields.PROFILEDATA?.all_coin
+        
+        let s : String? = GlobalFields.PROFILEDATA?.social_name
+        
+        name.text = s
+        
+        print(name.frame.width)
+        
+        let fixedH = self.name.frame.size.height
+        
+        self.name.frame.size = self.name.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: fixedH))
+        
+        name.textAlignment = NSTextAlignment.center
+        
+        self.name.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: fixedH))
+        
+        name.frame.origin.x = self.view.frame.width / 2 - name.frame.width / 2
+        
+        nameStartXY.x = name.frame.origin.x
+        
+        nameStartWH.x = name.frame.width
+        
+        nameStartWH.y = name.frame.height
+        
+        let w = coinIcon.frame.width + coinValue.frame.width + 5
+        
+        coinIcon.frame.origin.x = self.view.frame.width / 2 - w / 2
+        
+        coinValue.frame.origin.x = coinIcon.frame.origin.x + coinIcon.frame.width + 5
+        
+        coinIconStartXY.x = self.view.frame.width / 2 - w / 2
+        
+        coinValueStartXY.x = self.view.frame.width / 2 - w / 2  + coinIcon.frame.width + 5
         
         // define goal of animation of views
         // profile pic
@@ -777,8 +862,38 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         print(MyCouponRequestModel.init().getParams())
         
-        request(URLs.getMyCoupon , method: .post , parameters: MyCouponRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+        let manager = SessionManager.default2
+        
+        manager.request(URLs.getMyCoupon , method: .post , parameters: MyCouponRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
+            
+            ///////////////////////////
+            ///////////////////////////
+            ///////////////////////////
+            
+            switch (response.result) {
+            case .failure(let error):
+                if error._code == NSURLErrorTimedOut {
+                    //HANDLE TIMEOUT HERE
+                 
+                    nextVc.loading.stopAnimating()
+                    
+                    nextVc.table.alpha = 0
+                    
+                    nextVc.lowInternetView.alpha = 1
+                    
+                    return
+                    
+                }
+                break
+            
+            default: break
+                
+            }
+        
+            ///////////////////////////
+            ///////////////////////////
+            ///////////////////////////
             
             if let JSON = response.result.value {
 
@@ -829,9 +944,38 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     func requestForGetCoupon(nextVc : TakeCouponViewController){
         
+        let manager = SessionManager.default2
         
-        request(URLs.getCoupons , method: .post , parameters: GetCouponRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+        manager.request(URLs.getCoupons , method: .post , parameters: GetCouponRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
+            
+            ///////////////////////////
+            ///////////////////////////
+            ///////////////////////////
+            
+            switch (response.result) {
+            case .failure(let error):
+                if error._code == NSURLErrorTimedOut {
+                    //HANDLE TIMEOUT HERE
+                    
+                    nextVc.loading.stopAnimating()
+                    
+                    nextVc.table.alpha = 0
+                    
+                    nextVc.lowInternetView.alpha = 1
+                    
+                    return
+                    
+                }
+                break
+                
+            default: break
+                
+            }
+            
+            ///////////////////////////
+            ///////////////////////////
+            ///////////////////////////
             
             if let JSON = response.result.value {
                 
@@ -873,8 +1017,38 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
 
     func requestForPayHistory(nextVc : PayHistoryViewController){
         
-        request(URLs.paylistHistory , method: .post , parameters: PayListRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+        let manager = SessionManager.default2
+        
+        manager.request(URLs.paylistHistory , method: .post , parameters: PayListRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
+            
+            ///////////////////////////
+            ///////////////////////////
+            ///////////////////////////
+            
+            switch (response.result) {
+            case .failure(let error):
+                if error._code == NSURLErrorTimedOut {
+                    //HANDLE TIMEOUT HERE
+                    
+                    nextVc.loading.stopAnimating()
+                    
+                    nextVc.table.alpha = 0
+                    
+                    nextVc.lowInternetView.alpha = 1
+                    
+                    return
+                    
+                }
+                break
+                
+            default: break
+                
+            }
+            
+            ///////////////////////////
+            ///////////////////////////
+            ///////////////////////////
             
             if let JSON = response.result.value {
                 
@@ -1560,6 +1734,18 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         
                         self.loading.stopAnimating()
                         
+                        if( PayTitleResponseModel.init(json: JSON as! JSON)?.code == "210"){
+                            
+                            self.loading.stopAnimating()
+                            
+                            Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
+                                
+                                self.present(alarm, animated: true, completion: nil)
+                                
+                            }
+                            
+                        }
+                        
                         if( PayTitleResponseModel.init(json: JSON as! JSON)?.code == "200"){
                             
                             isFindPay = true
@@ -1631,6 +1817,16 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
             
         }
         
+        self.view.isUserInteractionEnabled = false
+        
+        payContainer?.addSubview(loading)
+        
+        loading.frame.origin.x = (payContainer?.frame.width)! / 2
+        
+        loading.frame.origin.y = (payContainer?.frame.height)! / 2
+        
+        loading.startAnimating()
+        
         
         request(URLs.payWithCoins , method: .post , parameters: PayWithCoinsRequestModel.init(BEACON: payBeacon, PAY: inputPayTextField.text!).getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
@@ -1647,16 +1843,16 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                     Notifys().notif(message: "پرداخت با موفقیت انجام شد."){ alert in
                         
                         self.present(alert, animated: true, completion: nil)
-                        
+                        self.view.endEditing(true)
                     }
-                    
-                    self.scrollViewDidScroll(self.scrollViewProfile)
                     
                     self.view.endEditing(true)
                     
                     GlobalFields.PROFILEDATA?.all_coin = String(Int((GlobalFields.PROFILEDATA?.all_coin)!)! - Int(self.inputPayTextField.text!)!)
                     
                     self.coinValue.text = GlobalFields.PROFILEDATA?.all_coin
+                    
+                    self.scrollViewDidScroll(self.scrollViewProfile)
                     
                 }else{
                     
@@ -1672,6 +1868,13 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                 
                 
                 print(JSON)
+                
+                self.view.isUserInteractionEnabled = true
+                
+                self.view.endEditing(true)
+                
+                self.loading.stopAnimating()
+
                 
             }
             

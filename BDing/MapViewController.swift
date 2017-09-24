@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 import MapKit
-import HDAugmentedReality
+
 
 
 class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManagerDelegate {
@@ -506,56 +506,16 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
         arViewController.trackingManager.reloadDistanceFilter = 75
         var annots : [ARAnnotation] = [ARAnnotation]()
         
-//        var count = 0
+        self.calculateCoordinates()
+        
+        var count = 0
+        
+//        for ic in  GlobalFields.indoorCoordinates {
+//            
+//            annots.append(Place.init(location: .init(latitude: ic.coordinate.latitude, longitude: ic.coordinate.longitude), name: "sample", image: nil, identifier: ic.beacon_code, uuid_major_minor: ic.beacon_code , x : GlobalFields.indoorPoints[count].x , y : GlobalFields.indoorPoints[count].y , z : GlobalFields.indoorPoints[count].z))
 //        
-//        for p in pins {
-//            
-//            if(count > 5){
-//                annots.append(Place.init(location: CLLocation.init(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude), name: p.title ?? "", image: images[pins.index(of: p)!], identifier: "id" , uuid_major_minor: nil))
-//                
-//            }else{
-//                annots.append(Place.init(location: CLLocation.init(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude), name: p.title ?? "", image: nil, identifier: "id" , uuid_major_minor: nil))
-//                
-//            }
 //            count += 1
-//            
 //        }
-        
-//        print(CLLocationManager().location?.coordinate.latitude)
-//        print(CLLocationManager().location?.coordinate.longitude)
-        for obj in GlobalFields.BEACON_LIST_DATAS! {
-            
-            if(obj.beacon_code != nil){
-               
-                let location:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: Double(obj.lat!)!, longitude: Double(obj.long!)!)
-                
-//                print("distance : ",CLLocationManager().location?.distance(from: .init(latitude: location.latitude, longitude: location.longitude)))
-                
-                if((CLLocationManager().location?.distance(from: .init(latitude: location.latitude, longitude: location.longitude)))! < CLLocationDistance.init(5000)){
-                    
-                    annots.append(Place.init(location: CLLocation.init(latitude: location.latitude, longitude: location.longitude), name: obj.title ?? "", image: UIImage.init(named: "pushak"), identifier: "id" , uuid_major_minor: obj.beacon_code?.lowercased()))
-                    
-                }
-                
-            }
-            
-        }
-        
-        var min = annots[0]
-        
-        for an in annots {
-            
-            if((CLLocationManager().location?.distance(from: .init(latitude: an.location.coordinate.latitude, longitude: an.location.coordinate.longitude)))! < (CLLocationManager().location?.distance(from: .init(latitude: min.location.coordinate.latitude, longitude: min.location.coordinate.longitude)))!){
-                
-                min = an
-                
-            }
-            
-        }
-        
-        annots.removeAll()
-        
-        annots.append(min)
         
         arViewController.setAnnotations(annots)
         
@@ -569,26 +529,41 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
 
     func calculateCoordinates(){
         
-        GlobalFields.indoorCoordinates.removeAll()
+        var temp = GlobalFields.indoorPoints
+        
+        var count : Int = 0
         
         for iP in GlobalFields.indoorPoints {
             
-            GlobalFields.indoorCoordinates.append(findCoordinate(p: iP))
+            temp[count].lat = findCoordinate(p: iP).latitude
             
+            temp[count].long = findCoordinate(p: iP).longitude
+            
+            count += 1
         }
+        
+        GlobalFields.indoorPoints.removeAll()
+        
+        GlobalFields.indoorPoints = temp
         
     }
     
     func findCoordinate(p : GlobalFields.indoorPoint) -> CLLocationCoordinate2D {
-        let distRadians = sqrt(p.x * p.x + p.y * p.y) / (6372797.6) // earth radius in meters
+//        let distRadians = sqrt(p.x * p.x + p.y * p.y) / (6372797.6) // earth radius in meters
+//        
+//        let lat1 = GlobalFields.mainCoordinate.latitude * M_PI / 180
+//        let lon1 = GlobalFields.mainCoordinate.longitude * M_PI / 180
+//
+//        let lat2 = asin(sin(lat1) * cos(distRadians) + cos(lat1) * sin(distRadians) * cos(findAzimuthInPoints(p: p)))
+//        let lon2 = lon1 + atan2(sin(findAzimuthInPoints(p: p)) * sin(distRadians) * cos(lat1), cos(distRadians) - sin(lat1) * sin(lat2))
+//        
+//        return CLLocationCoordinate2D(latitude: lat2 * 180 / M_PI, longitude: lon2 * 180 / M_PI)
         
-        let lat1 = GlobalFields.mainCoordinate.latitude * M_PI / 180
-        let lon1 = GlobalFields.mainCoordinate.longitude * M_PI / 180
+        let lat1 = GlobalFields.mainCoordinate.latitude
+        let lon1 = GlobalFields.mainCoordinate.longitude
         
-        let lat2 = asin(sin(lat1) * cos(distRadians) + cos(lat1) * sin(distRadians) * cos(findAzimuthInPoints(p: p)))
-        let lon2 = lon1 + atan2(sin(findAzimuthInPoints(p: p)) * sin(distRadians) * cos(lat1), cos(distRadians) - sin(lat1) * sin(lat2))
+        return CLLocationCoordinate2D(latitude: lat1  + (p.y / 6372797.6) * (180 / M_PI), longitude: lon1  + (p.x / 6372797.6) * (180 / M_PI) / cos(lat1 * M_PI/180))
         
-        return CLLocationCoordinate2D(latitude: lat2 * 180 / M_PI, longitude: lon2 * 180 / M_PI)
     }
 
     

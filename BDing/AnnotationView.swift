@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import HDAugmentedReality
 import SwiftyGif
 
 //1

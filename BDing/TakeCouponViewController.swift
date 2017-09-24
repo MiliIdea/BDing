@@ -14,6 +14,7 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
     
     @IBOutlet weak var loading: UIActivityIndicatorView!
     
+    @IBOutlet weak var lowInternetView: UIView!
     
     var coupons: [CouponListData]? = [CouponListData]()
     
@@ -153,6 +154,92 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
         
     }
     
+    @IBAction func lowInternetAction(_ sender: Any) {
+        
+        requestForGetCoupon()
+        
+    }
+    
+    func requestForGetCoupon(){
+        
+        let nextVc : TakeCouponViewController = self
+        
+        nextVc.loading.startAnimating()
+        
+        nextVc.table.alpha = 1
+        
+        nextVc.lowInternetView.alpha = 0
+        
+        let manager = SessionManager.default2
+        
+        manager.request(URLs.getCoupons , method: .post , parameters: GetCouponRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            ///////////////////////////
+            ///////////////////////////
+            ///////////////////////////
+            
+            switch (response.result) {
+            case .failure(let error):
+                if error._code == NSURLErrorTimedOut {
+                    //HANDLE TIMEOUT HERE
+                    
+                    nextVc.loading.stopAnimating()
+                    
+                    nextVc.table.alpha = 0
+                    
+                    nextVc.lowInternetView.alpha = 1
+                    
+                    return
+                    
+                }
+                break
+                
+            default: break
+                
+            }
+            
+            ///////////////////////////
+            ///////////////////////////
+            ///////////////////////////
+            
+            if let JSON = response.result.value {
+                
+                print(GetCouponRequestModel.init().getParams())
+                
+                print("JSON ----------GET COUPON----------->>>> " ,JSON)
+                //create my coupon response model
+                
+                if(CouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                    
+                    nextVc.coupons = CouponListResponseModel.init(json: JSON as! JSON)?.data
+                    
+                    nextVc.loading.stopAnimating()
+                    
+                    nextVc.table.reloadData()
+                    
+                    if(nextVc.coupons == nil || nextVc.coupons?.count == 0){
+                        
+                        nextVc.table.alpha = 0
+                        
+                    }else{
+                        
+                        nextVc.table.alpha = 1
+                        
+                    }
+                    
+                    
+                }
+                
+                print(JSON)
+                
+            }
+            
+        }
+        
+        
+    }
+
     
     
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

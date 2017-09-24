@@ -139,7 +139,7 @@ class SignUpViewController: UIViewController , UITextFieldDelegate {
         
         activate3.frame.origin.x = termsLink.frame.origin.x - activate3.frame.width - 1
         
-        expanding("")
+//        expanding("")
         
         // Do any additional setup after loading the view.
     }

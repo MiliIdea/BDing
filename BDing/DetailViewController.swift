@@ -391,6 +391,12 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         }
         
         
+        self.heightChangerButton.imageView?.image = UIImage.init(named: "ic_keyboard_arrow_down_18pt")
+        
+        self.setFirstPosition()
+        
+        self.num = 0
+        
     }
     var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
     
@@ -411,6 +417,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
             
         }
 
+       
         
     } 
     
