@@ -22,23 +22,42 @@ class PageContentViewController: UIViewController {
     
     @IBOutlet weak var bigTitle: UILabel!
 
+    
     @IBOutlet weak var smallTitle: UILabel!
     
+    @IBOutlet weak var startButton: DCBorderedButton!
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         self.introSlideImage.image = UIImage(named: self.imageFile)
         
         bigTitle.text = bTitle
         
-        MyFont().setBoldFont(view: bigTitle,mySize: 24 , mycolor: "#1665c1")
-        
+        MyFont().setBoldFont(view: bigTitle,mySize: 24 , mycolor: "#F7941D")
         
         smallTitle.text = sTitle
         
-        MyFont().setLightFont(view: smallTitle, mySize: 15, mycolor: "#546e7a")
+//        smallTitleView.layer.cornerRadius = smallTitleView.frame.height / 2 - 2
+
+       
+        startButton.alpha = 0
+        
+            
+        
+        
+//        MyFont().setLightFont(view: smallTitle, mySize: 15, mycolor: "#ffffff")
         
         // Do any additional setup after loading the view.
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        
+        if(pageIndex == 0){
+            UIView.animate(withDuration: 0.9, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                self.startButton.alpha = 1
+            },completion : nil)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -48,6 +67,13 @@ class PageContentViewController: UIViewController {
     
     func getPageIndex() -> Int {
         return self.pageIndex
+    }
+    
+    
+    @IBAction func startLogin(_ sender: Any) {
+        
+        
+        
     }
     
 

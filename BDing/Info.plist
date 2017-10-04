@@ -38,7 +38,9 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string></string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>detect beacons around you!</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>detect beacons around you!</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>edit profile picture</string>
 	<key>UIAppFonts</key>

@@ -59,7 +59,7 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
         
         note.append(userName!)
         
-        note.append(" ارسال کردیم.")
+        note.append(" ارسال کردیم. جهت فعالسازی حسابتان آن را وارد کنید.")
         
         self.emailAndTellNotify.text = note
         
@@ -179,6 +179,11 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                         self.signIn()
                         
                         
+                    }else{
+                        
+                        self.animationView?.stop()
+                        self.animationView?.alpha = 0
+                        
                     }
                     
                 }
@@ -230,7 +235,7 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                     if(SignUpResponseModel.init(json: JSON as! JSON).code == "200"){
                         
                         //notify ferestade shod
-                        self.navigationController?.pushViewController(SignInPageOneViewController() as! UIViewController, animated: true)
+//                        self.navigationController?.pushViewController(SignInPageOneViewController() as! UIViewController, animated: true)
                         
                     }
                     

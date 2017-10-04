@@ -42,17 +42,17 @@ class SignInPageOneViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        MyFont().setMediumFont(view: self.resumeButton, mySize: 13)
-        
-        MyFont().setMediumFont(view: self.karbariText, mySize: 13)
-        
-        MyFont().setMediumFont(view: self.navigationTitle, mySize: 13)
-        
-        MyFont().setMediumFont(view: self.signUpLink, mySize: 10)
-        
-        MyFont().setMediumFont(view: self.text, mySize: 10)
-        
-        MyFont().setMediumFont(view: self.mobileHint, mySize: 15)
+//        MyFont().setMediumFont(view: self.resumeButton, mySize: 13)
+//        
+//        MyFont().setMediumFont(view: self.karbariText, mySize: 13)
+//        
+//        MyFont().setMediumFont(view: self.navigationTitle, mySize: 13)
+//        
+//        MyFont().setMediumFont(view: self.signUpLink, mySize: 10)
+//        
+//        MyFont().setMediumFont(view: self.text, mySize: 10)
+//        
+//        MyFont().setMediumFont(view: self.mobileHint, mySize: 15)
         // Do any additional setup after loading the view.
     }
 

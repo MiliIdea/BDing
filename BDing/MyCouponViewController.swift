@@ -273,7 +273,10 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
                             
                             nextVc.coupons = MyCouponListResponseModel.init(json: JSON as! JSON)?.data
                             
-                            nextVc.couponsPrePics = [UIImage].init(reserveCapacity: (MyCouponListResponseModel.init(json: JSON as! JSON)?.data?.count)!)
+//                            nextVc.couponsPrePics = [UIImage].init(reserveCapacity: (MyCouponListResponseModel.init(json: JSON as! JSON)?.data?.count)!)
+
+                            nextVc.couponsPrePics = [UIImage].init()
+                            
                             
                             nextVc.loading.stopAnimating()
                             

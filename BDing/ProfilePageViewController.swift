@@ -908,7 +908,9 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                             
                             nextVc.coupons = MyCouponListResponseModel.init(json: JSON as! JSON)?.data
                             
-                            nextVc.couponsPrePics = [UIImage].init(reserveCapacity: (MyCouponListResponseModel.init(json: JSON as! JSON)?.data?.count)!)
+//                            nextVc.couponsPrePics = [UIImage].init(reserveCapacity: (MyCouponListResponseModel.init(json: JSON as! JSON)?.data?.count)!)
+
+                            nextVc.couponsPrePics = [UIImage].init()
                             
                             nextVc.loading.stopAnimating()
                             
@@ -1724,6 +1726,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                 
                 locationManager.stopRangingBeacons(in: region)
                 
+                print("requeste pay : " , payUrlString)
+                
                 request( payUrlString , method: .get , encoding: JSONEncoding.default).responseJSON { response in
                     print()
                     
@@ -1736,13 +1740,14 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         
                         if( PayTitleResponseModel.init(json: JSON as! JSON)?.code == "210"){
                             
-                            self.loading.stopAnimating()
+//                            self.loading.stopAnimating()
                             
-                            Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
-                                
-                                self.present(alarm, animated: true, completion: nil)
-                                
-                            }
+//                            Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
+//
+//                                self.present(alarm, animated: true, completion: nil)
+//
+//                            }
+
                             
                         }
                         

@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
             }
         } else {
             // Fallback on earlier versions
-//            locationManager.requestAlwaysAuthorization()
+            locationManager.requestAlwaysAuthorization()
         }
         
 //        UIApplication.shared.registerUserNotificationSettings(
@@ -530,11 +530,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
     }
 
     
+    
+    func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
+        
+        myBTManager = peripheral
+        
+    }
+    
     func hoursBetween(date1: NSDate, date2: NSDate) -> Int {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = .hour
         
-        var t = Int(formatter.string(from: date2 as Date, to: date1 as Date) ?? "0")!
+        var t = Int((formatter.string(from: (date1 as Date) as Date, to: date2 as Date)?.replacingOccurrences(of: ",", with: ""))!)!
         
         if(t < 0){
             
@@ -545,15 +552,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
         return t
         
     }
-    
-    
-    func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
-        
-        myBTManager = peripheral
-        
-    }
-    
-    
     
 
     

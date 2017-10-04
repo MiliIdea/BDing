@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import CoreLocation
 import Lottie
+import CryptoSwift
 
 class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableViewDataSource{
 

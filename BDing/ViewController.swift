@@ -18,24 +18,27 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
     
     @IBOutlet weak var pageIndicator: UIPageControl!
     
-    @IBOutlet weak var buttonsView: UIView!
-    
-    @IBOutlet weak var vorudButton: UIButton!
-    
-    @IBOutlet weak var sabtButton: UIButton!
+//    @IBOutlet weak var buttonsView: UIView!
+//
+//    @IBOutlet weak var vorudButton: UIButton!
+//
+//    @IBOutlet weak var sabtButton: UIButton!
     
     @IBOutlet weak var loadingBackView: UIView!
+    
     var pageViewController: UIPageViewController!
     
     var pageImages: Array<String> = []
     
     var bigTitles: Array<String> = []
-    @IBOutlet weak var loginIcon: UIImageView!
-    
-    @IBOutlet weak var signUpIcon: UIImageView!
+//    @IBOutlet weak var loginIcon: UIImageView!
+//    
+//    @IBOutlet weak var signUpIcon: UIImageView!
     var smallTitles: Array<String> = []
     
     var beaconBool : Bool = false
+    
+    @IBOutlet weak var nextButton: UIView!
     
     var catBool : Bool = false
     
@@ -53,44 +56,57 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         
         signInPressing()
         
-        self.pageImages = ["1", "2", "3", "4"]
+        self.pageImages = ["4", "3", "2", "1"]
         
-        self.bigTitles = ["اطلاعات به موقع","کسب امتیاز","تخفیف یا خرید رایگان","بلوتوث ها روشن!"]
+        let s1  = "اطلاعات به موقع"
         
-        self.smallTitles = ["فرقی نمی کنه کجای شهری. تو هر مکان اطلاعات مورد نیاز همونجا رو خواهی داشت"
-            ,"به کمپین های دور و برت یه سر بزن و دینگ (امتیاز) بگیر"
-            ,"تخفیف های دور و برتو  با امتیازهات مال خودت کن"
-            ,"برای یک شروع هیجان انگیز آماده ای؟ بلوتوث دستگاه رو روشن کن"]
+        let s2 = "کسب امتیاز"
+
+        let s3 = "تخفیف یا خرید رایگان"
+
+        let s4 = "بلوتوث ها روشن!"
         
+        self.bigTitles = [s4,s3,s2,s1]
+        
+        let p1 = "فرقی نمی کنه کجای شهری. تو هر مکان اطلاعات مورد نیاز همونجا رو خواهی داشت"
+        
+        let p2 = "به کمپین های دور و برت یه سر بزن و دینگ (امتیاز) بگیر"
+
+        let p3 = "تخفیف های دور و برتو  با امتیازهات مال خودت کن"
+
+        let p4 = "برای یک شروع هیجان انگیز آماده ای؟ بلوتوث دستگاه رو روشن کن"
+
+        
+        self.smallTitles = [p4 , p3 , p2 , p1]
        
         
-        // Create page view controller
-        
-        self.buttonsView.layer.zPosition = 1
-        
-        self.buttonsView.backgroundColor = UIColor(hex: "#2196f3")
-        
-        MyFont().setMediumFont(view: self.vorudButton, mySize: 13, mycolor: "#2196f3")
-        
-        MyFont().setMediumFont(view: self.sabtButton, mySize: 13, mycolor: "#2196f3")
-        
-        signUpIcon.image = signUpIcon.image?.imageWithColor(tintColor: UIColor.white)
-        
-        loginIcon.image = loginIcon.image?.imageWithColor(tintColor: UIColor.white)
-        
         self.pageViewController = self.storyboard!.instantiateViewController(withIdentifier: "PageViewController") as? UIPageViewController
+        
         self.pageViewController?.dataSource = self
-        let startingViewController:PageContentViewController  = self.viewControllerAtIndex(index: 0)!
+        
+        let startingViewController:PageContentViewController  = self.viewControllerAtIndex(index: 3)!
+        
         let viewControllers:Array<PageContentViewController> = [startingViewController]
+        
         self.pageViewController?.setViewControllers(viewControllers, direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
         
-        self.pageViewController?.view.frame = CGRect.init(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height - 50)
+//        self.view.backgroundColor = UIColor.init(hex: "ff0000")
 //        (0, 0, self.view.frame.size.width, self.view.frame.size.height - 50)
         self.addChildViewController(pageViewController!)
+        
         self.view.addSubview((pageViewController?.view)!)
+        
+        self.pageViewController?.view.frame = CGRect.init(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        
         self.pageViewController?.didMove(toParentViewController: self)
     
+        self.pageIndicator.layer.zPosition = 2
         
+        self.pageIndicator.currentPage = 3
+        
+        self.nextButton.layer.zPosition = 2
+        
+    
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -101,20 +117,15 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         // Dispose of any resources that can be recreated.
     }
     
-    //---------------------------------------------------------------------------------------------------//
-
-    @IBAction func testing(_ sender: Any) {
-
-    }
 
     //---------------------------------------------------------------------------------------------------//
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         var index: Int = (viewController as! PageContentViewController).pageIndex // This is the line you are looking for
+        
         self.pageIndicator.currentPage = index
         self.pageIndicator.updateCurrentPageDisplay()
         if index == self.pageImages.count - 1 {
-            
             return nil
         } else {
             
@@ -124,12 +135,16 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
     }
     
     
+    
+    
     //---------------------------------------------------------------------------------------------------//
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        
         var index: Int = (viewController as! PageContentViewController).pageIndex
         self.pageIndicator.currentPage = index
         self.pageIndicator.updateCurrentPageDisplay()
+     
         if index == 0 {
             
             return nil
@@ -151,7 +166,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
     
     func presentationIndex(for pageViewController: UIPageViewController) -> Int {
         
-        return 0
+        return 3
     }
     
     //---------------------------------------------------------------------------------------------------//
@@ -168,8 +183,6 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         pageContentViewController.imageFile = self.pageImages[index]
         
         let s = self.bigTitles[index]
-      
-        print(s)
         
         pageContentViewController.bTitle = s
         
@@ -198,8 +211,6 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         animationView?.contentMode = UIViewContentMode.scaleAspectFit
         
         animationView?.alpha = 1
-        
-//        self.view.addSubview(loadingBackView)
         
         self.view.addSubview(animationView!)
         
