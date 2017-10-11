@@ -45,19 +45,20 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
         self.tabBar.shadowImage = nil
         
         self.tabBar.tintColor = UIColor.init(hex: "455a64")
-        
+        //455a64
         if #available(iOS 10.0, *) {
-            self.tabBar.items?[1].badgeColor = UIColor.init(hex: "2196f3")
+            self.tabBar.items?[1].badgeColor = UIColor.init(hex: "2490FC")
+            repositionBadge(tab: 2)
         } else {
             // Fallback on earlier versions
         }
         
         for i in self.tabBar.items! {
             
-            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "bdbdbd") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: CGFloat(8))!], for: .normal)
-            //bdbdbd unselected color
-            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "455a64") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: CGFloat(8))!], for: .selected)
-            i.image =  i.image?.imageWithColor(tintColor: UIColor.init(hex: "bdbdbd")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "A8A5AF") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum-Bold", size: CGFloat(9))!], for: .normal)
+            //A8A5AF unselected color
+            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "455a64") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum-Bold", size: CGFloat(9))!], for: .selected)
+            i.image =  i.image?.imageWithColor(tintColor: UIColor.init(hex: "A8A5AF")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
             i.selectedImage = i.image?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
             i.imageInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
             
@@ -73,6 +74,7 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
         
         if #available(iOS 10.0, *) {
             self.tabBar.items?[1].setBadgeTextAttributes([NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: 14)!], for: .normal)
+            repositionBadge(tab: 3)
         } else {
             // Fallback on earlier versions
         }
@@ -97,7 +99,19 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
         
     }
     
-
+    func repositionBadge(tab: Int){
+        
+//        for badgeView in self.tabBar.subviews[tab].subviews {
+//
+//            if NSStringFromClass(badgeView.classForCoder) == "_UIBadgeView" {
+//                badgeView.layer.transform = CATransform3DIdentity
+//                badgeView.layer.transform = CATransform3DMakeTranslation(0.0, -12, 1.0)
+//
+//            }
+//        }
+        
+    }
+    
     func updateBadgeValue(){
         
         var count = 0

@@ -293,7 +293,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         animationView.contentMode = UIViewContentMode.scaleAspectFit
         
-        animationView.alpha = 1
+        animationView.alpha = 0
         
         self.profilePicButton.addSubview(animationView)
         
@@ -301,7 +301,12 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         if(loadProfilePicAsDB() == nil){
             
-            animationView.play()
+            animationView.alpha = 1
+            DispatchQueue.main.async(execute: { () -> Void in
+                
+                self.animationView.play()
+                
+            })
             
             request("http://"+(GlobalFields.PROFILEDATA?.url_pic)! , method: .post , parameters: ProfileRequestModel().getParams(), encoding: JSONEncoding.default).responseJSON { response in
                 print()
@@ -405,7 +410,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
             
             self.showcase.setTargetView(view: self.payWithTolls) // always required to set targetView
             self.showcase.primaryText = "پرداخت با دینگ"
-            self.showcase.secondaryText = "با دینگ هایی که به دست آورده اید از فروشگاه های مجهز به دستگاه پرداخت بی دینگ خرید کنید"
+            self.showcase.secondaryText = "بعد از جمع کردن امتیاز (دینگ)، به فروشگاه‌های مجهز به دستگاه پرداخت بی‌دینگ رفته و تمام یا بخشی از پرداخت خود را انجام دهید."
+            
             MyFont().setFontForAllView(view: self.showcase)
             
             self.showcase.show(id : "4",completion: {
@@ -436,7 +442,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
             
             self.showcase.setTargetView(view: self.takeCoupon) // always required to set targetView
             self.showcase.primaryText = "دریافت کوپن"
-            self.showcase.secondaryText = "لیست کوپن ها را ببینید، انتخاب کنید و با دینگ هایتان خرید کنید"
+            self.showcase.secondaryText = "همچنین می‌توانید با امتیاز(دینگ)های خود، کوپن‌های تخفیف مختلفی‌ را خریداری نمایید."
             MyFont().setFontForAllView(view: self.showcase)
             
             self.showcase.show(id: "5",completion: {
@@ -498,6 +504,12 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
+        tracker.set(kGAIScreenName, value: "Profile")
+        
+        guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
+        tracker.send(builder.build() as [NSObject : AnyObject])
         
         nameButton.setTitle(GlobalFields.PROFILEDATA?.name, for: UIControlState.normal)
         
@@ -878,6 +890,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                  
                     nextVc.loading.stopAnimating()
                     
+                    nextVc.loading.alpha = 0
+                    
                     nextVc.table.alpha = 0
                     
                     nextVc.lowInternetView.alpha = 1
@@ -924,13 +938,19 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                                 
                             }
                             
+                        }else{
+                            
+                            nextVc.table.alpha = 0
+                            
                         }
                         
                         nextVc.table.reloadData()
                         
                     }, completion: nil)
 
+                    nextVc.loading.stopAnimating()
                     
+                    nextVc.loading.alpha = 0
                 }
                
                 
@@ -1035,6 +1055,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                     
                     nextVc.loading.stopAnimating()
                     
+                    nextVc.loading.alpha = 0
+                    
                     nextVc.table.alpha = 0
                     
                     nextVc.lowInternetView.alpha = 1
@@ -1082,6 +1104,10 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         }
                         
                     }, completion: nil)
+                    
+                    nextVc.loading.stopAnimating()
+                    
+                    nextVc.loading.alpha = 0
                     
                 }
                 
@@ -1248,6 +1274,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                 
                 let obj = ProfileResponseModel.init(json: JSON as! JSON)
                 
+                
                 if ( obj?.code == "200" ){
                     
                     
@@ -1293,8 +1320,14 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         
                     }
                     
+                    print("all coin : ",obj?.data?.all_coin)
+                    
+                    self.myCoinsValueLabel.text = obj?.data?.all_coin
+                    
+                    self.viewDidAppear(true)
+                    
                     if(obj?.data?.all_coin != GlobalFields.PROFILEDATA?.all_coin && obj?.data?.get_coin == "yes"){
-                        
+                        print("all coin : ",obj?.data?.all_coin)
                         GlobalFields.PROFILEDATA?.all_coin  = obj?.data?.all_coin
                         
                         GlobalFields.PROFILEDATA?.get_coin = obj?.data?.get_coin
@@ -1302,6 +1335,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         self.myCoinsValueLabel.text = GlobalFields.PROFILEDATA?.all_coin
                         
                         self.viewDidAppear(true)
+                        
+                        self.scrollViewDidScroll(self.scrollViewProfile)
                         
                         self.closeReport("")
                         
@@ -1510,8 +1545,12 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
             
-            animationView.play()
-            
+            animationView.alpha = 1
+            DispatchQueue.main.async(execute: { () -> Void in
+                
+                self.animationView.play()
+                
+            })
             request(URLs.userUpdate , method: .post , parameters: UserUpdateRequestModel.init(NAME: nil, FAMILY: nil, ATTRNAME: "pic", ATTRDATA: UIImagePNGRepresentation(pickedImage)!.base64EncodedString()).getParams(), encoding: JSONEncoding.default).responseJSON { response in
                 print()
                 
@@ -1625,6 +1664,11 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     @IBAction func doPayWithTolls(_ sender: Any) {
         
+        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
+        tracker.set(kGAIEvent, value: "PayButton")
+        
+        guard let builder = GAIDictionaryBuilder.createEvent(withCategory: "Payment", action: "Click", label: "PayButton", value: 0) else { return }
+        tracker.send(builder.build() as [NSObject : AnyObject])
         
         locationManager.delegate = self
         
@@ -1667,6 +1711,12 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     }
     
     func showPayPopup(payTitle : String){
+        
+        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
+        tracker.set(kGAIScreenName, value: "Payment")
+        
+        guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
+        tracker.send(builder.build() as [NSObject : AnyObject])
         
         appearPayView()
         

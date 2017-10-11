@@ -126,6 +126,12 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
     
     override func viewDidAppear(_ animated: Bool) {
         
+        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
+        tracker.set(kGAIScreenName, value: "Map")
+        
+        guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
+        tracker.send(builder.build() as [NSObject : AnyObject])
+        
         for obj in GlobalFields.BEACON_LIST_DATAS! {
         
             images.append(pinsImage.valueForKeyPath(keyPath: obj.category_id!) as? UIImage ?? UIImage.init(named: "mapPin")!)

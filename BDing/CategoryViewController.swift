@@ -86,7 +86,11 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
     var windowHeight : CGFloat = 0
     
     override func viewDidAppear(_ animated: Bool) {
+        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
+        tracker.set(kGAIScreenName, value: "Category")
         
+        guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
+        tracker.send(builder.build() as [NSObject : AnyObject])
         super.viewDidAppear(animated)
             
 //        self.loadCategoryTable()

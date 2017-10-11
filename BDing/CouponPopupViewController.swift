@@ -47,7 +47,9 @@ class CouponPopupViewController: UIViewController {
 //    @IBOutlet weak var tellLabel: UILabel!
 //    
 //    @IBOutlet weak var websiteLabel: UILabel!
+    @IBOutlet weak var motherView: DCBorderedView!
     
+    @IBOutlet weak var backEffect: UIVisualEffectView!
     @IBOutlet weak var buyCouponButton: UIButton!
     
     @IBOutlet weak var firstButtonView: UIButton!
@@ -171,7 +173,25 @@ class CouponPopupViewController: UIViewController {
 //        couponTitleBorderedView.borderColor = UIColor.init(cgColor: DynamicColor.init(averageColorFrom: couponImage.image!).cgColor)
         couponTitleBorderedView.borderWidth = 1
         // Do any additional setup after loading the view.
+        
+        motherView.alpha = 0
+        
+        backEffect.alpha = 0
+        
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        UIView.animate(withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            self.motherView.alpha = 1
+            
+            self.backEffect.alpha = 0.5
+            
+        },completion : nil)
+        
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -190,6 +210,12 @@ class CouponPopupViewController: UIViewController {
         }else if(self.parent is MyCouponViewController){
             
             let vc = self.parent as! MyCouponViewController
+            
+            vc.deletSubView()
+            
+        }else if(self.parent is PayViewController){
+            
+            let vc = self.parent as! PayViewController
             
             vc.deletSubView()
             

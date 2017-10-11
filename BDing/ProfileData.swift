@@ -52,7 +52,17 @@ class ProfileData : Decodable{
         
         self.bday = "bday" <~~ json
         
-        self.all_coin = "all_coin" <~~ json
+        var intCoin: Int?
+        
+        intCoin = "all_coin" <~~ json
+        
+        self.all_coin = String(describing: intCoin ?? 0)
+        
+        if(intCoin == nil){
+            
+            self.all_coin = "all_coin" <~~ json
+            
+        }
         
         self.birthdate = "birthdate" <~~ json
         

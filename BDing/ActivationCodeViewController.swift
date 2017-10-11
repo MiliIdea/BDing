@@ -49,7 +49,7 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
         
         super.viewDidLoad()
 
-        MyFont().setFontForAllView(view: self.view)
+//        MyFont().setFontForAllView(view: self.view)
         
         setTargetForAllView(view: view)
         
@@ -69,7 +69,12 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
         
         var timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.update), userInfo: nil, repeats: true);
         
+        
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        (self.view.viewWithTag(1) as! UITextField).becomeFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {
@@ -85,7 +90,7 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
             
             timeRemaining.alpha = 1
             
-//            resendButton.backgroundColor = UIColor.lightGray
+            resendButton.setTitleColor(UIColor.init(hex: "95989A") , for : UIControlState.normal)
             
             timeRemaining.text = String((Int(timeRemaining.text!)! - 1))
             
@@ -96,7 +101,7 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                 timeRemaining.alpha = 0
                 
 //                resendButton.setTitleColor(MyColors.greenColor , for : UIControlState.normal)
-                
+                resendButton.setTitleColor(UIColor.init(hex: "2490FC") , for : UIControlState.normal)
                 
                 
             }
@@ -107,7 +112,7 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
             
             resendButton.isEnabled = true
             
-//            resendButton.setTitleColor(MyColors.greenColor , for : UIControlState.normal)
+            resendButton.setTitleColor(UIColor.init(hex: "2490FC") , for : UIControlState.normal)
             
         }
         
@@ -138,15 +143,15 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                 
             }
             
-            animationView = LOTAnimationView(name: "finall")
+            animationView = LOTAnimationView(name: "preloader")
             
-            animationView?.frame.size.height = 50
+            animationView?.frame.size.height = 200
             
-            animationView?.frame.size.width = 50
+            animationView?.frame.size.width = 200
             
-            animationView?.frame.origin.y = self.view.frame.height / 2 - 25
+            animationView?.frame.origin.y = self.view.frame.height / 2 
             
-            animationView?.frame.origin.x = self.view.frame.width / 2 - 25
+            animationView?.frame.origin.x = self.view.frame.width / 2 - 100
             
             animationView?.contentMode = UIViewContentMode.scaleAspectFit
             
@@ -195,6 +200,9 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
         
         
     }
+    
+    
+    
     
     func textSelected(sender: Any!) {
         

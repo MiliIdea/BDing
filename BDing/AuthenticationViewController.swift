@@ -26,6 +26,9 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
     
     var animationView : LOTAnimationView?
     
+    @IBOutlet weak var topImage: UIImageView!
+    
+    
     // MARK: - LoginFields
     
     @IBOutlet weak var loginUserBorder: DCBorderedView!
@@ -79,6 +82,8 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
         signUpPasswordField.delegate = self
         
         setColorViews()
+        
+        loginPageClicked("")
         
         // Do any additional setup after loading the view.
     }
@@ -356,7 +361,7 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
     
     @IBAction func signingUp(_ sender: Any) {
         
-        let m = SignUpRequestModel(USERNAME: signUpMobileField.text, PASSWORD: signUpPasswordField.text, SOCIALNAME: signUpUserField.text, GENDER: nil, BDATE: nil, NAME: nil, FAMILYNAME: nil, EMAIL: nil)
+        let m = SignUpRequestModel(USERNAME: signUpMobileField.text, PASSWORD: signUpPasswordField.text, SOCIALNAME: signUpUserField.text, GENDER: "", BDATE: "", NAME: "", FAMILYNAME: "", EMAIL: "")
         
         print(m.getParams())
         
@@ -386,6 +391,8 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
                     nextViewController.upRequest = m
                     
                     self.navigationController?.pushViewController(nextViewController, animated: true)
+                    
+                    self.secondSignUpAnimate()
                     
                 }else if(SignUpResponseModel.init(json: JSON as! JSON).code == "501"){
                     
@@ -496,8 +503,10 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
             
             self.loginUnderLineLabel.alpha = 0
             
-            self.signUpButton.setTitleColor(UIColor.init(hex: "A4A4A4"), for: .normal)
+            self.signUpButton.setTitleColor(UIColor.init(hex: "D6DCE0"), for: .normal)
             self.loginButton.setTitleColor(UIColor.init(hex: "F7941D"), for: .normal)
+            
+            self.topImage.alpha = 0
             
         }){comepltion in
             
@@ -512,6 +521,10 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
                 self.loginUnderLineLabel.backgroundColor = UIColor.init(hex: "F7941D")
                 
                 self.loginUnderLineLabel.alpha = 1
+                
+                self.topImage.alpha = 1
+                
+                self.topImage.image = UIImage.init(named: "loginImage")
                 
             },completion : nil)
             
@@ -531,8 +544,10 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
             
             self.loginUnderLineLabel.alpha = 0
             
-            self.loginButton.setTitleColor(UIColor.init(hex: "A4A4A4"), for: .normal)
-            self.signUpButton.setTitleColor(UIColor.init(hex: "247afc"), for: .normal)
+            self.loginButton.setTitleColor(UIColor.init(hex: "D6DCE0"), for: .normal)
+            self.signUpButton.setTitleColor(UIColor.init(hex: "2490FC"), for: .normal)
+            
+            self.topImage.alpha = 0
             
         }){comepltion in
             
@@ -544,9 +559,13 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
                 
                 self.loginUnderLineLabel.frame.size.width = self.signUpButton.frame.width
                 
-                self.loginUnderLineLabel.backgroundColor = UIColor.init(hex: "247afc")
+                self.loginUnderLineLabel.backgroundColor = UIColor.init(hex: "2490FC")
                 
                 self.loginUnderLineLabel.alpha = 1
+                
+                self.topImage.alpha = 1
+                
+                self.topImage.image = UIImage.init(named: "signUpImage")
                 
             },completion : nil)
             
@@ -595,21 +614,21 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
             
         case signUpUserField:
             setColorViews()
-            signUpUserBorder.borderColor = UIColor.init(hex: "247afc")
+            signUpUserBorder.borderColor = UIColor.init(hex: "2490FC")
             signUpUserField.becomeFirstResponder()
             signUpUserField.window?.makeKeyAndVisible()
             break
             
         case signUpMobileField:
             setColorViews()
-            signUpMobileBorder.borderColor = UIColor.init(hex: "247afc")
+            signUpMobileBorder.borderColor = UIColor.init(hex: "2490FC")
             signUpMobileField.becomeFirstResponder()
             signUpMobileField.window?.makeKeyAndVisible()
             break
             
         case signUpPasswordField:
             setColorViews()
-            signUpPasswordBorder.borderColor = UIColor.init(hex: "247afc")
+            signUpPasswordBorder.borderColor = UIColor.init(hex: "2490FC")
             signUpPasswordField.becomeFirstResponder()
             signUpPasswordField.window?.makeKeyAndVisible()
             break
@@ -635,14 +654,14 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
             signUpMobileField.becomeFirstResponder()
             signUpMobileField.window?.makeKeyAndVisible()
             setColorViews()
-            signUpMobileBorder.borderColor = UIColor.init(hex: "247afc")
+            signUpMobileBorder.borderColor = UIColor.init(hex: "2490FC")
             break
             
         case signUpMobileField:
             signUpPasswordField.becomeFirstResponder()
             signUpPasswordField.window?.makeKeyAndVisible()
             setColorViews()
-            signUpPasswordBorder.borderColor = UIColor.init(hex: "247afc")
+            signUpPasswordBorder.borderColor = UIColor.init(hex: "2490FC")
             break
         
         case signUpPasswordField:
@@ -666,15 +685,15 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
     
     func setColorViews(){
         
-        loginUserBorder.borderColor = UIColor.init(hex: "A4A4A4")
+        loginUserBorder.borderColor = UIColor.init(hex: "D6DCE0")
         
-        loginPasswordBorder.borderColor = UIColor.init(hex: "A4A4A4")
+        loginPasswordBorder.borderColor = UIColor.init(hex: "D6DCE0")
         
-        signUpUserBorder.borderColor = UIColor.init(hex: "A4A4A4")
+        signUpUserBorder.borderColor = UIColor.init(hex: "D6DCE0")
         
-        signUpPasswordBorder.borderColor = UIColor.init(hex: "A4A4A4")
+        signUpPasswordBorder.borderColor = UIColor.init(hex: "D6DCE0")
         
-        signUpMobileBorder.borderColor = UIColor.init(hex: "A4A4A4")
+        signUpMobileBorder.borderColor = UIColor.init(hex: "D6DCE0")
         //d6dce0
     }
     

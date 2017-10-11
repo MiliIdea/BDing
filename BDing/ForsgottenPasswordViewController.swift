@@ -17,6 +17,8 @@ class ForsgottenPasswordViewController: UIViewController {
     
     var animationView : LOTAnimationView?
     
+    @IBOutlet weak var recycleButton: DCBorderedButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -30,25 +32,7 @@ class ForsgottenPasswordViewController: UIViewController {
     
     @IBAction func recycle(_ sender: Any) {
         
-        animationView = LOTAnimationView(name: "finall")
-        
-        animationView?.frame.size.height = 50
-        
-        animationView?.frame.size.width = 50
-        
-        animationView?.frame.origin.y = self.view.frame.height / 2 - 25
-        
-        animationView?.frame.origin.x = self.view.frame.width / 2 - 25
-        
-        animationView?.contentMode = UIViewContentMode.scaleAspectFit
-        
-        animationView?.alpha = 1
-        
-        self.view.addSubview(animationView!)
-        
-        animationView?.loopAnimation = true
-        
-        animationView?.play()
+        firstAnimate()
         
         request(URLs.forgotPassword , method: .post , parameters: ForgotpasswordRequestModel(USERNAME: mobile.text).getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
@@ -63,31 +47,27 @@ class ForsgottenPasswordViewController: UIViewController {
                     
                     self.view.endEditing(true)
                     
-                    self.animationView?.pause()
+//                    Notifys().notif(message: "رمز عبور جدید شما برایتان ارسال شد!"){ alarm in
+//
+//                        self.present(alarm, animated: true,completion: nil)
+//
+//                    }
                     
-                    self.animationView?.alpha = 0
+                    self.back("oke")
                     
-                    Notifys().notif(message: "رمز عبور جدید شما برایتان ارسال شد!"){ alarm in
-                        
-                        self.present(alarm, animated: true, completion: nil)
-                        
-                    }
-                    
-                    self.navigationController?.popViewController(animated: true)
+                    self.secondAnimate()
                     
                 }else{
                     
                     self.view.endEditing(true)
-                    
-                    self.animationView?.pause()
-                    
-                    self.animationView?.alpha = 0
-                    
+            
                     Notifys().notif(message: "نام کاربری شما یافت نشد!"){ alarm in
                         
                         self.present(alarm, animated: true, completion: nil)
                         
                     }
+                    
+                    self.secondAnimate()
                     
                 }
                 
@@ -99,10 +79,83 @@ class ForsgottenPasswordViewController: UIViewController {
 
         
     }
+    
+    
+    func firstAnimate(){
+        
+        self.view.isUserInteractionEnabled = false
+        
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            self.recycleButton.frame.size.width = self.recycleButton.frame.height
+            
+            self.recycleButton.normalTextColor = self.recycleButton.normalBackgroundColor
+            
+            self.recycleButton.frame.origin.x = self.view.frame.width / 2 - self.recycleButton.frame.height / 2
+            
+        }){completion in
+            
+            self.animationView = LOTAnimationView(name: "finall")
+            
+            self.animationView?.frame.size.height = self.recycleButton.frame.height
+            
+            self.animationView?.frame.size.width = self.recycleButton.frame.height
+            
+            self.animationView?.frame.origin.y =  self.recycleButton.frame.origin.y
+            
+            self.animationView?.frame.origin.x = self.view.frame.width / 2 - self.recycleButton.frame.height / 2
+            
+            self.animationView?.contentMode = UIViewContentMode.scaleAspectFit
+            
+            self.animationView?.alpha = 1
+            
+            self.view.addSubview(self.animationView!)
+            
+            self.animationView?.loopAnimation = true
+            
+            self.animationView?.play()
+            
+        }
+        
+    }
+    
+    func secondAnimate(){
+        
+        self.view.isUserInteractionEnabled = true
+        
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            self.recycleButton.frame.size.width = self.view.frame.width * 145 / 375
+            
+            self.recycleButton.normalTextColor = UIColor.init(hex: "ffffff")
+            
+            self.recycleButton.frame.origin.x = self.view.frame.width / 2 - (self.view.frame.width * 145 / 375) / 2
+            
+        }){completion in
+            
+            self.animationView?.alpha = 0
+            
+            self.animationView?.stop()
+            
+        }
+        
+    }
+    
+    
+    
+    
+    
     @IBAction func back(_ sender: Any) {
         
-        self.navigationController?.popViewController(animated: true)
+        if((sender is String)){
+            self.navigationController?.popViewController(animated: true)
+            (self.navigationController?.topViewController as! AuthenticationViewController).loginUserField.text = self.mobile.text
+            
+        }else{
         
+            self.navigationController?.popViewController(animated: true)
+            
+        }
     }
     
     /*

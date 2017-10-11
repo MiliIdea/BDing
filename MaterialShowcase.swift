@@ -24,11 +24,11 @@ public class MaterialShowcase: UIView {
     fileprivate let TARGET_HOLDER_RADIUS: CGFloat = 44
     fileprivate let TEXT_CENTER_OFFSET: CGFloat = 44 + 20
     fileprivate let PRIMARY_TEXT_SIZE: CGFloat = 20
-    fileprivate let SECONDARY_TEXT_SIZE: CGFloat = 15
+    fileprivate let SECONDARY_TEXT_SIZE: CGFloat = 13
     fileprivate let LABEL_MARGIN: CGFloat = 40
     
     // Other default properties
-    fileprivate let LABEL_DEFAULT_HEIGHT: CGFloat = 50
+    fileprivate let LABEL_DEFAULT_HEIGHT: CGFloat = 90
     fileprivate let PRIMARY_TEXT_COLOR = UIColor.white
     fileprivate let SECONDARY_TEXT_COLOR = UIColor.white.withAlphaComponent(0.87)
     fileprivate let BACKGROUND_DEFAULT_COLOR = UIColor.fromHex(hexString: "#2196F3")
@@ -322,7 +322,7 @@ extension MaterialShowcase {
         primaryLabel = UILabel()
         primaryLabel.font = UIFont(name: "IRANYekanMobileFaNum-Bold", size: primaryTextSize)
         primaryLabel.textColor = primaryTextColor
-        primaryLabel.textAlignment = .left
+        primaryLabel.textAlignment = .right
         primaryLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         primaryLabel.text = primaryText
         
@@ -341,7 +341,7 @@ extension MaterialShowcase {
         
         primaryLabel.frame = CGRect(x: xPosition,
                                     y: yPosition,
-                                    width: containerView.frame.width - xPosition,
+                                    width: containerView.frame.width - 2 * xPosition,
                                     height: LABEL_DEFAULT_HEIGHT)
         
         addSubview(primaryLabel)
@@ -352,10 +352,10 @@ extension MaterialShowcase {
         secondaryLabel = UILabel()
         secondaryLabel.font = UIFont(name: "IRANYekanMobileFaNum", size: secondaryTextSize)
         secondaryLabel.textColor = secondaryTextColor
-        secondaryLabel.textAlignment = .left
+        secondaryLabel.textAlignment = .right
         secondaryLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         secondaryLabel.text = secondaryText
-        secondaryLabel.numberOfLines = 3
+        secondaryLabel.numberOfLines = 4
         
         // Calculate x position
         let xPosition = (backgroundView.frame.minX > 0 ?
@@ -371,8 +371,8 @@ extension MaterialShowcase {
         }
         
         secondaryLabel.frame = CGRect(x: xPosition,
-                                      y: yPosition,
-                                      width: containerView.frame.width - xPosition,
+                                      y: yPosition - 10,
+                                      width: containerView.frame.width - 2 * xPosition,
                                       height: LABEL_DEFAULT_HEIGHT)
         
         addSubview(secondaryLabel)

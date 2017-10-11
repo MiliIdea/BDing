@@ -66,7 +66,7 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             let showcase = MaterialShowcase()
             showcase.setTargetView(tabBar: (self.tabBarController?.tabBar)! , itemIndex: 1) // always required to set targetView
             showcase.primaryText = "پیام ها"
-            showcase.secondaryText = "کمپین هایی که از نزدیکی آن عبور می کنید را ببینید و با بازدید آن دینگ دریافت کنید"
+            showcase.secondaryText = "بعد از حضور در محل کسب کارها (که لیست آنها در صفحه خانه آمده است)، با روشن کردن بلوتوث خود و مشاهده پیام ارسال شده برای شما، امتیاز (دینگ) جمع کنید."
             MyFont().setFontForAllView(view: showcase)
             showcase.show(id: "3" ,completion: {
                 _ in
@@ -79,6 +79,12 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
     
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
+        tracker.set(kGAIScreenName, value: "Message")
+        
+        guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
+        tracker.send(builder.build() as [NSObject : AnyObject])
         
         (UIApplication.shared.delegate as! AppDelegate).locationManager.startRangingBeacons(in: (UIApplication.shared.delegate as! AppDelegate).beaconRegion)
         

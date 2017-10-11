@@ -167,7 +167,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             self.showcase.setTargetView(tabBar: (self.tabBarController?.tabBar)! , itemIndex: 3) // always required to set targetView
             self.showcase.primaryText = "خانه"
-            self.showcase.secondaryText = " در این صفحه کمپین ها را ببینید و از جزییات آن با خبر شوید "
+            self.showcase.secondaryText = " در این صفحه آدرس و جزئیات کسب کارهایی را مشاهده می‌کنید که با حضور در محل آنها، می‌توانید امتیاز (دینگ) جمع کنید."
             MyFont().setFontForAllView(view: self.showcase)
             
             self.showcase.show(id: "1",completion: {
@@ -198,7 +198,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             self.showcase.setTargetView(view: self.searchButtonView) // always required to set targetView
             self.showcase.primaryText = "جستجو"
-            self.showcase.secondaryText = " در بین دسته بندی های مختلف و بر اساس نام کمپین یا موقعیت آن جستجو کنید"
+            self.showcase.secondaryText = "در بین دسته بندی‌های مختلف، با جستجوی نام و یا آدرس، مکان‌های مورد علاقه خود را پیدا کنید."
             MyFont().setFontForAllView(view: self.showcase)
             
             self.showcase.show(id: "2",completion: {
@@ -298,6 +298,12 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
 
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
+        tracker.set(kGAIScreenName, value: "Home")
+        
+        guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
+        tracker.send(builder.build() as [NSObject : AnyObject])
         
         (UIApplication.shared.delegate as! AppDelegate).locationManager.startRangingBeacons(in: (UIApplication.shared.delegate as! AppDelegate).beaconRegion)
         
@@ -978,7 +984,11 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
         } , completion : nil)
 
+        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
+        tracker.set(kGAIScreenName, value: "Search")
         
+        guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
+        tracker.send(builder.build() as [NSObject : AnyObject])
     }
     
     

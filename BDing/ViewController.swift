@@ -18,11 +18,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
     
     @IBOutlet weak var pageIndicator: UIPageControl!
     
-//    @IBOutlet weak var buttonsView: UIView!
-//
-//    @IBOutlet weak var vorudButton: UIButton!
-//
-//    @IBOutlet weak var sabtButton: UIButton!
+    @IBOutlet weak var nextLabel: UILabel!
     
     @IBOutlet weak var loadingBackView: UIView!
     
@@ -123,14 +119,24 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         var index: Int = (viewController as! PageContentViewController).pageIndex // This is the line you are looking for
         
-        self.pageIndicator.currentPage = index
+        self.pageIndicator.currentPage = self.pageIndicator.currentPage + 1
         self.pageIndicator.updateCurrentPageDisplay()
         if index == self.pageImages.count - 1 {
+            
             return nil
+        
         } else {
             
             index += 1
         }
+        if(self.pageIndicator.currentPage == 0){
+            
+            nextLabel.alpha = 0
+            
+        }else{
+            nextLabel.alpha = 1
+        }
+        
         return viewControllerAtIndex(index: index)
     }
     
@@ -142,9 +148,17 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
         var index: Int = (viewController as! PageContentViewController).pageIndex
-        self.pageIndicator.currentPage = index
+        self.pageIndicator.currentPage = self.pageIndicator.currentPage - 1
         self.pageIndicator.updateCurrentPageDisplay()
+        if(self.pageIndicator.currentPage == 0){
+            
+            nextLabel.alpha = 0
+            
+        }else{
+            nextLabel.alpha = 1
+        }
      
+        
         if index == 0 {
             
             return nil
@@ -152,6 +166,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
             
             index -= 1
         }
+        
         return self.viewControllerAtIndex(index: index)
         
     }
@@ -165,7 +180,6 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
     //---------------------------------------------------------------------------------------------------//
     
     func presentationIndex(for pageViewController: UIPageViewController) -> Int {
-        
         return 3
     }
     
@@ -214,7 +228,7 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         
         self.view.addSubview(animationView!)
         
-        animationView?.layer.zPosition = 1
+        animationView?.layer.zPosition = 2
         
         animationView?.loopAnimation = true
         

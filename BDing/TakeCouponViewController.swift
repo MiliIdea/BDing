@@ -36,6 +36,14 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
         // Do any additional setup after loading the view.
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
+        tracker.set(kGAIScreenName, value: "BuyCoupons")
+        
+        guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
+        tracker.send(builder.build() as [NSObject : AnyObject])
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -120,8 +128,6 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
         
         if let viewWithTag = self.view.viewWithTag(123) {
             
-            
-        
             UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                 
                 viewWithTag.alpha = 0

@@ -13,6 +13,8 @@ import UserNotificationsUI
 import CoreLocation
 import CoreBluetooth
 
+
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegate ,CBPeripheralManagerDelegate , UNUserNotificationCenterDelegate {
 
@@ -55,6 +57,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
          locationManager.startRangingBeacons(in: beaconRegion)
         }
         
+        for s in getIFAddresses(){
+            
+            print(s)
+            
+        }
+        print("<--- IP")
+        
+        
+        guard let gai = GAI.sharedInstance() else {
+            assert(false, "Google Analytics not configured correctly")
+            return true
+        }
+        gai.tracker(withTrackingId: "UA-107772003-1")
+        // Optional: automatically report uncaught exceptions.
+        gai.trackUncaughtExceptions = true
+
+        // Optional: set Logger to VERBOSE for debug information.
+        // Remove before app release.
+        gai.logger.logLevel = .verbose;
         
         return true
     }
@@ -398,7 +419,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                     
                     let t2 = date
                     
-                    if(hoursBetween(date1: t2 as NSDate, date2: t1 as NSDate) > 12){
+                    if(hoursBetween(date1: t2 as NSDate, date2: t1 as NSDate) > 12 && SaveAndLoadModel().load(entity: "USER")!.count >= 1){
                         
                         let s2 = GetBeaconRequestModel(UUID: String(describing : beacon.proximityUUID), MAJOR: String(describing : beacon.major), MINOR: String(describing : beacon.minor))
                         
@@ -554,6 +575,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
     }
     
 
+    func getIFAddresses() -> [String] {
+        var addresses = [String]()
+        
+        // Get list of all interfaces on the local machine:
+        var ifaddr : UnsafeMutablePointer<ifaddrs>?
+        guard getifaddrs(&ifaddr) == 0 else { return [] }
+        guard let firstAddr = ifaddr else { return [] }
+        
+        // For each interface ...
+        for ptr in sequence(first: firstAddr, next: { $0.pointee.ifa_next }) {
+            let flags = Int32(ptr.pointee.ifa_flags)
+            let addr = ptr.pointee.ifa_addr.pointee
+            
+            // Check for running IPv4, IPv6 interfaces. Skip the loopback interface.
+            if (flags & (IFF_UP|IFF_RUNNING|IFF_LOOPBACK)) == (IFF_UP|IFF_RUNNING) {
+                if addr.sa_family == UInt8(AF_INET) || addr.sa_family == UInt8(AF_INET6) {
+                    
+                    // Convert interface address to a human readable string:
+                    var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+                    if (getnameinfo(ptr.pointee.ifa_addr, socklen_t(addr.sa_len), &hostname, socklen_t(hostname.count),
+                                    nil, socklen_t(0), NI_NUMERICHOST) == 0) {
+                        let address = String(cString: hostname)
+                        addresses.append(address)
+                    }
+                }
+            }
+        }
+        
+        freeifaddrs(ifaddr)
+        return addresses
+    }
     
     
 }
