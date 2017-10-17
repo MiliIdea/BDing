@@ -24,6 +24,8 @@ class GlobalFields {
     
     static var FAQs : [FAQData] = [FAQData]()
     
+    static var goOnlinePay : Bool = false
+    
     struct indoorPoint {
         
         var beacon_code : String?

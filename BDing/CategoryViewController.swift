@@ -944,7 +944,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
 //                                            
 //                                        }
                                         
-                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0", customerDiscountValue: i.discount!, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time ?? "" , website: i.cusomer_web!,customerBigImages: i.url_pic , categoryID: i.category_id, beaconCode : i.beacon_code , campaignCode : i.campaign_code)
+                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0", customerDiscountValue: i.discount!, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time ?? "" , website: i.cusomer_web!,customerBigImages: i.url_pic , categoryID: i.category_id, beaconCode : i.beacon_code , campaignCode : i.campaign_code, lat : i.lat , long : i.long)
                                         
                                         if(currentLocation.coordinate.latitude != 0){
                                             
@@ -1014,7 +1014,7 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
      
                                     for i in (obj?.data!)! {
                                         
-                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0", customerDiscountValue: i.discount!, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic, categoryID: i.category_id, beaconCode : i.beacon_code , campaignCode : i.campaign_code)
+                                        let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: i.url_icon, customerCampaignTitle: i.title!, customerName: i.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((i.distance ?? 0) * 100) / 100) , customerCoinValue: i.coin ?? "0", customerDiscountValue: i.discount!, tell: i.customer_tell! ,address: i.customer_address! ,text : i.text!  ,workTime: i.customer_work_time! , website: i.cusomer_web!,customerBigImages: i.url_pic, categoryID: i.category_id, beaconCode : i.beacon_code , campaignCode : i.campaign_code, lat : i.lat , long : i.long)
                                         nextVc.customerHomeTableCells.append(a)
                                         
                                     }

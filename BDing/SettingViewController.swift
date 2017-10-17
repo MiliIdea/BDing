@@ -34,7 +34,7 @@ class SettingViewController: UIViewController , UIPickerViewDataSource, UIPicker
         
         super.viewDidLoad()
 
-        MyFont().setFontForAllView(view: self.view)
+//        MyFont().setFontForAllView(view: self.view)
         
         rangeButton.setTitle(String(GlobalFields.BEACON_RANG), for: .normal)
         
@@ -264,6 +264,12 @@ class SettingViewController: UIViewController , UIPickerViewDataSource, UIPicker
     }
     
 
+    @IBAction func resetIndicator(_ sender: Any) {
+        
+        SaveAndLoadModel().deleteAllObjectIn(entityName: "SHOWCASE")
+        
+        self.navigationController?.popViewController(animated: true)
+    }
     
     
 }

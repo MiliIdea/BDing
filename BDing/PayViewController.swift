@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import CoreLocation
+import Lottie
 
-class PayViewController: UIViewController , UICollectionViewDataSource, UICollectionViewDelegate{
 
+class PayViewController: UIViewController , UICollectionViewDataSource, UICollectionViewDelegate,  CLLocationManagerDelegate , ShowcaseDelegate{
+    
     @IBOutlet weak var myDings: UILabel!
     
     @IBOutlet weak var myDingsIcon: UIImageView!
@@ -19,6 +22,12 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
     @IBOutlet weak var shopListButton: DCBorderedButton!
     
     @IBOutlet weak var lastCoupons: UICollectionView!
+    
+    @IBOutlet weak var popupPayButton: DCBorderedButton!
+    
+    @IBOutlet weak var payIcon: UIImageView!
+    
+    var animationView : LOTAnimationView?
     
     var coupons: [CouponListData]? = [CouponListData]()
     
@@ -32,8 +41,6 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
     
     @IBOutlet weak var popupMyDings: UILabel!
     
-    @IBOutlet weak var onlineSwitch: UISwitch!
-    
     @IBOutlet weak var descriptionLabel: UILabel!
     
     @IBOutlet weak var canselPopup: DCBorderedButton!
@@ -44,6 +51,11 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
     
     @IBOutlet weak var attentionIcon: UIImageView!
     
+    let locationManager = CLLocationManager()
+    
+    var payBeacon : CLBeacon? = nil
+    
+    let showcase = MaterialShowcase()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,8 +69,60 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
         
         self.myDings.text = GlobalFields.PROFILEDATA?.all_coin
         
+        self.popupMyDings.text = GlobalFields.PROFILEDATA?.all_coin
+        
         self.automaticallyAdjustsScrollViewInsets = false
+        
+        closePopup("")
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(checkDing), name: .UIApplicationWillEnterForeground, object: nil)
         // Do any additional setup after loading the view.
+        
+        showcase.delegate = self
+        
+        
+    }
+    
+    func dismissed() {
+        
+        
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        let when = DispatchTime.now() + 0.5
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            
+            
+            self.showcase.setTargetView(view: self.popupPayButton) // always required to set targetView
+            self.showcase.primaryText = "پرداخت با دینگ"
+            self.showcase.secondaryText = "بعد از جمع کردن امتیاز (دینگ)، به فروشگاه‌های مجهز به دستگاه پرداخت بی‌دینگ رفته و تمام یا بخشی از پرداخت خود را انجام دهید."
+            
+            MyFont().setFontForAllView(view: self.showcase)
+            
+            self.showcase.show(id : "4",completion: {
+                _ in
+                // You can save showcase state here
+                // Later you can check and do not show it again
+                
+                
+            })
+            
+            
+        }
+        
+        if(GlobalFields.goOnlinePay == true){
+        
+            self.updateProfile()
+            
+        }
+    }
+    
+    func checkDing(){
+        if(GlobalFields.goOnlinePay == true){
+            updateProfile()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -70,6 +134,35 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
     // MARK: - Actions
     
     @IBAction func callPayPopUp(_ sender: Any) {
+        
+        firstAnimate()
+        
+        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
+        tracker.set(kGAIEvent, value: "PayButton")
+        
+        guard let builder = GAIDictionaryBuilder.createEvent(withCategory: "Payment", action: "Click", label: "PayButton", value: 0) else { return }
+        tracker.send(builder.build() as [NSObject : AnyObject])
+        
+        locationManager.delegate = self
+        
+        locationManager.requestAlwaysAuthorization()
+        
+        if(GlobalFields.PAY_UUIDS == nil){
+            
+            return
+            
+        }
+        
+        for payUuids in GlobalFields.PAY_UUIDS!{
+            
+            let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: payUuids.lowercased())! as UUID, identifier: "Bding")
+            
+            locationManager.startRangingBeacons(in: region)
+            
+        }
+        
+        locationManager.distanceFilter = 1
+        
     }
     
     @IBAction func payHistory(_ sender: Any) {
@@ -85,12 +178,508 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
     // MARK: - PopupActions
     
     @IBAction func switchOnlinePay(_ sender: Any) {
+        
+        
+        
+    }
+    
+    func showPayPopup(payTitle: String!){
+        
+        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
+        tracker.set(kGAIScreenName, value: "Payment")
+        
+        guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
+        tracker.send(builder.build() as [NSObject : AnyObject])
+        
+//        self.popupView.backgroundColor = self.popupPayButton.normalBackgroundColor
+        
+        self.payButton.setTitle("پرداخت مبلغ", for: .normal)
+        
+        self.popupView.cornerRadius = self.popupPayButton.cornerRadius
+        
+        self.popupView.frame = self.popupPayButton.frame
+        
+        self.popupTitle.text = payTitle
+        
+        self.inputPriceTextField.text = ""
+        
+        UIView.animate(withDuration: 0.01, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            for v in self.popupView.subviews{
+                
+                v.alpha = 0
+                
+            }
+            
+        }){completion in
+            
+            UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                
+                self.blurView.alpha = 0.5
+                
+                self.popupView.alpha = 1
+                
+                self.popupView.frame.size.width = 300 / 375 * self.view.frame.width
+                
+                self.popupView.frame.size.height = 370 / 667 * self.view.frame.height
+                
+                self.popupView.frame.origin.x = self.view.frame.width / 2 - self.popupView.frame.width / 2
+                
+                self.popupView.frame.origin.y = 148 / 667 * self.view.frame.height
+                
+                //            self.popupView.backgroundColor = UIColor.init(hex: "ffffff")
+                
+                self.popupView.cornerRadius = 8
+                
+            },completion: nil)
+            
+        }
+        
+        
+        
+        UIView.animate(withDuration: 0.2, delay: 0.4, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            for v in self.popupView.subviews{
+                
+                v.alpha = 1
+                
+            }
+            
+        })
+        
     }
     
     @IBAction func closePopup(_ sender: Any) {
+        
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            for v in self.popupView.subviews{
+                
+                v.alpha = 0
+                
+            }
+            
+        })
+        
+        UIView.animate(withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseOut, animations: {
+        
+            self.blurView.alpha = 0
+            
+            self.popupView.alpha = 0
+            
+            self.popupView.frame = self.popupPayButton.frame
+            
+            self.popupView.cornerRadius = self.popupPayButton.cornerRadius
+            
+        },completion : nil)
     }
     
     @IBAction func doPay(_ sender: Any) {
+        
+        if(Int(self.inputPriceTextField.text!)! == 0){
+           return
+        }
+        
+        if(payButton.title(for: .normal) != "تایید" && payButton.title(for: .normal) != "پرداخت آنلاین"){
+            
+            let myCALayer = payButton.layer
+            var transform = CATransform3DIdentity
+            transform.m34 = -1.0/100.0
+            myCALayer.transform = CATransform3DRotate(transform, 0, 1, 0, 0)
+            if(Int((GlobalFields.PROFILEDATA?.all_coin)!)! < Int(self.inputPriceTextField.text!)!){
+                UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                    
+                    self.payButton.setTitle("پرداخت آنلاین", for: .normal)
+                },completion : nil)
+            }else{
+                UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                    
+                    self.payButton.setTitle("تایید", for: .normal)
+                },completion : nil)
+            }
+            
+            SpAnimation.animate(myCALayer,
+                                keypath: "transform.rotation.x",
+                                duration: 3.0,
+                                usingSpringWithDamping: 1.0,
+                                initialSpringVelocity: 1.7,
+                                fromValue: Double.pi,
+                                toValue: 0,
+                                onFinished: nil)
+            
+        }else{
+        
+            self.animationView = LOTAnimationView(name: "finall")
+            
+            self.animationView?.frame.size.height = self.payButton.frame.height - 20
+
+            self.animationView?.frame.size.width = self.payButton.frame.height
+
+            self.animationView?.frame.origin.y =  self.payButton.frame.origin.y + 10
+
+            self.animationView?.frame.origin.x =  self.payButton.frame.origin.x + 10
+            
+            if(payButton.title(for: .normal) == "پرداخت آنلاین"){
+                self.animationView?.frame.size.height = self.payButton.frame.height - 20
+                
+                self.animationView?.frame.size.width = self.payButton.frame.height
+                
+                self.animationView?.frame.origin.y =  self.payButton.frame.origin.y + 10
+                
+                self.animationView?.frame.origin.x =  self.payButton.frame.origin.x - 5
+            }
+            
+            //+ (self.payButton.frame.width / 2) - ((self.animationView?.frame.width)! / 2)
+            
+            self.animationView?.contentMode = UIViewContentMode.scaleAspectFit
+            
+            self.animationView?.alpha = 1
+            
+            self.animationView?.layer.zPosition = 2
+            
+            self.popupView.addSubview(self.animationView!)
+            
+            self.animationView?.loopAnimation = true
+            
+            self.animationView?.play()
+            
+            request(URLs.payment , method: .post , parameters: PaymentRequestModel.init(BEACON: payBeacon, MONEY: self.inputPriceTextField.text!).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                print()
+
+                if let JSON = response.result.value {
+
+                    print("JSON ----------Payment----------->>>> " ,JSON)
+                    //create my coupon response model
+
+                    if( PaymentResponseModel.init(json: JSON as! JSON)?.code == "200"){
+
+                        request(URLs.verifyPayment , method: .post , parameters: PaymentVerifyRequestModel.init(CODE: PaymentResponseModel.init(json: JSON as! JSON)?.data?.code).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                            print()
+
+                            if let JSON2 = response.result.value {
+
+                                print("JSON ----------Payment Verify----------->>>> " ,JSON2)
+                                //create my coupon response model
+
+                                if( PaymentVerifyResponseModel.init(json: JSON2 as! JSON)?.code == "200"){
+                                    
+                                    self.payButton.setTitle("پرداخت مبلغ", for: .normal)
+                                    
+                                    if(PaymentVerifyResponseModel.init(json: JSON2 as! JSON)?.data?.url?.isEmpty)!{
+                                        self.closePopup("")
+                                        self.updateProfile()
+                                        Notifys().notif(message: "پرداخت با موفقیت انجام شد"){ alarm in
+                                            
+                                            self.present(alarm, animated: true, completion: nil)
+                                            
+                                        }
+                                    }else{
+                                        GlobalFields.goOnlinePay = true
+                                        self.viewDidDisappear(true)
+                                        UIApplication.shared.openURL(URL(string: (PaymentVerifyResponseModel.init(json: JSON2 as! JSON)?.data?.url)!)!)
+                                    }
+
+                                }else{
+                                    
+                                    Notifys().notif(message: PaymentVerifyResponseModel.init(json: JSON2 as! JSON)?.msg){ alarm in
+                                        
+                                        self.present(alarm, animated: true, completion: nil)
+                                        
+                                    }
+                                    
+                                }
+                                self.closePopup("")
+                                
+                                self.animationView?.alpha = 0
+                                
+                                self.animationView?.stop()
+                                
+                                self.animationView?.removeFromSuperview()
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            
+        }
+        
+        
+    }
+    
+    func updateProfile(){
+    
+        request(URLs.getDing , method: .post , parameters: GetDingsRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------Payment Verify----------->>>> " ,JSON)
+                //create my coupon response model
+                
+                if( PaymentVerifyResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                    
+                    if(GlobalFields.goOnlinePay == true){
+                        
+                        if(GlobalFields.PROFILEDATA?.all_coin != PaymentVerifyResponseModel.init(json: JSON as! JSON)?.data?.all_ding){
+                            
+                            Notifys().notif(message: "پرداخت با موفقیت انجام شد"){ alarm in
+                                
+                                self.present(alarm, animated: true, completion: nil)
+                                
+                            }
+                            
+                        }
+                    }
+                    
+                    GlobalFields.PROFILEDATA?.all_coin = PaymentVerifyResponseModel.init(json: JSON as! JSON)?.data?.all_ding
+                    
+                    self.myDings.text = GlobalFields.PROFILEDATA?.all_coin
+                    
+                    self.popupMyDings.text = GlobalFields.PROFILEDATA?.all_coin
+                    
+                    GlobalFields.goOnlinePay = false
+                    
+                }
+                
+            }
+            
+        }
+        
+        
+        
+    }
+    
+    
+    
+    func firstAnimate(){
+        
+        self.view.isUserInteractionEnabled = false
+        
+        payIcon.alpha = 0
+        
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            self.popupPayButton.cornerRadius = self.popupPayButton.frame.height / 2
+            
+            self.popupPayButton.frame.size.width = self.popupPayButton.frame.height
+            
+            self.popupPayButton.normalTextColor = self.popupPayButton.normalBackgroundColor
+            
+            self.popupPayButton.frame.origin.x = self.view.frame.width / 2 - self.popupPayButton.frame.height / 2
+            
+        }){completion in
+            
+            self.animationView = LOTAnimationView(name: "finall")
+            
+            self.animationView?.frame.size.height = self.popupPayButton.frame.height
+            
+            self.animationView?.frame.size.width = self.popupPayButton.frame.height
+            
+            self.animationView?.frame.origin.y =  self.popupPayButton.frame.origin.y
+            
+            self.animationView?.frame.origin.x = self.view.frame.width / 2 - self.popupPayButton.frame.height / 2
+            
+            self.animationView?.contentMode = UIViewContentMode.scaleAspectFit
+            
+            self.animationView?.alpha = 1
+            
+            self.view.addSubview(self.animationView!)
+            
+            self.animationView?.loopAnimation = true
+            
+            self.animationView?.play()
+            
+        }
+        
+    }
+    
+    func secondAnimate(){
+        
+        self.view.isUserInteractionEnabled = true
+        
+        UIView.animate(withDuration: 0.2, delay: 0.6 , options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            self.popupPayButton.cornerRadius = 3
+            
+            self.popupPayButton.frame.size.width = self.view.frame.width * 145 / 375
+            
+            self.popupPayButton.frame.origin.x = self.view.frame.width / 2 - (self.view.frame.width * 145 / 375) / 2
+            self.animationView?.alpha = 0
+            
+        }){completion in
+            
+            let when = DispatchTime.now() // change 2 to desired number of seconds
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                // Your code with delay
+                UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                    
+                    self.animationView?.stop()
+                    
+                    self.payIcon.alpha = 1
+                    
+                    self.popupPayButton.normalTextColor = UIColor.init(hex: "ffffff")
+                    
+                },completion : nil)
+                
+            }
+            
+        }
+        
+        
+    }
+    
+    
+    
+    
+    // MARK: - LocationManager
+    
+    func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
+        
+        if(beacons.count == 0){
+            
+            Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
+                
+                self.present(alarm, animated: true, completion: nil)
+                
+            }
+            
+            self.secondAnimate()
+            
+            locationManager.stopRangingBeacons(in: region)
+            
+            return
+            
+        }
+
+        var payBeacons : [CLBeacon] = [CLBeacon]()
+        
+        for b in beacons {
+            
+            let beaconString = String(describing: b.proximityUUID)
+
+            if(GlobalFields.PAY_UUIDS?.contains(beaconString))!{
+                
+                payBeacons.append(b)
+                
+            }
+            
+        }
+        
+        payBeacons.sort(by: {(b1 , b2) -> Bool in
+            var d1 : Double = 0.0
+            var d2 : Double = 0.0
+            d1 = b1.accuracy
+            d2 = b2.accuracy
+            if(d1 == -1){
+                d1 = 100
+            }
+            if(d2 == -1){
+                d2 = 100
+            }
+            return d1 > d2
+        })
+        
+        for c in payBeacons{
+            
+            print(c.accuracy)
+            
+        }
+        
+        if(payBeacons.count == 0){
+            
+            Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
+                
+                self.present(alarm, animated: true, completion: nil)
+                
+                self.secondAnimate()
+                
+            }
+            
+        }else{
+            
+            popupRequestFor(beacons: payBeacons)
+            
+        }
+        
+        locationManager.stopRangingBeacons(in: region)
+        
+        
+    }
+    
+    
+    func popupRequestFor(beacons : [CLBeacon]){
+        
+        var payBeacons : [CLBeacon] = beacons
+        
+        let b = payBeacons.popLast()
+        
+        var payUrlString : String = ""
+        
+        payUrlString.append(URLs.payTitle)
+        
+        payUrlString.append(String(describing: (b?.proximityUUID)!).lowercased())
+        
+        payUrlString.append("-")
+        
+        payUrlString.append(String(describing: (b?.major)!).lowercased())
+        
+        payUrlString.append("-")
+        
+        payUrlString.append(String(describing: (b?.minor)!).lowercased())
+        
+        print("requeste pay : " , payUrlString)
+        
+        request( payUrlString , method: .get , encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------GET PAY TITLE----------->>>> " ,JSON)
+                //create my coupon response model
+                
+                if( PayTitleResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                    
+                    self.secondAnimate()
+                    
+                    UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                        
+                        self.showPayPopup(payTitle: (PayTitleResponseModel.init(json: JSON as! JSON)?.result?.title)!)
+                        
+                        self.payBeacon = b
+                        
+                    },completion : nil)
+                    
+                    
+                }else{
+                    
+                    if(payBeacons.count == 0){
+                        
+                        Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
+                            
+                            self.present(alarm, animated: true, completion: nil)
+                            
+                            self.secondAnimate()
+                            
+                        }
+                        
+                    }else{
+                        
+                        self.popupRequestFor(beacons: payBeacons)
+                        
+                    }
+                    
+                }
+                
+                
+            }
+            
+        }
+        
     }
     
     
@@ -372,7 +961,7 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
         
         let manager = SessionManager.default2
         
-        manager.request(URLs.getCoupons , method: .post , parameters: GetCouponRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+        manager.request(URLs.lastCoupons , method: .post , parameters: LastCouponRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
             
             ///////////////////////////
@@ -441,6 +1030,11 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
     }
     
     
+    @IBAction func tapView(_ sender: Any) {
+        
+        self.view.endEditing(true)
+        
+    }
     
     
     

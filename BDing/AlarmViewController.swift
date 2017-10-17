@@ -161,28 +161,11 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         showcase.delegate = self
         
-        let when = DispatchTime.now() + 2
-        DispatchQueue.main.asyncAfter(deadline: when) {
-            
-            
-            self.showcase.setTargetView(tabBar: (self.tabBarController?.tabBar)! , itemIndex: 3) // always required to set targetView
-            self.showcase.primaryText = "خانه"
-            self.showcase.secondaryText = " در این صفحه آدرس و جزئیات کسب کارهایی را مشاهده می‌کنید که با حضور در محل آنها، می‌توانید امتیاز (دینگ) جمع کنید."
-            MyFont().setFontForAllView(view: self.showcase)
-            
-            self.showcase.show(id: "1",completion: {
-                _ in
-                // You can save showcase state here
-                // Later you can check and do not show it again
-                
-                
-                
-            })
-
-            
-        }
+        
         
     }
+    
+    
     
     func dismissed() {
         
@@ -192,7 +175,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         if(showcaseCounter >= 2){
             return
         }
-        let when = DispatchTime.now() + 1
+        let when = DispatchTime.now() + 0.5
         DispatchQueue.main.asyncAfter(deadline: when) {
             
             
@@ -203,6 +186,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             self.showcase.show(id: "2",completion: {
                 _ in
+                self.view.isUserInteractionEnabled = true
             })
             
             
@@ -316,17 +300,29 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             self.leftTable.reloadData()
             
         }
-//        for i in (self.tabBarController?.tabBar.items!)! {
-//            
-//            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "bdbdbd") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: CGFloat(8))!], for: .normal)
-//            //bdbdbd unselected color
-//            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "455a64") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: CGFloat(8))!], for: .selected)
-//            i.image =  i.image?.imageWithColor(tintColor: UIColor.init(hex: "bdbdbd")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
-//            i.selectedImage = i.image?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
-//            i.imageInsets = UIEdgeInsets.init(top: 6, left: 6, bottom: 6, right: 6)
-//            
-//            
-//        }
+        
+        let when = DispatchTime.now() + 1
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            
+            self.view.isUserInteractionEnabled = false
+            
+            self.showcase.setTargetView(tabBar: (self.tabBarController?.tabBar)! , itemIndex: 4) // always required to set targetView
+            self.showcase.primaryText = "خانه"
+            self.showcase.secondaryText = " در این صفحه آدرس و جزئیات کسب کارهایی را مشاهده می‌کنید که با حضور در محل آنها، می‌توانید امتیاز (دینگ) جمع کنید."
+            MyFont().setFontForAllView(view: self.showcase)
+            
+            self.showcase.show(id: "1",completion: {
+                _ in
+                // You can save showcase state here
+                // Later you can check and do not show it again
+                
+                
+                
+            })
+            
+            
+        }
+        
     }
     
     
@@ -744,7 +740,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 
                 for obj in (GlobalFields.BEACON_LIST_DATAS?[self.lazyLoaded...end])! {
                     
-                    let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100), customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount ?? "%0", tell: obj.customer_tell ?? "" ,address: obj.customer_address ?? "" , text: obj.text ?? "" ,workTime: obj.customer_work_time ?? "" ,website: obj.cusomer_web ?? "" ,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code , campaignCode : obj.campaign_code)
+                    let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100), customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount ?? "%0", tell: obj.customer_tell ?? "" ,address: obj.customer_address ?? "" , text: obj.text ?? "" ,workTime: obj.customer_work_time ?? "" ,website: obj.cusomer_web ?? "" ,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code , campaignCode : obj.campaign_code, lat : obj.lat , long : obj.long)
                     
                     if(currentLocation.coordinate.latitude != 0){
                         

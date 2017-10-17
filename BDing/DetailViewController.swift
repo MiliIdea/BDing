@@ -818,6 +818,38 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
     }
     
+    
+    @IBAction func goRouteInMap(_ sender: Any) {
+        
+        if let latitude =  Double(cell!.lat!), let longitude = Double(cell!.long!) {
+            
+            let coordinate:CLLocation = CLLocation(latitude: latitude, longitude: longitude)
+            
+            if UIApplication.shared.canOpenURL(URL(string: "comgooglemaps://")!)
+            {
+                let urlString = "http://maps.google.com/?daddr=\(coordinate.coordinate.latitude),\(coordinate.coordinate.longitude)&directionsmode=driving"
+                
+                // use bellow line for specific source location
+                
+                //let urlString = "http://maps.google.com/?saddr=\(sourceLocation.latitude),\(sourceLocation.longitude)&daddr=\(destinationLocation.latitude),\(destinationLocation.longitude)&directionsmode=driving"
+                
+                UIApplication.shared.openURL(URL(string: urlString)!)
+            }
+            else
+            {
+                //let urlString = "http://maps.apple.com/maps?saddr=\(sourceLocation.latitude),\(sourceLocation.longitude)&daddr=\(destinationLocation.latitude),\(destinationLocation.longitude)&dirflg=d"
+                let urlString = "http://maps.apple.com/maps?daddr=\(coordinate.coordinate.latitude),\(coordinate.coordinate.longitude)&dirflg=d"
+                
+                UIApplication.shared.openURL(URL(string: urlString)!)
+            }
+            
+        }
+        
+    }
+        
+    
+    
+    
     @IBAction func share(_ sender: Any) {
         
         let myShare = "الان این تخفیف فوق العاده رو روی اپلیکیشن BDING پیدا کردم، اگر تو هم همچین تخفیف هایی میخوای اپلیکیشن رو دانلود کن! \n" + self.textView.text + "\nنسخه اندروید نرم افزار بی دینگ \nhttps://play.google.com/store/apps/details?id=bding.ir.mycity \nنسخه ios \nhttps://itunes.apple.com/us/app/bding/id1246371771?mt=8 \n\nwww.bding.ir\n"

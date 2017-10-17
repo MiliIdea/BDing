@@ -39,8 +39,6 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     @IBOutlet weak var patternView: UIView!
     
-    @IBOutlet weak var appSettingsIcon: UIImageView!
-    
     
     let locationManager = CLLocationManager()
     
@@ -83,11 +81,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     @IBOutlet weak var closeReportButton: UIButton!
     
-    @IBOutlet weak var payWithTolls: DCBorderedButton!
-    
     @IBOutlet weak var takeCoupon: DCBorderedButton!
-    
-    @IBOutlet weak var payHistory: DCBorderedButton!
     
     @IBOutlet weak var myCoupons: DCBorderedButton!
     
@@ -122,18 +116,6 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     @IBOutlet weak var femaleRadio: DLRadioButton!
     
-    
-    // pay with coins 
-    
-    @IBOutlet weak var myCoinsValueLabel: UILabel!
-    
-    @IBOutlet weak var payTitleLabel: UILabel!
-    
-    @IBOutlet weak var inputPayTextField: UITextField!
-    
-    @IBOutlet weak var payContainer: DCBorderedView!
-    
-    
  //profile data 
     
     
@@ -161,8 +143,6 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         imagePicker.delegate = self
         
-        MyFont().setFontForAllView(view: self.view , elseView: payContainer)
-        
         for subView in inputBoarderView.subviews {
             if (subView is UILabel){
                 MyFont().setLightFont(view: subView, mySize: 13)
@@ -174,9 +154,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         MyFont().setMediumFont(view: name, mySize: 14)
         MyFont().setBoldFont(view: coinValue, mySize: 19)
         MyFont().setMediumFont(view: reportLabel, mySize: 10)
-        MyFont().setMediumFont(view: payWithTolls, mySize: 13)
         MyFont().setMediumFont(view: takeCoupon, mySize: 13)
-        MyFont().setMediumFont(view: payHistory, mySize: 13)
         MyFont().setMediumFont(view: myCoupons, mySize: 13)
         MyFont().setMediumFont(view: porseshhaButton, mySize: 13)
         MyFont().setMediumFont(view: aboutUsButton, mySize: 13)
@@ -402,55 +380,10 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         scrollViewDidScroll(self.scrollViewProfile)
     
-        showcase.delegate = self
-        
-        let when = DispatchTime.now() + 0.5
-        DispatchQueue.main.asyncAfter(deadline: when) {
-            
-            
-            self.showcase.setTargetView(view: self.payWithTolls) // always required to set targetView
-            self.showcase.primaryText = "پرداخت با دینگ"
-            self.showcase.secondaryText = "بعد از جمع کردن امتیاز (دینگ)، به فروشگاه‌های مجهز به دستگاه پرداخت بی‌دینگ رفته و تمام یا بخشی از پرداخت خود را انجام دهید."
-            
-            MyFont().setFontForAllView(view: self.showcase)
-            
-            self.showcase.show(id : "4",completion: {
-                _ in
-                // You can save showcase state here
-                // Later you can check and do not show it again
-                
-                
-            })
-            
-            
-        }
-        
         
     }
     
     func dismissed() {
-        
-        print("dismissed")
-        
-        showcaseCounter += 1
-        if(showcaseCounter >= 2){
-            return
-        }
-        let when = DispatchTime.now() + 1
-        DispatchQueue.main.asyncAfter(deadline: when) {
-            
-            
-            self.showcase.setTargetView(view: self.takeCoupon) // always required to set targetView
-            self.showcase.primaryText = "دریافت کوپن"
-            self.showcase.secondaryText = "همچنین می‌توانید با امتیاز(دینگ)های خود، کوپن‌های تخفیف مختلفی‌ را خریداری نمایید."
-            MyFont().setFontForAllView(view: self.showcase)
-            
-            self.showcase.show(id: "5",completion: {
-                _ in
-            })
-            
-            
-        }
         
     }
     
@@ -504,6 +437,22 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
     
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        let when = DispatchTime.now() + 0.5
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            
+            
+            self.showcase.setTargetView(view: self.takeCoupon) // always required to set targetView
+            self.showcase.primaryText = "دریافت کوپن"
+            self.showcase.secondaryText = "همچنین می‌توانید با امتیاز(دینگ)های خود، کوپن‌های تخفیف مختلفی‌ را خریداری نمایید."
+            MyFont().setFontForAllView(view: self.showcase)
+            
+            self.showcase.show(id: "5",completion: {
+                _ in
+            })
+            
+            
+        }
         
         guard let tracker = GAI.sharedInstance().defaultTracker else { return }
         tracker.set(kGAIScreenName, value: "Profile")
@@ -1035,102 +984,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         
     }
-    
 
-    func requestForPayHistory(nextVc : PayHistoryViewController){
-        
-        let manager = SessionManager.default2
-        
-        manager.request(URLs.paylistHistory , method: .post , parameters: PayListRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
-            print()
-            
-            ///////////////////////////
-            ///////////////////////////
-            ///////////////////////////
-            
-            switch (response.result) {
-            case .failure(let error):
-                if error._code == NSURLErrorTimedOut {
-                    //HANDLE TIMEOUT HERE
-                    
-                    nextVc.loading.stopAnimating()
-                    
-                    nextVc.loading.alpha = 0
-                    
-                    nextVc.table.alpha = 0
-                    
-                    nextVc.lowInternetView.alpha = 1
-                    
-                    return
-                    
-                }
-                break
-                
-            default: break
-                
-            }
-            
-            ///////////////////////////
-            ///////////////////////////
-            ///////////////////////////
-            
-            if let JSON = response.result.value {
-                
-                print("JSON ----------MY HISTORY----------->>>> ")
-                //create my coupon response model
-                if(PayListResponseModel.init(json: JSON as! JSON)?.code == "200"){
-                    
-                    UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                        
-                        if(PayListResponseModel.init(json: JSON as! JSON)?.data == nil){
-                            
-                            // data nadarim
-                            
-                        }else{
-                            nextVc.payHistory = (PayListResponseModel.init(json: JSON as! JSON)?.data)!
-                            
-                            nextVc.table.reloadData()
-                            
-                        }
-                        
-                        if(nextVc.payHistory.count == 0){
-                            
-                            nextVc.table.alpha = 0
-                            
-                        }else{
-                            
-                            nextVc.table.alpha = 1
-                            
-                        }
-                        
-                    }, completion: nil)
-                    
-                    nextVc.loading.stopAnimating()
-                    
-                    nextVc.loading.alpha = 0
-                    
-                }
-                
-                
-                print(JSON)
-                
-            }
-            
-        }
-        
-        
-    }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     func deletSubView(){
@@ -1322,8 +1176,6 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                     
                     print("all coin : ",obj?.data?.all_coin)
                     
-                    self.myCoinsValueLabel.text = obj?.data?.all_coin
-                    
                     self.viewDidAppear(true)
                     
                     if(obj?.data?.all_coin != GlobalFields.PROFILEDATA?.all_coin && obj?.data?.get_coin == "yes"){
@@ -1331,8 +1183,6 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         GlobalFields.PROFILEDATA?.all_coin  = obj?.data?.all_coin
                         
                         GlobalFields.PROFILEDATA?.get_coin = obj?.data?.get_coin
-                        
-                        self.myCoinsValueLabel.text = GlobalFields.PROFILEDATA?.all_coin
                         
                         self.viewDidAppear(true)
                         
@@ -1409,8 +1259,6 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                         GlobalFields.PROFILEDATA?.all_coin  = obj?.data?.all_coin
                         
                         GlobalFields.PROFILEDATA?.get_coin = obj?.data?.get_coin
-                        
-                        self.myCoinsValueLabel.text = GlobalFields.PROFILEDATA?.all_coin
                         
                         self.viewDidAppear(true)
                         
@@ -1646,329 +1494,13 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
             self.requestForMyCoupon(nextVc: nextVc)
             
             
-        }else if(segue.identifier == "toPayHistoryViewController"){
-            
-            let nextVc = segue.destination as! PayHistoryViewController
-            
-            self.requestForPayHistory(nextVc: nextVc)
-            
-            
         }
 
-        
         
     }
     
     
     let loading : UIActivityIndicatorView = UIActivityIndicatorView()
-    
-    @IBAction func doPayWithTolls(_ sender: Any) {
-        
-        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
-        tracker.set(kGAIEvent, value: "PayButton")
-        
-        guard let builder = GAIDictionaryBuilder.createEvent(withCategory: "Payment", action: "Click", label: "PayButton", value: 0) else { return }
-        tracker.send(builder.build() as [NSObject : AnyObject])
-        
-        locationManager.delegate = self
-        
-        locationManager.requestAlwaysAuthorization()
-        
-        if(GlobalFields.PAY_UUIDS == nil){
-            
-            return
-            
-        }
-        
-        for payUuids in GlobalFields.PAY_UUIDS!{
-            
-            print(payUuids.lowercased())
-            
-            print(NSUUID(uuidString: payUuids.lowercased())!)
-            
-            let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: payUuids.lowercased())! as UUID, identifier: "Bding")
-            
-            locationManager.startRangingBeacons(in: region)
-            
-        }
-        
-        locationManager.distanceFilter = 1
-        
-        loading.frame(forAlignmentRect: (view?.frame)!)
-        
-        loading.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-        
-        payWithTolls?.addSubview(loading)
-        
-        loading.hidesWhenStopped = true
-        
-        loading.frame.origin.x = (payWithTolls?.frame.width)! / 6
-        
-        loading.frame.origin.y = (payWithTolls?.frame.height)! / 2
-        
-        loading.startAnimating()
-        
-    }
-    
-    func showPayPopup(payTitle : String){
-        
-        guard let tracker = GAI.sharedInstance().defaultTracker else { return }
-        tracker.set(kGAIScreenName, value: "Payment")
-        
-        guard let builder = GAIDictionaryBuilder.createScreenView() else { return }
-        tracker.send(builder.build() as [NSObject : AnyObject])
-        
-        appearPayView()
-        
-        self.payTitleLabel.text = payTitle
-        
-        self.myCoinsValueLabel.text = GlobalFields.PROFILEDATA?.all_coin
-        
-    }
-    
-    var payBeacon : CLBeacon? = nil
-    
-    func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
-        
-        if(beacons.count == 0){
-            
-            loading.stopAnimating()
-            
-            Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
-                
-                self.present(alarm, animated: true, completion: nil)
-                
-            }
-            
-            locationManager.stopRangingBeacons(in: region)
-            
-            return
-            
-        }
-        
-        var isFindPay : Bool = false
-        
-        for b in beacons {
-            
-            let beaconString = String(describing: b.proximityUUID)
-            
-            for u in GlobalFields.PAY_UUIDS! {
-                
-                print(u)
-                
-            }
-            
-            if(GlobalFields.PAY_UUIDS?.contains(beaconString))!{
-                
-                var payUrlString : String = ""
-                
-                payUrlString.append(URLs.payTitle)
-                
-                payUrlString.append(String(describing: b.proximityUUID).lowercased())
-                
-                payUrlString.append("-")
-                
-                payUrlString.append(String(describing: b.major).lowercased())
-                
-                payUrlString.append("-")
-                
-                payUrlString.append(String(describing: b.minor).lowercased())
-                
-                locationManager.stopRangingBeacons(in: region)
-                
-                print("requeste pay : " , payUrlString)
-                
-                request( payUrlString , method: .get , encoding: JSONEncoding.default).responseJSON { response in
-                    print()
-                    
-                    if let JSON = response.result.value {
-                        
-                        print("JSON ----------GET PAY TITLE----------->>>> " ,JSON)
-                        //create my coupon response model
-                        
-                        self.loading.stopAnimating()
-                        
-                        if( PayTitleResponseModel.init(json: JSON as! JSON)?.code == "210"){
-                            
-//                            self.loading.stopAnimating()
-                            
-//                            Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
-//
-//                                self.present(alarm, animated: true, completion: nil)
-//
-//                            }
-
-                            
-                        }
-                        
-                        if( PayTitleResponseModel.init(json: JSON as! JSON)?.code == "200"){
-                            
-                            isFindPay = true
-                            
-                            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                                
-                                self.showPayPopup(payTitle: (PayTitleResponseModel.init(json: JSON as! JSON)?.result?.title)!)
-                                
-                                self.payBeacon = b
-                                
-                            }){ res in
-                                
-                                if(isFindPay == false){
-                                    
-                                    self.loading.stopAnimating()
-                                    
-                                    Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
-                                        
-                                        self.present(alarm, animated: true, completion: nil)
-                                        
-                                    }
-                                    
-                                }
-                                
-                            }
-                            
-                            
-                        }
-                        
-                        
-                        print(JSON)
-                        
-                    }
-                    
-                }
-                
-            }
-            
-        }
-        
-        if(isFindPay == false && beacons.count == 0){
-            
-            loading.stopAnimating()
-            
-            Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
-                
-                self.present(alarm, animated: true, completion: nil)
-                
-            }
-            
-        }
-        
-        locationManager.stopRangingBeacons(in: region)
-
-        
-        
-    }
-    
-    
-    @IBAction func confirmPay(_ sender: Any) {
-        if((self.inputPayTextField.text == nil) || self.inputPayTextField.text == ""){
-            
-            return
-            
-        }
-        if(Int(self.inputPayTextField.text!)! > Int((GlobalFields.PROFILEDATA?.all_coin)!)!){
-            //mablaq bishtar az wallet ast
-            return
-            
-        }
-        
-        self.view.isUserInteractionEnabled = false
-        
-        payContainer?.addSubview(loading)
-        
-        loading.frame.origin.x = (payContainer?.frame.width)! / 2
-        
-        loading.frame.origin.y = (payContainer?.frame.height)! / 2
-        
-        loading.startAnimating()
-        
-        
-        request(URLs.payWithCoins , method: .post , parameters: PayWithCoinsRequestModel.init(BEACON: payBeacon, PAY: inputPayTextField.text!).getParams(), encoding: JSONEncoding.default).responseJSON { response in
-            print()
-            
-            if let JSON = response.result.value {
-                
-                print("JSON ----------MY COUPON----------->>>> " ,JSON)
-                //create my coupon response model
-                
-                if( MyCouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
-                    
-                    self.disAppearPayView()
-                    
-                    Notifys().notif(message: "پرداخت با موفقیت انجام شد."){ alert in
-                        
-                        self.present(alert, animated: true, completion: nil)
-                        self.view.endEditing(true)
-                    }
-                    
-                    self.view.endEditing(true)
-                    
-                    GlobalFields.PROFILEDATA?.all_coin = String(Int((GlobalFields.PROFILEDATA?.all_coin)!)! - Int(self.inputPayTextField.text!)!)
-                    
-                    self.coinValue.text = GlobalFields.PROFILEDATA?.all_coin
-                    
-                    self.scrollViewDidScroll(self.scrollViewProfile)
-                    
-                }else{
-                    
-                    Notifys().notif(message: "عملیات پرداخت ناموفق!"){ alert in
-                        
-                        self.present(alert, animated: true, completion: nil)
-                        
-                    }
-                    
-                    self.view.endEditing(true)
-                    
-                }
-                
-                
-                print(JSON)
-                
-                self.view.isUserInteractionEnabled = true
-                
-                self.view.endEditing(true)
-                
-                self.loading.stopAnimating()
-
-                
-            }
-            
-        }
-        
-        
-        
-        
-    }
-    
-    
-    @IBAction func canselPay(_ sender: Any) {
-        
-        
-        
-        disAppearPayView()
-        
-    }
-    
-    
-    func appearPayView(){
-        
-        self.payContainer.alpha = 1
-        
-        self.payContainer.layer.zPosition = 1
-        
-        self.blurView.alpha = 0.3
-        
-        self.blurView.layer.zPosition = 1
-        
-    }
-    
-    func disAppearPayView(){
-        
-        self.payContainer.alpha = 0
-        
-        self.blurView.alpha = 0
-        
-    }
     
     
     @IBAction func closeReport(_ sender: Any) {

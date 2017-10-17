@@ -27,7 +27,7 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
         
         super.viewDidLoad()
         
-        self.selectedIndex = 3
+        self.selectedIndex = 4
         
         MyFont().setFontForAllView(view: self.view)
 
@@ -47,8 +47,8 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
         self.tabBar.tintColor = UIColor.init(hex: "455a64")
         //455a64
         if #available(iOS 10.0, *) {
-            self.tabBar.items?[1].badgeColor = UIColor.init(hex: "2490FC")
-            repositionBadge(tab: 2)
+            self.tabBar.items?[2].badgeColor = UIColor.init(hex: "2490FC")
+            repositionBadge(tab: 3)
         } else {
             // Fallback on earlier versions
         }
@@ -73,7 +73,7 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
         super.viewDidAppear(animated)
         
         if #available(iOS 10.0, *) {
-            self.tabBar.items?[1].setBadgeTextAttributes([NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: 14)!], for: .normal)
+            self.tabBar.items?[2].setBadgeTextAttributes([NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum", size: 14)!], for: .normal)
             repositionBadge(tab: 3)
         } else {
             // Fallback on earlier versions
@@ -126,11 +126,11 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
             
         }
         
-        self.tabBar.items?[1].badgeValue = String(count)
+        self.tabBar.items?[2].badgeValue = String(count)
         
         if(count == 0){
             
-            self.tabBar.items?[1].badgeValue = nil
+            self.tabBar.items?[2].badgeValue = nil
             
         }
         

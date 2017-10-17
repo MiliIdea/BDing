@@ -60,21 +60,7 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         IndexHomeTable.reloadData()
         // Do any additional setup after loading the view.
         
-        let when = DispatchTime.now() + 0.5
-        DispatchQueue.main.asyncAfter(deadline: when) {
-            
-            let showcase = MaterialShowcase()
-            showcase.setTargetView(tabBar: (self.tabBarController?.tabBar)! , itemIndex: 1) // always required to set targetView
-            showcase.primaryText = "پیام ها"
-            showcase.secondaryText = "بعد از حضور در محل کسب کارها (که لیست آنها در صفحه خانه آمده است)، با روشن کردن بلوتوث خود و مشاهده پیام ارسال شده برای شما، امتیاز (دینگ) جمع کنید."
-            MyFont().setFontForAllView(view: showcase)
-            showcase.show(id: "3" ,completion: {
-                _ in
-                // You can save showcase state here
-                // Later you can check and do not show it again
-            })
-            
-        }
+        
     }
     
     
@@ -99,6 +85,23 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             IndexHomeTable.reloadData()
             
         }
+        
+        let when = DispatchTime.now() + 0.5
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            
+            let showcase = MaterialShowcase()
+            showcase.setTargetView(tabBar: (self.tabBarController?.tabBar)! , itemIndex: 2) // always required to set targetView
+            showcase.primaryText = "پیام ها"
+            showcase.secondaryText = "بعد از حضور در محل کسب کارها (که لیست آنها در صفحه خانه آمده است)، با روشن کردن بلوتوث خود و مشاهده پیام ارسال شده برای شما، امتیاز (دینگ) جمع کنید."
+            MyFont().setFontForAllView(view: showcase)
+            showcase.show(id: "3" ,completion: {
+                _ in
+                // You can save showcase state here
+                // Later you can check and do not show it again
+            })
+            
+        }
+        
                 
     }
     
@@ -504,7 +507,7 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             }
             
             if(result == nil){
-                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: uuidMajorMinorMD5 ,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount!, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code , campaignCode : obj.campaign_code)
+                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: uuidMajorMinorMD5 ,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount!, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code , campaignCode : obj.campaign_code, lat : obj.lat , long : obj.long)
                 
                 if(currentLocation.coordinate.latitude != 0){
                     
@@ -517,7 +520,7 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
                 
                 return a
             }else{
-                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: uuidMajorMinorMD5 ,preCustomerImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerDiscountValue: obj.discount!, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code , campaignCode : obj.campaign_code)
+                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: uuidMajorMinorMD5 ,preCustomerImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerDiscountValue: obj.discount!, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code , campaignCode : obj.campaign_code, lat : obj.lat , long : obj.long)
                 
                 if(currentLocation.coordinate.latitude != 0){
                     
@@ -566,11 +569,11 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             
         }
         
-        self.tabBarController?.tabBar.items?[1].badgeValue = String(count)
+        self.tabBarController?.tabBar.items?[2].badgeValue = String(count)
         
         if(count == 0){
             
-            self.tabBarController?.tabBar.items?[1].badgeValue  = nil
+            self.tabBarController?.tabBar.items?[2].badgeValue  = nil
             
         }
 

@@ -52,5 +52,13 @@ class URLs {
     
     static let faq = server + "faq"
     
+    static let payment = server + "payment/set"
+    
+    static let verifyPayment = server + "payment/verify"
+    
+    static let lastCoupons = server + "coupon/lastcoupon"
+    
+    static let getDing = server + "user/getuserding"
+    
 }
 

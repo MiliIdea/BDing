@@ -114,6 +114,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        print("asd")
+        
         
     }
 
@@ -123,6 +125,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
         if((SaveAndLoadModel().load(entity: "USER")?.count)! > 0){
             locationManager.startRangingBeacons(in: beaconRegion)
         }
+        
         
     }
 
@@ -141,7 +144,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
         self.saveContext()
     }
     
-    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        return true
+    }
     
     
     ////////////////////////////////////////////////////////////////////////

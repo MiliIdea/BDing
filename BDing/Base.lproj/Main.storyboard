@@ -1281,7 +1281,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="backPay" translatesAutoresizingMaskIntoConstraints="NO" id="SQr-7S-HGN">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="arc" translatesAutoresizingMaskIntoConstraints="NO" id="SQr-7S-HGN">
                                 <rect key="frame" x="0.0" y="64" width="375" height="216"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -1484,12 +1484,16 @@
                                 <rect key="frame" x="221" y="222" width="24" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <view alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUE-aZ-kNU">
+                            <view alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUE-aZ-kNU">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Wyx-bZ-jzu" appends="YES" id="OuP-1P-xDw"/>
+                                </connections>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TS3-NA-Vkd" customClass="DCBorderedView" customModule="BDing" customModuleProvider="target">
+                            <view alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TS3-NA-Vkd" customClass="DCBorderedView" customModule="BDing" customModuleProvider="target">
                                 <rect key="frame" x="38" y="148" width="300" height="371"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -1522,13 +1526,6 @@
                                         <color key="textColor" red="0.22745098039215686" green="0.25098039215686274" blue="0.3529411764705882" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="پرداخت آنلاین" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g6Z-Ka-6Ap">
-                                        <rect key="frame" x="102" y="206" width="89" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="14"/>
-                                        <color key="textColor" red="0.22745098039215686" green="0.25098039215686274" blue="0.3529411764705882" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hG0-Lm-2SY">
                                         <rect key="frame" x="51" y="188" width="192" height="1"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -1537,18 +1534,10 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Abe-8A-b7q">
-                                        <rect key="frame" x="198" y="202" width="49" height="31"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                        <color key="onTintColor" red="0.98823529409999999" green="0.39607843139999999" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
-                                        <connections>
-                                            <action selector="switchOnlinePay:" destination="cHR-SZ-wQQ" eventType="valueChanged" id="jdP-B1-F5C"/>
-                                        </connections>
-                                    </switch>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="با انتخاب گزینه پرداخت آنلاین کسری دینگ شما محاسبه شده و برای پرداخت آن به درگاه بانکی متصل خواهید شد" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FuG-SV-icJ">
-                                        <rect key="frame" x="39" y="249" width="222" height="57"/>
+                                        <rect key="frame" x="39" y="214" width="222" height="92"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="10"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="13"/>
                                         <color key="textColor" red="0.36470588235294116" green="0.3411764705882353" blue="0.41960784313725491" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1632,7 +1621,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="attention" translatesAutoresizingMaskIntoConstraints="NO" id="axA-ha-Gma">
-                                        <rect key="frame" x="261" y="262" width="16" height="16"/>
+                                        <rect key="frame" x="261" y="232" width="16" height="16"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
@@ -1656,16 +1645,22 @@
                         <outlet property="lastCoupons" destination="0b4-sM-AX1" id="59x-6t-Wbg"/>
                         <outlet property="myDings" destination="Hmq-CS-DC7" id="8N7-PU-v6y"/>
                         <outlet property="myDingsIcon" destination="KL7-Bc-1fe" id="qEL-9m-ARw"/>
-                        <outlet property="onlineSwitch" destination="Abe-8A-b7q" id="B6V-pI-Iwf"/>
                         <outlet property="payButton" destination="4EM-Db-7XW" id="Wmh-Ew-lYb"/>
                         <outlet property="payHistoryButton" destination="OeN-Tr-PSW" id="9ul-C4-V2q"/>
+                        <outlet property="payIcon" destination="r1N-9d-MgL" id="0sv-aS-k4F"/>
                         <outlet property="popupMyDings" destination="J2d-a2-uW2" id="ISk-T1-4hh"/>
+                        <outlet property="popupPayButton" destination="58i-oM-GmS" id="2Ac-vo-6F1"/>
                         <outlet property="popupTitle" destination="bLP-Td-ZS0" id="1ZS-FN-NVg"/>
                         <outlet property="popupView" destination="TS3-NA-Vkd" id="61n-id-O5l"/>
                         <outlet property="shopListButton" destination="JsL-XL-tL2" id="SBr-jg-9B9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jmg-2h-ANV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Wyx-bZ-jzu">
+                    <connections>
+                        <action selector="tapView:" destination="cHR-SZ-wQQ" id="aI2-Z5-eQL"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="7172" y="2310.4947526236883"/>
         </scene>
@@ -2330,6 +2325,13 @@
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
+                                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xkx-pB-SmY">
+                                                                <rect key="frame" x="22" y="67" width="304" height="47"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                                                <connections>
+                                                                    <action selector="goRouteInMap:" destination="yge-Gg-gl6" eventType="touchUpInside" id="61z-bR-cDK"/>
+                                                                </connections>
+                                                            </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zve-kW-wX6">
                                                                 <rect key="frame" x="10" y="28.5" width="121.5" height="16"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -2830,32 +2832,8 @@
                                                             <action selector="closeReport:" destination="WPM-gG-B9a" eventType="touchUpInside" id="3Z8-fH-Abf"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oxs-Cf-UhC" customClass="DCBorderedButton" customModule="BDing" customModuleProvider="target">
-                                                        <rect key="frame" x="195" y="66" width="171" height="48"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                        <state key="normal" title="پرداخت با دینگ">
-                                                            <color key="titleColor" red="0.27058823529411763" green="0.3529411764705882" blue="0.39215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </state>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                <real key="value" value="8"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="color" keyPath="normalBorderColor">
-                                                                <color key="value" red="0.79051975388601026" green="0.79051975388601026" blue="0.79051975388601026" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                        </userDefinedRuntimeAttributes>
-                                                        <connections>
-                                                            <action selector="doPayWithTolls:" destination="WPM-gG-B9a" eventType="touchUpInside" id="5Wd-j0-t8V"/>
-                                                        </connections>
-                                                    </button>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="wallet" translatesAutoresizingMaskIntoConstraints="NO" id="kST-r8-StP">
-                                                        <rect key="frame" x="338.5" y="85" width="14" height="14.5"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                                    </imageView>
                                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GkH-kl-yBz" customClass="DCBorderedButton" customModule="BDing" customModuleProvider="target">
-                                                        <rect key="frame" x="11" y="66" width="167" height="48"/>
+                                                        <rect key="frame" x="196" y="66" width="167" height="48"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -2876,11 +2854,11 @@
                                                         </connections>
                                                     </button>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="sale-1" translatesAutoresizingMaskIntoConstraints="NO" id="F7y-fS-T05">
-                                                        <rect key="frame" x="140" y="85" width="14" height="14.5"/>
+                                                        <rect key="frame" x="325" y="85" width="14" height="14.5"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                     </imageView>
                                                     <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UwQ-Bq-O1F" customClass="DCBorderedButton" customModule="BDing" customModuleProvider="target">
-                                                        <rect key="frame" x="11" y="122" width="167" height="48"/>
+                                                        <rect key="frame" x="11" y="66" width="167" height="48"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -2901,36 +2879,11 @@
                                                         </connections>
                                                     </button>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ticket-percent-1" translatesAutoresizingMaskIntoConstraints="NO" id="mOB-Nf-Swm">
-                                                        <rect key="frame" x="140.5" y="141.5" width="14" height="14"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                                    </imageView>
-                                                    <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bdo-P3-1BI" customClass="DCBorderedButton" customModule="BDing" customModuleProvider="target">
-                                                        <rect key="frame" x="195" y="122" width="171" height="48"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                        <state key="normal" title="تاریخچه پرداخت ها ">
-                                                            <color key="titleColor" red="0.27058823529411763" green="0.3529411764705882" blue="0.39215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </state>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                <real key="value" value="8"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="color" keyPath="normalBorderColor">
-                                                                <color key="value" red="0.79051975388601026" green="0.79051975388601026" blue="0.79051975388601026" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                        </userDefinedRuntimeAttributes>
-                                                        <connections>
-                                                            <action selector="changeView:" destination="WPM-gG-B9a" eventType="touchUpInside" id="NZ5-QW-te9"/>
-                                                            <segue destination="Yle-lU-3zk" kind="show" identifier="toPayHistoryViewController" id="DLf-g2-q3L"/>
-                                                        </connections>
-                                                    </button>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="history" translatesAutoresizingMaskIntoConstraints="NO" id="77h-3m-E9i">
-                                                        <rect key="frame" x="340" y="141.5" width="14" height="14"/>
+                                                        <rect key="frame" x="140.5" y="85.5" width="14" height="14"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                     </imageView>
                                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dLl-tU-a1x" customClass="DCBorderedView" customModule="BDing" customModuleProvider="target">
-                                                        <rect key="frame" x="11" y="179.5" width="354.5" height="383.5"/>
+                                                        <rect key="frame" x="11" y="124" width="354.5" height="383.5"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="نام:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyc-EX-Ynm">
@@ -3106,7 +3059,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cEk-u8-VIZ" customClass="DCBorderedButton" customModule="BDing" customModuleProvider="target">
-                                                        <rect key="frame" x="195" y="575" width="169" height="47.5"/>
+                                                        <rect key="frame" x="195" y="519" width="169" height="47.5"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -3127,7 +3080,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DYk-C1-t1p" customClass="DCBorderedButton" customModule="BDing" customModuleProvider="target">
-                                                        <rect key="frame" x="11" y="575" width="170" height="47.5"/>
+                                                        <rect key="frame" x="11" y="519" width="170" height="47.5"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="10"/>
@@ -3375,113 +3328,6 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <view alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yMk-Fu-bMe" customClass="DCBorderedView" customModule="BDing" customModuleProvider="target">
-                                <rect key="frame" x="21" y="117.5" width="335.5" height="271"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="پرداخت با دینگ" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9c3-oP-aOH">
-                                        <rect key="frame" x="184.5" y="14" width="121.5" height="33"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WgN-3e-NSL">
-                                        <rect key="frame" x="17.5" y="131.5" width="298" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                                    </textField>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cnd-6T-iII">
-                                        <rect key="frame" x="17.5" y="165.5" width="298" height="1"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Shm-C9-2XO">
-                                        <rect key="frame" x="15" y="222" width="46" height="33"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="15"/>
-                                        <state key="normal" title="تایید"/>
-                                        <connections>
-                                            <action selector="confirmPay:" destination="WPM-gG-B9a" eventType="touchUpInside" id="O3O-JJ-t0S"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gxx-CF-ymI">
-                                        <rect key="frame" x="77" y="222" width="46" height="33"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="15"/>
-                                        <state key="normal" title="لغو">
-                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="canselPay:" destination="WPM-gG-B9a" eventType="touchUpInside" id="uuk-Oz-R9I"/>
-                                        </connections>
-                                    </button>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3hj-FE-85g">
-                                        <rect key="frame" x="-1.5" y="66" width="336" height="42.5"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="برگرلند" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jEk-me-ofh">
-                                                <rect key="frame" x="64.5" y="11" width="208.5" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" red="0.93961236926725911" green="0.93507317907756216" blue="0.94415155945695595" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="7500" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2o7-e2-fZH">
-                                        <rect key="frame" x="46" y="16" width="94.5" height="33"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.7843137255" blue="0.32549019610000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="wallet green 18" translatesAutoresizingMaskIntoConstraints="NO" id="3Db-mm-ACA">
-                                        <rect key="frame" x="11" y="16" width="30" height="29"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="دینگ پرداختی حساب شما نمی تواند بیشتر از تعداد دینگ حسابتان باشد." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ruf-2n-KmO">
-                                        <rect key="frame" x="17.5" y="171.5" width="299" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="8"/>
-                                        <color key="textColor" red="0.32941176470588235" green="0.43137254901960786" blue="0.47843137254901957" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="دینگ پرداختی خود را وارد کنید." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zFV-AZ-Hlg">
-                                        <rect key="frame" x="146.5" y="113.5" width="159.5" height="21.5"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="10"/>
-                                        <color key="textColor" red="0.32941176470588235" green="0.43137254901960786" blue="0.47843137254901957" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleAspectFit" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1WT-D6-RDS" customClass="SVGView" customModule="Macaw">
-                                        <rect key="frame" x="313" y="118.5" width="11.5" height="11.5"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="fileName" value="ding#546E7A"/>
-                                        </userDefinedRuntimeAttributes>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="8"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                        <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.91907393932342529" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -3506,22 +3352,16 @@
                         <outlet property="inputBoarderView" destination="dLl-tU-a1x" id="H91-8j-rgo"/>
                         <outlet property="inputContainerView" destination="8ec-Ai-zlr" id="eY2-Va-taY"/>
                         <outlet property="inputGenderViewContainer" destination="fuR-1P-fSr" id="qnu-h5-REJ"/>
-                        <outlet property="inputPayTextField" destination="WgN-3e-NSL" id="thr-iy-GlV"/>
                         <outlet property="inputTextField" destination="V8o-XN-3Eq" id="otj-Vp-ozZ"/>
                         <outlet property="inputTitle" destination="hov-Hi-9RZ" id="Pxy-O8-qDZ"/>
                         <outlet property="maleRadio" destination="bSo-CB-fhd" id="hE9-3d-6Nz"/>
                         <outlet property="messageButton" destination="WH6-cs-hVI" id="3XU-BA-NvI"/>
                         <outlet property="mobileButton" destination="Yld-Gt-5WF" id="F6c-f7-SIA"/>
-                        <outlet property="myCoinsValueLabel" destination="2o7-e2-fZH" id="9F7-S6-2qR"/>
                         <outlet property="myCoupons" destination="UwQ-Bq-O1F" id="sog-c0-BvZ"/>
                         <outlet property="name" destination="yms-Wt-F6Z" id="oEj-J8-HbK"/>
                         <outlet property="nameButton" destination="N7i-Uk-TwF" id="bWv-rR-Xnb"/>
                         <outlet property="navigationBar" destination="hCc-6c-qrz" id="v9M-2t-g4h"/>
                         <outlet property="patternView" destination="WHf-yU-PNe" id="g7y-qt-5UD"/>
-                        <outlet property="payContainer" destination="yMk-Fu-bMe" id="O1o-qa-ZUo"/>
-                        <outlet property="payHistory" destination="bdo-P3-1BI" id="NNY-o4-Bme"/>
-                        <outlet property="payTitleLabel" destination="jEk-me-ofh" id="CJ0-ZB-Wdj"/>
-                        <outlet property="payWithTolls" destination="oxs-Cf-UhC" id="4Qf-kF-9fE"/>
                         <outlet property="pickerContainerView" destination="tKp-cA-rD3" id="38t-CR-4kU"/>
                         <outlet property="porseshhaButton" destination="cEk-u8-VIZ" id="XMG-AU-llq"/>
                         <outlet property="profilePicButton" destination="LGF-2Y-kHi" id="U8i-vS-OkL"/>
@@ -3644,13 +3484,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <visualEffectView opaque="NO" alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4wH-BC-4XO">
-                                <rect key="frame" x="0.0" y="23.5" width="375" height="643.5"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="Hb6-Lj-nt6">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="643.5"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.5" contentMode="center" ambiguous="YES" id="Hb6-Lj-nt6">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
-                                <color key="backgroundColor" red="0.87867613439883241" green="0.87755009811707063" blue="0.89721914717388629" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <blurEffect style="light"/>
                             </visualEffectView>
                             <view alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i1H-DP-rbd" customClass="DCBorderedView" customModule="BDing" customModuleProvider="target">
@@ -3812,10 +3652,10 @@
                                 <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                        <real key="value" value="1"/>
+                                        <real key="value" value="0.0"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="14"/>
+                                        <real key="value" value="15"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
                                         <color key="value" red="0.87122662240000004" green="0.87122662240000004" blue="0.87122662240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -3845,7 +3685,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NiJ-qS-U8g" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8454.375" y="-2023.943661971831"/>
+            <point key="canvasLocation" x="8453.6000000000004" y="-2024.4377811094455"/>
         </scene>
         <!--Pay History View Controller-->
         <scene sceneID="JoL-g5-the">
@@ -4169,6 +4009,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="Q3L-Tv-EyX" kind="relationship" relationship="viewControllers" id="gPd-X6-cMU"/>
+                        <segue destination="6du-ak-Gyd" kind="relationship" relationship="viewControllers" id="Z1K-UG-hwc"/>
                         <segue destination="c4P-iO-cQK" kind="relationship" relationship="viewControllers" id="eRg-kC-a7C"/>
                         <segue destination="ICS-F3-1NL" kind="relationship" relationship="viewControllers" id="slI-xj-2yz"/>
                         <segue destination="cCv-Dp-Ley" kind="relationship" relationship="viewControllers" id="a1n-bb-gri"/>
@@ -4218,21 +4059,21 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="نقشه" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lwr-yG-zfR">
                                         <rect key="frame" x="148.5" y="9" width="196.5" height="24.5"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="13"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="محدوده نمایش کمپین ها" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MPS-d9-ULK">
                                         <rect key="frame" x="160.5" y="43.5" width="184.5" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="13"/>
                                         <color key="textColor" red="0.22529774919379186" green="0.22529774919379186" blue="0.22529774919379186" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zye-Zh-DEI">
                                         <rect key="frame" x="8.5" y="43.5" width="85" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="12"/>
                                         <state key="normal" title="۵۰۰ متر"/>
                                         <connections>
                                             <action selector="changeRange:" destination="2KG-GV-pjc" eventType="touchUpInside" id="1yz-yS-ac4"/>
@@ -4253,14 +4094,14 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="رمز عبور خود را به صورت دوره ای تغییر دهید" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="arl-JA-QA7">
                                         <rect key="frame" x="103" y="50.5" width="242.5" height="24.5"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="13"/>
                                         <color key="textColor" red="0.22529774920000001" green="0.22529774920000001" blue="0.22529774920000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1oD-Bc-J8M">
                                         <rect key="frame" x="8.5" y="49.5" width="85" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="12"/>
                                         <state key="normal" title="تغییر رمز عبور"/>
                                         <connections>
                                             <action selector="changePassword:" destination="2KG-GV-pjc" eventType="touchUpInside" id="ts9-x2-KYn"/>
@@ -4269,7 +4110,42 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="تغییر رمز عبور" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qQh-FV-l3B">
                                         <rect key="frame" x="149.5" y="8.5" width="195.5" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="13"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bIG-aZ-hYO" customClass="DCBorderedView" customModule="BDing" customModuleProvider="target">
+                                <rect key="frame" x="10" y="335" width="355" height="93.5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="راهنمای استفاده از نرم افزار را دوباره ببینید" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Js-2Q-iSa">
+                                        <rect key="frame" x="103" y="50.5" width="242.5" height="24.5"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="13"/>
+                                        <color key="textColor" red="0.22529774920000001" green="0.22529774920000001" blue="0.22529774920000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PHT-U8-Hzz">
+                                        <rect key="frame" x="8.5" y="49.5" width="85" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="12"/>
+                                        <state key="normal" title="راهنمای نرم افزار"/>
+                                        <connections>
+                                            <action selector="resetIndicator:" destination="2KG-GV-pjc" eventType="touchUpInside" id="ZnD-jY-dnr"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="راهنمای استفاده" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jkn-S2-upg">
+                                        <rect key="frame" x="149.5" y="8.5" width="195.5" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="IRANYekanMobileFaNum" family="IRANYekanMobile(FaNum)" pointSize="13"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -4612,10 +4488,10 @@
         <image name="G4" width="18" height="19"/>
         <image name="Semicircular" width="1192" height="73"/>
         <image name="Splash" width="531" height="501"/>
+        <image name="arc" width="375" height="213"/>
         <image name="arrow-right 18" width="18" height="18"/>
         <image name="attention" width="19" height="19"/>
         <image name="backIcon" width="16" height="28"/>
-        <image name="backPay" width="187" height="105"/>
         <image name="bdingtitlelogo" width="109" height="19"/>
         <image name="clock" width="512" height="512"/>
         <image name="darkDing" width="23" height="25"/>
@@ -4628,7 +4504,6 @@
         <image name="emptySubCategory" width="194" height="143"/>
         <image name="femaleIcon" width="23" height="23"/>
         <image name="google map 18" width="18" height="18"/>
-        <image name="history" width="214" height="203"/>
         <image name="ic_chevron_left_white_asset" width="24" height="24"/>
         <image name="ic_close" width="24" height="24"/>
         <image name="ic_home_48pt" width="48" height="48"/>
@@ -4661,15 +4536,13 @@
         <image name="ticket-percent-1" width="214" height="172"/>
         <image name="time 18" width="18" height="18"/>
         <image name="trash 18" width="27" height="27"/>
-        <image name="wallet" width="203" height="192"/>
         <image name="wallet green 18" width="18" height="18"/>
         <image name="web 18" width="18" height="18"/>
         <image name="whiteDing" width="65" height="72"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ury-t4-qev"/>
-        <segue reference="ihZ-cb-pNU"/>
-        <segue reference="CZR-1Q-ZE2"/>
+        <segue reference="WQb-GD-djM"/>
+        <segue reference="vzF-pL-IvU"/>
         <segue reference="JFW-CU-7yF"/>
     </inferredMetricsTieBreakers>
 </document>
