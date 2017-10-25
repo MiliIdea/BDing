@@ -16,10 +16,13 @@ class PayHistoryTableViewCell: UITableViewCell {
     
     @IBOutlet weak var detail: UILabel!
     
-    @IBOutlet weak var price: UILabel!
+    @IBOutlet weak var ding: UILabel!
     
     @IBOutlet weak var toman: UILabel!
     
+    @IBOutlet weak var dingTitle: UILabel!
+    
+    @IBOutlet weak var tomanTitle: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

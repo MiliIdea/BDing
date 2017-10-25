@@ -63,20 +63,36 @@ class PayHistoryViewController: UIViewController ,UITableViewDelegate ,UITableVi
         
         let formatter = DateFormatter()
         
-        formatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         formatter.calendar = Calendar(identifier: .gregorian)
         
         let d1 = formatter.date(from: (payHistory[indexPath.row].date)!)
         
-        formatter.dateFormat = "yy/MM/dd"
+        formatter.dateFormat = "yy/MM/dd   HH:mm"
         
         formatter.calendar = Calendar(identifier: .persian)
         
         cell.detail.text = formatter.string(from: d1!)
         
-        cell.price.text = payHistory[indexPath.row].price!
+        cell.ding.text = payHistory[indexPath.row].ding ?? "0"
  
+        cell.toman.text = payHistory[indexPath.row].money ?? "0"
+        
+        if(cell.toman.text == "0"){
+            cell.toman.alpha = 0
+            cell.tomanTitle.alpha = 0
+        }else{
+            cell.toman.alpha = 1
+            cell.tomanTitle.alpha = 1
+        }
+        if(cell.ding.text == "0"){
+            cell.ding.alpha = 0
+            cell.dingTitle.alpha = 0
+        }else{
+            cell.ding.alpha = 1
+            cell.dingTitle.alpha = 1
+        }
         return cell
     }
     

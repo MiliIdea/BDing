@@ -44,7 +44,7 @@ class PageContentViewController: UIViewController {
         startButton.alpha = 0
         
             
-        
+        startButton.cornerRadius = startButton.frame.height / 2
         
 //        MyFont().setLightFont(view: smallTitle, mySize: 15, mycolor: "#ffffff")
         

@@ -81,6 +81,10 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
         
         signUpPasswordField.delegate = self
         
+        loginLoginButton.cornerRadius = loginLoginButton.frame.height / 2
+        
+        signUpsignUpButton.cornerRadius = signUpsignUpButton.frame.height / 2
+        
         setColorViews()
         
         loginPageClicked("")

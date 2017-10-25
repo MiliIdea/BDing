@@ -62,10 +62,17 @@ class BeaconListData : Decodable{
     
     var campaign_code : String?
     
+    var online : String?
     
     required init?(json: JSON) {
         
         self.customer_work_time = "customer_work_time" <~~ json ?? ""
+        
+        self.online = "online" <~~ json
+        
+        if(self.online != nil && self.online?.characters.count == 6){
+            self.customer_work_time = "online"
+        }
             
         self.customer_tell = "customer_tell" <~~ json
             

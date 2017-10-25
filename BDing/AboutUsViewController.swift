@@ -9,11 +9,19 @@
 import UIKit
 
 class AboutUsViewController: UIViewController {
-
+    
+    @IBOutlet weak var versionLabel: UILabel!
+    
+    @IBOutlet weak var textDescription: UITextView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        MyFont().setFontForAllView(view: self.view)
+        MyFont().setLightFont(view: textDescription, mySize: 15)
+        
+        MyFont().setWebFont(view: versionLabel, mySize: 16)
+        
+        versionLabel.text = ((Bundle.main.infoDictionary?["CFBundleShortVersionString"]) as! String) + "." + (Bundle.main.infoDictionary?["CFBundleVersion"] as! String)
         
         // Do any additional setup after loading the view.
     }
@@ -23,7 +31,10 @@ class AboutUsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    @IBAction func back(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     /*
     // MARK: - Navigation
 

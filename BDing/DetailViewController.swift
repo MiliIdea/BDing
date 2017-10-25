@@ -203,6 +203,8 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
             
             self.progressBarView.alpha = 1
             
+            self.backButton.setImage(UIImage.init(named: "ic_close"), for: .normal)
+            
         }else{
             
             self.progressBarView.alpha = 0
@@ -281,75 +283,84 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
         var isOpen : Bool = false
         
-        for s in (cell?.workTime?.characters.split(separator: "|"))!{
+        if(cell?.workTime == "online"){
             
-            let times: [String.CharacterView] = s.split(separator: "-")
+            self.nowIsOpen.text = "فروشگاه آنلاین"
+            self.timeOfWork.text = ""
             
-            print(String(s))
-            
-            let h1 = String(times[0].split(separator: ":")[0])
-            
-            var m1 = "0"
-            
-            if(times[0].split(separator: ":").count > 1){
+        }else{
+            for s in (cell?.workTime?.characters.split(separator: "|"))!{
                 
-                m1 = String(times[0].split(separator: ":")[1])
+                let times: [String.CharacterView] = s.split(separator: "-")
+                
+                print(String(s))
+                
+                let h1 = String(times[0].split(separator: ":")[0])
+                
+                var m1 = "0"
+                
+                if(times[0].split(separator: ":").count > 1){
+                    
+                    m1 = String(times[0].split(separator: ":")[1])
+                    
+                }
+                
+                if(times.count < 2){
+                    
+                    self.nowIsOpen.text = ""
+                    
+                    continue
+                    
+                }
+                
+                let h2 = String(times[1].split(separator: ":")[0])
+                
+                var m2 = "0"
+                
+                if(times[1].split(separator: ":").count > 1){
+                    
+                    m2 = String(times[1].split(separator: ":")[1])
+                    
+                }
+                
+                let time1 : Int = (Int(h1)! * 60) + Int(m1)!
+                
+                let time2 : Int = (Int(h2)! * 60) + Int(m2)!
+                
+                let mainTime : Int = (Int(hour) * 60) + Int(minutes)
+                
+                print(time1)
+                print(time2)
+                print(mainTime)
+                
+                if((mainTime < time1 || mainTime > time2) && isOpen == false){
+                    
+                    self.nowIsOpen.textColor = UIColor.init(hex: "ff3d00")
+                    
+                    self.nowIsOpen.text = "بسته است"
+                    
+                }else if(time2 - mainTime < 60){
+                    
+                    self.nowIsOpen.textColor = UIColor.init(hex: "fbc02d")
+                    
+                    self.nowIsOpen.text = String(time2 - mainTime).appending(" دقیقه دیگر بسته می شود")
+                    
+                    isOpen = true
+                    
+                }else{
+                    
+                    self.nowIsOpen.textColor = UIColor.init(hex: "00c853")
+                    
+                    self.nowIsOpen.text = "باز است"
+                    
+                    isOpen = true
+                    
+                    break
+                    
+                }
+                
                 
             }
-            
-            if(times.count < 2){
-                
-                self.nowIsOpen.text = ""
-                
-                continue
-                
-            }
-            
-            let h2 = String(times[1].split(separator: ":")[0])
-            
-            var m2 = "0"
-            
-            if(times[1].split(separator: ":").count > 1){
-                
-                m2 = String(times[1].split(separator: ":")[1])
-                
-            }
-            
-            let time1 : Int = (Int(h1)! * 60) + Int(m1)!
-            
-            let time2 : Int = (Int(h2)! * 60) + Int(m2)!
-            
-            let mainTime : Int = (Int(hour) * 60) + Int(minutes)
-            
-            print(time1)
-            print(time2)
-            print(mainTime)
-            
-            if((mainTime < time1 || mainTime > time2) && isOpen == false){
-                
-                self.nowIsOpen.textColor = UIColor.init(hex: "ff3d00")
-                
-                self.nowIsOpen.text = "بسته است"
-                
-            }else if(time2 - mainTime < 60){
-                
-                self.nowIsOpen.textColor = UIColor.init(hex: "fbc02d")
-                
-                self.nowIsOpen.text = String(time2 - mainTime).appending(" دقیقه دیگر بسته می شود")
-                
-                isOpen = true
-                
-            }else{
-                
-                self.nowIsOpen.textColor = UIColor.init(hex: "00c853")
-                
-                self.nowIsOpen.text = "باز است"
-                
-                isOpen = true
-                
-            }
-            
-            
         }
         
         self.brandName.frame.size.width = self.brandName.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: brandName.frame.height)).width
@@ -525,7 +536,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
             
         }
         
-        self.tabBarController?.tabBar.items?[1].badgeValue = String(count)        
+        self.tabBarController?.tabBar.items?[2].badgeValue = String(count)        
     }
     
     
@@ -589,7 +600,11 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
         ///////////////////////
         
-        let buttonImage = UIImage(named: "arrow-right 18")
+        var buttonImage = UIImage(named: "backIcon")
+        
+        if(isPopup == true){
+            buttonImage = UIImage.init(named: "ic_close")
+        }
         
         let buttonImage2 = UIImage(named: "share 18")
         
@@ -814,7 +829,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     
     @IBAction func goWeb(_ sender: Any) {
         
-        UIApplication.shared.openURL(NSURL(string: "http://" + (webSiteAddress.titleLabel?.text)!)! as URL)
+        UIApplication.shared.openURL(NSURL(string: (webSiteAddress.titleLabel?.text)!)! as URL)
         
     }
     
@@ -852,7 +867,7 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
     
     @IBAction func share(_ sender: Any) {
         
-        let myShare = "الان این تخفیف فوق العاده رو روی اپلیکیشن BDING پیدا کردم، اگر تو هم همچین تخفیف هایی میخوای اپلیکیشن رو دانلود کن! \n" + self.textView.text + "\nنسخه اندروید نرم افزار بی دینگ \nhttps://play.google.com/store/apps/details?id=bding.ir.mycity \nنسخه ios \nhttps://itunes.apple.com/us/app/bding/id1246371771?mt=8 \n\nwww.bding.ir\n"
+        let myShare = "الان این تخفیف فوق العاده رو روی اپلیکیشن BDING پیدا کردم، اگر تو هم همچین تخفیف هایی میخوای اپلیکیشن رو دانلود کن! \n" + self.textView.text + "\nنسخه اندروید نرم افزار بی دینگ \nhttps://play.google.com/store/apps/details?id=bding.ir.mycity \nنسخه ios \nhttps://new.sibapp.com/applications/bding \n\nwww.bding.ir\n"
         
         let image: UIImage = backgroundPicView.image!
         
@@ -944,6 +959,10 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
         
     }
     
+    @IBAction func backSwipe(_ sender: Any) {
+        
+        self.backButton("")
+    }
     
     
 }

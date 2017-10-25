@@ -169,12 +169,6 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
     
     func dismissed() {
         
-        print("dismissed")
-        
-        showcaseCounter += 1
-        if(showcaseCounter >= 2){
-            return
-        }
         let when = DispatchTime.now() + 0.5
         DispatchQueue.main.asyncAfter(deadline: when) {
             
@@ -191,7 +185,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             
         }
-        
+        self.view.isUserInteractionEnabled = true
     }
 
     
@@ -304,8 +298,6 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         let when = DispatchTime.now() + 1
         DispatchQueue.main.asyncAfter(deadline: when) {
             
-            self.view.isUserInteractionEnabled = false
-            
             self.showcase.setTargetView(tabBar: (self.tabBarController?.tabBar)! , itemIndex: 4) // always required to set targetView
             self.showcase.primaryText = "خانه"
             self.showcase.secondaryText = " در این صفحه آدرس و جزئیات کسب کارهایی را مشاهده می‌کنید که با حضور در محل آنها، می‌توانید امتیاز (دینگ) جمع کنید."
@@ -316,7 +308,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 // You can save showcase state here
                 // Later you can check and do not show it again
                 
-                
+                self.view.isUserInteractionEnabled = true
                 
             })
             
@@ -742,7 +734,12 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                     
                     let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: nil,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100), customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount ?? "%0", tell: obj.customer_tell ?? "" ,address: obj.customer_address ?? "" , text: obj.text ?? "" ,workTime: obj.customer_work_time ?? "" ,website: obj.cusomer_web ?? "" ,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code , campaignCode : obj.campaign_code, lat : obj.lat , long : obj.long)
                     
-                    if(currentLocation.coordinate.latitude != 0){
+                    if((Double(obj.lat!))! == 0 || (Double(obj.long!))! == 0){
+                        
+                        obj.distance = 0
+                        a.customerDistanceToMe = "-"
+                        
+                    }else if(currentLocation.coordinate.latitude != 0){
                         
                         let dis = String(format: "%.2f", currentLocation.distance(from: CLLocation.init(latitude: (Double(obj.lat!))!, longitude: (Double(obj.long!))!))/1000)
                         
@@ -750,6 +747,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                         a.customerDistanceToMe = dis
                         
                     }
+                    
                     
                     a.preCustomerImage = UIImage.init(named: "default")
                     
@@ -1170,8 +1168,6 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             switch (response.result) {
             case .failure(let error):
-//                if error._code == NSURLErrorTimedOut {
-                    //HANDLE TIMEOUT HERE
                     
                     self.loading.stopAnimating()
                     
@@ -1185,7 +1181,6 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                     
                     return
                     
-//                }
                 break
                 
             default: break
@@ -2101,6 +2096,10 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
 
         
         pinsImage.removeAll()
+        
+        loading.activityIndicatorViewStyle = .whiteLarge
+        
+        loading.color = UIColor.black
         
         loading.startAnimating()
         

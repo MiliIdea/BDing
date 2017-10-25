@@ -8,10 +8,11 @@
 
 import UIKit
 import CoreLocation
+import CoreBluetooth
 import Lottie
 
 
-class PayViewController: UIViewController , UICollectionViewDataSource, UICollectionViewDelegate,  CLLocationManagerDelegate , ShowcaseDelegate{
+class PayViewController: UIViewController , UICollectionViewDataSource, UICollectionViewDelegate,  CLLocationManagerDelegate , ShowcaseDelegate , UITextFieldDelegate ,CBPeripheralManagerDelegate{
     
     @IBOutlet weak var myDings: UILabel!
     
@@ -27,9 +28,13 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
     
     @IBOutlet weak var payIcon: UIImageView!
     
+    var myBTManager : CBPeripheralManager? = nil
+    
     var animationView : LOTAnimationView?
     
     var coupons: [CouponListData]? = [CouponListData]()
+    
+    var couponImages : [UIImage?]? = [UIImage?]()
     
     // MARK: - PopupFields
     
@@ -65,6 +70,10 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
         lastCoupons.dataSource = self
         lastCoupons.delegate = self
         
+        shopListButton.cornerRadius = shopListButton.frame.height / 2
+        
+        payHistoryButton.cornerRadius = payHistoryButton.frame.height / 2
+        
         requestForGetCoupon()
         
         self.myDings.text = GlobalFields.PROFILEDATA?.all_coin
@@ -80,6 +89,9 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
         
         showcase.delegate = self
         
+        inputPriceTextField.delegate = self
+        
+        myBTManager = CBPeripheralManager(delegate: self, queue: nil, options: nil)
         
     }
     
@@ -90,6 +102,10 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        self.myDings.text = GlobalFields.PROFILEDATA?.all_coin
+        
+        self.popupMyDings.text = GlobalFields.PROFILEDATA?.all_coin
         
         let when = DispatchTime.now() + 0.5
         DispatchQueue.main.asyncAfter(deadline: when) {
@@ -134,6 +150,17 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
     // MARK: - Actions
     
     @IBAction func callPayPopUp(_ sender: Any) {
+        
+        if(myBTManager?.state == CBManagerState.poweredOff){
+          
+            Notifys().notif(message: "لطفا جهت استفاده از دستگاه پرداخت بلوتوث خود را روشن کنید."){ alarm in
+                
+                self.present(alarm, animated: true, completion: nil)
+                
+            }
+            
+            return
+        }
         
         firstAnimate()
         
@@ -251,6 +278,8 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
     
     @IBAction func closePopup(_ sender: Any) {
         
+        self.inputPriceTextField.text = ""
+        
         UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
             
             for v in self.popupView.subviews{
@@ -275,6 +304,10 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
     }
     
     @IBAction func doPay(_ sender: Any) {
+        
+        if(self.inputPriceTextField.text == ""){
+            return
+        }
         
         if(Int(self.inputPriceTextField.text!)! == 0){
            return
@@ -343,14 +376,44 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
             
             self.animationView?.play()
             
-            request(URLs.payment , method: .post , parameters: PaymentRequestModel.init(BEACON: payBeacon, MONEY: self.inputPriceTextField.text!).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            self.view.isUserInteractionEnabled = false
+            
+            self.popupView.isUserInteractionEnabled = false
+            
+            let manager = SessionManager.default2
+            
+            manager.request(URLs.payment , method: .post , parameters: PaymentRequestModel.init(BEACON: payBeacon, MONEY: self.inputPriceTextField.text!).getParams(), encoding: JSONEncoding.default).responseJSON { response in
                 print()
 
+                switch (response.result) {
+                case .failure(let _):
+                    
+                    self.animationView?.stop()
+                    
+                    self.animationView?.alpha = 0
+                    
+                    self.payButton.setTitle("پرداخت مبلغ", for: .normal)
+                    
+                    self.view.isUserInteractionEnabled = true
+                    
+                    self.popupView.isUserInteractionEnabled = true
+                    
+                    return
+                    
+                    
+                default: break
+                    
+                }
+                
                 if let JSON = response.result.value {
 
                     print("JSON ----------Payment----------->>>> " ,JSON)
                     //create my coupon response model
 
+                    self.view.isUserInteractionEnabled = true
+                    
+                    self.popupView.isUserInteractionEnabled = true
+                    
                     if( PaymentResponseModel.init(json: JSON as! JSON)?.code == "200"){
 
                         request(URLs.verifyPayment , method: .post , parameters: PaymentVerifyRequestModel.init(CODE: PaymentResponseModel.init(json: JSON as! JSON)?.data?.code).getParams(), encoding: JSONEncoding.default).responseJSON { response in
@@ -399,6 +462,16 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
 
                         }
 
+                    }else{
+                        
+                        self.closePopup("")
+                        
+                        self.animationView?.alpha = 0
+                        
+                        self.animationView?.stop()
+                        
+                        self.animationView?.removeFromSuperview()
+                        
                     }
 
                 }
@@ -520,6 +593,8 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
                     
                     self.animationView?.stop()
                     
+                    self.animationView?.alpha = 0
+                    
                     self.payIcon.alpha = 1
                     
                     self.popupPayButton.normalTextColor = UIColor.init(hex: "ffffff")
@@ -533,6 +608,12 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
         
     }
     
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        self.payButton.setTitle("پرداخت مبلغ", for: .normal)
+        
+    }
     
     
     
@@ -634,8 +715,21 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
         
         print("requeste pay : " , payUrlString)
         
-        request( payUrlString , method: .get , encoding: JSONEncoding.default).responseJSON { response in
+        let manager = SessionManager.default2
+        
+        manager.request( payUrlString , method: .get , encoding: JSONEncoding.default).responseJSON { response in
             print()
+            
+            switch (response.result) {
+            case .failure(let _):
+                
+                self.secondAnimate()
+                
+                return
+                
+            default: break
+                
+            }
             
             if let JSON = response.result.value {
                 
@@ -722,12 +816,22 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell2", for: indexPath as IndexPath) as! LastCouponCollectionViewCell
         
-        LoadPicture().proLoad(view: cell.image,picType: "coupon" , picModel: (coupons?[indexPath.item].url_pic)!){ resImage in
+        if(couponImages!.count > indexPath.item && couponImages![indexPath.item] != nil){
             
-            cell.image.image = resImage
+            cell.image.image = couponImages?[indexPath.item]
             
             cell.image.contentMode = UIViewContentMode.scaleAspectFill
             
+        }else{
+            LoadPicture().proLoad(view: cell.image,picType: "coupon" , picModel: (coupons?[indexPath.item].url_pic)!){ resImage in
+                
+                cell.image.image = resImage
+                
+                cell.image.contentMode = UIViewContentMode.scaleAspectFill
+                
+                self.couponImages![indexPath.item] = resImage
+                
+            }
         }
         
         
@@ -973,11 +1077,7 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
                 if error._code == NSURLErrorTimedOut {
                     //HANDLE TIMEOUT HERE
                     
-//                    nextVc.loading.stopAnimating()
-//
-//                    nextVc.table.alpha = 0
-//
-//                    nextVc.lowInternetView.alpha = 1
+                    self.requestForGetCoupon()
                     
                     return
                     
@@ -1012,9 +1112,24 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
                         nextVc.lastCoupons.alpha = 0
                         
                     }else{
+                    
+                        let i : IndexPath = IndexPath.init(item: (nextVc.coupons?.count)! - 1, section: 0)
                         
-                        nextVc.lastCoupons.alpha = 1
+                        nextVc.lastCoupons.scrollToItem(at: i , at: .right, animated: false)
                         
+                        for _ in nextVc.coupons! {
+                            
+                            self.couponImages?.append(nil)
+                            
+                        }
+                        
+                        UIView.animate(withDuration: 0.2, delay: 0.1, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                            
+                            nextVc.lastCoupons.alpha = 1
+                            
+                        },completion: nil)
+                        
+                    
                     }
                     
                     
@@ -1038,7 +1153,9 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
     
     
     
-    
+    func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
+        myBTManager = peripheral
+    }
     
     
     

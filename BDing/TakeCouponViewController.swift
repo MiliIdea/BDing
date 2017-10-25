@@ -97,27 +97,27 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
         let vc = (self.storyboard?.instantiateViewController(withIdentifier: "CouponPopupViewController"))! as! CouponPopupViewController
         
         UIView.animate(withDuration: 0.1, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            
+
             self.addChildViewController(vc)
-            
+
            vc.view.frame = CGRect(x:0,y: 0,width: self.view.frame.size.width, height: self.view.frame.size.height)
-            
+
             vc.view.tag = 123
-            
+
             self.view.addSubview(vc.view)
-            
+
             vc.didMove(toParentViewController: self)
-            
+
             vc.setup(myCoupon: nil, coupon: (self.coupons?[indexPath.row])! , isMyCoupon: false)
-            
+
             vc.view.alpha = 1
-            
+
             self.view.alpha = 1
 
-            
-            
+
+
         },completion : nil)
-        
+
 
         self.table.deselectRow(at: indexPath, animated: true)
         

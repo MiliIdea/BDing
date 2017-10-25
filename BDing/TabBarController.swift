@@ -37,15 +37,15 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
         
         self.tabBar.barTintColor = UIColor.white
         
-        self.tabBar.layer.shadowColor = UIColor.black.cgColor
-        self.tabBar.layer.shadowOpacity = 0.3
-        self.tabBar.layer.shadowOffset = CGSize(width: -1, height: -1)
-        self.tabBar.layer.shadowRadius = 5
-        self.tabBar.layer.borderWidth = 0.0
-        self.tabBar.shadowImage = nil
+//        self.tabBar.layer.shadowColor = UIColor.black.cgColor
+//        self.tabBar.layer.shadowOpacity = 0.3
+//        self.tabBar.layer.shadowOffset = CGSize(width: -1, height: -1)
+//        self.tabBar.layer.shadowRadius = 5
+//        self.tabBar.layer.borderWidth = 0.0
+//        self.tabBar.shadowImage = nil
         
-        self.tabBar.tintColor = UIColor.init(hex: "455a64")
-        //455a64
+        self.tabBar.tintColor = UIColor.init(hex: "FCA624")
+        //FCA624
         if #available(iOS 10.0, *) {
             self.tabBar.items?[2].badgeColor = UIColor.init(hex: "2490FC")
             repositionBadge(tab: 3)
@@ -55,11 +55,11 @@ class TabBarController: UITabBarController , UITabBarControllerDelegate ,CLLocat
         
         for i in self.tabBar.items! {
             
-            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "A8A5AF") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum-Bold", size: CGFloat(9))!], for: .normal)
-            //A8A5AF unselected color
-            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "455a64") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum-Bold", size: CGFloat(9))!], for: .selected)
-            i.image =  i.image?.imageWithColor(tintColor: UIColor.init(hex: "A8A5AF")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
-            i.selectedImage = i.image?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "001C55") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum-Bold", size: CGFloat(9))!], for: .normal)
+            //001C55 unselected color
+            i.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.init(hex: "FCA624") , NSFontAttributeName: UIFont(name: "IRANYekanMobileFaNum-Bold", size: CGFloat(9))!], for: .selected)
+            i.image =  i.image?.imageWithColor(tintColor: UIColor.init(hex: "001C55")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+            i.selectedImage = i.image?.imageWithColor(tintColor: UIColor.init(hex: "FCA624")).withRenderingMode(UIImageRenderingMode.alwaysOriginal)
             i.imageInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
             
             

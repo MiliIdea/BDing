@@ -22,6 +22,8 @@ class ForsgottenPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        recycleButton.cornerRadius = recycleButton.frame.height / 2
+        mobileBorder.cornerRadius = mobileBorder.frame.height / 2
         // Do any additional setup after loading the view.
     }
 

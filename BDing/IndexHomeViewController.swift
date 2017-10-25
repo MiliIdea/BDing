@@ -493,6 +493,8 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             
             let result: String? = isThereThisPicInDB(code: (tempCode?.md5())!)
             
+            var result2: String? = nil
+            
             let locManager = CLLocationManager()
             
             locManager.requestAlwaysAuthorization()
@@ -506,10 +508,38 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
                 
             }
             
-            if(result == nil){
-                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: uuidMajorMinorMD5 ,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount!, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! ,website: obj.cusomer_web! ,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code , campaignCode : obj.campaign_code, lat : obj.lat , long : obj.long)
+            if(GlobalFields.BEACON_LIST_DATAS != nil){
                 
-                if(currentLocation.coordinate.latitude != 0){
+                let cat = findCategory(catID: obj.category_id)
+                    
+                if(cat != nil){
+                    
+                    var tempCode2 = cat?.url_icon?.url
+                        
+                    tempCode2?.append((cat?.url_icon?.code!)!)
+                        
+                    result2 = isThereThisPicInDB(code: (tempCode2?.md5())!)
+                        
+                }
+                
+            }
+            
+            var cIcon : UIImage? = nil
+            
+            if(result2 != nil){
+                cIcon = UIImage(data: NSData(base64Encoded: result2!, options: .ignoreUnknownCharacters) as! Data)
+            }
+            
+            if(result == nil){
+                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: uuidMajorMinorMD5 ,preCustomerImage: nil ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: cIcon, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0", customerDiscountValue: obj.discount ?? "", tell: obj.customer_tell ?? "" ,address: obj.customer_address ?? "" , text: obj.text ?? "" ,workTime: obj.customer_work_time ?? "" ,website: obj.cusomer_web ?? "" ,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code , campaignCode : obj.campaign_code, lat : obj.lat , long : obj.long)
+                
+                
+                if((Double(obj.lat!))! == 0 || (Double(obj.long!))! == 0){
+                    
+                    obj.distance = 0
+                    a.customerDistanceToMe = "-"
+                    
+                }else if(currentLocation.coordinate.latitude != 0){
                     
                     let dis = String(format: "%.2f", currentLocation.distance(from: CLLocation.init(latitude: (Double(obj.lat!))!, longitude: (Double(obj.long!))!))/1000)
                     
@@ -520,9 +550,14 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
                 
                 return a
             }else{
-                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: uuidMajorMinorMD5 ,preCustomerImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: nil, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerDiscountValue: obj.discount!, tell: obj.customer_tell! ,address: obj.customer_address! , text: obj.text! ,workTime: obj.customer_work_time! , website: obj.cusomer_web!,customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code , campaignCode : obj.campaign_code, lat : obj.lat , long : obj.long)
+                let a = CustomerHomeTableCell.init(uuidMajorMinorMD5: uuidMajorMinorMD5 ,preCustomerImage: UIImage(data: NSData(base64Encoded: result!, options: .ignoreUnknownCharacters) as! Data) ,customerImage: obj.url_icon, customerCampaignTitle: obj.title!, customerName: obj.customer_title!, customerCategoryIcon: cIcon, customerDistanceToMe: String(describing: round((obj.distance ?? 0) * 100) / 100) , customerCoinValue: obj.coin ?? "0" , customerDiscountValue: obj.discount ?? "", tell: obj.customer_tell ?? "" ,address: obj.customer_address ?? "" , text: obj.text ?? "" ,workTime: obj.customer_work_time ?? "" , website: obj.cusomer_web ?? "",customerBigImages: obj.url_pic, categoryID: obj.category_id, beaconCode : obj.beacon_code , campaignCode : obj.campaign_code, lat : obj.lat , long : obj.long)
                 
-                if(currentLocation.coordinate.latitude != 0){
+                if((Double(obj.lat!))! == 0 || (Double(obj.long!))! == 0){
+                    
+                    obj.distance = 0
+                    a.customerDistanceToMe = "-"
+                    
+                }else if(currentLocation.coordinate.latitude != 0){
                     
                     let dis = String(format: "%.2f", currentLocation.distance(from: CLLocation.init(latitude: (Double(obj.lat!))!, longitude: (Double(obj.long!))!))/1000)
                     

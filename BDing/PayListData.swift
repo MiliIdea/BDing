@@ -16,6 +16,10 @@ class PayListData : Decodable{
     
     var title_pay : String?
     
+    var ding : String?
+    
+    var money : String?
+    
     
     required init?(json: JSON) {
         
@@ -24,6 +28,10 @@ class PayListData : Decodable{
         self.date = "date" <~~ json
         
         self.title_pay = "title" <~~ json
+        
+        self.ding = "ding" <~~ json
+        
+        self.money = "money" <~~ json
         
     }
     

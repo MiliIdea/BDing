@@ -156,26 +156,20 @@ extension MaterialShowcase {
             
             let datas : [NSManagedObject] = SaveAndLoadModel().load(entity: "SHOWCASE")!
             
-            if #available(iOS 10.0, *) {
-                
-                let managedContext = appDelegate.persistentContainer.viewContext
-                
-                let entity = NSEntityDescription.entity(forEntityName: "SHOWCASE",in: managedContext)!
-                
-                let person = NSManagedObject(entity: entity,insertInto: managedContext)
-                
-                person.setValue(id, forKeyPath: "id")
-                
-                do {
-                    try managedContext.save()
-                } catch let error as NSError {
-                    print("Could not save. \(error), \(error.userInfo)")
-                }
-                
-            } else {
-                // Fallback on earlier versions
+            let managedContext = appDelegate.persistentContainer.viewContext
+            
+            let entity = NSEntityDescription.entity(forEntityName: "SHOWCASE",in: managedContext)!
+            
+            let person = NSManagedObject(entity: entity,insertInto: managedContext)
+            
+            person.setValue(id, forKeyPath: "id")
+            
+            do {
+                try managedContext.save()
+            } catch let error as NSError {
+                print("Could not save. \(error), \(error.userInfo)")
             }
-        
+            
         }
         
         alpha = 0.0
