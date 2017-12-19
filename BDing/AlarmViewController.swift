@@ -13,6 +13,7 @@ import Lottie
 import CCBottomRefreshControl
 import Hero
 import CellAnimator
+import JavaScriptCore
 
 
 class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDataSource , UICollectionViewDataSource, UICollectionViewDelegate , ShowcaseDelegate{
@@ -190,7 +191,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
 
     
     func firstLoad(){
-        MyFont().setFontForAllView(view: view)
+//        MyFont().setFontForAllView(view: view)
         
         var temp:[Bool] = [Bool]()
         
@@ -265,13 +266,13 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         
         changeColorOfSort(i: 2)
         
-        searchButtonView.setImage(searchButtonView.currentImage?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(.alwaysOriginal), for: .normal)
+    searchButtonView.setImage(searchButtonView.currentImage?.imageWithColor(tintColor: UIColor.init(hex: "001C55")).withRenderingMode(.alwaysOriginal), for: .normal)
         
-        sortButton.setImage(sortButton.currentImage?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(.alwaysOriginal), for: .normal)
+        sortButton.setImage(sortButton.currentImage?.imageWithColor(tintColor: UIColor.init(hex: "001C55")).withRenderingMode(.alwaysOriginal), for: .normal)
         
-        mapButton.setImage(mapButton.currentImage?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(.alwaysOriginal), for: .normal)
+        mapButton.setImage(mapButton.currentImage?.imageWithColor(tintColor: UIColor.init(hex: "001C55")).withRenderingMode(.alwaysOriginal), for: .normal)
         
-        changeModeButton.setImage(changeModeButton.currentImage?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(.alwaysOriginal), for: .normal)
+        changeModeButton.setImage(changeModeButton.currentImage?.imageWithColor(tintColor: UIColor.init(hex: "001C55")).withRenderingMode(.alwaysOriginal), for: .normal)
     }
 
     
@@ -343,7 +344,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
 
             if !AlarmViewController.mode {
                 
-                self.changeModeButton.setImage(UIImage.init(named: "mode one")?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(.alwaysOriginal), for: .normal)
+                self.changeModeButton.setImage(UIImage.init(named: "View-2")?.imageWithColor(tintColor: UIColor.init(hex: "001C55")).withRenderingMode(.alwaysOriginal), for: .normal)
                 
                 
                 for c in 1...self.rightTable.numberOfRows(inSection: 0) {
@@ -378,7 +379,7 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
             
             if AlarmViewController.mode {
                 
-                self.changeModeButton.setImage(UIImage.init(named: "mode two")?.imageWithColor(tintColor: UIColor.init(hex: "455a64")).withRenderingMode(.alwaysOriginal), for: .normal)
+                self.changeModeButton.setImage(UIImage.init(named: "view-1")?.imageWithColor(tintColor: UIColor.init(hex: "001C55")).withRenderingMode(.alwaysOriginal), for: .normal)
                 
                 
                 //resizing table single
@@ -962,7 +963,8 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
         isShowSortView = false
         
         UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                
+            
+                self.searchView.alpha = 1
                 self.searchView.frame.size.height = 180
                 self.collectionView.frame.size.height = 70
                 self.collectionView.alpha = 1
@@ -1207,7 +1209,9 @@ class AlarmViewController: UIViewController ,UITableViewDelegate ,UITableViewDat
                 self.loading.stopAnimating()
                 
                 self.view.isUserInteractionEnabled = true
-                
+                if(obj?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
                 if ( obj?.code == "200" ){
                     
                     GlobalFields.BEACON_LIST_DATAS = obj?.data

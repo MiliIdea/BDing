@@ -12,6 +12,10 @@ import UserNotifications
 import UserNotificationsUI
 import CoreLocation
 import CoreBluetooth
+import JavaScriptCore
+import Pushe
+
+
 
 
 
@@ -32,6 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
         // Override point for customization after application launch.
         
         locationManager.delegate = self
+        
+        Pushe.shared.configPushe()
         
         myBTManager = CBPeripheralManager(delegate: self, queue: nil, options: nil)
         
@@ -64,7 +70,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
         }
         print("<--- IP")
         
-        
         guard let gai = GAI.sharedInstance() else {
             assert(false, "Google Analytics not configured correctly")
             return true
@@ -84,6 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+        Pushe.shared.connectToGcm()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -91,6 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         locationManager.delegate = self
         
+        Pushe.shared.disconnectFromGcm()
         
         if((SaveAndLoadModel().load(entity: "USER")?.count)! > 0){
             
@@ -447,14 +454,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                                         
                                         SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s, newItem: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : Date() , "beaconDataJSON" : self.jsonToString(json: JSON as AnyObject) ,"isRemoved" : false])
                                     
-                                        
-                                        let notification = UILocalNotification()
-                                        notification.fireDate = Date()
-                                        notification.alertTitle = obj?.data?[0].customer_title
-                                        notification.alertBody = obj?.data?[0].text
-                                        notification.alertAction = "ok"
-                                        notification.soundName = UILocalNotificationDefaultSoundName
-                                        UIApplication.shared.presentLocalNotificationNow(notification)
+                                        if(SaveAndLoadModel().load(entity: "Notify")?.isEmpty)!{
+                                            let notification = UILocalNotification()
+                                            notification.fireDate = Date()
+                                            notification.alertTitle = obj?.data?[0].customer_title
+                                            notification.alertBody = obj?.data?[0].text
+                                            notification.alertAction = "ok"
+                                            notification.soundName = UILocalNotificationDefaultSoundName
+                                            UIApplication.shared.presentLocalNotificationNow(notification)
+                                        }
                                         
                                     }
                                     
@@ -512,15 +520,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                             
                             
                             //set notification!!!!!!!!!!!!
-                            
-                            let notification = UILocalNotification()
-                            notification.fireDate = Date()
-                            notification.alertTitle = obj?.data?[0].customer_title
-                            notification.alertBody = obj?.data?[0].text
-                            notification.alertAction = "ok"
-                            notification.soundName = UILocalNotificationDefaultSoundName
-                            UIApplication.shared.presentLocalNotificationNow(notification)
-                            
+                            if(SaveAndLoadModel().load(entity: "Notify")?.isEmpty)!{
+                                let notification = UILocalNotification()
+                                notification.fireDate = Date()
+                                notification.alertTitle = obj?.data?[0].customer_title
+                                notification.alertBody = obj?.data?[0].text
+                                notification.alertAction = "ok"
+                                notification.soundName = UILocalNotificationDefaultSoundName
+                                UIApplication.shared.presentLocalNotificationNow(notification)
+                            }
                         }
                         
                         return
@@ -552,6 +560,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
         } catch let myJSONError {
             print(myJSONError)
         }
+        
         return nil
     }
 
@@ -612,6 +621,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
         return addresses
     }
     
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Pushe.shared.startPushe(apnToken: deviceToken, isDevelop: false)
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        Pushe.shared.downstreamReciver(message: userInfo)
+    }
     
 }
 

@@ -166,6 +166,9 @@ class PayHistoryViewController: UIViewController ,UITableViewDelegate ,UITableVi
                 
                 print("JSON ----------MY HISTORY----------->>>> ")
                 //create my coupon response model
+                if(PayListResponseModel.init(json: JSON as! JSON)?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
                 if(PayListResponseModel.init(json: JSON as! JSON)?.code == "200"){
                     
                     UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {

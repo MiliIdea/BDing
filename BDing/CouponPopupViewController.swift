@@ -219,6 +219,12 @@ class CouponPopupViewController: UIViewController {
             
             vc.deletSubView()
             
+        }else if(self.parent is CouponTabViewController){
+            
+            let vc = self.parent as! CouponTabViewController
+            
+            vc.deletSubView()
+            
         }
         
     }
@@ -281,6 +287,11 @@ class CouponPopupViewController: UIViewController {
                 }, completion : nil)
                 self.buyCouponButton.setTitle("تایید خرید", for: .normal)
                 print()
+                
+                if(BuyCouponResponseModel.init(json: JSON as! JSON)?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
+                
                 if(BuyCouponResponseModel.init(json: JSON as! JSON)?.code == "200"){
 
                     self.loading.stopAnimating()

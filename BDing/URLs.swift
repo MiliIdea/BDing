@@ -14,6 +14,8 @@ class URLs {
     
     static let signUpUrl = server + "register"
     
+    static let checkSignUp = server + "register/check"
+    
     static let signInUrl = server + "login"
     
     static let getProfile = server + "user/getprofile"

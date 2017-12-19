@@ -45,6 +45,10 @@ class ForsgottenPasswordViewController: UIViewController {
                 
                 let obj = CategoryListResponseModel.init(json: JSON as! JSON)
                 
+                if(obj?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
+                
                 if ( obj?.code == "200" ){
                     
                     self.view.endEditing(true)

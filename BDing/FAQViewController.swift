@@ -47,7 +47,7 @@ class FAQViewController: UIViewController ,UITableViewDelegate ,UITableViewDataS
         
         cell.result.text = GlobalFields.FAQs[indexPath.row].text
         
-        cell.feleshIcon.image = UIImage.init(named: "leftFAQ")
+        cell.feleshIcon.image = UIImage.init(named: "leftFAQ-2")
         
         if(cell.isSelected == false){
             
@@ -66,7 +66,7 @@ class FAQViewController: UIViewController ,UITableViewDelegate ,UITableViewDataS
             
             cell.selectionStyle = .none
             
-            cell.feleshIcon.image = UIImage.init(named: "downFAQ")
+            cell.feleshIcon.image = UIImage.init(named: "downFAQ-1")
             
             cell.result.drawText(in: CGRect.init(x: cell.result.frame.origin.x + 10, y: cell.result.frame.origin.y, width: cell.result.frame.width - 20, height: cell.result.frame.height))
             
@@ -91,7 +91,7 @@ class FAQViewController: UIViewController ,UITableViewDelegate ,UITableViewDataS
             
             cell.result.alpha = 1
             
-            cell.feleshIcon.image = UIImage.init(named: "downFAQ")
+            cell.feleshIcon.image = UIImage.init(named: "downFAQ-1")
             
             cell.selectionStyle = .none
             
@@ -108,7 +108,7 @@ class FAQViewController: UIViewController ,UITableViewDelegate ,UITableViewDataS
             
             cell.selectionStyle = .none
             
-            cell.feleshIcon.image = UIImage.init(named: "downFAQ")
+            cell.feleshIcon.image = UIImage.init(named: "downFAQ-1")
             
             cell.result.drawText(in: CGRect.init(x: cell.result.frame.origin.x + 10, y: cell.result.frame.origin.y, width: cell.result.frame.width - 20, height: cell.result.frame.height))
             
@@ -129,7 +129,7 @@ class FAQViewController: UIViewController ,UITableViewDelegate ,UITableViewDataS
             
             cell.selectionStyle = .none
             
-            cell.feleshIcon.image = UIImage.init(named: "leftFAQ")
+            cell.feleshIcon.image = UIImage.init(named: "leftFAQ-2")
             
             self.table.beginUpdates()
             self.table.endUpdates()
@@ -150,7 +150,7 @@ class FAQViewController: UIViewController ,UITableViewDelegate ,UITableViewDataS
             
             cell.result.alpha = 0
             
-            cell.feleshIcon.image = UIImage.init(named: "leftFAQ")
+            cell.feleshIcon.image = UIImage.init(named: "leftFAQ-2")
             
             self.table.beginUpdates()
             self.table.endUpdates()
@@ -201,6 +201,9 @@ class FAQViewController: UIViewController ,UITableViewDelegate ,UITableViewDataS
                 
                 print("JSON ----------GO FAQ----------->>>> ")
                 //create my coupon response model
+                if(FAQResponseModel.init(json: JSON as! JSON)?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
                 if(FAQResponseModel.init(json: JSON as! JSON)?.code == "200"){
                     
                     UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {

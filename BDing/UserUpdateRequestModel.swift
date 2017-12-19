@@ -11,7 +11,7 @@ import Foundation
 
 class UserUpdateRequestModel {
     
-    init(NAME : String? , FAMILY : String? ,ATTRNAME: String? , ATTRDATA: String?) {
+    init(NAME : String? , FAMILY : String? ,EMAIL: String? , BIRTHDATE: String? , PIC : String? , GENDER : String?) {
         
         let m = SaveAndLoadModel().load(entity: "USER")?[0]
         
@@ -23,9 +23,13 @@ class UserUpdateRequestModel {
         
         self.FAMILY = FAMILY
         
-        self.ATTRNAME = ATTRNAME
+        self.BIRTHDATE = BIRTHDATE
         
-        self.ATTRDATA = ATTRDATA
+        self.EMAIL = EMAIL
+        
+        self.PIC = PIC
+        
+        self.GENDER = GENDER
         
         var temp = self.TOKEN.md5().md5()
         
@@ -39,13 +43,17 @@ class UserUpdateRequestModel {
         
     }
     
-    var ATTRNAME: String?
+    var BIRTHDATE: String?
     
-    var ATTRDATA: String?
+    var EMAIL: String?
     
     var NAME: String?
     
     var FAMILY: String?
+    
+    var PIC : String?
+    
+    var GENDER : String?
     
     var USERID: String!
     
@@ -55,15 +63,7 @@ class UserUpdateRequestModel {
     
     func getParams() -> [String: Any]{
         
-        if(ATTRNAME != nil){
-            
-            return ["user": USERID , "token": TOKEN  , "hash": HASH , "name" : NAME , "family": FAMILY , ATTRNAME! : ATTRDATA ]
-            
-        }else{
-            
-            return ["user": USERID , "token": TOKEN  , "hash": HASH , "name" : NAME , "family": FAMILY]
-            
-        }
+        return ["user": USERID , "token": TOKEN  , "hash": HASH , "name" : NAME , "family": FAMILY , "email": EMAIL , "birthdate": BIRTHDATE , "pic": PIC , "gender" : GENDER]
         
     }
 

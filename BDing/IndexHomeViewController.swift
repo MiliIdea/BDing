@@ -50,8 +50,8 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         
         self.updateBadgeVlue()
         
-        binButtonView.image = UIImage.init(named: "trash 18")?.imageWithColor(tintColor: UIColor.init(hex: "455a64"))
-        binButtonView.tintColor = UIColor.init(hex: "455a64")
+        binButtonView.image = UIImage.init(named: "trash 18")?.imageWithColor(tintColor: UIColor.init(hex: "001C55"))
+        binButtonView.tintColor = UIColor.init(hex: "001C55")
         
         binButtonView.title = nil
         deleteAllButton.title = "پیام ها"
@@ -403,7 +403,9 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
                             print("JSON -----------GET BEACON---------->>>> " , JSON)
                             
                             let obj = BeaconListResponseModel.init(json: JSON as! JSON)
-                            
+                            if(obj?.code == "5005"){
+                                GlobalFields().goErrorPage(viewController: self)
+                            }
                             if ( obj?.code == "200" ){
                                 
                                 db.updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s, newItem: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : Date() , "beaconDataJSON" : self.jsonToString(json: JSON as AnyObject) ,"isRemoved" : false])
@@ -482,7 +484,9 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
         let o = BeaconListResponseModel.init(json: jsonData)
         
 //        let image : UIImage = UIImage(named:"mal")!
-        
+        if(o?.code == "5005"){
+            GlobalFields().goErrorPage(viewController: self)
+        }
         if ( o?.code == "200" ){
             
             let obj = (o?.data)![0]
@@ -666,11 +670,11 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             IndexHomeTable.allowsMultipleSelectionDuringEditing = false
             IndexHomeTable.setEditing(false, animated: true)
             
-            binButtonView.image = UIImage.init(named: "trash 18")?.imageWithColor(tintColor: UIColor.init(hex: "455a64"))
-            binButtonView.tintColor = UIColor.init(hex: "455a64")
+            binButtonView.image = UIImage.init(named: "trash 18")?.imageWithColor(tintColor: UIColor.init(hex: "001C55"))
+            binButtonView.tintColor = UIColor.init(hex: "001C55")
             
             binButtonView.title = nil
-            deleteAllButton.tintColor = UIColor.init(hex: "455a64")
+            deleteAllButton.tintColor = UIColor.init(hex: "001C55")
             deleteAllButton.title = "پیام ها"
             deleteAllButton.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "IRANYekanMobileFaNum-Bold", size: 13)!], for: .normal)
         }
@@ -687,11 +691,11 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             IndexHomeTable.allowsMultipleSelectionDuringEditing = false
             IndexHomeTable.setEditing(false, animated: true)
             
-            binButtonView.image = UIImage.init(named: "trash 18")?.imageWithColor(tintColor: UIColor.init(hex: "455a64"))
-            binButtonView.tintColor = UIColor.init(hex: "455a64")
+            binButtonView.image = UIImage.init(named: "trash 18")?.imageWithColor(tintColor: UIColor.init(hex: "001C55"))
+            binButtonView.tintColor = UIColor.init(hex: "001C55")
             
             binButtonView.title = nil
-            deleteAllButton.tintColor = UIColor.init(hex: "455a64")
+            deleteAllButton.tintColor = UIColor.init(hex: "001C55")
             deleteAllButton.title = "پیام ها"
             deleteAllButton.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "IRANYekanMobileFaNum-Bold", size: 13)!], for: .normal)
             
@@ -700,11 +704,11 @@ class IndexHomeViewController: UIViewController ,UITableViewDelegate ,UITableVie
             IndexHomeTable.allowsMultipleSelectionDuringEditing = false
             IndexHomeTable.setEditing(false, animated: true)
             
-            binButtonView.image = UIImage.init(named: "trash 18")?.imageWithColor(tintColor: UIColor.init(hex: "455a64"))
-            binButtonView.tintColor = UIColor.init(hex: "455a64")
+            binButtonView.image = UIImage.init(named: "trash 18")?.imageWithColor(tintColor: UIColor.init(hex: "001C55"))
+            binButtonView.tintColor = UIColor.init(hex: "001C55")
             
             binButtonView.title = nil
-            deleteAllButton.tintColor = UIColor.init(hex: "455a64")
+            deleteAllButton.tintColor = UIColor.init(hex: "001C55")
             deleteAllButton.title = "پیام ها"
             deleteAllButton.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "IRANYekanMobileFaNum-Bold", size: 13)!], for: .normal)
             isDeleteMode = !isDeleteMode

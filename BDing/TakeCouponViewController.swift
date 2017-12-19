@@ -215,7 +215,9 @@ class TakeCouponViewController: UIViewController ,UITableViewDelegate ,UITableVi
                 
                 print("JSON ----------GET COUPON----------->>>> " ,JSON)
                 //create my coupon response model
-                
+                if(CouponListResponseModel.init(json: JSON as! JSON)?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
                 if(CouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
                     
                     nextVc.coupons = CouponListResponseModel.init(json: JSON as! JSON)?.data

@@ -176,7 +176,9 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
 //                    type = success;
                     
                     let obj = ProfileResponseModel.init(json: JSON as! JSON)
-                    
+                    if(obj?.code == "5005"){
+                        GlobalFields().goErrorPage(viewController: self)
+                    }
                     if ( obj?.code == "200" ){
                         
                         //automat bayad login konam
@@ -239,7 +241,9 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                 if let JSON = response.result.value {
                     
                     print("JSON: \(JSON)")
-                    
+                    if(SignUpResponseModel.init(json: JSON as! JSON).code == "5005"){
+                        GlobalFields().goErrorPage(viewController: self)
+                    }
                     if(SignUpResponseModel.init(json: JSON as! JSON).code == "200"){
                         
                         //notify ferestade shod
@@ -355,7 +359,9 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                 print("JSON -----------SIGNIN---------->>>> " , JSON)
                 
                 let obj = SignInResponseModel.init(json: JSON as! JSON)
-                
+                if(obj.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
                 if ( obj.code == "200" ){
                     
                     print(obj.token ?? "null")
@@ -425,7 +431,9 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                 print("JSON ----------PROFILE----------->>>> " , JSON)
                 
                 let obj = ProfileResponseModel.init(json: JSON as! JSON)
-                
+                if(obj?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
                 if ( obj?.code == "200" ){
                     
                     self.profileBool = true
@@ -500,7 +508,9 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                 print("JSON ----------Category----------->>>> ")
                 
                 let obj = CategoryListResponseModel.init(json: JSON as! JSON)
-                
+                if(obj?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
                 if ( obj?.code == "200" ){
                     
                     GlobalFields.CATEGORIES_LIST_DATAS = obj?.data

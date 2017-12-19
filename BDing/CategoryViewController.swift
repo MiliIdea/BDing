@@ -884,7 +884,9 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
                         print(JSON)
                         
                         print("=++++++++++++++++=")
-                        
+                        if(obj?.code == "5005"){
+                            GlobalFields().goErrorPage(viewController: self)
+                        }
                         if ( obj?.code == "200" ){
                             
                             
@@ -988,7 +990,9 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
 //                        print(JSON)
 //                        
 //                        print("=++++++++++++++++=")
-                        
+                        if(obj?.code == "5005"){
+                            GlobalFields().goErrorPage(viewController: self)
+                        }
                         if ( obj?.code == "200" ){
                             
 //                            print(BeaconListRequestModel(LAT: lat, LONG: long, REDIUS: String(GlobalFields.BEACON_RANG), SEARCH: nil, CATEGORY: nil, SUBCATEGORY: subC?.subCategoryCode).getParams(allSearch : true))
@@ -1041,6 +1045,10 @@ class CategoryViewController: UIViewController ,UITableViewDelegate ,UITableView
     }
     
     
+    
+    @IBAction func back(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
     
     
     

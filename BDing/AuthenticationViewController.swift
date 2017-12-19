@@ -51,6 +51,7 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
     
     var loginBool : Bool = false
     
+    var haveUpdate : Bool = false
     // MARK: - SignUpFields
     
     @IBOutlet weak var signUpUserBorder: DCBorderedView!
@@ -66,6 +67,21 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
     @IBOutlet weak var signUpPasswordField: UITextField!
     
     @IBOutlet weak var signUpsignUpButton: DCBorderedButton!
+    
+    // MARK: - InvitationCodeFields
+    
+    @IBOutlet weak var invitationCodeText: UITextField!
+    
+    @IBOutlet weak var invitationCodeBorder: DCBorderedView!
+    
+    @IBOutlet weak var invitationCodeView: UIView!
+    
+    
+    @IBOutlet weak var invitationSignUpButton: DCBorderedButton!
+    
+    @IBOutlet weak var invitationLabelText: UILabel!
+    
+    
     
     
     override func viewDidLoad() {
@@ -121,6 +137,10 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
                 
                 let obj = SignInResponseModel.init(json: JSON as! JSON)
                 
+                if(obj.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
+                
                 if ( obj.code == "200" ){
                     
                     print(obj.token ?? "null")
@@ -134,8 +154,11 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
                     
                     self.loadTabView()
                     
-                    
                     print(SaveAndLoadModel().load(entity: "USER")?.count ?? "nothing!")
+                    
+                    if(obj.data?.has_update == "true"){
+                        self.haveUpdate = true
+                    }
                     
                     self.loginBool = true
                     
@@ -143,13 +166,11 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
                     
                 }else if(obj.code == "9000"){
                     
-                    self.secondAnimate()
+                    GlobalFields().goFourceUpdatePage(viewController: self)
                     
-                    Notifys().notif(message: obj.msg ?? "pls update your app", button1Title: "دانلود", button2Title: "خروج"){ alarm in
-                        
-                        self.present(alarm , animated : true , completion : nil)
-                        
-                    }
+                }else if(obj.code == "8001"){
+                    
+                    GlobalFields().goMaintenancePage(viewController: self)
                     
                 }else{
                     
@@ -245,6 +266,10 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
                 
                 let obj = ProfileResponseModel.init(json: JSON as! JSON)
                 
+                if(obj?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
+                
                 if ( obj?.code == "200" ){
                     
                     GlobalFields.PROFILEDATA = obj?.data
@@ -306,6 +331,10 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
                 
                 let obj = CategoryListResponseModel.init(json: JSON as! JSON)
                 
+                if(obj?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
+                
                 if ( obj?.code == "200" ){
                     
                     GlobalFields.CATEGORIES_LIST_DATAS = obj?.data
@@ -330,6 +359,10 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
                 
                 let obj = PayUuidResponseModel.init(json: JSON as! JSON)
                 
+                if(obj?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
+                
                 if ( obj?.code == "200" ){
                     
                     GlobalFields.PAY_UUIDS = obj?.result
@@ -350,11 +383,19 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
         
         if(self.profileBool && !self.beaconBool && self.catBool && self.loginBool){
             
-            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-            
-            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController") as! UITabBarController
-            
-            self.present(nextViewController, animated:true, completion:nil)
+            if(self.haveUpdate == true){
+                
+                GlobalFields().goUpdatePage(viewController: self)
+                
+            }else{
+                
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                
+                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController") as! UITabBarController
+                
+                self.present(nextViewController, animated:true, completion:nil)
+                
+            }
             
         }
         
@@ -365,7 +406,7 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
     
     @IBAction func signingUp(_ sender: Any) {
         
-        let m = SignUpRequestModel(USERNAME: signUpMobileField.text, PASSWORD: signUpPasswordField.text, SOCIALNAME: signUpUserField.text, GENDER: "", BDATE: "", NAME: "", FAMILYNAME: "", EMAIL: "")
+        let m = CheckRequestModel.init(USERNAME: signUpMobileField.text, SOCIALNAME: signUpUserField.text)
         
         print(m.getParams())
         
@@ -373,36 +414,42 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
         
         self.view.isUserInteractionEnabled = false
         
-        request(URLs.signUpUrl , method: .post , parameters: m.getParams(), encoding: JSONEncoding.default).responseJSON { response in
+        request(URLs.checkSignUp , method: .post , parameters: m.getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
             
             if let JSON = response.result.value {
                 
                 print("JSON: \(JSON)")
                 
-                if(SignUpResponseModel.init(json: JSON as! JSON).code == "200"){
-                    
-                    let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                if(CheckResponseModel.init(json: JSON as! JSON).code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
+                
+                if(CheckResponseModel.init(json: JSON as! JSON).code == "200"){
                     
                     self.view.isUserInteractionEnabled = true
                     
-                    let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ActivationCodeViewController") as! ActivationCodeViewController
+                    UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                     
-                    nextViewController.userName = self.signUpMobileField.text
+                        self.invitationCodeView.alpha = 1
+                        
+                    },completion : nil)
                     
-                    nextViewController.password = self.signUpPasswordField.text
+                    GlobalFields.invitationDing = CheckResponseModel.init(json: JSON as! JSON).data?.invite_friends
                     
-                    nextViewController.upRequest = m
+                    GlobalFields.completionDing = CheckResponseModel.init(json: JSON as! JSON).data?.completing_the_profile
                     
-                    self.navigationController?.pushViewController(nextViewController, animated: true)
+                    let text : String = "اگر معرف دارید کد آن را وارد کنید و " + GlobalFields.registered_with_invite_code! + " امتیاز دریافت کنید"
+                    
+                    self.invitationLabelText.text = text
                     
                     self.secondSignUpAnimate()
                     
-                }else if(SignUpResponseModel.init(json: JSON as! JSON).code == "501"){
+                }else if(CheckResponseModel.init(json: JSON as! JSON).code == "501"){
                     
                     self.secondSignUpAnimate()
                     
-                    Notifys().notif(message: SignUpResponseModel.init(json: JSON as! JSON).msg ?? "قبلا ثبت نام کرده اید!"){alarm in
+                    Notifys().notif(message: CheckResponseModel.init(json: JSON as! JSON).msg ?? "قبلا ثبت نام کرده اید!"){alarm in
                         
                         self.present(alarm, animated: true, completion: nil)
                         
@@ -412,7 +459,7 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
                     
                     self.secondSignUpAnimate()
                     
-                    Notifys().notif(message: SignUpResponseModel.init(json: JSON as! JSON).msg){alarm in
+                    Notifys().notif(message: CheckResponseModel.init(json: JSON as! JSON).msg){alarm in
                         
                         self.present(alarm, animated: true, completion: nil)
                         
@@ -492,6 +539,138 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
         
     }
     
+    //MARK: InvitationMethodes
+    
+    @IBAction func invitationSignUp(_ sender: Any) {
+        
+        let m = SignUpRequestModel(USERNAME: signUpMobileField.text, PASSWORD: signUpPasswordField.text, SOCIALNAME: signUpUserField.text, GENDER: "", BDATE: "", NAME: "", FAMILYNAME: "", EMAIL: "" , INVITE: self.invitationCodeText.text)
+        
+        print(m.getParams())
+        
+        invitationFirstAnimate()
+        
+        self.view.isUserInteractionEnabled = false
+        
+        request(URLs.signUpUrl , method: .post , parameters: m.getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON: \(JSON)")
+                
+                if(SignUpResponseModel.init(json: JSON as! JSON).code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
+                
+                if(SignUpResponseModel.init(json: JSON as! JSON).code == "200"){
+                    
+                    let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                    
+                    self.view.isUserInteractionEnabled = true
+                    
+                    let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ActivationCodeViewController") as! ActivationCodeViewController
+                    
+                    nextViewController.userName = self.signUpMobileField.text
+                    
+                    nextViewController.password = self.signUpPasswordField.text
+                    
+                    nextViewController.upRequest = m
+                    
+                    self.navigationController?.pushViewController(nextViewController, animated: true)
+                    
+                    self.secondInvitationAnimate()
+                    
+                }else if(SignUpResponseModel.init(json: JSON as! JSON).code == "501"){
+                    
+                    self.secondInvitationAnimate()
+                    
+                    Notifys().notif(message: SignUpResponseModel.init(json: JSON as! JSON).msg ?? "قبلا ثبت نام کرده اید!"){alarm in
+                        
+                        self.present(alarm, animated: true, completion: nil)
+                        
+                    }
+                    
+                }else {
+                    
+                    self.secondInvitationAnimate()
+                    
+                    Notifys().notif(message: SignUpResponseModel.init(json: JSON as! JSON).msg){alarm in
+                        
+                        self.present(alarm, animated: true, completion: nil)
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    
+    func invitationFirstAnimate(){
+        
+        self.view.isUserInteractionEnabled = false
+        
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            self.invitationSignUpButton.frame.size.width = self.invitationSignUpButton.frame.height
+            
+            self.invitationSignUpButton.normalTextColor = self.invitationSignUpButton.normalBackgroundColor
+            
+            self.invitationSignUpButton.frame.origin.x = self.signUpView.frame.width / 2 - self.invitationSignUpButton.frame.height / 2
+            
+        }){completion in
+            
+            self.animationView = LOTAnimationView(name: "finall")
+            
+            self.animationView?.frame.size.height = self.signUpsignUpButton.frame.height
+            
+            self.animationView?.frame.size.width = self.signUpsignUpButton.frame.height
+            
+            self.animationView?.frame.origin.y = self.signUpView.frame.origin.y + self.invitationSignUpButton.frame.origin.y
+            
+            self.animationView?.frame.origin.x = self.view.frame.width / 2 - self.invitationSignUpButton.frame.height / 2
+            
+            self.animationView?.contentMode = UIViewContentMode.scaleAspectFit
+            
+            self.animationView?.alpha = 1
+            
+            self.view.addSubview(self.animationView!)
+            
+            self.animationView?.loopAnimation = true
+            
+            self.animationView?.play()
+            
+        }
+        
+    }
+    
+    func secondInvitationAnimate(){
+        
+        self.view.isUserInteractionEnabled = true
+        
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            self.invitationSignUpButton.frame.size.width = self.view.frame.width * 145 / 375
+            
+            self.invitationSignUpButton.normalTextColor = UIColor.init(hex: "ffffff")
+            
+            self.invitationSignUpButton.frame.origin.x = self.signUpView.frame.width / 2 - (self.view.frame.width * 145 / 375) / 2
+            
+        }){completion in
+            
+            self.animationView?.alpha = 0
+            
+            self.animationView?.stop()
+            
+        }
+        
+    }
+    
+    
+    
     
     //MARK: - GlobalMethods
     
@@ -502,6 +681,9 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
         UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
             
             self.signUpView.alpha = 0
+            
+            self.invitationCodeView.alpha = 0
+            
             
             self.loginUnderLineLabel.frame.origin.x = self.view.frame.width / 2
             
@@ -517,6 +699,8 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
             UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                 
                 self.loginView.alpha = 1
+                
+                self.invitationCodeText.text = ""
                 
                 self.loginUnderLineLabel.frame.origin.x = self.loginButton.frame.origin.x
                 
@@ -544,6 +728,8 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
             
             self.loginView.alpha = 0
             
+            self.invitationCodeView.alpha = 0
+            
             self.loginUnderLineLabel.frame.origin.x = self.view.frame.width / 2 - self.loginUnderLineLabel.frame.size.width
             
             self.loginUnderLineLabel.alpha = 0
@@ -557,7 +743,9 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
             
             UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                 
-                self.signUpView.alpha = 1
+                self.signUpView.alpha = 1  
+                
+                self.invitationCodeText.text = ""
                 
                 self.loginUnderLineLabel.frame.origin.x = self.signUpButton.frame.origin.x
                 
@@ -637,6 +825,13 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
             signUpPasswordField.window?.makeKeyAndVisible()
             break
             
+        case invitationCodeText:
+            setColorViews()
+            invitationCodeBorder.borderColor = UIColor.init(hex: "2490FC")
+            invitationCodeText.becomeFirstResponder()
+            invitationCodeText.window?.makeKeyAndVisible()
+            break
+            
         default:
             break
         }
@@ -678,6 +873,12 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
             self.view.endEditing(true)
             break
             
+        case invitationCodeText:
+            setColorViews()
+            invitationCodeBorder.borderColor = UIColor.init(hex: "2490FC")
+            self.view.endEditing(true)
+            break
+            
         default:
             self.view.endEditing(true)
             
@@ -698,6 +899,8 @@ class AuthenticationViewController: UIViewController , UITextFieldDelegate {
         signUpPasswordBorder.borderColor = UIColor.init(hex: "D6DCE0")
         
         signUpMobileBorder.borderColor = UIColor.init(hex: "D6DCE0")
+        
+        invitationCodeBorder.borderColor = UIColor.init(hex: "D6DCE0")
         //d6dce0
     }
     

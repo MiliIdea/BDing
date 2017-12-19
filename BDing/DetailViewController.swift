@@ -325,13 +325,16 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                 
                 let time1 : Int = (Int(h1)! * 60) + Int(m1)!
                 
-                let time2 : Int = (Int(h2)! * 60) + Int(m2)!
+                var time2 : Int = (Int(h2)! * 60) + Int(m2)!
                 
                 let mainTime : Int = (Int(hour) * 60) + Int(minutes)
                 
                 print(time1)
                 print(time2)
                 print(mainTime)
+                if(time2 < time1){
+                    time2 += (24 * 60 - time1)
+                }
                 
                 if((mainTime < time1 || mainTime > time2) && isOpen == false){
                     
@@ -459,7 +462,9 @@ class DetailViewController: UIViewController , UIScrollViewDelegate {
                         print("JSON ----------setCoin----------->>>> " , JSON)
                         
                         let obj = SetCoinResponseModel.init(json: JSON as! JSON)
-                        
+                        if(obj?.code == "5005"){
+                            GlobalFields().goErrorPage(viewController: self)
+                        }
                         if ( obj?.code == "200" ){
                             
                             self.progressBarView.tintColor = UIColor.green

@@ -96,6 +96,8 @@ class ProfileData : Decodable{
         
         self.get_coin = "get_coin" <~~ json
         
+        GlobalFields.get_coin = self.get_coin
+        
     }
     
 }

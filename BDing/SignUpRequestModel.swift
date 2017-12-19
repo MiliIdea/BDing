@@ -12,7 +12,7 @@ class SignUpRequestModel {
     
     // describtion : bdate should be d/m/y in miladi
     
-    init(USERNAME: String! , PASSWORD: String! , SOCIALNAME : String! , GENDER :String? , BDATE : String? , NAME: String? , FAMILYNAME : String? ,EMAIL : String?) {
+    init(USERNAME: String! , PASSWORD: String! , SOCIALNAME : String! , GENDER :String? , BDATE : String? , NAME: String? , FAMILYNAME : String? ,EMAIL : String? , INVITE : String?) {
         
         self.USERNAME = USERNAME
         
@@ -54,6 +54,8 @@ class SignUpRequestModel {
         
         self.HASH =  temp?.md5()
         
+        self.INVITE = INVITE
+        
     }
     
     var FULLNAME: String?
@@ -80,8 +82,10 @@ class SignUpRequestModel {
     
     var HASH: String!
     
+    var INVITE: String?
+    
     func getParams() -> [String: Any]{
-        return ["username": USERNAME , "password": PASSWORD , "type":TYPE , "hash": HASH , "key": KEY , "gender": GENDER , "bdate": BDATE , "fullname": FULLNAME , "email" : EMAIL, "social_name" : SOCIALNAME , "name" : NAME , "family" : FAMILYNAME]
+        return ["username": USERNAME , "password": PASSWORD , "type":TYPE , "hash": HASH , "key": KEY , "gender": GENDER , "bdate": BDATE , "fullname": FULLNAME , "email" : EMAIL, "social_name" : SOCIALNAME , "name" : NAME , "family" : FAMILYNAME , "invite": INVITE]
         
     }
     

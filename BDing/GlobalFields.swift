@@ -22,9 +22,109 @@ class GlobalFields {
     
     static var BEACON_RANG : Int = 2000
     
+    static var invitationDing : String? = ""
+    
+    static var completionDing : String? = ""
+    
+    static var invitationCode : String? = ""
+    
+    static var get_coin : String? = ""
+    
+    static var registered_with_invite_code : String? = ""
+    
+    static var maintenanceTime : String? = ""
+    
     static var FAQs : [FAQData] = [FAQData]()
     
     static var goOnlinePay : Bool = false
+    
+    public func goErrorPage(viewController : UIViewController){
+        
+        let vc = (viewController.storyboard?.instantiateViewController(withIdentifier: "ErrorLoginViewController"))! as! ErrorLoginViewController
+        
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            viewController.addChildViewController(vc)
+            
+            vc.view.frame = CGRect(x:0,y: 0,width: viewController.view.frame.size.width, height: viewController.view.frame.size.height)
+            
+            viewController.view.addSubview(vc.view)
+            
+            vc.didMove(toParentViewController: viewController)
+            
+            vc.view.alpha = 1
+            
+            viewController.view.alpha = 1
+            
+        },completion : nil)
+        
+    }
+    
+    public func goMaintenancePage(viewController : UIViewController){
+        
+        let vc = (viewController.storyboard?.instantiateViewController(withIdentifier: "MaintenanceViewController"))! as! MaintenanceViewController
+        
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            viewController.addChildViewController(vc)
+            
+            vc.view.frame = CGRect(x:0,y: 0,width: viewController.view.frame.size.width, height: viewController.view.frame.size.height)
+            
+            viewController.view.addSubview(vc.view)
+            
+            vc.didMove(toParentViewController: viewController)
+            
+            vc.view.alpha = 1
+            
+            viewController.view.alpha = 1
+            
+        },completion : nil)
+        
+    }
+    
+    public func goUpdatePage(viewController : UIViewController){
+        
+        let vc = (viewController.storyboard?.instantiateViewController(withIdentifier: "UpdateViewController"))! as! UpdateViewController
+        
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            viewController.addChildViewController(vc)
+            
+            vc.view.frame = CGRect(x:0,y: 0,width: viewController.view.frame.size.width, height: viewController.view.frame.size.height)
+            
+            viewController.view.addSubview(vc.view)
+            
+            vc.didMove(toParentViewController: viewController)
+            
+            vc.view.alpha = 1
+            
+            viewController.view.alpha = 1
+            
+        },completion : nil)
+        
+    }
+    
+    public func goFourceUpdatePage(viewController : UIViewController){
+        
+        let vc = (viewController.storyboard?.instantiateViewController(withIdentifier: "FourceUpdateViewController"))! as! FourceUpdateViewController
+        
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            
+            viewController.addChildViewController(vc)
+            
+            vc.view.frame = CGRect(x:0,y: 0,width: viewController.view.frame.size.width, height: viewController.view.frame.size.height)
+            
+            viewController.view.addSubview(vc.view)
+            
+            vc.didMove(toParentViewController: viewController)
+            
+            vc.view.alpha = 1
+            
+            viewController.view.alpha = 1
+            
+        },completion : nil)
+        
+    }
     
     struct indoorPoint {
         

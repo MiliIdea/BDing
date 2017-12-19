@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13533" systemVersion="17B1003" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="BEACON" representedClassName="BEACON" syncable="YES" codeGenerationType="class">
         <attribute name="beaconDataJSON" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
@@ -14,6 +14,9 @@
         <attribute name="imageCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageData" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Notify" representedClassName="Notify" syncable="YES" codeGenerationType="class">
+        <attribute name="isOn" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
     <entity name="SHOWCASE" representedClassName="SHOWCASE" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -25,8 +28,9 @@
     </entity>
     <elements>
         <element name="BEACON" positionX="-63" positionY="18" width="128" height="165"/>
-        <element name="SHOWCASE" positionX="-63" positionY="63" width="128" height="60"/>
         <element name="IMAGE" positionX="-63" positionY="9" width="128" height="75"/>
+        <element name="SHOWCASE" positionX="-63" positionY="63" width="128" height="60"/>
         <element name="USER" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="Notify" positionX="-63" positionY="63" width="128" height="60"/>
     </elements>
 </model>

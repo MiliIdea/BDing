@@ -42,6 +42,8 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
     
     var loginBool : Bool = false
     
+    var haveUpdate : Bool = false
+    
     var animationView : LOTAnimationView?
     
     //---------------------------------------------------------------------------------------------------//
@@ -332,15 +334,19 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
                     
                     self.loginBool = true
                     
+                    if(obj.data?.has_update == "true"){
+                        self.haveUpdate = true
+                    }
+                    
                     self.goNextView()
                     
                 }else if(obj.code == "9000"){
                     
-                    Notifys().notif(message: obj.msg ?? "pls update your app", button1Title: "دانلود", button2Title: "خروج"){ alarm in
-                        
-                        self.present(alarm , animated : true , completion : nil)
-                        
-                    }
+                    GlobalFields().goFourceUpdatePage(viewController: self)
+                    
+                }else if(obj.code == "8001"){
+                    
+                    GlobalFields().goMaintenancePage(viewController: self)
                     
                 }else{
                     
@@ -365,11 +371,19 @@ class ViewController: UIViewController , UIPageViewControllerDataSource{
         
         if(self.profileBool && !self.beaconBool && self.catBool && self.loginBool){
             
-            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-            
-            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController") as! UITabBarController
-            
-            self.present(nextViewController, animated:true, completion:nil)
+            if(self.haveUpdate == true){
+                
+                GlobalFields().goUpdatePage(viewController: self)
+                
+            }else{
+                
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                
+                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController") as! UITabBarController
+                
+                self.present(nextViewController, animated:true, completion:nil)
+                
+            }
             
         }
         

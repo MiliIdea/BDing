@@ -62,6 +62,8 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
     
     let showcase = MaterialShowcase()
     
+    var indexPay : Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -180,13 +182,11 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
             
         }
         
-        for payUuids in GlobalFields.PAY_UUIDS!{
-            
-            let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: payUuids.lowercased())! as UUID, identifier: "Bding")
-            
-            locationManager.startRangingBeacons(in: region)
-            
-        }
+        self.indexPay = 0
+        
+        let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: GlobalFields.PAY_UUIDS![indexPay].lowercased())! as UUID, identifier: "Bding")
+        
+        self.locationManager.startRangingBeacons(in: region)
         
         locationManager.distanceFilter = 1
         
@@ -414,6 +414,10 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
                     
                     self.popupView.isUserInteractionEnabled = true
                     
+                    if(PaymentResponseModel.init(json: JSON as! JSON)?.code == "5005"){
+                        GlobalFields().goErrorPage(viewController: self)
+                    }
+                    
                     if( PaymentResponseModel.init(json: JSON as! JSON)?.code == "200"){
 
                         request(URLs.verifyPayment , method: .post , parameters: PaymentVerifyRequestModel.init(CODE: PaymentResponseModel.init(json: JSON as! JSON)?.data?.code).getParams(), encoding: JSONEncoding.default).responseJSON { response in
@@ -493,6 +497,10 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
                 
                 print("JSON ----------Payment Verify----------->>>> " ,JSON)
                 //create my coupon response model
+                
+                if(PaymentVerifyResponseModel.init(json: JSON as! JSON)?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
                 
                 if( PaymentVerifyResponseModel.init(json: JSON as! JSON)?.code == "200"){
                     
@@ -623,18 +631,28 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
         
         if(beacons.count == 0){
             
-            Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
+            if(indexPay + 1 <= (GlobalFields.PAY_UUIDS?.count)! - 1){
+                indexPay += 1
+                let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: GlobalFields.PAY_UUIDS![indexPay].lowercased())! as UUID, identifier: "Bding")
                 
-                self.present(alarm, animated: true, completion: nil)
+                self.locationManager.startRangingBeacons(in: region)
                 
+                return
+            }else{
+            
+                Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
+                    
+                    self.present(alarm, animated: true, completion: nil)
+                    
+                }
+                
+                self.secondAnimate()
+                
+                locationManager.stopRangingBeacons(in: region)
+                
+                return
+            
             }
-            
-            self.secondAnimate()
-            
-            locationManager.stopRangingBeacons(in: region)
-            
-            return
-            
         }
 
         var payBeacons : [CLBeacon] = [CLBeacon]()
@@ -672,15 +690,22 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
         }
         
         if(payBeacons.count == 0){
-            
-            Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
+            if(indexPay + 1 <= (GlobalFields.PAY_UUIDS?.count)! - 1){
+                indexPay += 1
+                let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: GlobalFields.PAY_UUIDS![indexPay].lowercased())! as UUID, identifier: "Bding")
                 
-                self.present(alarm, animated: true, completion: nil)
+                self.locationManager.startRangingBeacons(in: region)
                 
-                self.secondAnimate()
+                return
+            }else{
+                Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
                 
+                    self.present(alarm, animated: true, completion: nil)
+                
+                    self.secondAnimate()
+                
+                }
             }
-            
         }else{
             
             popupRequestFor(beacons: payBeacons)
@@ -736,6 +761,10 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
                 print("JSON ----------GET PAY TITLE----------->>>> " ,JSON)
                 //create my coupon response model
                 
+                if(PayTitleResponseModel.init(json: JSON as! JSON)?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
+                
                 if( PayTitleResponseModel.init(json: JSON as! JSON)?.code == "200"){
                     
                     self.secondAnimate()
@@ -753,14 +782,22 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
                     
                     if(payBeacons.count == 0){
                         
-                        Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
+                        if(self.indexPay + 1 <= (GlobalFields.PAY_UUIDS?.count)! - 1){
+                            self.indexPay += 1
+                            let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: GlobalFields.PAY_UUIDS![self.indexPay].lowercased())! as UUID, identifier: "Bding")
                             
-                            self.present(alarm, animated: true, completion: nil)
+                            self.locationManager.startRangingBeacons(in: region)
                             
-                            self.secondAnimate()
+                            return
+                        }else{
+                            Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
                             
+                                self.present(alarm, animated: true, completion: nil)
+                            
+                                self.secondAnimate()
+                            
+                            }
                         }
-                        
                     }else{
                         
                         self.popupRequestFor(beacons: payBeacons)
@@ -908,6 +945,11 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
                 
                 print("JSON ----------MY HISTORY----------->>>> ")
                 //create my coupon response model
+                
+                if(PayListResponseModel.init(json: JSON as! JSON)?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
+                
                 if(PayListResponseModel.init(json: JSON as! JSON)?.code == "200"){
                     
                     UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
@@ -993,6 +1035,10 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
                 
                 print("JSON ----------GET COUPON----------->>>> " ,JSON)
                 //create my coupon response model
+                
+                if(CouponListResponseModel.init(json: JSON as! JSON)?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
                 
                 if(CouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
                     
@@ -1098,6 +1144,10 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
                 
                 print("JSON ----------GET COUPON----------->>>> " ,JSON)
                 //create my coupon response model
+                
+                if(CouponListResponseModel.init(json: JSON as! JSON)?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
                 
                 if(CouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
                     

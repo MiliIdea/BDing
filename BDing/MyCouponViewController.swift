@@ -264,6 +264,9 @@ class MyCouponViewController: UIViewController ,UITableViewDelegate ,UITableView
                 
                 print("JSON ----------MY COUPON----------->>>> " ,JSON)
                 //create my coupon response model
+                if(MyCouponListResponseModel.init(json: JSON as! JSON)?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
                 
                 if( MyCouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
                     
