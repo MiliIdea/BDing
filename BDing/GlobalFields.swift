@@ -38,6 +38,8 @@ class GlobalFields {
     
     static var goOnlinePay : Bool = false
     
+    static var needUpdateMyCoupon : Bool = true
+    
     public func goErrorPage(viewController : UIViewController){
         
         let vc = (viewController.storyboard?.instantiateViewController(withIdentifier: "ErrorLoginViewController"))! as! ErrorLoginViewController

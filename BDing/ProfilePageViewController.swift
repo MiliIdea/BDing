@@ -30,6 +30,10 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
    
     @IBOutlet weak var name: UILabel!
     
+    
+    @IBOutlet weak var socialName: UILabel!
+    
+    
     @IBOutlet weak var coinValue: UILabel!
     
     @IBOutlet weak var closeImage: UIImageView!
@@ -218,7 +222,9 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         let s : String? = GlobalFields.PROFILEDATA?.social_name
         
-        name.text = s
+        socialName.text = "@" + s!
+        
+        name.text = (GlobalFields.PROFILEDATA?.name)! + " " + (GlobalFields.PROFILEDATA?.family)!
 
         if(GlobalFields.PROFILEDATA?.get_coin == "yes"){
 

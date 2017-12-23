@@ -10,6 +10,8 @@ import Foundation
 
 class URLs {
     
+//    static let server = "http://test.bding.ir/rest/"
+    
     static let server = "http://www.bding.ir/rest/"
     
     static let signUpUrl = server + "register"

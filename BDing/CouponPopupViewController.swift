@@ -298,6 +298,8 @@ class CouponPopupViewController: UIViewController {
                     
                     self.close("")
                     
+                    GlobalFields.needUpdateMyCoupon = true
+                    
                     Notifys().notif(message: BuyCouponResponseModel.init(json: JSON as! JSON)?.data?.msg ?? "خرید با موفقیت انجام شد"){ alert in
                         
                         self.present(alert, animated: true, completion: nil)

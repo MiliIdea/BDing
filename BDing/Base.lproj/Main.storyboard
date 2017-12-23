@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Kfd-OH-fb0">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Kfd-OH-fb0">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -2407,7 +2407,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="6Je-j6-tHW">
-                                <rect key="frame" x="0.0" y="64" width="375" height="545"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </mapView>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FQe-ea-0Jy">
@@ -2544,7 +2544,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4q9-cQ-Q18" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7614" y="-1485"/>
+            <point key="canvasLocation" x="7613.6000000000004" y="-1485.6071964017992"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="hAp-8D-b1I">
@@ -3300,6 +3300,7 @@
                         <outlet property="porseshhaButton" destination="cEk-u8-VIZ" id="XMG-AU-llq"/>
                         <outlet property="profilePicButton" destination="LGF-2Y-kHi" id="U8i-vS-OkL"/>
                         <outlet property="settingButton" destination="xK4-Rh-6jS" id="aNs-Pu-lC9"/>
+                        <outlet property="socialName" destination="9CU-sy-qeX" id="YoE-nQ-ppb"/>
                         <outlet property="viewContainerAtBottom" destination="vgt-8W-bbw" id="DM7-cG-x9w"/>
                     </connections>
                 </viewController>
@@ -5118,6 +5119,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="g1I-cp-EnW"/>
-        <segue reference="dHq-1R-2e7"/>
+        <segue reference="AaG-9h-TNg"/>
     </inferredMetricsTieBreakers>
 </document>

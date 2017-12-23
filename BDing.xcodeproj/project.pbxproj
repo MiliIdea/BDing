@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		011300AA7CE0DFD8B7369FA2 /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1188713E1FD6C2B600C2E569 /* Pods_BDing.framework */; };
 		110044541F07AD1000BAF131 /* cartoon.gif in Resources */ = {isa = PBXBuildFile; fileRef = 110044531F07AD1000BAF131 /* cartoon.gif */; };
 		1102C2B51F4C13B8007FBFD0 /* BuyCouponResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1102C2B41F4C13B8007FBFD0 /* BuyCouponResponseModel.swift */; };
 		1102C2B71F4C13E1007FBFD0 /* BuyCouponData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1102C2B61F4C13E1007FBFD0 /* BuyCouponData.swift */; };
@@ -276,6 +275,7 @@
 		11FE15F01EF51AB000B8AC38 /* ding2.svg in Resources */ = {isa = PBXBuildFile; fileRef = 11FE15EF1EF51AB000B8AC38 /* ding2.svg */; };
 		5C65055DE2496E5B5DF9FCA5 /* Pods_BDingUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBFBC709538EF38D5F97E397 /* Pods_BDingUITests.framework */; };
 		9B590B220CE391E6E3DF01F6 /* Pods_BDingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB1DEBF668C472A761E76D2D /* Pods_BDingTests.framework */; };
+		A3C82327850AF4B45CD5CB2D /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 111044141FEA938500408EB0 /* Pods_BDing.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -428,6 +428,7 @@
 		110EB5381E9A404F00431534 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		110EB53A1E9A4EA500431534 /* PicDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PicDataModel.swift; sourceTree = "<group>"; };
 		110F15AD1F76863B00268550 /* MaterialShowcase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaterialShowcase.swift; sourceTree = "<group>"; };
+		111044141FEA938500408EB0 /* Pods_BDing.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_BDing.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1110B9AF1EC32D5000EF182F /* ActivationCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivationCodeViewController.swift; sourceTree = "<group>"; };
 		111180BA1FDBCD8000368417 /* SignInData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInData.swift; sourceTree = "<group>"; };
 		111180BD1FDC141900368417 /* invite.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = invite.json; sourceTree = "<group>"; };
@@ -732,7 +733,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				117F64D61FE656E00055A6F7 /* Pushe.framework in Frameworks */,
-				011300AA7CE0DFD8B7369FA2 /* Pods_BDing.framework in Frameworks */,
+				A3C82327850AF4B45CD5CB2D /* Pods_BDing.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -758,6 +759,7 @@
 		110B9DB11EC183E900F9BD02 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				111044141FEA938500408EB0 /* Pods_BDing.framework */,
 				1188713E1FD6C2B600C2E569 /* Pods_BDing.framework */,
 				1154E3FA1FD29F4C00B3478F /* Pods_BDing.framework */,
 				115689A41F30AB1900673052 /* Pods_BDing.framework */,

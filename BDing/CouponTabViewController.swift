@@ -47,13 +47,20 @@ class CouponTabViewController: UIViewController ,UITableViewDelegate ,UITableVie
         segmentedControl.setTitleTextAttributes([NSFontAttributeName: font] , for: .normal)
         
         self.requestForGetCoupon()
-        self.requestForMyCoupon()
 
         // Do any additional setup after loading the view.
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        
         myDingLabel.text = GlobalFields.PROFILEDATA?.all_coin
+        
+        if(GlobalFields.needUpdateMyCoupon == true){
+            
+            self.requestForMyCoupon()
+            
+        }
+        
     }
     
     
@@ -81,6 +88,11 @@ class CouponTabViewController: UIViewController ,UITableViewDelegate ,UITableVie
                 myCouponsTable.alpha = 0
                 emptyImage.alpha = 1
                 emptyImage.image = UIImage.init(named: "emptyMyCoupon")
+            }
+            if(GlobalFields.needUpdateMyCoupon == true){
+                
+                self.requestForMyCoupon()
+                
             }
         }
         
@@ -127,6 +139,8 @@ class CouponTabViewController: UIViewController ,UITableViewDelegate ,UITableVie
             let cell = tableView.dequeueReusableCell(withIdentifier: "couponCell", for: indexPath) as! CouponTableViewCell
             
             cell.dingLabel.text = coupons?[indexPath.row].coin
+            
+            cell.couponImage.image = UIImage.init(named: "couponD")
             
             LoadPicture().proLoad(view: cell.couponImage,picType: "coupon" , picModel: (coupons?[indexPath.row].url_pic)!){ resImage in
                 
@@ -227,9 +241,7 @@ class CouponTabViewController: UIViewController ,UITableViewDelegate ,UITableVie
             vc.view.frame = CGRect(x:0,y: 0,width: self.view.frame.size.width, height: self.view.frame.size.height)
             
             vc.view.tag = 1234
-            
-            //            self.view.addSubview(vc.view)
-            
+
             UIView.transition(with: self.view, duration: 0.4 , options: UIViewAnimationOptions.curveEaseIn ,animations: {self.view.addSubview(vc.view)}, completion: nil)
             
             vc.didMove(toParentViewController: self)
@@ -239,10 +251,7 @@ class CouponTabViewController: UIViewController ,UITableViewDelegate ,UITableVie
             vc.view.alpha = 1
             
             self.view.alpha = 1
-            
-            //        }, completion: nil)
-            
-            
+
             self.myCouponsTable.deselectRow(at: indexPath, animated: true)
             
         }else{
@@ -266,9 +275,7 @@ class CouponTabViewController: UIViewController ,UITableViewDelegate ,UITableVie
                 vc.view.alpha = 1
                 
                 self.view.alpha = 1
-                
-                
-                
+      
             },completion : nil)
             
             
@@ -476,6 +483,8 @@ class CouponTabViewController: UIViewController ,UITableViewDelegate ,UITableVie
                     GlobalFields().goErrorPage(viewController: self)
                 }
                 if( MyCouponListResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                    
+                    GlobalFields.needUpdateMyCoupon = false
 
                     UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
 
