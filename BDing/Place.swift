@@ -23,21 +23,37 @@
 import Foundation
 import UIKit
 import CoreLocation
-
 class Place: ARAnnotation {
-  
     let placeName: String
-    let image: UIImage?
+    var image: UIImage?
     
-  
-    init(location: CLLocation, name: String, image: UIImage? , identifier : String , uuid_major_minor : String? ,x : Double , y : Double , z : Double) {
+    
+    init(location: CLLocation, name: String, image: UIImage? , identifier : String) {
         placeName = name
         self.image = image
-        super.init(identifier: identifier , title: name , location: location ,uuid_major_minor: uuid_major_minor , x : x , y : y , z : z )!
+        super.init(identifier: identifier , title: name , location: location)!
+        
+    }
     
-  }
-  
-  override var description: String {
-    return placeName
-  }
+    override var description: String {
+        return placeName
+    }
 }
+//class Place: ARAnnotation {
+//
+//    let placeName: String
+//    let image: UIImage?
+//
+//
+//    init(location: CLLocation, name: String, image: UIImage? , identifier : String , uuid_major_minor : String? ,x : Double , y : Double , z : Double) {
+//        placeName = name
+//        self.image = image
+//        super.init(identifier: identifier , title: name , location: location ,uuid_major_minor: uuid_major_minor , x : x , y : y , z : z )!
+//
+//  }
+//
+//  override var description: String {
+//    return placeName
+//  }
+//}
+

@@ -15,7 +15,7 @@ class FourceUpdateViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        downloadButton.cornerRadius = downloadButton.frame.height / 2
+//        downloadButton.cornerRadius = downloadButton.frame.height / 2
         // Do any additional setup after loading the view.
     }
 
@@ -25,7 +25,8 @@ class FourceUpdateViewController: UIViewController {
     }
     
     @IBAction func download(_ sender: Any) {
-         UIApplication.shared.openURL(NSURL(string: "https://new.sibapp.com/applications/bding") as! URL)
+       
+        UIApplication.shared.openURL(NSURL(string: "https://new.sibapp.com/applications/bding") as! URL)
     }
     
     

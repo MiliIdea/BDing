@@ -512,22 +512,43 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
         arViewController.trackingManager.reloadDistanceFilter = 75
         var annots : [ARAnnotation] = [ARAnnotation]()
         
-        self.calculateCoordinates()
+//        self.calculateCoordinates()
         
         var count = 0
+
+        for p in pins {
+            
+            if(count > 5){
+                annots.append(Place.init(location: CLLocation.init(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude), name: p.title ?? "", image: images[pins.index(of: p)!], identifier: "id"))
+                
+            }else{
+                annots.append(Place.init(location: CLLocation.init(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude), name: p.title ?? "", image: nil, identifier: "id"))
+                
+            }
+            count += 1
+            
+        }
         
-//        for ic in  GlobalFields.indoorCoordinates {
-//            
-//            annots.append(Place.init(location: .init(latitude: ic.coordinate.latitude, longitude: ic.coordinate.longitude), name: "sample", image: nil, identifier: ic.beacon_code, uuid_major_minor: ic.beacon_code , x : GlobalFields.indoorPoints[count].x , y : GlobalFields.indoorPoints[count].y , z : GlobalFields.indoorPoints[count].z))
-//        
-//            count += 1
-//        }
+        
         
         arViewController.setAnnotations(annots)
         
         arViewController.uiOptions.closeButtonEnabled = true
         
         self.present(arViewController, animated: true, completion: nil)
+        
+//        for ic in  GlobalFields.indoorCoordinates {
+//
+//            annots.append(Place.init(location: .init(latitude: ic.coordinate.latitude, longitude: ic.coordinate.longitude), name: "sample", image: nil, identifier: ic.beacon_code, uuid_major_minor: ic.beacon_code , x : GlobalFields.indoorPoints[count].x , y : GlobalFields.indoorPoints[count].y , z : GlobalFields.indoorPoints[count].z))
+//
+//            count += 1
+//        }
+//
+//        arViewController.setAnnotations(annots)
+//
+//        arViewController.uiOptions.closeButtonEnabled = true
+//
+//        self.present(arViewController, animated: true, completion: nil)
         
         
     }

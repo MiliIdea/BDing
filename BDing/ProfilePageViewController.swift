@@ -106,7 +106,7 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                     
                     let obj = PicDataModel.init(json: image as! JSON)
                     
-                    if(obj?.data != nil){
+                    if(obj?.data != nil && obj?.data != ""){
                         
                         let imageData = NSData(base64Encoded: (obj?.data!)!, options: .ignoreUnknownCharacters)
                         
@@ -371,6 +371,67 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         SaveAndLoadModel().deleteSpecificItemIn(entityName: "IMAGE", keyAttribute: "imageCode", item: coding.md5())
         
     }
+    
+    
+    
+    @IBAction func goCashier(_ sender: Any) {
+        print(CLoginRequestModel.init().getParams())
+        print()
+        request(URLs.cLogin , method: .post , parameters: CLoginRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print(response)
+            print()
+            if let JSON = response.result.value {
+                
+                print("JSON ----------Login Cashier----------->>>> " , JSON)
+                
+                let obj = CLoginResponseModel.init(json: JSON as! JSON)
+                
+                if ( obj?.code == "200" ){
+                    
+                    request(URLs.cReportCash , method: .post , parameters: CReportCashRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                        print()
+                        
+                        if let JSON2 = response.result.value {
+                            
+                            print("JSON ----------Cash Report----------->>>> " , JSON2)
+                            
+                            let obj2 = CReportCashResponseModel.init(json: JSON2 as! JSON)
+                            
+                            if ( obj2?.code == "200" ){
+                               
+                                let objVC : UIViewController = (self.storyboard?.instantiateViewController(withIdentifier: "CashDeskHomeViewController"))! as UIViewController
+                                
+                                self.navigationController?.isToolbarHidden = true
+ 
+                                self.tabBarController?.tabBar.isHidden = true
+                                
+                            self.navigationController?.pushViewController(objVC, animated: true)
+//                                let objNavi : UINavigationController = UINavigationController(rootViewController: objVC)
+//
+//                                objNavi.hidesBarsOnTap = true
+//
+//                                objNavi.isToolbarHidden = true
+//
+//                                objNavi.isNavigationBarHidden = true
+                                
+//                                let appDelegate: AppDelegate = (UIApplication.shared.delegate as? AppDelegate)!
+//
+//                                appDelegate.window?.rootViewController = objNavi
+//                                self.navigationController?.pushViewController(objNavi, animated: true)
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -1,0 +1,25 @@
+//
+//  CDetermineResponseModel.swift
+//  BDing
+//
+//  Created by MILAD on 1/27/18.
+//  Copyright © 2018 MILAD. All rights reserved.
+//
+
+import Foundation
+
+class CDetermineResponseModel : Decodable{
+    
+    var code : String?
+    
+    var data : CDetermineData?
+    
+    required init?(json: JSON) {
+        
+        self.code = "code" <~~ json
+        
+        self.data = "data" <~~ json
+        
+    }
+    
+}

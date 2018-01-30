@@ -24,6 +24,16 @@
 		111180BB1FDBCD8000368417 /* SignInData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111180BA1FDBCD8000368417 /* SignInData.swift */; };
 		111180BE1FDC141900368417 /* invite.json in Resources */ = {isa = PBXBuildFile; fileRef = 111180BD1FDC141900368417 /* invite.json */; };
 		111180C01FDC142400368417 /* Gift.json in Resources */ = {isa = PBXBuildFile; fileRef = 111180BF1FDC142400368417 /* Gift.json */; };
+		1113DC92201C596F003C794E /* CPayStatusRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113DC91201C596F003C794E /* CPayStatusRequestModel.swift */; };
+		1113DC94201C5DDB003C794E /* CLoginResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113DC93201C5DDB003C794E /* CLoginResponseModel.swift */; };
+		1113DC98201C5FBF003C794E /* CListBuyerResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113DC97201C5FBF003C794E /* CListBuyerResponseModel.swift */; };
+		1113DC9A201C6035003C794E /* CListBuyerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113DC99201C6035003C794E /* CListBuyerData.swift */; };
+		1113DC9C201C64B9003C794E /* CReportCashResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113DC9B201C64B9003C794E /* CReportCashResponseModel.swift */; };
+		1113DC9E201C64EF003C794E /* CReportCashData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113DC9D201C64EF003C794E /* CReportCashData.swift */; };
+		1113DCA0201C6732003C794E /* CDetermineResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113DC9F201C6732003C794E /* CDetermineResponseModel.swift */; };
+		1113DCA2201C6756003C794E /* CDetermineData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113DCA1201C6756003C794E /* CDetermineData.swift */; };
+		1113DCA4201C67FE003C794E /* CPayStatusResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113DCA3201C67FE003C794E /* CPayStatusResponseModel.swift */; };
+		1113DCA6201C681E003C794E /* CPayStatusData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1113DCA5201C681E003C794E /* CPayStatusData.swift */; };
 		11187B551E98F215009110E2 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11187B541E98F215009110E2 /* DetailViewController.swift */; };
 		1119EA271F8A3FF5007C3590 /* PayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1119EA261F8A3FF5007C3590 /* PayViewController.swift */; };
 		1119EA2A1F8A432F007C3590 /* LastCouponCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1119EA281F8A432F007C3590 /* LastCouponCollectionViewCell.swift */; };
@@ -49,6 +59,7 @@
 		112A6C1C1E9216EB00043C0A /* CategoryListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112A6C1B1E9216EB00043C0A /* CategoryListData.swift */; };
 		112A6C1E1E921C4500043C0A /* SubCategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112A6C1D1E921C4500043C0A /* SubCategoryData.swift */; };
 		112A6C201E92698200043C0A /* CategoryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112A6C1F1E92698200043C0A /* CategoryPageViewController.swift */; };
+		112B45EC201607830054CF0E /* CashDeskHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112B45EB201607830054CF0E /* CashDeskHomeViewController.swift */; };
 		112B7C931E6BECC10020BAF6 /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112B7C921E6BECC10020BAF6 /* AlarmViewController.swift */; };
 		112E88E21FDFB70100FDB817 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112E88E11FDFB70100FDB817 /* NotificationService.swift */; };
 		112E88E61FDFB70100FDB817 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 112E88DF1FDFB70100FDB817 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -98,6 +109,12 @@
 		1142BE1A1F669CFA0033C169 /* hdar_close.png in Resources */ = {isa = PBXBuildFile; fileRef = 1142BE0D1F669CFA0033C169 /* hdar_close.png */; };
 		1142BE1B1F669CFA0033C169 /* hdar_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1142BE0E1F669CFA0033C169 /* hdar_close@2x.png */; };
 		1142BE1C1F669CFA0033C169 /* hdar_close@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1142BE0F1F669CFA0033C169 /* hdar_close@3x.png */; };
+		11475A762018A77D00006BB5 /* CLoginRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11475A752018A77D00006BB5 /* CLoginRequestModel.swift */; };
+		11475A782018A8FF00006BB5 /* CListBuyerRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11475A772018A8FF00006BB5 /* CListBuyerRequestModel.swift */; };
+		11475A7A2018A92B00006BB5 /* CReportCashRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11475A792018A92B00006BB5 /* CReportCashRequestModel.swift */; };
+		11475A7C2018AA1900006BB5 /* CDetermineRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11475A7B2018AA1900006BB5 /* CDetermineRequestModel.swift */; };
+		114A1ECD2017694700A8DD5E /* CashDeskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114A1ECB2017694700A8DD5E /* CashDeskTableViewCell.swift */; };
+		114A1ECE2017694700A8DD5E /* CashDeskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 114A1ECC2017694700A8DD5E /* CashDeskTableViewCell.xib */; };
 		114A4F901F1B735200500C98 /* SendMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114A4F8F1F1B735200500C98 /* SendMessageViewController.swift */; };
 		114C25C21ED2BF1B00C980F3 /* SetCoinResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C25C11ED2BF1B00C980F3 /* SetCoinResponseModel.swift */; };
 		114C25C41ED2BFA700C980F3 /* CoinDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114C25C31ED2BFA700C980F3 /* CoinDataModel.swift */; };
@@ -274,8 +291,8 @@
 		11FDEBB51EACB625002E999E /* GetBeaconRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FDEBB41EACB625002E999E /* GetBeaconRequestModel.swift */; };
 		11FE15F01EF51AB000B8AC38 /* ding2.svg in Resources */ = {isa = PBXBuildFile; fileRef = 11FE15EF1EF51AB000B8AC38 /* ding2.svg */; };
 		5C65055DE2496E5B5DF9FCA5 /* Pods_BDingUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBFBC709538EF38D5F97E397 /* Pods_BDingUITests.framework */; };
+		6E913413FD4C3BC033F8CC27 /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 112B45E92015EAC30054CF0E /* Pods_BDing.framework */; };
 		9B590B220CE391E6E3DF01F6 /* Pods_BDingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB1DEBF668C472A761E76D2D /* Pods_BDingTests.framework */; };
-		A3C82327850AF4B45CD5CB2D /* Pods_BDing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 111044141FEA938500408EB0 /* Pods_BDing.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -433,6 +450,16 @@
 		111180BA1FDBCD8000368417 /* SignInData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInData.swift; sourceTree = "<group>"; };
 		111180BD1FDC141900368417 /* invite.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = invite.json; sourceTree = "<group>"; };
 		111180BF1FDC142400368417 /* Gift.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Gift.json; sourceTree = "<group>"; };
+		1113DC91201C596F003C794E /* CPayStatusRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPayStatusRequestModel.swift; sourceTree = "<group>"; };
+		1113DC93201C5DDB003C794E /* CLoginResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLoginResponseModel.swift; sourceTree = "<group>"; };
+		1113DC97201C5FBF003C794E /* CListBuyerResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CListBuyerResponseModel.swift; sourceTree = "<group>"; };
+		1113DC99201C6035003C794E /* CListBuyerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CListBuyerData.swift; sourceTree = "<group>"; };
+		1113DC9B201C64B9003C794E /* CReportCashResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CReportCashResponseModel.swift; sourceTree = "<group>"; };
+		1113DC9D201C64EF003C794E /* CReportCashData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CReportCashData.swift; sourceTree = "<group>"; };
+		1113DC9F201C6732003C794E /* CDetermineResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDetermineResponseModel.swift; sourceTree = "<group>"; };
+		1113DCA1201C6756003C794E /* CDetermineData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDetermineData.swift; sourceTree = "<group>"; };
+		1113DCA3201C67FE003C794E /* CPayStatusResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPayStatusResponseModel.swift; sourceTree = "<group>"; };
+		1113DCA5201C681E003C794E /* CPayStatusData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPayStatusData.swift; sourceTree = "<group>"; };
 		11187B541E98F215009110E2 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		1119EA261F8A3FF5007C3590 /* PayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayViewController.swift; sourceTree = "<group>"; };
 		1119EA281F8A432F007C3590 /* LastCouponCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastCouponCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -459,6 +486,8 @@
 		112A6C1B1E9216EB00043C0A /* CategoryListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryListData.swift; sourceTree = "<group>"; };
 		112A6C1D1E921C4500043C0A /* SubCategoryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubCategoryData.swift; sourceTree = "<group>"; };
 		112A6C1F1E92698200043C0A /* CategoryPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryPageViewController.swift; sourceTree = "<group>"; };
+		112B45E92015EAC30054CF0E /* Pods_BDing.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_BDing.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		112B45EB201607830054CF0E /* CashDeskHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashDeskHomeViewController.swift; sourceTree = "<group>"; };
 		112B7C921E6BECC10020BAF6 /* AlarmViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
 		112E88DF1FDFB70100FDB817 /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		112E88E11FDFB70100FDB817 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -511,6 +540,12 @@
 		1142BE0D1F669CFA0033C169 /* hdar_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hdar_close.png; sourceTree = "<group>"; };
 		1142BE0E1F669CFA0033C169 /* hdar_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hdar_close@2x.png"; sourceTree = "<group>"; };
 		1142BE0F1F669CFA0033C169 /* hdar_close@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hdar_close@3x.png"; sourceTree = "<group>"; };
+		11475A752018A77D00006BB5 /* CLoginRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLoginRequestModel.swift; sourceTree = "<group>"; };
+		11475A772018A8FF00006BB5 /* CListBuyerRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CListBuyerRequestModel.swift; sourceTree = "<group>"; };
+		11475A792018A92B00006BB5 /* CReportCashRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CReportCashRequestModel.swift; sourceTree = "<group>"; };
+		11475A7B2018AA1900006BB5 /* CDetermineRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDetermineRequestModel.swift; sourceTree = "<group>"; };
+		114A1ECB2017694700A8DD5E /* CashDeskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashDeskTableViewCell.swift; sourceTree = "<group>"; };
+		114A1ECC2017694700A8DD5E /* CashDeskTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CashDeskTableViewCell.xib; sourceTree = "<group>"; };
 		114A4F8F1F1B735200500C98 /* SendMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMessageViewController.swift; sourceTree = "<group>"; };
 		114C25C11ED2BF1B00C980F3 /* SetCoinResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetCoinResponseModel.swift; sourceTree = "<group>"; };
 		114C25C31ED2BFA700C980F3 /* CoinDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinDataModel.swift; sourceTree = "<group>"; };
@@ -733,7 +768,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				117F64D61FE656E00055A6F7 /* Pushe.framework in Frameworks */,
-				A3C82327850AF4B45CD5CB2D /* Pods_BDing.framework in Frameworks */,
+				6E913413FD4C3BC033F8CC27 /* Pods_BDing.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -759,6 +794,7 @@
 		110B9DB11EC183E900F9BD02 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				112B45E92015EAC30054CF0E /* Pods_BDing.framework */,
 				111044141FEA938500408EB0 /* Pods_BDing.framework */,
 				1188713E1FD6C2B600C2E569 /* Pods_BDing.framework */,
 				1154E3FA1FD29F4C00B3478F /* Pods_BDing.framework */,
@@ -956,6 +992,43 @@
 			name = MaterialShowcase;
 			sourceTree = "<group>";
 		};
+		1113DC95201C5F6E003C794E /* CRequestModels */ = {
+			isa = PBXGroup;
+			children = (
+				11475A752018A77D00006BB5 /* CLoginRequestModel.swift */,
+				11475A772018A8FF00006BB5 /* CListBuyerRequestModel.swift */,
+				11475A792018A92B00006BB5 /* CReportCashRequestModel.swift */,
+				11475A7B2018AA1900006BB5 /* CDetermineRequestModel.swift */,
+				1113DC91201C596F003C794E /* CPayStatusRequestModel.swift */,
+			);
+			name = CRequestModels;
+			sourceTree = "<group>";
+		};
+		1113DC96201C5F8C003C794E /* CResponseModels */ = {
+			isa = PBXGroup;
+			children = (
+				1113DCA1201C6756003C794E /* CDetermineData.swift */,
+				1113DC9F201C6732003C794E /* CDetermineResponseModel.swift */,
+				1113DC99201C6035003C794E /* CListBuyerData.swift */,
+				1113DC97201C5FBF003C794E /* CListBuyerResponseModel.swift */,
+				1113DC93201C5DDB003C794E /* CLoginResponseModel.swift */,
+				1113DCA5201C681E003C794E /* CPayStatusData.swift */,
+				1113DCA3201C67FE003C794E /* CPayStatusResponseModel.swift */,
+				1113DC9D201C64EF003C794E /* CReportCashData.swift */,
+				1113DC9B201C64B9003C794E /* CReportCashResponseModel.swift */,
+			);
+			name = CResponseModels;
+			sourceTree = "<group>";
+		};
+		1113DCA7201C68CB003C794E /* CCells */ = {
+			isa = PBXGroup;
+			children = (
+				114A1ECB2017694700A8DD5E /* CashDeskTableViewCell.swift */,
+				114A1ECC2017694700A8DD5E /* CashDeskTableViewCell.xib */,
+			);
+			name = CCells;
+			sourceTree = "<group>";
+		};
 		111D9D3B1EBDFC82006C7984 /* IRANYEKAN */ = {
 			isa = PBXGroup;
 			children = (
@@ -965,6 +1038,14 @@
 				111D9D3F1EBDFC82006C7984 /* MobileFonts.png */,
 			);
 			path = IRANYEKAN;
+			sourceTree = "<group>";
+		};
+		112B45EA201606DE0054CF0E /* CashDeskControllers */ = {
+			isa = PBXGroup;
+			children = (
+				112B45EB201607830054CF0E /* CashDeskHomeViewController.swift */,
+			);
+			name = CashDeskControllers;
 			sourceTree = "<group>";
 		};
 		112E88E01FDFB70100FDB817 /* NotificationService */ = {
@@ -998,12 +1079,12 @@
 		113F92781E70014D005CC419 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				119F5D7A1E7670500023D483 /* ResponseModels */,
-				119F5D791E7670290023D483 /* RquestModels */,
-				11A90B611E7572E90076EAD7 /* URLs.swift */,
-				11E747101E77C3A2002AEEFD /* SaveAndLoadModel.swift */,
 				113F06991E792CE700E7D74F /* GlobalFields.swift */,
 				115CB4F01EB9E64800B37C75 /* LoadPicture.swift */,
+				119F5D7A1E7670500023D483 /* ResponseModels */,
+				119F5D791E7670290023D483 /* RquestModels */,
+				11E747101E77C3A2002AEEFD /* SaveAndLoadModel.swift */,
+				11A90B611E7572E90076EAD7 /* URLs.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1128,32 +1209,33 @@
 		119F5D791E7670290023D483 /* RquestModels */ = {
 			isa = PBXGroup;
 			children = (
-				113F92791E70019D005CC419 /* SignUpRequestModel.swift */,
-				116CE0EF1FD6819E00632AA9 /* CheckRequestModel.swift */,
-				1179DE631E7699DA00BE7DED /* SignInRequestModel.swift */,
-				11E747121E77DCB9002AEEFD /* ProfileRequestModel.swift */,
+				114C640C1EC6ED0600B23525 /* ActivationCodeRequestModel.swift */,
 				11E747181E7806EF002AEEFD /* BeaconListRequestModel.swift */,
 				113F069E1E793DFA00E7D74F /* BeaconPicRequestModel.swift */,
-				112A6C171E920F4F00043C0A /* CategoryRequestModel.swift */,
-				11FDEBB41EACB625002E999E /* GetBeaconRequestModel.swift */,
-				111BB1771EB0AD2200AD202D /* SetCoinRequestModel.swift */,
 				111BB1791EB0AD3800AD202D /* BuyCouponRequestModel.swift */,
-				117671DD1EB0B98B00F8D41F /* PayListRequestModel.swift */,
-				111BB1751EB0AD0400AD202D /* GetCouponRequestModel.swift */,
-				117671DF1EB457EF00F8D41F /* MyCouponRequestModel.swift */,
-				114C640C1EC6ED0600B23525 /* ActivationCodeRequestModel.swift */,
-				114C640E1EC7213C00B23525 /* ForgotPasswordRequestModel.swift */,
-				110B99C01EC8628100D87F6E /* UserUpdateRequestModel.swift */,
-				11307D2C1ED4239A0003ED7A /* CouponRequestPicModel.swift */,
+				112A6C171E920F4F00043C0A /* CategoryRequestModel.swift */,
 				115442BE1EDD47E800E5F3A4 /* ChangePasswordRequestModel.swift */,
-				1132A4F51EDEE59300E0B2CF /* PayWithCoinsRequestModel.swift */,
-				1132A4F71EDEEE9100E0B2CF /* PayUuidsRequestModel.swift */,
-				11FA8EC71F1C8BCD00DF589B /* PopupRequestModel.swift */,
+				116CE0EF1FD6819E00632AA9 /* CheckRequestModel.swift */,
+				11307D2C1ED4239A0003ED7A /* CouponRequestPicModel.swift */,
+				1113DC95201C5F6E003C794E /* CRequestModels */,
 				112ECA941F42CFF600CF389C /* FAQRequestModel.swift */,
+				114C640E1EC7213C00B23525 /* ForgotPasswordRequestModel.swift */,
+				11FDEBB41EACB625002E999E /* GetBeaconRequestModel.swift */,
+				111BB1751EB0AD0400AD202D /* GetCouponRequestModel.swift */,
+				114EFC921F939A4F000F20A3 /* GetDingsRequestModel.swift */,
+				114EFC8E1F933612000F20A3 /* LastCouponRequestModel.swift */,
+				117671DF1EB457EF00F8D41F /* MyCouponRequestModel.swift */,
+				117671DD1EB0B98B00F8D41F /* PayListRequestModel.swift */,
 				110D47211F9223A400DBFF9F /* PaymentRequestModel.swift */,
 				110D47271F92449800DBFF9F /* PaymentVerifyRequestModel.swift */,
-				114EFC8E1F933612000F20A3 /* LastCouponRequestModel.swift */,
-				114EFC921F939A4F000F20A3 /* GetDingsRequestModel.swift */,
+				1132A4F71EDEEE9100E0B2CF /* PayUuidsRequestModel.swift */,
+				1132A4F51EDEE59300E0B2CF /* PayWithCoinsRequestModel.swift */,
+				11FA8EC71F1C8BCD00DF589B /* PopupRequestModel.swift */,
+				11E747121E77DCB9002AEEFD /* ProfileRequestModel.swift */,
+				111BB1771EB0AD2200AD202D /* SetCoinRequestModel.swift */,
+				1179DE631E7699DA00BE7DED /* SignInRequestModel.swift */,
+				113F92791E70019D005CC419 /* SignUpRequestModel.swift */,
+				110B99C01EC8628100D87F6E /* UserUpdateRequestModel.swift */,
 			);
 			name = RquestModels;
 			sourceTree = "<group>";
@@ -1161,6 +1243,7 @@
 		119F5D7A1E7670500023D483 /* ResponseModels */ = {
 			isa = PBXGroup;
 			children = (
+				1113DC96201C5F8C003C794E /* CResponseModels */,
 				119F5D7D1E7671A60023D483 /* SignUpResponseModel.swift */,
 				1179DE651E769C9C00BE7DED /* SignInResponseModel.swift */,
 				111180BA1FDBCD8000368417 /* SignInData.swift */,
@@ -1334,39 +1417,40 @@
 		11D4279F1E66B0D0009F3763 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1119EA261F8A3FF5007C3590 /* PayViewController.swift */,
-				11D427A21E66B100009F3763 /* ProfilePageViewController.swift */,
-				11D428DF1E66C1C4009F3763 /* PageContentViewController.swift */,
-				114F21201F7B798E000FF6B3 /* AuthenticationViewController.swift */,
-				1192B35C1F82526E00ADD5CE /* ForsgottenPasswordViewController.swift */,
-				11D427A01E66B100009F3763 /* CategoryViewController.swift */,
-				11D427A11E66B100009F3763 /* IndexHomeViewController.swift */,
+				11307D341ED5C8900003ED7A /* AboutUsViewController.swift */,
 				1110B9AF1EC32D5000EF182F /* ActivationCodeViewController.swift */,
 				112B7C921E6BECC10020BAF6 /* AlarmViewController.swift */,
+				119462A41F03B82D00BF6FA6 /* AnnotationView.swift */,
+				114F21201F7B798E000FF6B3 /* AuthenticationViewController.swift */,
+				112B45EA201606DE0054CF0E /* CashDeskControllers */,
+				112A6C1F1E92698200043C0A /* CategoryPageViewController.swift */,
+				11D427A01E66B100009F3763 /* CategoryViewController.swift */,
+				11307D321ED45BBC0003ED7A /* CouponPopupViewController.swift */,
+				1153BF6C1FBC5DA40061352D /* CouponTabViewController.swift */,
+				113B0DEF1F163FA900C177F7 /* DatePickerDialog.swift */,
+				11187B541E98F215009110E2 /* DetailViewController.swift */,
+				111F4F3C1FE10EDF00AB06BF /* ErrorLoginViewController.swift */,
+				112ECA8E1F42BFD900CF389C /* FAQViewController.swift */,
+				1192B35C1F82526E00ADD5CE /* ForsgottenPasswordViewController.swift */,
+				111ECC491FE526040041FF75 /* FourceUpdateViewController.swift */,
+				115C4AFF1FC578B600A353FE /* FurtherInformationViewController.swift */,
+				11D427A11E66B100009F3763 /* IndexHomeViewController.swift */,
+				11B9CE0D1FC5B843003E8EF3 /* InviteFriendsViewController.swift */,
+				111ECC4B1FE5261D0041FF75 /* MaintenanceViewController.swift */,
 				1125ADAC1EB85D8500472356 /* MapViewController.swift */,
+				115A30CA1EAE2801003A9104 /* MyCouponViewController.swift */,
+				11D428DF1E66C1C4009F3763 /* PageContentViewController.swift */,
+				111BB16F1EB0831B00AD202D /* PayHistoryViewController.swift */,
+				1119EA261F8A3FF5007C3590 /* PayViewController.swift */,
 				119462A61F03BFC700BF6FA6 /* Place.swift */,
 				119462A71F03BFC700BF6FA6 /* PlaceAnnotation.swift */,
 				119462A81F03BFC700BF6FA6 /* PlacesLoader.swift */,
-				119462A41F03B82D00BF6FA6 /* AnnotationView.swift */,
-				112A6C1F1E92698200043C0A /* CategoryPageViewController.swift */,
-				11187B541E98F215009110E2 /* DetailViewController.swift */,
-				110EB5381E9A404F00431534 /* TabBarController.swift */,
-				113B0DEF1F163FA900C177F7 /* DatePickerDialog.swift */,
-				115A30CA1EAE2801003A9104 /* MyCouponViewController.swift */,
-				111BB16D1EB082F600AD202D /* TakeCouponViewController.swift */,
-				111BB16F1EB0831B00AD202D /* PayHistoryViewController.swift */,
-				11307D321ED45BBC0003ED7A /* CouponPopupViewController.swift */,
-				11307D341ED5C8900003ED7A /* AboutUsViewController.swift */,
-				113D9B9C1EDC35F400E99103 /* SettingViewController.swift */,
+				11D427A21E66B100009F3763 /* ProfilePageViewController.swift */,
 				114A4F8F1F1B735200500C98 /* SendMessageViewController.swift */,
-				112ECA8E1F42BFD900CF389C /* FAQViewController.swift */,
-				1153BF6C1FBC5DA40061352D /* CouponTabViewController.swift */,
-				115C4AFF1FC578B600A353FE /* FurtherInformationViewController.swift */,
-				11B9CE0D1FC5B843003E8EF3 /* InviteFriendsViewController.swift */,
-				111F4F3C1FE10EDF00AB06BF /* ErrorLoginViewController.swift */,
+				113D9B9C1EDC35F400E99103 /* SettingViewController.swift */,
+				110EB5381E9A404F00431534 /* TabBarController.swift */,
+				111BB16D1EB082F600AD202D /* TakeCouponViewController.swift */,
 				111ECC471FE525E70041FF75 /* UpdateViewController.swift */,
-				111ECC491FE526040041FF75 /* FourceUpdateViewController.swift */,
-				111ECC4B1FE5261D0041FF75 /* MaintenanceViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1376,21 +1460,22 @@
 			children = (
 				11D427AD1E66B2D1009F3763 /* CategoryTableViewCell1.swift */,
 				11D427AE1E66B2D1009F3763 /* CategoryTableViewCell2.swift */,
-				11D427AF1E66B2D1009F3763 /* CustomerHomeTableCell.swift */,
-				11D427B01E66B2D1009F3763 /* IndexHomeTableViewCell.swift */,
-				11710B791EFE6FCB00A6E7B2 /* IndexHomeTableViewCell.xib */,
+				1113DCA7201C68CB003C794E /* CCells */,
 				115A30C61EAE25AF003A9104 /* CouponTableViewCell.swift */,
 				115A30C71EAE25AF003A9104 /* CouponTableViewCell.xib */,
+				11D427AF1E66B2D1009F3763 /* CustomerHomeTableCell.swift */,
+				112ECA901F42C2F500CF389C /* FAQTableViewCell.swift */,
+				112ECA911F42C2F500CF389C /* FAQTableViewCell.xib */,
+				114F5D771EB5D23800FAEB6B /* FilterCollectionViewCell.swift */,
+				114F5D781EB5D23800FAEB6B /* FilterCollectionViewCell.xib */,
+				11D427B01E66B2D1009F3763 /* IndexHomeTableViewCell.swift */,
+				11710B791EFE6FCB00A6E7B2 /* IndexHomeTableViewCell.xib */,
+				1119EA281F8A432F007C3590 /* LastCouponCollectionViewCell.swift */,
+				1119EA291F8A432F007C3590 /* LastCouponCollectionViewCell.xib */,
 				1155A4021F4065850089424F /* MyCouponTableViewCell.swift */,
 				1155A4031F4065850089424F /* MyCouponTableViewCell.xib */,
 				111BB1711EB087DC00AD202D /* PayHistoryTableViewCell.swift */,
 				111BB1721EB087DC00AD202D /* PayHistoryTableViewCell.xib */,
-				114F5D771EB5D23800FAEB6B /* FilterCollectionViewCell.swift */,
-				114F5D781EB5D23800FAEB6B /* FilterCollectionViewCell.xib */,
-				112ECA901F42C2F500CF389C /* FAQTableViewCell.swift */,
-				112ECA911F42C2F500CF389C /* FAQTableViewCell.xib */,
-				1119EA281F8A432F007C3590 /* LastCouponCollectionViewCell.swift */,
-				1119EA291F8A432F007C3590 /* LastCouponCollectionViewCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1398,10 +1483,10 @@
 		11D427B51E66B308009F3763 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				11D427B61E66B31E009F3763 /* MyFont.swift */,
 				1199BC311EC099BD0006E545 /* MyColors.swift */,
-				11FDEBB21EAC92C1002E999E /* Reachability.swift */,
+				11D427B61E66B31E009F3763 /* MyFont.swift */,
 				1140F32A1EE67CD000894EA7 /* Notifys.swift */,
+				11FDEBB21EAC92C1002E999E /* Reachability.swift */,
 				114EFC901F935C15000F20A3 /* SpAnimation.swift */,
 			);
 			name = Utils;
@@ -1762,6 +1847,7 @@
 			files = (
 				1199BC301EC098A40006E545 /* MobileFonts.png in Resources */,
 				110044541F07AD1000BAF131 /* cartoon.gif in Resources */,
+				114A1ECE2017694700A8DD5E /* CashDeskTableViewCell.xib in Resources */,
 				11FE15F01EF51AB000B8AC38 /* ding2.svg in Resources */,
 				111BB1741EB087DC00AD202D /* PayHistoryTableViewCell.xib in Resources */,
 				11392E011F85110300B3B3CD /* preloader.json in Resources */,
@@ -2017,6 +2103,9 @@
 				114F5D761EB4B3C200FAEB6B /* PayListData.swift in Sources */,
 				11A90B5E1E7542CB0076EAD7 /* DropDown+Appearance.swift in Sources */,
 				11D428CC1E66BFA3009F3763 /* DesignableView.swift in Sources */,
+				1113DC9C201C64B9003C794E /* CReportCashResponseModel.swift in Sources */,
+				11475A782018A8FF00006BB5 /* CListBuyerRequestModel.swift in Sources */,
+				1113DC98201C5FBF003C794E /* CListBuyerResponseModel.swift in Sources */,
 				11A90B5A1E7542CB0076EAD7 /* DPDKeyboardListener.swift in Sources */,
 				1179DE661E769C9C00BE7DED /* SignInResponseModel.swift in Sources */,
 				113F06AE1E7966A900E7D74F /* Image.swift in Sources */,
@@ -2053,6 +2142,7 @@
 				11D428A41E66BFA2009F3763 /* DCBorderedTextField.swift in Sources */,
 				11D427A81E66B100009F3763 /* ProfilePageViewController.swift in Sources */,
 				11D4276A1E66AEC3009F3763 /* BDing.xcdatamodeld in Sources */,
+				1113DC9A201C6035003C794E /* CListBuyerData.swift in Sources */,
 				110B99C11EC8628100D87F6E /* UserUpdateRequestModel.swift in Sources */,
 				1179DDB91E767ED400BE7DED /* GlossOperators.swift in Sources */,
 				11D428DA1E66BFA3009F3763 /* SpringTextView.swift in Sources */,
@@ -2110,6 +2200,7 @@
 				11D427B41E66B2D1009F3763 /* IndexHomeTableViewCell.swift in Sources */,
 				11D428BD1E66BFA3009F3763 /* CAAnimation+EasingEquations.m in Sources */,
 				111ECC481FE525E70041FF75 /* UpdateViewController.swift in Sources */,
+				1113DC9E201C64EF003C794E /* CReportCashData.swift in Sources */,
 				114F5D6C1EB46D1700FAEB6B /* CouponListResponseModel.swift in Sources */,
 				11D428D61E66BFA3009F3763 /* SpringButton.swift in Sources */,
 				1179DDD81E7687D200BE7DED /* AFError.swift in Sources */,
@@ -2137,8 +2228,10 @@
 				112ECA991F42D0ED00CF389C /* FAQData.swift in Sources */,
 				119462AB1F03BFC700BF6FA6 /* PlacesLoader.swift in Sources */,
 				112A6C181E920F4F00043C0A /* CategoryRequestModel.swift in Sources */,
+				1113DCA4201C67FE003C794E /* CPayStatusResponseModel.swift in Sources */,
 				1179DDB31E767ED400BE7DED /* Decoder.swift in Sources */,
 				112A6C1C1E9216EB00043C0A /* CategoryListData.swift in Sources */,
+				1113DC92201C596F003C794E /* CPayStatusRequestModel.swift in Sources */,
 				1132A4F81EDEEE9100E0B2CF /* PayUuidsRequestModel.swift in Sources */,
 				11D428CD1E66BFA3009F3763 /* ImageLoader.swift in Sources */,
 				1179DDE91E7687D200BE7DED /* Timeline.swift in Sources */,
@@ -2151,11 +2244,13 @@
 				1179DDB81E767ED400BE7DED /* Gloss.swift in Sources */,
 				110D47241F92439800DBFF9F /* PaymentResponseModel.swift in Sources */,
 				11307D2D1ED4239A0003ED7A /* CouponRequestPicModel.swift in Sources */,
+				1113DCA2201C6756003C794E /* CDetermineData.swift in Sources */,
 				115442BF1EDD47E800E5F3A4 /* ChangePasswordRequestModel.swift in Sources */,
 				116CE0F01FD6819E00632AA9 /* CheckRequestModel.swift in Sources */,
 				1179DDEA1E7687D200BE7DED /* Validation.swift in Sources */,
 				1179DDDA1E7687D200BE7DED /* DispatchQueue+Alamofire.swift in Sources */,
 				11D428DD1E66BFA3009F3763 /* TransitionZoom.swift in Sources */,
+				1113DC94201C5DDB003C794E /* CLoginResponseModel.swift in Sources */,
 				11D428D41E66BFA3009F3763 /* Spring.swift in Sources */,
 				114C640F1EC7213C00B23525 /* ForgotPasswordRequestModel.swift in Sources */,
 				117671E01EB457EF00F8D41F /* MyCouponRequestModel.swift in Sources */,
@@ -2173,6 +2268,7 @@
 				114F5D791EB5D23800FAEB6B /* FilterCollectionViewCell.swift in Sources */,
 				11D428BF1E66BFA3009F3763 /* CAMediaTimingFunction+AdditionalEquations.m in Sources */,
 				11D428A51E66BFA2009F3763 /* DCMandatoryEmailTextField.swift in Sources */,
+				11475A762018A77D00006BB5 /* CLoginRequestModel.swift in Sources */,
 				115A30CB1EAE2801003A9104 /* MyCouponViewController.swift in Sources */,
 				114EFC8F1F933612000F20A3 /* LastCouponRequestModel.swift in Sources */,
 				1132A4F61EDEE59300E0B2CF /* PayWithCoinsRequestModel.swift in Sources */,
@@ -2191,13 +2287,16 @@
 				11E747151E77E5A8002AEEFD /* ProfileResponseModel.swift in Sources */,
 				11D428A01E66BFA2009F3763 /* DCBorderedButton.swift in Sources */,
 				112A6C1E1E921C4500043C0A /* SubCategoryData.swift in Sources */,
+				114A1ECD2017694700A8DD5E /* CashDeskTableViewCell.swift in Sources */,
 				11E747111E77C3A2002AEEFD /* SaveAndLoadModel.swift in Sources */,
 				11D428D31E66BFA3009F3763 /* SoundPlayer.swift in Sources */,
 				11D428AE1E66BFA2009F3763 /* DCCircleView.swift in Sources */,
 				11D428C11E66BFA3009F3763 /* CATransaction+AnimateWithDuration.m in Sources */,
 				1142BE101F669CFA0033C169 /* ARAnnotation.swift in Sources */,
 				11D428C01E66BFA3009F3763 /* CAShapeLayer+UIBezierPath.m in Sources */,
+				1113DCA6201C681E003C794E /* CPayStatusData.swift in Sources */,
 				114EFC911F935C15000F20A3 /* SpAnimation.swift in Sources */,
+				11475A7C2018AA1900006BB5 /* CDetermineRequestModel.swift in Sources */,
 				11D428A81E66BFA2009F3763 /* DCPickerTextField.swift in Sources */,
 				110D47281F92449800DBFF9F /* PaymentVerifyRequestModel.swift in Sources */,
 				111BB1781EB0AD2200AD202D /* SetCoinRequestModel.swift in Sources */,
@@ -2205,6 +2304,8 @@
 				11D428CF1E66BFA3009F3763 /* KeyboardLayoutConstraint.swift in Sources */,
 				113F069A1E792CE700E7D74F /* GlobalFields.swift in Sources */,
 				113F06B51E7966A900E7D74F /* UIButton+AlamofireImage.swift in Sources */,
+				11475A7A2018A92B00006BB5 /* CReportCashRequestModel.swift in Sources */,
+				112B45EC201607830054CF0E /* CashDeskHomeViewController.swift in Sources */,
 				11D428C61E66BFA3009F3763 /* DesignableButton.swift in Sources */,
 				113F06AD1E7966A900E7D74F /* AFIError.swift in Sources */,
 				11D428C41E66BFA3009F3763 /* AutoTextView.swift in Sources */,
@@ -2212,6 +2313,7 @@
 				117671DE1EB0B98B00F8D41F /* PayListRequestModel.swift in Sources */,
 				11D428BC1E66BFA3009F3763 /* CAAnimation+Blocks.m in Sources */,
 				11D428C91E66BFA3009F3763 /* DesignableTabBarController.swift in Sources */,
+				1113DCA0201C6732003C794E /* CDetermineResponseModel.swift in Sources */,
 				119462A51F03B82D00BF6FA6 /* AnnotationView.swift in Sources */,
 				11A90B591E7542CB0076EAD7 /* DPDConstants.swift in Sources */,
 				11D428B01E66BFA2009F3763 /* DCHairlineView.swift in Sources */,

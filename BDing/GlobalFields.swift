@@ -44,21 +44,7 @@ class GlobalFields {
         
         let vc = (viewController.storyboard?.instantiateViewController(withIdentifier: "ErrorLoginViewController"))! as! ErrorLoginViewController
         
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            
-            viewController.addChildViewController(vc)
-            
-            vc.view.frame = CGRect(x:0,y: 0,width: viewController.view.frame.size.width, height: viewController.view.frame.size.height)
-            
-            viewController.view.addSubview(vc.view)
-            
-            vc.didMove(toParentViewController: viewController)
-            
-            vc.view.alpha = 1
-            
-            viewController.view.alpha = 1
-            
-        },completion : nil)
+        viewController.navigationController?.pushViewController(vc, animated: true)
         
     }
     
@@ -66,21 +52,7 @@ class GlobalFields {
         
         let vc = (viewController.storyboard?.instantiateViewController(withIdentifier: "MaintenanceViewController"))! as! MaintenanceViewController
         
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            
-            viewController.addChildViewController(vc)
-            
-            vc.view.frame = CGRect(x:0,y: 0,width: viewController.view.frame.size.width, height: viewController.view.frame.size.height)
-            
-            viewController.view.addSubview(vc.view)
-            
-            vc.didMove(toParentViewController: viewController)
-            
-            vc.view.alpha = 1
-            
-            viewController.view.alpha = 1
-            
-        },completion : nil)
+        viewController.navigationController?.pushViewController(vc, animated: true)
         
     }
     
@@ -88,21 +60,7 @@ class GlobalFields {
         
         let vc = (viewController.storyboard?.instantiateViewController(withIdentifier: "UpdateViewController"))! as! UpdateViewController
         
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            
-            viewController.addChildViewController(vc)
-            
-            vc.view.frame = CGRect(x:0,y: 0,width: viewController.view.frame.size.width, height: viewController.view.frame.size.height)
-            
-            viewController.view.addSubview(vc.view)
-            
-            vc.didMove(toParentViewController: viewController)
-            
-            vc.view.alpha = 1
-            
-            viewController.view.alpha = 1
-            
-        },completion : nil)
+        viewController.navigationController?.pushViewController(vc, animated: true)
         
     }
     
@@ -110,22 +68,8 @@ class GlobalFields {
         
         let vc = (viewController.storyboard?.instantiateViewController(withIdentifier: "FourceUpdateViewController"))! as! FourceUpdateViewController
         
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            
-            viewController.addChildViewController(vc)
-            
-            vc.view.frame = CGRect(x:0,y: 0,width: viewController.view.frame.size.width, height: viewController.view.frame.size.height)
-            
-            viewController.view.addSubview(vc.view)
-            
-            vc.didMove(toParentViewController: viewController)
-            
-            vc.view.alpha = 1
-            
-            viewController.view.alpha = 1
-            
-        },completion : nil)
-        
+        viewController.navigationController?.pushViewController(vc, animated: true)
+    
     }
     
     struct indoorPoint {

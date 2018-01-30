@@ -10,9 +10,9 @@ import Foundation
 
 class URLs {
     
-//    static let server = "http://test.bding.ir/rest/"
+    static let server = "http://test.bding.ir/rest/"
     
-    static let server = "http://www.bding.ir/rest/"
+//    static let server = "http://www.bding.ir/rest/"
     
     static let signUpUrl = server + "register"
     
@@ -63,6 +63,17 @@ class URLs {
     static let lastCoupons = server + "coupon/lastcoupon"
     
     static let getDing = server + "user/getuserding"
+    
+    static let cLogin = server + "cashier/login"
+    
+    static let cListBuyer = server + "cashier/listbuyer"
+    
+    static let cReportCash = server + "cashier/reportcash"
+    
+    static let cDetermine = server + "cashier/determine"
+    
+    static let cPayStatus = server + "cashier/peystatus"
+    
     
 }
 
