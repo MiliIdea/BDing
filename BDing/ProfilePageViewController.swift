@@ -401,23 +401,15 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                                
                                 let objVC : UIViewController = (self.storyboard?.instantiateViewController(withIdentifier: "CashDeskHomeViewController"))! as UIViewController
                                 
+                                GlobalFields.cReportCashData = obj2?.data
+                                
                                 self.navigationController?.isToolbarHidden = true
  
                                 self.tabBarController?.tabBar.isHidden = true
                                 
-                            self.navigationController?.pushViewController(objVC, animated: true)
-//                                let objNavi : UINavigationController = UINavigationController(rootViewController: objVC)
-//
-//                                objNavi.hidesBarsOnTap = true
-//
-//                                objNavi.isToolbarHidden = true
-//
-//                                objNavi.isNavigationBarHidden = true
+                                self.navigationController?.pushViewController(objVC, animated: true)
+
                                 
-//                                let appDelegate: AppDelegate = (UIApplication.shared.delegate as? AppDelegate)!
-//
-//                                appDelegate.window?.rootViewController = objNavi
-//                                self.navigationController?.pushViewController(objNavi, animated: true)
                             }
                             
                         }

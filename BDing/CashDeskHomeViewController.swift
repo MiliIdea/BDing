@@ -37,6 +37,7 @@ class CashDeskHomeViewController: UIViewController ,UITableViewDelegate ,UITable
     
     var cBuyerData : [CListBuyerData] = [CListBuyerData]()
     
+    var isMaximize : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,8 +52,23 @@ class CashDeskHomeViewController: UIViewController ,UITableViewDelegate ,UITable
         
         self.waitingTable.register(UINib(nibName: "CashDeskTableViewCell", bundle: nil), forCellReuseIdentifier: "cashDeskCell")
         
+        self.cashierName.text = GlobalFields.cReportCashData?.name_family
+        
+        self.cashDeskName.text = GlobalFields.cReportCashData?.cash_title
+        
+        self.totalTransactions.text = GlobalFields.cReportCashData?.total
+        
+        if(GlobalFields.cReportCashData?.pic != nil && GlobalFields.cReportCashData?.pic != ""){
+            
+            let imageData = NSData(base64Encoded: (GlobalFields.cReportCashData?.pic!)! , options:.ignoreUnknownCharacters)
+            
+            self.profileImage.image = UIImage(data: imageData as! Data)!
+            
+        }
+        
         //viewye profilePic va seta buttone vasat bayad gerd bashe
     
+        
         self.navigationController?.isNavigationBarHidden = true
         
     }
@@ -101,6 +117,33 @@ class CashDeskHomeViewController: UIViewController ,UITableViewDelegate ,UITable
     @IBAction func maximize(_ sender: Any) {
         
         // bayad table ta bala biad
+        
+        if(isMaximize == false){
+            isMaximize = true
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                
+                self.holdingView.frame.origin.y = 30
+                
+                self.holdingView.frame.size.height = 600
+                
+                self.scrollView.isScrollEnabled = false
+                
+            },completion: nil)
+            
+        }else{
+            isMaximize = false
+            
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                
+                self.holdingView.frame.origin.y = 450
+                
+                self.holdingView.frame.size.height = 316
+                
+                self.scrollView.isScrollEnabled = true
+                
+            },completion: nil)
+            
+        }
         
     }
     
