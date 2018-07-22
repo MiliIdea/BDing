@@ -1,0 +1,85 @@
+PODS:
+  - CCBottomRefreshControl (0.5.2)
+  - CellAnimator (0.1.3)
+  - ChameleonFramework (2.1.0):
+    - ChameleonFramework/Default (= 2.1.0)
+  - ChameleonFramework/Default (2.1.0)
+  - CryptoSwift (0.7.2)
+  - DLRadioButton (1.4.11)
+  - DynamicColor (3.3)
+  - GGLInstanceID (1.2.1)
+  - Google/Analytics (2.0.4):
+    - Google/Core
+    - GoogleAnalytics (~> 3.12)
+  - Google/CloudMessaging (2.0.4):
+    - GGLInstanceID (~> 1.0)
+    - Google/Core
+    - GoogleCloudMessaging (~> 1.0)
+  - Google/Core (2.0.4):
+    - GoogleInterchangeUtilities (~> 1.0)
+    - GoogleNetworkingUtilities (~> 1.0)
+    - GoogleSymbolUtilities (~> 1.0)
+    - GoogleUtilities (~> 1.1)
+  - GoogleAnalytics (3.17.0)
+  - GoogleCloudMessaging (1.2.0):
+    - GoogleInterchangeUtilities (~> 1.0)
+    - GoogleIPhoneUtilities (~> 1.0)
+    - GoogleSymbolUtilities (~> 1.0)
+  - GoogleInterchangeUtilities (1.2.2):
+    - GoogleSymbolUtilities (~> 1.1)
+  - GoogleIPhoneUtilities (1.2.1):
+    - GoogleSymbolUtilities (~> 1.0)
+    - GoogleUtilities (~> 1.0)
+  - GoogleNetworkingUtilities (1.2.2):
+    - GoogleSymbolUtilities (~> 1.1)
+  - GoogleSymbolUtilities (1.1.2)
+  - GoogleUtilities (1.3.2):
+    - GoogleSymbolUtilities (~> 1.1)
+  - Hero (0.3.6)
+  - lottie-ios (2.1.5)
+  - SQLite.swift (0.11.4):
+    - SQLite.swift/standard (= 0.11.4)
+  - SQLite.swift/standard (0.11.4)
+  - SwiftyGif (3.1.2)
+  - SWXMLHash (4.0.0)
+
+DEPENDENCIES:
+  - CCBottomRefreshControl
+  - CellAnimator
+  - ChameleonFramework
+  - CryptoSwift (~> 0.7.0)
+  - DLRadioButton
+  - DynamicColor (~> 3.3)
+  - Google/Analytics
+  - Google/CloudMessaging
+  - Hero (~> 0.3.6)
+  - lottie-ios
+  - SQLite.swift (~> 0.11.4)
+  - SwiftyGif
+  - SWXMLHash (~> 4.0.0)
+
+SPEC CHECKSUMS:
+  CCBottomRefreshControl: 389780b4488321c91d18f66a6da5ef9606df6de5
+  CellAnimator: dfba32e8223bbc1e0d4e16524eb51f475082501b
+  ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
+  CryptoSwift: cd2158be2bf639aabc63ec804707c7137c90157c
+  DLRadioButton: 0d04b8259e7bfd886571a1e9173c73fee7118f50
+  DynamicColor: 3cdaa1e01c16e93ba744e0630f768373e0fc7a7d
+  GGLInstanceID: 4a317044f744281b82cd03015f379899f277cad3
+  Google: d536877ec602555b755cc28ce6fed104825c693c
+  GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
+  GoogleCloudMessaging: f37ea14dd0f41d4d889c10b5559dd35bbfd9ac26
+  GoogleInterchangeUtilities: d5bc4d88d5b661ab72f9d70c58d02ca8c27ad1f7
+  GoogleIPhoneUtilities: 63f25e93a3ddcb66884d182aab3a660d98f1479b
+  GoogleNetworkingUtilities: 3edd3a8161347494f2da60ea0deddc8a472d94cb
+  GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
+  GoogleUtilities: 8bbc733218aad26306f9d4a253823986110e3358
+  Hero: d3c6f4dd80cdcdbb339be64e57ae3b5c3ab9938c
+  lottie-ios: 836cdbba92f62f3c6a00e37a4ce485321fe317cf
+  SQLite.swift: 3e3bee21da701b5b9f87c4a672cb54f233505692
+  SwiftyGif: 3d3300065d5f30a4159a6488a22f89fde2998b9e
+  SWXMLHash: 6bbc0bf72975a18ceda469fb7d6a886a26d81694
+
+PODFILE CHECKSUM: 395f6a06a16b05398c887152abe8718ff1ad45e0
+
+COCOAPODS: 1.3.1

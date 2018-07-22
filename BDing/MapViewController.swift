@@ -518,11 +518,14 @@ class MapViewController: UIViewController , MKMapViewDelegate,  CLLocationManage
 
         for p in pins {
             
-            if(count > 5){
-                annots.append(Place.init(location: CLLocation.init(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude), name: p.title ?? "", image: images[pins.index(of: p)!], identifier: "id"))
+            if(p.title != nil && p.title == "SAMSUNG"){
+                
+                annots.append(Place.init(location: CLLocation.init(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude), name: p.title ?? "", image: nil, identifier: "id"))
                 
             }else{
-                annots.append(Place.init(location: CLLocation.init(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude), name: p.title ?? "", image: nil, identifier: "id"))
+                
+                annots.append(Place.init(location: CLLocation.init(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude), name: p.title ?? "", image: images[pins.index(of: p)!], identifier: "id"))
+                
                 
             }
             count += 1

@@ -170,11 +170,6 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                     
                     print("JSON ----------ACTIVATIONCODE----------->>>> " , JSON)
                     
-//                    code = 200;
-//                    msg = "active account";
-//                    status = true;
-//                    type = success;
-                    
                     let obj = ProfileResponseModel.init(json: JSON as! JSON)
                     if(obj?.code == "5005"){
                         GlobalFields().goErrorPage(viewController: self)
@@ -246,8 +241,6 @@ class ActivationCodeViewController: UIViewController, UITextFieldDelegate{
                     }
                     if(SignUpResponseModel.init(json: JSON as! JSON).code == "200"){
                         
-                        //notify ferestade shod
-//                        self.navigationController?.pushViewController(SignInPageOneViewController() as! UIViewController, animated: true)
                         
                     }
                     

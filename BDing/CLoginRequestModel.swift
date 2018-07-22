@@ -14,15 +14,11 @@ class CLoginRequestModel {
         
         self.USERNAME = GlobalFields.PROFILEDATA?.mobile
         
-        let m = SaveAndLoadModel().load(entity: "USER")?[0]
-        
-        self.TOKEN = m?.value(forKey: "token") as! String!
-        
         var temp = self.USERNAME
         
-        temp?.append(self.TOKEN)
+        temp?.append(self.USERNAME.md5())
         
-        temp?.append(self.TOKEN.md5())
+        temp?.append(self.USERNAME)
         
         self.HASH =  temp?.md5()
         
@@ -30,13 +26,11 @@ class CLoginRequestModel {
     
     var USERNAME: String!
     
-    var TOKEN: String!
-    
     var HASH: String!
     
     func getParams() -> [String: Any]{
         
-        return ["user": USERNAME, "hash": HASH , "token" : TOKEN]
+        return ["username": USERNAME, "hash": HASH]
         
     }
     

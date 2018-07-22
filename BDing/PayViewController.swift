@@ -56,6 +56,27 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
     
     @IBOutlet weak var attentionIcon: UIImageView!
     
+    // MARK: - Cashier popup
+    
+    @IBOutlet weak var cashierPopupView: DCBorderedView!
+    
+    @IBOutlet weak var cashMyDing: UILabel!
+    
+    @IBOutlet weak var cashTitle: UILabel!
+    
+    @IBOutlet weak var cashPrice: UILabel!
+    
+    // MARK: - Charge account popup
+    @IBOutlet weak var chargeAccountView: DCBorderedView!
+    
+    @IBOutlet weak var chargeMyDing: UILabel!
+    
+    @IBOutlet weak var chargePrice: UITextField!
+    
+    
+    
+    // MARK: - Local vars
+    
     let locationManager = CLLocationManager()
     
     var payBeacon : CLBeacon? = nil
@@ -63,6 +84,10 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
     let showcase = MaterialShowcase()
     
     var indexPay : Int = 0
+    
+    var checkPS : Bool = false
+    
+    var timer : Timer? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,6 +106,10 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
         self.myDings.text = GlobalFields.PROFILEDATA?.all_coin
         
         self.popupMyDings.text = GlobalFields.PROFILEDATA?.all_coin
+        
+        self.cashMyDing.text = GlobalFields.PROFILEDATA?.all_coin
+        
+        self.chargeMyDing.text = GlobalFields.PROFILEDATA?.all_coin
         
         self.automaticallyAdjustsScrollViewInsets = false
         
@@ -109,6 +138,10 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
         
         self.popupMyDings.text = GlobalFields.PROFILEDATA?.all_coin
         
+        self.cashMyDing.text = GlobalFields.PROFILEDATA?.all_coin
+        
+        self.chargeMyDing.text = GlobalFields.PROFILEDATA?.all_coin
+        
         let when = DispatchTime.now() + 0.5
         DispatchQueue.main.asyncAfter(deadline: when) {
             
@@ -135,6 +168,40 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
             self.updateProfile()
             
         }
+        
+        if(myBTManager?.state == CBManagerState.poweredOff){
+            
+            Notifys().notif(message: "لطفا جهت استفاده از دستگاه پرداخت بلوتوث خود را روشن کنید."){ alarm in
+                
+                self.present(alarm, animated: true, completion: nil)
+                
+            }
+            
+            return
+        }
+        
+        
+        locationManager.delegate = self
+        
+        locationManager.requestAlwaysAuthorization()
+        
+        if(GlobalFields.PAY_UUIDS == nil){
+            
+            return
+            
+        }
+        
+        self.indexPay = 0
+        
+        let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: GlobalFields.PAY_UUIDS![indexPay].lowercased())! as UUID, identifier: "Bding")
+        
+        self.locationManager.startRangingBeacons(in: region)
+        
+        locationManager.distanceFilter = 1
+        
+        firstAnimate()
+        
+        
     }
     
     func checkDing(){
@@ -495,7 +562,7 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
             
             if let JSON = response.result.value {
                 
-                print("JSON ----------Payment Verify----------->>>> " ,JSON)
+                print("JSON ----------Get Ding----------->>>> " ,JSON)
                 //create my coupon response model
                 
                 if(PaymentVerifyResponseModel.init(json: JSON as! JSON)?.code == "5005"){
@@ -522,6 +589,10 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
                     self.myDings.text = GlobalFields.PROFILEDATA?.all_coin
                     
                     self.popupMyDings.text = GlobalFields.PROFILEDATA?.all_coin
+                    
+                    self.cashMyDing.text = GlobalFields.PROFILEDATA?.all_coin
+                    
+                    self.chargeMyDing.text = GlobalFields.PROFILEDATA?.all_coin
                     
                     GlobalFields.goOnlinePay = false
                     
@@ -623,7 +694,343 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
         
     }
     
+    // MARK: - CashPopup Actions
     
+    @IBAction func cashPay(_ sender: Any) {
+        
+        var payButt : UIButton = sender as! UIButton
+        
+        if(payButt.title(for: .normal) != "تایید" && payButt.title(for: .normal) != "پرداخت آنلاین"){
+            
+            let myCALayer = payButt.layer
+            var transform = CATransform3DIdentity
+            transform.m34 = -1.0/100.0
+            myCALayer.transform = CATransform3DRotate(transform, 0, 1, 0, 0)
+            if(Int((GlobalFields.PROFILEDATA?.all_coin)!)! < Int(self.cashPrice.text!)!){
+                UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                    
+                    payButt.setTitle("پرداخت آنلاین", for: .normal)
+                },completion : nil)
+            }else{
+                UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                    
+                    payButt.setTitle("تایید", for: .normal)
+                },completion : nil)
+            }
+            
+            SpAnimation.animate(myCALayer,
+                                keypath: "transform.rotation.x",
+                                duration: 3.0,
+                                usingSpringWithDamping: 1.0,
+                                initialSpringVelocity: 1.7,
+                                fromValue: Double.pi,
+                                toValue: 0,
+                                onFinished: nil)
+            
+        }else{
+            
+            self.animationView = LOTAnimationView(name: "finall")
+            
+            self.animationView?.frame.size.height = payButt.frame.height - 20
+            
+            self.animationView?.frame.size.width = payButt.frame.height
+            
+            self.animationView?.frame.origin.y =  payButt.frame.origin.y + 10
+            
+            self.animationView?.frame.origin.x =  payButt.frame.origin.x + 10
+            
+            if(payButt.title(for: .normal) == "پرداخت آنلاین"){
+                self.animationView?.frame.size.height = payButt.frame.height - 20
+                
+                self.animationView?.frame.size.width = payButt.frame.height
+                
+                self.animationView?.frame.origin.y =  payButt.frame.origin.y + 10
+                
+                self.animationView?.frame.origin.x =  payButt.frame.origin.x - 5
+            }
+            
+            //+ (self.payButton.frame.width / 2) - ((self.animationView?.frame.width)! / 2)
+            
+            self.animationView?.contentMode = UIViewContentMode.scaleAspectFit
+            
+            self.animationView?.alpha = 1
+            
+            self.animationView?.layer.zPosition = 2
+            
+            self.cashierPopupView.addSubview(self.animationView!)
+            
+            self.animationView?.loopAnimation = true
+            
+            self.animationView?.play()
+            
+            self.view.isUserInteractionEnabled = false
+            
+            self.cashierPopupView.isUserInteractionEnabled = false
+            
+            let manager = SessionManager.default2
+            print(PaymentRequestModel.init(BEACON: payBeacon, MONEY: self.cashPrice.text!).getParams())
+            manager.request(URLs.payment , method: .post , parameters: PaymentRequestModel.init(BEACON: payBeacon, MONEY: self.cashPrice.text!).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                print()
+                
+                switch (response.result) {
+                case .failure(let _):
+                    
+                    self.animationView?.stop()
+                    
+                    self.animationView?.alpha = 0
+                    
+                    payButt.setTitle("پرداخت مبلغ", for: .normal)
+                    
+                    self.view.isUserInteractionEnabled = true
+                    
+                    self.cashierPopupView.isUserInteractionEnabled = true
+                    
+                    return
+                    
+                    
+                default: break
+                    
+                }
+                
+                if let JSON = response.result.value {
+                    
+                    print("JSON ----------Payment----------->>>> " ,JSON)
+                    //create my coupon response model
+                    
+                    self.view.isUserInteractionEnabled = true
+                    
+                    self.cashierPopupView.isUserInteractionEnabled = true
+                    
+                    if(PaymentResponseModel.init(json: JSON as! JSON)?.code == "5005"){
+                        GlobalFields().goErrorPage(viewController: self)
+                    }
+                    
+                    if( PaymentResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                        print(PaymentVerifyRequestModel.init(CODE: PaymentResponseModel.init(json: JSON as! JSON)?.data?.code).getParams())
+                        request(URLs.verifyPayment , method: .post , parameters: PaymentVerifyRequestModel.init(CODE: PaymentResponseModel.init(json: JSON as! JSON)?.data?.code).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                            print()
+                            
+                            if let JSON2 = response.result.value {
+                                
+                                print("JSON ----------Payment Verify----------->>>> " ,JSON2)
+                                //create my coupon response model
+                                
+                                if( PaymentVerifyResponseModel.init(json: JSON2 as! JSON)?.code == "200"){
+                                    
+                                    payButt.setTitle("پرداخت مبلغ", for: .normal)
+                                    
+                                    if(PaymentVerifyResponseModel.init(json: JSON2 as! JSON)?.data?.url?.isEmpty)!{
+                                        self.closeCashPopup()
+                                        self.updateProfile()
+                                        Notifys().notif(message: "پرداخت با موفقیت انجام شد"){ alarm in
+                                            
+                                            self.present(alarm, animated: true, completion: nil)
+                                            
+                                        }
+                                    }else{
+                                        GlobalFields.goOnlinePay = true
+                                        self.viewDidDisappear(true)
+                                        UIApplication.shared.openURL(URL(string: (PaymentVerifyResponseModel.init(json: JSON2 as! JSON)?.data?.url)!)!)
+                                    }
+                                    
+                                }else{
+                                    
+                                    Notifys().notif(message: PaymentVerifyResponseModel.init(json: JSON2 as! JSON)?.msg){ alarm in
+                                        
+                                        self.present(alarm, animated: true, completion: nil)
+                                        
+                                    }
+                                    
+                                }
+                                self.closeCashPopup()
+                                
+                                self.animationView?.alpha = 0
+                                
+                                self.animationView?.stop()
+                                
+                                self.animationView?.removeFromSuperview()
+                            }
+                            
+                        }
+                        
+                    }else{
+                        
+                        self.closeCashPopup()
+                        
+                        self.animationView?.alpha = 0
+                        
+                        self.animationView?.stop()
+                        
+                        self.animationView?.removeFromSuperview()
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            
+        }
+        
+        
+    }
+    
+    @IBAction func cashCancel(_ sender: Any) {
+        
+        let manager = SessionManager.default2
+        print(PaymentRequestModel.init(BEACON: payBeacon, MONEY: "-1").getParams())
+        manager.request(URLs.payment , method: .post , parameters: PaymentRequestModel.init(BEACON: payBeacon, MONEY: "-1").getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            if let JSON = response.result.value {
+                
+                print("JSON ----------Payment----------->>>> \n" ,JSON)
+                
+            }
+            
+        }
+        
+        closeCashPopup()
+        
+    }
+    
+    func showCashPopup(title : String , price: String){
+        self.cashTitle.text = title
+        self.cashPrice.text = price
+        self.blurView.alpha = 0.5
+        self.cashierPopupView.alpha = 1
+        
+    }
+    
+    func closeCashPopup(){
+        self.blurView.alpha = 0
+        self.cashierPopupView.alpha = 0
+    }
+    
+    // MARK: - ChargeAccountActions
+    
+    @IBAction func charging(_ sender: Any) {
+        
+        if(self.chargePrice.text == ""){
+            return
+        }
+        if(Int(self.chargePrice.text!)! == 0){
+            return
+        }
+        
+        self.view.isUserInteractionEnabled = false
+        
+        self.chargeAccountView.isUserInteractionEnabled = false
+        
+        let manager = SessionManager.default2
+        
+        manager.request(URLs.charge , method: .post , parameters: ChargeRequestModel.init(MONEY: self.chargePrice.text!).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            switch (response.result) {
+            case .failure(let _):
+                
+//                self.animationView?.stop()
+//
+//                self.animationView?.alpha = 0
+                
+                self.view.isUserInteractionEnabled = true
+                
+                self.chargeAccountView.isUserInteractionEnabled = true
+                
+                return
+                
+                
+            default: break
+                
+            }
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------cahrge----------->>>> " ,JSON)
+                //create my coupon response model
+                
+                self.view.isUserInteractionEnabled = true
+                
+                self.chargeAccountView.isUserInteractionEnabled = true
+                
+                if(PaymentResponseModel.init(json: JSON as! JSON)?.code == "5005"){
+                    GlobalFields().goErrorPage(viewController: self)
+                }
+                
+                if( PaymentResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                    
+                    request(URLs.verifyCharge , method: .post , parameters: VerifyChargeRequestModel.init(CODE: PaymentResponseModel.init(json: JSON as! JSON)?.data?.code).getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                        print()
+                        
+                        if let JSON2 = response.result.value {
+                            
+                            print("JSON ----------charge Verify----------->>>> " ,JSON2)
+                            //create my coupon response model
+                            
+                            if( PaymentVerifyResponseModel.init(json: JSON2 as! JSON)?.code == "200"){
+                                
+                                if(PaymentVerifyResponseModel.init(json: JSON2 as! JSON)?.data?.url?.isEmpty)!{
+                                    self.cancelCharging("")
+                                    self.updateProfile()
+                                    Notifys().notif(message: "شارژ با موفقیت انجام شد"){ alarm in
+                                        
+                                        self.present(alarm, animated: true, completion: nil)
+                                        
+                                    }
+                                }else{
+                                    
+                                    GlobalFields.goOnlinePay = true
+                                    self.viewDidDisappear(true)
+                                    UIApplication.shared.openURL(URL(string: (PaymentVerifyResponseModel.init(json: JSON2 as! JSON)?.data?.url)!)!)
+                                }
+                                
+                            }else{
+                                
+                                Notifys().notif(message: PaymentVerifyResponseModel.init(json: JSON2 as! JSON)?.msg){ alarm in
+                                    
+                                    self.present(alarm, animated: true, completion: nil)
+                                    
+                                }
+                                
+                            }
+                            self.cancelCharging("")
+                            
+//                            self.animationView?.alpha = 0
+//
+//                            self.animationView?.stop()
+//
+//                            self.animationView?.removeFromSuperview()
+                        }
+                        
+                    }
+                    
+                }else{
+                    
+                    self.cancelCharging("")
+//                    self.animationView?.alpha = 0
+//
+//                    self.animationView?.stop()
+//
+//                    self.animationView?.removeFromSuperview()
+                    
+                }
+                
+            }
+            
+        }
+        
+        
+    }
+    
+    @IBAction func cancelCharging(_ sender: Any) {
+        self.blurView.alpha = 0
+        self.chargeAccountView.alpha = 0
+    }
+    
+    @IBAction func showChargingPopup(_ sender: Any) {
+        self.blurView.alpha = 0.5
+        self.chargeAccountView.alpha = 1
+    }
     
     // MARK: - LocationManager
     
@@ -724,94 +1131,209 @@ class PayViewController: UIViewController , UICollectionViewDataSource, UICollec
         
         let b = payBeacons.popLast()
         
-        var payUrlString : String = ""
+        self.payBeacon = b
         
-        payUrlString.append(URLs.payTitle)
+        callRegister(b: b!, payBeacons: payBeacons)
         
-        payUrlString.append(String(describing: (b?.proximityUUID)!).lowercased())
+    }
+    
+    func callRegister(b : CLBeacon , payBeacons : [CLBeacon]){
         
-        payUrlString.append("-")
+        var beaconCode : String = ""
         
-        payUrlString.append(String(describing: (b?.major)!).lowercased())
+        beaconCode.append(String(describing: (b.proximityUUID)).lowercased())
         
-        payUrlString.append("-")
+        beaconCode.append("-")
         
-        payUrlString.append(String(describing: (b?.minor)!).lowercased())
+        beaconCode.append(String(describing: (b.major)).lowercased())
         
-        print("requeste pay : " , payUrlString)
+        beaconCode.append("-")
         
-        let manager = SessionManager.default2
+        beaconCode.append(String(describing: (b.minor)).lowercased())
         
-        manager.request( payUrlString , method: .get , encoding: JSONEncoding.default).responseJSON { response in
+        request(URLs.nPayRegister , method: .post , parameters: NPayRegisterRequestModel.init(BEACON: beaconCode).getParams(), encoding: JSONEncoding.default).responseJSON { response in
             print()
-            
-            switch (response.result) {
-            case .failure(let _):
-                
-                self.secondAnimate()
-                
-                return
-                
-            default: break
-                
-            }
             
             if let JSON = response.result.value {
                 
-                print("JSON ----------GET PAY TITLE----------->>>> " ,JSON)
-                //create my coupon response model
+                var obj = NPayRegisterResponseModel.init(json: JSON as! JSON)
                 
-                if(PayTitleResponseModel.init(json: JSON as! JSON)?.code == "5005"){
-                    GlobalFields().goErrorPage(viewController: self)
-                }
-                
-                if( PayTitleResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                print("JSON ----------Payment Register----------->>>> " ,JSON)
+                if(obj?.code == "200"){
                     
-                    self.secondAnimate()
+                    self.checkPS = true
+                    self.usedTimer()
                     
-                    UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                }else if(obj?.code == "5000"){
+                    
+                    var payUrlString : String = ""
+                    
+                    payUrlString.append(URLs.payTitle)
+                    
+                    payUrlString.append(String(describing: (b.proximityUUID)).lowercased())
+                    
+                    payUrlString.append("-")
+                    
+                    payUrlString.append(String(describing: (b.major)).lowercased())
+                    
+                    payUrlString.append("-")
+                    
+                    payUrlString.append(String(describing: (b.minor)).lowercased())
+                    
+                    let manager = SessionManager.default2
+                    print(payUrlString)
+                    manager.request( payUrlString , method: .get , encoding: JSONEncoding.default).responseJSON { response in
+                        print()
                         
-                        self.showPayPopup(payTitle: (PayTitleResponseModel.init(json: JSON as! JSON)?.result?.title)!)
-                        
-                        self.payBeacon = b
-                        
-                    },completion : nil)
-                    
-                    
-                }else{
-                    
-                    if(payBeacons.count == 0){
-                        
-                        if(self.indexPay + 1 <= (GlobalFields.PAY_UUIDS?.count)! - 1){
-                            self.indexPay += 1
-                            let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: GlobalFields.PAY_UUIDS![self.indexPay].lowercased())! as UUID, identifier: "Bding")
+                        switch (response.result) {
+                        case .failure(let _):
                             
-                            self.locationManager.startRangingBeacons(in: region)
+                            self.secondAnimate()
                             
                             return
-                        }else{
-                            Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
                             
-                                self.present(alarm, animated: true, completion: nil)
+                        default: break
                             
-                                self.secondAnimate()
-                            
-                            }
                         }
-                    }else{
                         
-                        self.popupRequestFor(beacons: payBeacons)
+                        if let JSON = response.result.value {
+                            
+                            print("JSON ----------Register----------->>>> " ,JSON)
+                            
+                            
+                            if(PayTitleResponseModel.init(json: JSON as! JSON)?.code == "5005"){
+                                GlobalFields().goErrorPage(viewController: self)
+                            }
+                            
+                            if( PayTitleResponseModel.init(json: JSON as! JSON)?.code == "200"){
+                                
+                                self.secondAnimate()
+                                
+                                UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                                    
+                                    self.showPayPopup(payTitle: (PayTitleResponseModel.init(json: JSON as! JSON)?.result?.title)!)
+                                    
+                                    self.payBeacon = b
+                                    
+                                },completion : nil)
+                                
+                                
+                            }else{
+                                
+                                if(payBeacons.count == 0){
+                                    
+                                    if(self.indexPay + 1 <= (GlobalFields.PAY_UUIDS?.count)! - 1){
+                                        self.indexPay += 1
+                                        let region = CLBeaconRegion(proximityUUID: NSUUID(uuidString: GlobalFields.PAY_UUIDS![self.indexPay].lowercased())! as UUID, identifier: "Bding")
+                                        
+                                        self.locationManager.startRangingBeacons(in: region)
+                                        
+                                        return
+                                    }else{
+                                        Notifys().notif(message: "دستگاه پرداختی یافت نشد!"){ alarm in
+                                            
+                                            self.present(alarm, animated: true, completion: nil)
+                                            
+                                            self.secondAnimate()
+                                            
+                                        }
+                                    }
+                                }else{
+                                    
+                                    self.popupRequestFor(beacons: payBeacons)
+                                    
+                                }
+                                
+                            }
+                            
+                            
+                        }
                         
                     }
+                }else if(obj?.code == "5001"){
+                    
+                    self.checkPS = true
+                    self.usedTimer()
                     
                 }
-                
                 
             }
             
         }
         
     }
+    
+    
+    
+    func usedTimer()  {
+        timer = Timer.scheduledTimer(timeInterval: 5,
+                             target: self,
+                             selector: #selector(self.run(_:)),
+                             userInfo: nil,
+                             repeats: true)
+    }
+    
+    func run(_ timer: AnyObject) {
+        
+        if(checkPS){
+            
+            checkPayStatus()
+            
+        }
+        
+    }
+    
+    func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+        checkPS = false
+    }
+    
+    func checkPayStatus(){
+        print(CPayStatusRequestModel.init(TYPE: "user").getParams())
+        request(URLs.cPayStatus , method: .post , parameters: CPayStatusRequestModel.init(TYPE: "user").getParams(), encoding: JSONEncoding.default).responseJSON { response in
+            print()
+            
+            if let JSON = response.result.value {
+                
+                print("JSON ----------Pay Status----------->>>> " , JSON)
+                
+                let obj : CPayStatusResponseModel = CPayStatusResponseModel.init(json: JSON as! JSON)!
+                
+                if ( obj.code == "200"){
+                    
+                    if(obj.data != nil){
+                        
+                        if((obj.data![0].status_pay) == "success"){
+                            self.stopTimer()
+                            self.secondAnimate()
+                            //show popup
+                            print(obj.data![0].price)
+                            self.showCashPopup(title: obj.data![0].pay_cash_title!, price: obj.data![0].price!)
+                            
+                        }else if((obj.data![0].status_pay) == "wait"){
+                            
+                        }else if((obj.data![0].status_pay) == "failed"){
+                            self.stopTimer()
+                            self.secondAnimate()
+                            //show notify
+                            Notifys().notif(message: "خطای پرداخت"){ alarm in
+                                
+                                self.present(alarm, animated: true, completion: nil)
+                                
+                            }
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
     
     
     // MARK: - CollectionDelegateMethodes

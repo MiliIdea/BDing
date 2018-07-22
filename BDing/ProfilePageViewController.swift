@@ -64,6 +64,8 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
         
         animationView = LOTAnimationView(name: "finall")
         
+//        self.profilePicButton.frame.size.width = 79 / 375 * self.view.frame.width
+        
         self.profilePicButton.frame.size.height = self.profilePicButton.frame.size.width
         
         self.profilePicButton.layer.cornerRadius = self.profilePicButton.frame.height / 2
@@ -388,20 +390,24 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                 
                 if ( obj?.code == "200" ){
                     
-                    request(URLs.cReportCash , method: .post , parameters: CReportCashRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                    GlobalFields.cLoginResponseModel = obj
+                    
+                    GlobalFields.cPic = (obj?.data?.pic)!
+                    
+                    request(URLs.cLastCash , method: .post , parameters: CLastCashRequestModel.init().getParams(), encoding: JSONEncoding.default).responseJSON { response in
                         print()
                         
                         if let JSON2 = response.result.value {
                             
-                            print("JSON ----------Cash Report----------->>>> " , JSON2)
+                            print("JSON ----------Last Cash----------->>>> " , JSON2)
                             
-                            let obj2 = CReportCashResponseModel.init(json: JSON2 as! JSON)
+                            let obj2 = CLastCashResponseModel.init(json: JSON2 as! JSON)
                             
                             if ( obj2?.code == "200" ){
                                
                                 let objVC : UIViewController = (self.storyboard?.instantiateViewController(withIdentifier: "CashDeskHomeViewController"))! as UIViewController
                                 
-                                GlobalFields.cReportCashData = obj2?.data
+                                GlobalFields.cLastCashData = obj2?.data
                                 
                                 self.navigationController?.isToolbarHidden = true
  
@@ -413,6 +419,14 @@ class ProfilePageViewController: UIViewController ,UIImagePickerControllerDelega
                             }
                             
                         }
+                        
+                    }
+                    
+                }else if ( obj?.code == "7000" ){
+                    
+                    Notifys().notif(message: obj?.msg ?? "شما دسترسی لازم به حساب صندوق را ندارید."){ alert in
+                        
+                        self.present(alert, animated: true, completion: nil)
                         
                     }
                     

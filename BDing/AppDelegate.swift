@@ -13,7 +13,7 @@ import UserNotificationsUI
 import CoreLocation
 import CoreBluetooth
 import JavaScriptCore
-import Pushe
+
 
 
 
@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
         
         locationManager.delegate = self
         
-        Pushe.shared.configPushe()
+//        Pushe.shared.configPushe()
         
         myBTManager = CBPeripheralManager(delegate: self, queue: nil, options: nil)
         
@@ -89,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        Pushe.shared.connectToGcm()
+//        Pushe.shared.connectToGcm()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -97,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         locationManager.delegate = self
         
-        Pushe.shared.disconnectFromGcm()
+//        Pushe.shared.disconnectFromGcm()
         
         if((SaveAndLoadModel().load(entity: "USER")?.count)! > 0){
             
@@ -270,7 +270,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         reinstateBackgroundTask()
-        
+        update()
         if(UIApplication.shared.applicationState == UIApplicationState.inactive){
         
             let notification = UILocalNotification()
@@ -286,6 +286,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         reinstateBackgroundTask()
+        update()
     }
     
     func registerBackgroundTask() {
@@ -397,6 +398,127 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
     
     //UTIL
     
+    func onChangeStatus(beacon : CLBeacon , row : NSManagedObject){
+        
+        var localTimeZoneAbbreviation: String { return  NSTimeZone.local.abbreviation(for: Date())! }
+        
+        let date = Date()
+        
+        let uuid: String = String(describing: beacon.proximityUUID)
+        
+        let major: String = String(describing: beacon.major)
+        
+        let minor: String = String(describing: beacon.minor)
+        
+        var s : String = uuid
+        
+        s.append(major)
+        
+        s.append(minor)
+        
+        s = s.md5()
+        
+        var s2 : String = uuid
+        
+        s2.append("-")
+        
+        s2.append(major)
+        
+        s2.append("-")
+        
+        s2.append(minor)
+        
+        let formatter = DateFormatter()
+        
+        formatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        
+        formatter.calendar = Calendar(identifier: .gregorian)
+        
+        let d = Date()
+        
+        let param = OnChangeStatusRequestModel.init(date: formatter.string(from: d), beacon: s2).getParams()
+        
+        print(param)
+        
+        request(URLs.onChangeStatus , method: .post , parameters: param, encoding: JSONEncoding.default).responseJSON { response in
+            print(response)
+            if let JSON2 = response.result.value {
+                
+                let obj2 = OnChangeStatusRespoonseModel.init(json: JSON2 as! JSON)
+                
+                if ( obj2?.code == "200" ){
+                    print(row.value(forKey: "modifiedTime"))
+                    if(row.value(forKey: "modifiedTime") != nil){
+                        
+                        if(obj2?.data?.modifyDate != row.value(forKey: "modifiedTime") as! String){
+                            
+                            if(SaveAndLoadModel().load(entity: "USER")!.count >= 1){
+                                
+                                let s2 = GetBeaconRequestModel(UUID: String(describing : beacon.proximityUUID), MAJOR: String(describing : beacon.major), MINOR: String(describing : beacon.minor))
+                                
+                                request(URLs.getBeacon , method: .post , parameters: s2.getParams(), encoding: JSONEncoding.default).responseJSON { response in
+                                    
+                                    if let JSON = response.result.value {
+                                        
+                                        let obj = BeaconListResponseModel.init(json: JSON as! JSON)
+                                        
+                                        if ( obj?.code == "200" ){
+                                            
+                                            SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s, newItem: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : Date() , "beaconDataJSON" : self.jsonToString(json: JSON as AnyObject) ,"isRemoved" : false , "lastSeenTime" : Date() , "modifiedTime" : obj2?.data?.modifyDate])
+                                            
+                                            if(SaveAndLoadModel().load(entity: "Notify")?.isEmpty)!{
+                                                let notification = UILocalNotification()
+                                                notification.fireDate = Date()
+                                                notification.alertTitle = obj?.data?[0].customer_title
+                                                notification.alertBody = obj?.data?[0].text
+                                                notification.alertAction = "ok"
+                                                notification.soundName = UILocalNotificationDefaultSoundName
+                                                UIApplication.shared.presentLocalNotificationNow(notification)
+                                            }
+                                            
+                                            return
+                                            
+                                        }else if ( obj?.code == "204" ){
+                                            
+                                            //                                    SaveAndLoadModel().deleteSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s)
+                                            
+                                        }
+                                        
+                                    }
+                                    
+                                }
+                                
+                            }
+                            
+                            
+                        }else{
+                            
+                            var sT = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s)
+                            //update last seen time
+                            SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s, newItem: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : sT?.value(forKey: "seenTime") ?? Date() , "beaconDataJSON" : sT?.value(forKey: "beaconDataJSON") ,"isRemoved" : false , "lastSeenTime" : Date() , "modifiedTime" : obj2?.data?.modifyDate])
+                            
+                            //check 12h from NotifyTime
+                            
+                            
+                        }
+                        
+                    }else{
+                        
+                        var sT = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s)
+                        //update last seen time
+                        SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s, newItem: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : sT?.value(forKey: "seenTime") ?? Date() , "beaconDataJSON" : sT?.value(forKey: "beaconDataJSON") ,"isRemoved" : false , "lastSeenTime" : Date() , "modifiedTime" : obj2?.data?.modifyDate])
+                        
+                    }
+                    
+                    
+                    
+                }
+                
+            }
+            
+        }
+    }
+    
     func checkDB2(beacon : CLBeacon , beacon2_db : [NSManagedObject]){
         
         var localTimeZoneAbbreviation: String { return  NSTimeZone.local.abbreviation(for: Date())! }
@@ -425,98 +547,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                 
                 isInDB = true
                 
-                if(row.value(forKey: "seenTime") != nil){
-                
-                    let t1 = row.value(forKey: "seenTime") as! Date
+                if(row.value(forKey: "lastSeenTime") != nil){
+                    
+                    let t1 = row.value(forKey: "lastSeenTime") as! Date
                     
                     let t2 = date
+                    print(minutesBetween(date1: t2 as NSDate, date2: t1 as NSDate))
+                    if(minutesBetween(date1: t2 as NSDate, date2: t1 as NSDate) >= 30 && SaveAndLoadModel().load(entity: "USER")!.count >= 1){
                     
-                    if(hoursBetween(date1: t2 as NSDate, date2: t1 as NSDate) > 12 && SaveAndLoadModel().load(entity: "USER")!.count >= 1){
+                        SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s, newItem: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : row.value(forKey: "isSeen") , "seenTime" : row.value(forKey: "seenTime") , "beaconDataJSON" : row.value(forKey: "beaconDataJSON") ,"isRemoved" : row.value(forKey: "isRemoved") , "lastSeenTime" : Date() , "modifiedTime" : row.value(forKey: "modifiedTime")])
                         
-                        let s2 = GetBeaconRequestModel(UUID: String(describing : beacon.proximityUUID), MAJOR: String(describing : beacon.major), MINOR: String(describing : beacon.minor))
                         
-                        request(URLs.getBeacon , method: .post , parameters: s2.getParams(), encoding: JSONEncoding.default).responseJSON { response in
-//                            print()
-                            
-                            if let JSON = response.result.value {
-                                
-//                                print("JSON -----------FINDBEACON---------->>>> " , JSON)
-                                
-                                let obj = BeaconListResponseModel.init(json: JSON as! JSON)
-                                
-                                if ( obj?.code == "200" ){
-                                    
-                                    let t3 = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s)?.value(forKey: "seenTime") as! Date
-                                    
-                                    let t4 = Date()
-                                    
-                                    if(self.hoursBetween(date1: t3 as NSDate, date2: t4 as NSDate) > 12){
-                                        
-                                        SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s, newItem: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : Date() , "beaconDataJSON" : self.jsonToString(json: JSON as AnyObject) ,"isRemoved" : false])
-                                    
-                                        if(SaveAndLoadModel().load(entity: "Notify")?.isEmpty)!{
-                                            let notification = UILocalNotification()
-                                            notification.fireDate = Date()
-                                            notification.alertTitle = obj?.data?[0].customer_title
-                                            notification.alertBody = obj?.data?[0].text
-                                            notification.alertAction = "ok"
-                                            notification.soundName = UILocalNotificationDefaultSoundName
-                                            UIApplication.shared.presentLocalNotificationNow(notification)
-                                        }
-                                        
-                                    }
-                                    
-                                    
-                                    //                                    }
-                                    
-                                    return
-                                    
-                                }else if ( obj?.code == "204" ){
-                                    
-                                    let obj = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s)
-                                    
-                                    SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s , newItem: ["uuid" : obj?.value(forKey: "uuid") , "major" : obj?.value(forKey: "major") , "minor" : obj?.value(forKey: "minor") , "id" : obj?.value(forKey: "id") , "isSeen" : obj?.value(forKey: "isSeen") , "seenTime" : obj?.value(forKey: "seenTime") , "beaconDataJSON" : obj?.value(forKey: "beaconDataJSON") ,"isRemoved" : true])
-                                    
-                                }
-                                
-                            }
-                            
-                        }
+                        onChangeStatus(beacon: beacon, row: row)
                         
+                    }else{
+                        //End
                     }
                     
                     
                 }
-            
+                
             }
             
-            //            print(row.value(forKey: "uuid") ?? "nil")
-            
         }
-        
-        //        print("**********************")
         
         if(!isInDB){
             //insert into DB
             
-            SaveAndLoadModel().save(entityName: "BEACON", datas: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : nil , "beaconDataJSON" : nil , "isRemoved" : false])
+            SaveAndLoadModel().save(entityName: "BEACON", datas: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : nil , "beaconDataJSON" : nil , "isRemoved" : false , "lastSeenTime" : Date()])
             
             let s2 = GetBeaconRequestModel(UUID: String(describing : beacon.proximityUUID), MAJOR: String(describing : beacon.major), MINOR: String(describing : beacon.minor))
             
             request(URLs.getBeacon , method: .post , parameters: s2.getParams(), encoding: JSONEncoding.default).responseJSON { response in
-//                print()
+
                 
                 if let JSON = response.result.value {
-                    
-//                    print("JSON -----------FINDBEACON---------->>>> " , JSON)
-                    
+             
                     let obj = BeaconListResponseModel.init(json: JSON as! JSON)
                     
                     if ( obj?.code == "200" ){
                         
-                        if(SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s) == nil){
+                        
+                        if(SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s)?.value(forKey: "beaconDataJSON") == nil){
                             
-                            SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s, newItem: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : Date() , "beaconDataJSON" : self.jsonToString(json: JSON as AnyObject) ,"isRemoved" : false])
+                            SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s, newItem: ["uuid" : uuid , "major" : major , "minor" : minor , "id" : s , "isSeen" : false , "seenTime" : Date() , "beaconDataJSON" : self.jsonToString(json: JSON as AnyObject) ,"isRemoved" : false , "lastSeenTime" : Date()])
                             
                             
                             //set notification!!!!!!!!!!!!
@@ -533,11 +607,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
                         
                         return
                     }else if ( obj?.code == "204" ){
-                        
+
 //                        SaveAndLoadModel().deleteSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s)
-                        let obj = SaveAndLoadModel().getSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s)
-                        
-                        SaveAndLoadModel().updateSpecificItemIn(entityName: "BEACON", keyAttribute: "id", item: s , newItem: ["uuid" : obj?.value(forKey: "uuid") , "major" : obj?.value(forKey: "major") , "minor" : obj?.value(forKey: "minor") , "id" : obj?.value(forKey: "id") , "isSeen" : obj?.value(forKey: "isSeen") , "seenTime" : obj?.value(forKey: "seenTime") , "beaconDataJSON" : obj?.value(forKey: "beaconDataJSON") ,"isRemoved" : true])
                         
                     }
                     
@@ -588,6 +659,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
         
     }
     
+    func minutesBetween(date1: NSDate, date2: NSDate) -> Int {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = .minute
+        
+        var t = Int((formatter.string(from: (date1 as Date) as Date, to: date2 as Date)?.replacingOccurrences(of: ",", with: ""))!)!
+        
+        if(t < 0){
+            
+            t = -t
+            
+        }
+        
+        return t
+        
+    }
+    
 
     func getIFAddresses() -> [String] {
         var addresses = [String]()
@@ -623,12 +710,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate , CLLocationManagerDelegat
     
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        Pushe.shared.startPushe(apnToken: deviceToken, isDevelop: false)
+//        Pushe.shared.startPushe(apnToken: deviceToken, isDevelop: false)
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Pushe.shared.downstreamReciver(message: userInfo)
+//        Pushe.shared.downstreamReciver(message: userInfo)
     }
     
 }

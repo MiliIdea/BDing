@@ -14,9 +14,15 @@ class CReportCashData : Decodable{
     
     var cash_title : String?
     
+    var start_time : String?
+    
+    var end_time : String?
+    
     var name_family : String?
     
-    var pic : String?
+    var close_cash : String?
+    
+    var code : String?
     
     required init?(json: JSON) {
         
@@ -24,9 +30,15 @@ class CReportCashData : Decodable{
         
         self.cash_title = "cash_title" <~~ json
         
+        self.start_time = "start_time" <~~ json
+        
+        self.end_time = "end_time" <~~ json
+        
         self.name_family = "name_family" <~~ json
         
-        self.pic = "pic" <~~ json
+        self.close_cash = "close_cash" <~~ json
+        
+        self.code = "code" <~~ json
         
     }
     

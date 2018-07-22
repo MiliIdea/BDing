@@ -10,17 +10,17 @@ import Foundation
 
 class CDetermineRequestModel {
     
-    init(BUYER_ID: String! , PRICE: String!) {
+    init(BUYER_ID: String! , PRICE: String! , FACTORNUM: String?) {
         
         self.BUYER_ID = BUYER_ID
         
         self.PRICE = PRICE
         
-        self.USERNAME = GlobalFields.PROFILEDATA?.mobile
+        self.USERNAME = GlobalFields.cLoginResponseModel?.data?.user
         
-        let m = SaveAndLoadModel().load(entity: "USER")?[0]
+        self.TOKEN = GlobalFields.cLoginResponseModel?.data?.token
         
-        self.TOKEN = m?.value(forKey: "token") as! String!
+        self.FACTORNUM = FACTORNUM
         
         var temp = self.USERNAME
         
@@ -44,9 +44,11 @@ class CDetermineRequestModel {
     
     var PRICE: String!
     
+    var FACTORNUM: String?
+    
     func getParams() -> [String: Any]{
         
-        return ["user": USERNAME, "hash": HASH , "token" : TOKEN , "buyer_id" : BUYER_ID , "price" : PRICE]
+        return ["user": USERNAME, "hash": HASH , "token" : TOKEN , "buyer_id" : BUYER_ID , "price" : PRICE , "invoice_number" : FACTORNUM]
         
     }
     

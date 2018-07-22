@@ -12,7 +12,7 @@ class CReportCashResponseModel : Decodable{
     
     var code : String?
     
-    var data : CReportCashData?
+    var data : [CReportCashData]?
     
     required init?(json: JSON) {
         

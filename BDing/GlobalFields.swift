@@ -40,7 +40,17 @@ class GlobalFields {
     
     static var needUpdateMyCoupon : Bool = true
     
-    static var cReportCashData : CReportCashData? = nil
+    static var cLastCashData : CLastCashData? = nil
+    
+    static var cLoginResponseModel : CLoginResponseModel?
+    
+    static var cReportCashResponseModel : CReportCashResponseModel?
+    
+    static var cPic : String = ""
+    
+    static var autoUpdate : Bool = false
+    
+    static var payStatus : [String] = [String]()
     
     public func goErrorPage(viewController : UIViewController){
         

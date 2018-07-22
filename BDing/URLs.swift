@@ -14,6 +14,8 @@ class URLs {
     
 //    static let server = "http://www.bding.ir/rest/"
     
+    static let onChangeStatus = server + "beacon/onchangestatus"
+    
     static let signUpUrl = server + "register"
     
     static let checkSignUp = server + "register/check"
@@ -64,6 +66,8 @@ class URLs {
     
     static let getDing = server + "user/getuserding"
     
+    //cashiers urls
+    
     static let cLogin = server + "cashier/login"
     
     static let cListBuyer = server + "cashier/listbuyer"
@@ -72,8 +76,21 @@ class URLs {
     
     static let cDetermine = server + "cashier/determine"
     
-    static let cPayStatus = server + "cashier/peystatus"
+    static let cPayStatus = server + "cashier/paystatus"
     
+    static let cLastCash = server + "cashier/lastcash"
+    
+    static let cCheckout = server + "cashier/checkout"
+    
+    static let cTransaction = server + "cashier/reporttransaction"
+    
+    //new BDing
+    
+    static let nPayRegister = server + "payment/register"
+    
+    static let charge = server + "payment/charge"
+    
+    static let verifyCharge = server + "payment/verifycharge"
     
 }
 

@@ -12,11 +12,9 @@ class CReportCashRequestModel {
     
     init() {
         
-        self.USERNAME = GlobalFields.PROFILEDATA?.mobile
+        self.USERNAME = GlobalFields.cLoginResponseModel?.data?.user
         
-        let m = SaveAndLoadModel().load(entity: "USER")?[0]
-        
-        self.TOKEN = m?.value(forKey: "token") as! String!
+        self.TOKEN = GlobalFields.cLoginResponseModel?.data?.token
         
         var temp = self.USERNAME
         

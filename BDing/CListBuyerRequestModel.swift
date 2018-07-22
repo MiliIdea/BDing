@@ -12,17 +12,19 @@ class CListBuyerRequestModel {
     
     init() {
         
-        self.USERNAME = GlobalFields.PROFILEDATA?.mobile
+        self.USERNAME = GlobalFields.cLoginResponseModel?.data?.user
         
-        let m = SaveAndLoadModel().load(entity: "USER")?[0]
+        self.TOKEN = GlobalFields.cLoginResponseModel?.data?.token
         
-        self.TOKEN = m?.value(forKey: "token") as! String!
+        self.CUSTOMERID = GlobalFields.cLoginResponseModel?.data?.customer_id
         
         var temp = self.USERNAME
         
         temp?.append(self.TOKEN)
         
         temp?.append(self.TOKEN.md5())
+        
+        temp?.append(self.CUSTOMERID)
         
         self.HASH =  temp?.md5()
         
@@ -34,9 +36,11 @@ class CListBuyerRequestModel {
     
     var HASH: String!
     
+    var CUSTOMERID : String!
+    
     func getParams() -> [String: Any]{
         
-        return ["user": USERNAME, "hash": HASH , "token" : TOKEN]
+        return ["user": USERNAME,"customer_id": CUSTOMERID , "hash": HASH , "token" : TOKEN]
         
     }
     

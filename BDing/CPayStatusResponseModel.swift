@@ -12,7 +12,7 @@ class CPayStatusResponseModel : Decodable{
     
     var code : String?
     
-    var data : CPayStatusData?
+    var data : [CPayStatusData]?
     
     required init?(json: JSON) {
         

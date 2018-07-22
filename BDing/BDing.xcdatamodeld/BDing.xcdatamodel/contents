@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13533" systemVersion="17B1003" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17B1003" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="BEACON" representedClassName="BEACON" syncable="YES" codeGenerationType="class">
         <attribute name="beaconDataJSON" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isRemoved" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isSeen" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="lastSeenTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="major" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="minor" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="modifiedTime" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="seenTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -27,10 +29,10 @@
         <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="BEACON" positionX="-63" positionY="18" width="128" height="165"/>
+        <element name="BEACON" positionX="-63" positionY="18" width="128" height="195"/>
         <element name="IMAGE" positionX="-63" positionY="9" width="128" height="75"/>
+        <element name="Notify" positionX="-63" positionY="63" width="128" height="60"/>
         <element name="SHOWCASE" positionX="-63" positionY="63" width="128" height="60"/>
         <element name="USER" positionX="-63" positionY="-18" width="128" height="105"/>
-        <element name="Notify" positionX="-63" positionY="63" width="128" height="60"/>
     </elements>
 </model>

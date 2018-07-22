@@ -20,6 +20,12 @@ class CPayStatusData : Decodable{
     
     var status_pay: String?
     
+    var buyer_id: String?
+    
+    var name_family: String?
+    
+    var pay_cash_title: String?
+    
     required init?(json: JSON) {
         
         self.price = "price" <~~ json
@@ -28,9 +34,15 @@ class CPayStatusData : Decodable{
         
         self.start_time = "start_time" <~~ json
         
-        self.code = "code" <~~ json
+        self.code = "t_code" <~~ json
         
         self.status_pay = "status_pay" <~~ json
+        
+        self.buyer_id = "buyer_id" <~~ json
+        
+        self.name_family = "name_family" <~~ json
+        
+        self.pay_cash_title = "pay_cash_title" <~~ json
         
     }
     

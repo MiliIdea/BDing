@@ -17,6 +17,7 @@ class SettingViewController: UIViewController, UITextFieldDelegate{
     
     @IBOutlet weak var reOrderTutorial: DCBorderedButton!
     
+    @IBOutlet weak var changePassButt: DCBorderedButton!
     
     @IBOutlet weak var oldPass: UITextField!
    
@@ -43,7 +44,10 @@ class SettingViewController: UIViewController, UITextFieldDelegate{
         
         reNewPass.delegate = self
         
-        changePasswordView.cornerRadius = changePasswordView.frame.height / 2
+        changePasswordView.cornerRadius = 5
+        
+        changePassButt.cornerRadius = reOrderTutorial.frame.height / 2
+        
         
         reOrderTutorial.cornerRadius = reOrderTutorial.frame.height / 2
         

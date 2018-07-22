@@ -13,6 +13,8 @@ class CLoginResponseModel : Decodable{
     var code : String?
     
     var msg : String?
+
+    var data : CLoginData?
     
     required init?(json: JSON) {
         
@@ -20,6 +22,7 @@ class CLoginResponseModel : Decodable{
         
         self.msg = "msg" <~~ json
         
+        self.data = "data" <~~ json
     }
     
 }

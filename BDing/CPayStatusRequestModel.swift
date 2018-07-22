@@ -10,23 +10,33 @@ import Foundation
 
 class CPayStatusRequestModel {
     
-    init(CODE : String!) {
+    init(TYPE: String!) {
         
-        self.CODE = CODE
+        self.CODE = GlobalFields.payStatus
         
-        self.USERNAME = GlobalFields.PROFILEDATA?.mobile
+        self.TYPE = TYPE
         
-        let m = SaveAndLoadModel().load(entity: "USER")?[0]
+        if TYPE == "user" {
+            
+            let m = SaveAndLoadModel().load(entity: "USER")?[0]
+            
+            self.USERNAME = m?.value(forKey: "userID") as! String!
+            
+            self.TOKEN = m?.value(forKey: "token") as! String!
+            
+        }else{
         
-        self.TOKEN = m?.value(forKey: "token") as! String!
+            self.USERNAME = GlobalFields.cLoginResponseModel?.data?.user
+            
+            self.TOKEN = GlobalFields.cLoginResponseModel?.data?.token
+            
+        }
         
         var temp = self.USERNAME
         
         temp?.append(self.TOKEN)
         
         temp?.append(self.TOKEN.md5())
-        
-        temp?.append(self.CODE)
         
         self.HASH =  temp?.md5()
         
@@ -38,11 +48,13 @@ class CPayStatusRequestModel {
     
     var HASH: String!
     
-    var CODE: String!
+    var CODE: [String]!
+    
+    var TYPE: String!
     
     func getParams() -> [String: Any]{
         
-        return ["user": USERNAME, "hash": HASH , "token" : TOKEN , "code" : CODE]
+        return ["user": USERNAME, "hash": HASH , "token" : TOKEN , "item" : CODE , "type" : TYPE]
         
     }
     
